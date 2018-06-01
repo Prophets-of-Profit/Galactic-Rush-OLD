@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: core.core-1.0">
+  <library name="core.core-1.0">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/core/build/libs/core-1.0.jar!/" />
     </CLASSES>

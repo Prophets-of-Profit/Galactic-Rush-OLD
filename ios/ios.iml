@@ -39,8 +39,8 @@
     <output-test url="file://$MODULE_DIR$/build/classes/java/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin" isTestSource="true" />
@@ -52,14 +52,32 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="core" exported="" />
     <orderEntry type="module" module-name="core" exported="" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: gdx-backend-robovm-1.9.8" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: robovm-rt-2.3.3" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: robovm-cocoatouch-2.3.3" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: gdx-platform-1.9.8-natives-ios" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: kotlin-stdlib-1.2.41" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: gdx-1.9.8" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: ktx-app-1.9.8-b2" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: robovm-objc-2.3.3" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="gdx-backend-robovm-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="robovm-rt-2.3.3" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="robovm-cocoatouch-2.3.3" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="gdx-platform-1.9.8-natives-ios" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-1.2.41" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="gdx-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="ktx-app-1.9.8-b2" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="robovm-objc-2.3.3" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="gdx-backend-robovm-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="robovm-rt-2.3.3" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="robovm-cocoatouch-2.3.3" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="gdx-platform-1.9.8-natives-ios" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="kotlin-stdlib-1.2.41" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="gdx-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="ktx-app-1.9.8-b2" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="robovm-objc-2.3.3" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="gdx-backend-robovm-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="robovm-rt-2.3.3" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="robovm-cocoatouch-2.3.3" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="gdx-platform-1.9.8-natives-ios" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="kotlin-stdlib-1.2.41" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="gdx-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="ktx-app-1.9.8-b2" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="robovm-objc-2.3.3" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="annotations-13.0" level="project" />
   </component>
 </module>

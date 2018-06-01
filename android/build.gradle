@@ -11,15 +11,14 @@ android {
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
         }
-
-        instrumentTest.setRoot('tests')
+        androidTest.setRoot('tests')
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
         applicationId "com.prophetsofprofit.galacticrush"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"

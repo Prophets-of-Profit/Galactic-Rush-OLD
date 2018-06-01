@@ -39,8 +39,8 @@
     <output-test url="file://$MODULE_DIR$/build/classes/java/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin" isTestSource="true" />
@@ -52,23 +52,59 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="core" exported="" />
     <orderEntry type="module" module-name="core" exported="" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: gdx-backend-lwjgl-1.9.8" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: gdx-platform-1.9.8-natives-desktop" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: kotlin-stdlib-1.2.41" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: gdx-1.9.8" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: ktx-app-1.9.8-b2" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: lwjgl_util-2.9.2" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: lwjgl-2.9.2" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: jlayer-1.0.1-gdx" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: jorbis-0.0.17" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: annotations-13.0" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: lwjgl-platform-2.9.2-natives-windows" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: lwjgl-platform-2.9.2-natives-linux" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: lwjgl-platform-2.9.2-natives-osx" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: jinput-2.0.5" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: jutils-1.0.0" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: jinput-platform-2.0.5-natives-linux" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: jinput-platform-2.0.5-natives-windows" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: jinput-platform-2.0.5-natives-osx" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="gdx-backend-lwjgl-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="gdx-platform-1.9.8-natives-desktop" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-1.2.41" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="gdx-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="ktx-app-1.9.8-b2" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="lwjgl_util-2.9.2" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="lwjgl-2.9.2" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="jlayer-1.0.1-gdx" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="jorbis-0.0.17" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="lwjgl-platform-2.9.2-natives-windows" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="lwjgl-platform-2.9.2-natives-linux" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="lwjgl-platform-2.9.2-natives-osx" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="jinput-2.0.5" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="jutils-1.0.0" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="jinput-platform-2.0.5-natives-linux" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="jinput-platform-2.0.5-natives-windows" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="jinput-platform-2.0.5-natives-osx" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="gdx-backend-lwjgl-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="gdx-platform-1.9.8-natives-desktop" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="kotlin-stdlib-1.2.41" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="gdx-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="ktx-app-1.9.8-b2" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="lwjgl_util-2.9.2" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="lwjgl-2.9.2" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="jlayer-1.0.1-gdx" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="jorbis-0.0.17" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="lwjgl-platform-2.9.2-natives-windows" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="lwjgl-platform-2.9.2-natives-linux" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="lwjgl-platform-2.9.2-natives-osx" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="jinput-2.0.5" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="jutils-1.0.0" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="jinput-platform-2.0.5-natives-linux" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="jinput-platform-2.0.5-natives-windows" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="jinput-platform-2.0.5-natives-osx" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="gdx-backend-lwjgl-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="gdx-platform-1.9.8-natives-desktop" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="kotlin-stdlib-1.2.41" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="gdx-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="ktx-app-1.9.8-b2" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="lwjgl_util-2.9.2" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="lwjgl-2.9.2" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="jlayer-1.0.1-gdx" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="jorbis-0.0.17" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="lwjgl-platform-2.9.2-natives-windows" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="lwjgl-platform-2.9.2-natives-linux" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="lwjgl-platform-2.9.2-natives-osx" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="jinput-2.0.5" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="jutils-1.0.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="jinput-platform-2.0.5-natives-linux" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="jinput-platform-2.0.5-natives-windows" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="jinput-platform-2.0.5-natives-osx" level="project" />
   </component>
 </module>

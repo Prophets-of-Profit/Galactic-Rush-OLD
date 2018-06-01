@@ -42,25 +42,25 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: gdx-1.9.8" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: kotlin-stdlib-1.2.41" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: ktx-app-1.9.8-b2" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: annotations-13.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: core.core-1.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: core.core-1.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: core.core-1.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: core.core-1.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: core.core-1.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: core.core-1.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: core.core-1.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: core.core-1.0" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="gdx-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-1.2.41" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="ktx-app-1.9.8-b2" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="gdx-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="kotlin-stdlib-1.2.41" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="ktx-app-1.9.8-b2" level="project" />
+    <orderEntry type="library" exported="" scope="RUNTIME" name="annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="gdx-1.9.8" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="kotlin-stdlib-1.2.41" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="ktx-app-1.9.8-b2" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="annotations-13.0" level="project" />
   </component>
 </module>
