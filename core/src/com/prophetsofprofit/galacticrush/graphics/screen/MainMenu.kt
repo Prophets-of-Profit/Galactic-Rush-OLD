@@ -21,6 +21,9 @@ class MainMenu(val game: Main) : KtxScreen {
         this.game.batch.use {
             this.game.textDrawer.draw(this.game.batch, "Do you approve of this architecture?", 100f, 100f)
         }
+        if (Gdx.input.isTouched) {
+            game.screen = MainGame(game)
+        }
     }
 
 }
