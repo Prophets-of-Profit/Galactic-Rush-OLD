@@ -1,7 +1,6 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.prophetsofprofit.galacticrush.Main
@@ -33,8 +32,8 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(50)): KtxScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in galaxy.planets) {
-            game.shapeRenderer.color = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f)
-            game.shapeRenderer.circle((planet.x * game.camera.viewportWidth).toFloat(), (planet.y * game.camera.viewportHeight).toFloat(), 5f)
+            game.shapeRenderer.color = planet.color
+            game.shapeRenderer.circle((planet.x * game.camera.viewportWidth).toFloat(), (planet.y * game.camera.viewportHeight).toFloat(), planet.radius.toFloat())
         }
         game.shapeRenderer.end()
     }

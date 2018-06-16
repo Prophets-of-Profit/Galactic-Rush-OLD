@@ -1,5 +1,8 @@
 package com.prophetsofprofit.galacticrush.logic.map
 
+import com.badlogic.gdx.graphics.Color
+import java.util.Random
+
 /**
  * A class that represents a node in the graph that is the galaxy
  * Planets are the 'tiles' of the game
@@ -7,6 +10,8 @@ package com.prophetsofprofit.galacticrush.logic.map
  * Planets have arbitrary attributes that are used by other entities in the game
  * Takes in its location in 2d space
  */
-class Planet(val x: Double, val y: Double) {
-
+class Planet(val x: Double,
+             val y: Double,
+             val color: Color = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f),
+             val radius: Double = Random().nextGaussian() * 5 + 50) {
 }
