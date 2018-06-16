@@ -10,7 +10,7 @@ import ktx.app.KtxScreen
 /**
  * The screen where all the playing will be done
  */
-class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(20)): KtxScreen {
+class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(50)): KtxScreen {
 
     /**
      * Initializes the camera for the screen
