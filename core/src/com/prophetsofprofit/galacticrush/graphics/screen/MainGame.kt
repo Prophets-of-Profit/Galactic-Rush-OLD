@@ -25,6 +25,10 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(50)): KtxScreen {
      * Draws the map on the bottom and then draws planets
      */
     override fun render(delta: Float) {
+
+        this.game.batch.projectionMatrix = this.game.camera.combined
+        this.game.shapeRenderer.projectionMatrix = this.game.camera.combined
+
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
@@ -36,3 +40,4 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(50)): KtxScreen {
     }
 
 }
+
