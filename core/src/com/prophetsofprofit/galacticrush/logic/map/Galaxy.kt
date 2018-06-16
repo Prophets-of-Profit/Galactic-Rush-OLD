@@ -8,7 +8,7 @@ package com.prophetsofprofit.galacticrush.logic.map
 class Galaxy(numPlanets: Int) {
 
     //The planets that are in the galaxy: serve as 'tiles' of the game, but are connected as a graph
-    val planets = Array(numPlanets, { Planet() })
+    val planets = Array(numPlanets, { Planet(Math.random(), Math.random()) })
 
     /**
      * Galaxy constructor generates all the planets and terrain and values and such

@@ -7,4 +7,6 @@ package com.prophetsofprofit.galacticrush.logic.map
  * Planets have arbitrary attributes that are used by other entities in the game
  * Takes in its location in 2d space
  */
-class Planet //TODO: make
+class Planet(x: Double, y: Double) {
+
+}
