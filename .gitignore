@@ -1,5 +1,7 @@
 **/build
 /.gradle
-.idea/workspace.xml
-.idea/caches/
+.idea/*
 local.properties
+*.iml
+*.ser
+*.xml
