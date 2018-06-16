@@ -12,6 +12,5 @@ import java.util.Random
  */
 class Planet(val x: Double,
              val y: Double,
-             val color: Color = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f),
-             val radius: Double = Random().nextGaussian() * 2 + 10) {
-}
+             val radius: Float,
+             val color: Color = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f))
