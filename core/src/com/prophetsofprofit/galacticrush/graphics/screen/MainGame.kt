@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.input.GestureDetector
@@ -35,6 +36,14 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
 
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+        game.shapeRenderer.color = Color.WHITE
+        for (highway in galaxy.highways) {
+            game.shapeRenderer.line(highway.p1.x.toFloat() * game.camera.viewportWidth, highway.p1.y.toFloat() * game.camera.viewportHeight, highway.p2.x.toFloat() * game.camera.viewportWidth, highway.p2.y.toFloat() * game.camera.viewportHeight)
+        }
+        game.shapeRenderer.end()
+
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in galaxy.planets) {
             game.shapeRenderer.color = planet.color
@@ -68,4 +77,3 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
     override fun touchDown(x: Float, y: Float, pointer: Int, button: Int): Boolean = false
 
 }
-

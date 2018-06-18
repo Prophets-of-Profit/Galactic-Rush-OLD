@@ -9,6 +9,8 @@ class Galaxy(numPlanets: Int) {
 
     //The planets that are in the galaxy: serve as 'tiles' of the game, but are connected as a graph
     val planets = mutableListOf<Planet>()
+    //The cosmic highways that are in the galaxy: serve as the 'paths' or 'connections' of the game
+    val highways = mutableListOf<CosmicHighway>()
     //TODO: documentation
     val worldSize = 4 * numPlanets
 
@@ -33,6 +35,8 @@ class Galaxy(numPlanets: Int) {
         (0 until probabilities.size)
                 .filter { probabilities[it] == 0.0 }
                 .mapTo(planets) { Planet((it / worldSize).toDouble() / worldSize + 0.5 / worldSize, (it % worldSize).toDouble() / worldSize + 0.5 / worldSize, ((0.15 + Math.random() * 0.35) / worldSize).toFloat()) }
+        //TODO: temporary; makes highways for each planet to a random other planet
+        this.planets.mapTo(highways) { CosmicHighway(it, planets.shuffled().first()) }
     }
 
 }
