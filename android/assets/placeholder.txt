@@ -1,1 +1,0 @@
-This file is just a placeholder so that the assets folder will get committed to the git repo
