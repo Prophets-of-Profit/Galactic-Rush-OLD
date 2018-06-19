@@ -40,7 +40,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         game.shapeRenderer.color = Color.WHITE
         for (highway in galaxy.highways) {
-            game.shapeRenderer.line(highway.p1.x.toFloat() * game.camera.viewportWidth, highway.p1.y.toFloat() * game.camera.viewportHeight, highway.p2.x.toFloat() * game.camera.viewportWidth, highway.p2.y.toFloat() * game.camera.viewportHeight)
+            game.shapeRenderer.line(highway.p0.x.toFloat() * game.camera.viewportWidth, highway.p0.y.toFloat() * game.camera.viewportHeight, highway.p1.x.toFloat() * game.camera.viewportWidth, highway.p1.y.toFloat() * game.camera.viewportHeight)
         }
         game.shapeRenderer.end()
 
