@@ -15,8 +15,8 @@ class CosmicHighway(val p0: Planet, val p1: Planet) {
      * Distances are between zero and one, from start to completion respectively
      * travelling0 contains drones travelling to p0, travelling1 contains those travelling to p1
      */
-    val dronesTravelling0 = mutableMapOf<Drone, Double>() 
-    val dronesTravelling1 = mutableMapOf<Drone, Double>() 
+    val dronesTravelling0: MutableMap<Drone, Double> = mutableMapOf<Drone, Double>()
+    val dronesTravelling1: MutableMap<Drone, Double> = mutableMapOf<Drone, Double>()
 
     /**
      * Moves all contained drones in the proper direction
@@ -34,10 +34,12 @@ class CosmicHighway(val p0: Planet, val p1: Planet) {
      */
     private fun moveDroneHash(travelling: MutableMap<Drone, Double>, destination: Planet) {
         for(drone in travelling.keys) {
-            travelling[drone] += drone.warpSpeed;
-            if(travelling[drone] >= 1.0) {
-                travelling[drone].location = destination;
-                travelling.remove(drone)
+            if(travelling.get(drone) != null) {
+                travelling[drone] = drone.warpSpeed + travelling.get(drone)!!
+                if(travelling.get(drone)!! >= 1.0) {
+                    drone.location = destination;
+                    travelling.remove(drone)
+                }
             }
         }
     }
