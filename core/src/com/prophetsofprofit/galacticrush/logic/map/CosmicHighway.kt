@@ -7,38 +7,27 @@ import com.prophetsofprofit.galacticrush.logic.Drone
  * Is basically an edge in the graph that is the galaxy, where the nodes are planets
  * The cosmic highway is the path between p0 and p1
  * These edges are not directional, so travel is possible between p0 to p1, and p1 to p0
+ * TODO: expectations for drone movement along highways: is it instant or does it take time? Current implementation is that it takes time and is really disgusting
+ * TODO: clean this code: is very disgusting, courtesy of Saurabh Totey
  */
 class CosmicHighway(val p0: Planet, val p1: Planet) {
 
     /**
-     * Two hashes, with keys being drones and the values associated their distance along the highway
-     * Distances are between zero and one, from start to completion respectively
-     * travelling0 contains drones travelling to p0, travelling1 contains those travelling to p1
+     * Destination planets are mapped to a map of the drones travelling to the destination mapped with their distance along the highway
+     * Distance along highways go from 0 to 1, where 0 is on starting planet, and 1 is at the destination planet
      */
-    val dronesTravelling0: MutableMap<Drone, Double> = mutableMapOf<Drone, Double>()
-    val dronesTravelling1: MutableMap<Drone, Double> = mutableMapOf<Drone, Double>()
+    val destinationToDronesTravelling = mapOf<Planet, MutableMap<Drone, Double>>(p0 to mutableMapOf(), p1 to mutableMapOf())
 
     /**
-     * Moves all contained drones in the proper direction
-     * Uses the private moveDroneHash method for each direction
+     * Moves all contained drones in the proper direction based on their speeds and current locations
      */
     fun moveDrones() {
-        moveDroneHash(dronesTravelling0, p0)
-        moveDroneHash(dronesTravelling1, p1)
-    }
-
-    /**
-     * Moves all of the drones in the given hash toward the given destination
-     * If the drone reaches 1 distance or greater, remove it from the hash and set its location to be the destination
-     * For internal use only
-     */
-    private fun moveDroneHash(travelling: MutableMap<Drone, Double>, destination: Planet) {
-        for(drone in travelling.keys) {
-            if(travelling.get(drone) != null) {
-                travelling[drone] = drone.warpSpeed + travelling.get(drone)!!
-                if(travelling.get(drone)!! >= 1.0) {
-                    drone.location = destination;
-                    travelling.remove(drone)
+        for ((destination, dronesTravelling) in this.destinationToDronesTravelling) {
+            for ((drone, distance) in dronesTravelling) {
+                dronesTravelling[drone] = drone.warpSpeed + distance
+                if (dronesTravelling[drone]!! >= 1.0) {
+                    drone.location = destination
+                    dronesTravelling.remove(drone)
                 }
             }
         }
@@ -46,14 +35,10 @@ class CosmicHighway(val p0: Planet, val p1: Planet) {
 
     /**
      * Adds a drone to the highway, en route to the given planet
-     * If the destination is not a planet connected to this highway, then nothing happens
      */
     fun addDrone(drone: Drone, origin: Planet) {
-        if(origin === p0) {
-            dronesTravelling1.put(drone, 0.0)
-        } else if(origin === p1) {
-            dronesTravelling0.put(drone, 0.0)
-        }
+        assert(p0 == origin || p1 == origin) { "Cannot add drone $drone to $this because it is set to start at $origin, which does not exist on this Cosmic Highway!" }
+        (this.destinationToDronesTravelling[if (p0 == origin) p1 else p0])!![drone] = 0.0
     }
 
 }
