@@ -1,7 +1,6 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
@@ -20,11 +19,11 @@ import kotlin.math.sqrt
  */
 class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
-    val multiplexer = InputMultiplexer()
     /**
      * Initializes the camera for the screen
      */
     init {
+        val multiplexer = InputMultiplexer()
         multiplexer.addProcessor(GestureDetector(this))
         multiplexer.addProcessor(this)
         game.camera.setToOrtho(false, 1600f, 900f)
@@ -85,6 +84,13 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
      */
     override fun scrolled(amount: Int): Boolean {
         this.game.camera.zoom += amount
+        val minZoom = 0.5f
+        val maxZoom = 10f
+        if (this.game.camera.zoom < minZoom) {
+            this.game.camera.zoom = minZoom
+        } else if (this.game.camera.zoom > maxZoom) {
+            this.game.camera.zoom = maxZoom
+        }
         return true
     }
 
