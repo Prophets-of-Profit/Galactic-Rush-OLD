@@ -28,7 +28,7 @@ class Galaxy(numPlanets: Int) {
         * The side length of that square is worldSize
         * Changing the scalar multiplier in this variable will affect amount of possible locations for planets
         * As a result, the spacing of the planets will change
-        * For instance, decreating the multiplier will move the planets closer together by reducing amount of possible locations
+        * For instance, decreasing the scalar multiplier will make the planets closer together by decreasing the amount of possible locations
         */
         val worldSize = 4 * numPlanets
         //The grid is a flattened array where every worldSize elements represent a row

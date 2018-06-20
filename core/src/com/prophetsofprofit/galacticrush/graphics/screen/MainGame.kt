@@ -30,20 +30,26 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
      * Draws the map on the bottom and then draws planets
      */
     override fun render(delta: Float) {
+        //Update position of view to match camera's position
         this.game.camera.update()
         this.game.batch.projectionMatrix = this.game.camera.combined
         this.game.shapeRenderer.projectionMatrix = this.game.camera.combined
 
+        //Color background in black
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
+        //Begins rendering the objects on the screen
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+        //Render highways as white lines
         game.shapeRenderer.color = Color.WHITE
         for (highway in galaxy.highways) {
-            game.shapeRenderer.line(highway.p1.x.toFloat() * game.camera.viewportWidth, highway.p1.y.toFloat() * game.camera.viewportHeight, highway.p2.x.toFloat() * game.camera.viewportWidth, highway.p2.y.toFloat() * game.camera.viewportHeight)
+            game.shapeRenderer.line(highway.p0.x.toFloat() * game.camera.viewportWidth, highway.p0.y.toFloat() * game.camera.viewportHeight, highway.p1.x.toFloat() * game.camera.viewportWidth, highway.p1.y.toFloat() * game.camera.viewportHeight)
         }
         game.shapeRenderer.end()
 
+        //Render planets as colored circles
+        //TODO: add textures for planets
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in galaxy.planets) {
             game.shapeRenderer.color = planet.color
