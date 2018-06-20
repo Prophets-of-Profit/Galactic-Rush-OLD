@@ -1,6 +1,9 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -15,14 +18,17 @@ import kotlin.math.sqrt
 /**
  * The screen where all the playing will be done
  */
-class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, GestureDetector.GestureListener {
+class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
+    val multiplexer = InputMultiplexer()
     /**
      * Initializes the camera for the screen
      */
     init {
+        multiplexer.addProcessor(GestureDetector(this))
+        multiplexer.addProcessor(this)
         game.camera.setToOrtho(false, 1600f, 900f)
-        Gdx.input.inputProcessor = GestureDetector(this)
+        Gdx.input.inputProcessor = multiplexer
     }
 
     /**
@@ -74,12 +80,44 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         return true
     }
 
+    /**
+     * Zooms with mouse scroll
+     */
+    override fun scrolled(amount: Int): Boolean {
+        this.game.camera.zoom += amount
+        return true
+    }
+
+    //GestureListener abstract method implementations:
+    //Called when a finger is dragged and lifter
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean = false
+    //Called when a finger is held down for some time
     override fun longPress(x: Float, y: Float): Boolean = false
+    //Called when no longer panning
     override fun panStop(x: Float, y: Float, pointer: Int, button: Int): Boolean = false
+    //Called when distance between fingers changes in multitouch
     override fun pinch(initialPointer1: Vector2?, initialPointer2: Vector2?, pointer1: Vector2?, pointer2: Vector2?): Boolean = false
+    //Called when distance between fingers stops changing in multitouch
     override fun pinchStop() {}
+    //Called when the screen is tapped
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean = false
+    //Called when the screen is touched
     override fun touchDown(x: Float, y: Float, pointer: Int, button: Int): Boolean = false
+
+    //InputProcessor abstract method implementations:
+    //Called when the mouse button is pressed
+    override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
+    //Called when the mouse button is released
+    override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
+    //Called when the mouse moves
+    override fun mouseMoved(x: Int, y: Int): Boolean = false
+    //Called when a key mapping to a character is pressed
+    override fun keyTyped(char: Char): Boolean = false
+    //Called when a key is pressed
+    override fun keyDown(keycode: Int): Boolean = false
+    //Called when a key is released
+    override fun keyUp(keycode: Int): Boolean = false
+    //Called when a mouse button is held and the mouse is moved
+    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean = false
 
 }
