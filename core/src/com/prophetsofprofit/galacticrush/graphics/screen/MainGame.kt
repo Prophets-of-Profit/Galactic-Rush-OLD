@@ -19,6 +19,9 @@ import kotlin.math.sqrt
  */
 class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
+    //Adjusting this will start the game zoomed in. Avoid if possible
+    val scaleFactor = 1
+
     /**
      * Initializes the camera for the screen
      */
@@ -49,7 +52,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         //Render highways as white lines
         game.shapeRenderer.color = Color.WHITE
         for (highway in galaxy.highways) {
-            game.shapeRenderer.line(highway.p0.x.toFloat() * game.camera.viewportWidth, highway.p0.y.toFloat() * game.camera.viewportHeight, highway.p1.x.toFloat() * game.camera.viewportWidth, highway.p1.y.toFloat() * game.camera.viewportHeight)
+            game.shapeRenderer.line(highway.p0.x.toFloat() * game.camera.viewportWidth * scaleFactor, highway.p0.y.toFloat() * game.camera.viewportHeight * scaleFactor, highway.p1.x.toFloat() * game.camera.viewportWidth * scaleFactor, highway.p1.y.toFloat() * game.camera.viewportHeight * scaleFactor)
         }
         game.shapeRenderer.end()
 
@@ -58,7 +61,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in galaxy.planets) {
             game.shapeRenderer.color = planet.color
-            game.shapeRenderer.circle((planet.x * game.camera.viewportWidth).toFloat(), (planet.y * game.camera.viewportHeight).toFloat(), 10 * planet.radius * sqrt(game.camera.viewportWidth.pow(2) + game.camera.viewportHeight.pow(2)))
+            game.shapeRenderer.circle((planet.x * game.camera.viewportWidth * scaleFactor).toFloat(), (planet.y * game.camera.viewportHeight * scaleFactor).toFloat(), 10 * planet.radius * sqrt((game.camera.viewportWidth * scaleFactor).pow(2) + (game.camera.viewportHeight * scaleFactor).pow(2)))
         }
         game.shapeRenderer.end()
     }
@@ -83,9 +86,9 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
      * Zooms with mouse scroll
      */
     override fun scrolled(amount: Int): Boolean {
-        this.game.camera.zoom += amount
-        val minZoom = 0.5f
-        val maxZoom = 10f
+        this.game.camera.zoom += amount * 0.1f
+        val minZoom = 0.1f
+        val maxZoom = 1f
         if (this.game.camera.zoom < minZoom) {
             this.game.camera.zoom = minZoom
         } else if (this.game.camera.zoom > maxZoom) {
