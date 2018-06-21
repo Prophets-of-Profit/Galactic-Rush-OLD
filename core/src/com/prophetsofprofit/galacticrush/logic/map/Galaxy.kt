@@ -58,7 +58,7 @@ class Galaxy(numPlanets: Int) {
                 //j / worldSize is row and j & worldSize is column
                 //We add a scalar factor based on the Manhattan distance between each tile and the new planet to its probability
                 //If the tile in question is already a planet, do nothing
-                probabilities[j] = if (probabilities[j] != 0.0) probabilities[j] + Math.abs(j / worldSize - j % worldSize + chosenLocation / worldSize - chosenLocation % worldSize) else 0.0
+                probabilities[j] = if (probabilities[j] != 0.0) probabilities[j] + Math.abs(j / worldSize - chosenLocation / worldSize) + Math.abs(j % worldSize  - chosenLocation % worldSize) else 0.0
             }
         }
         //When we're finished, every coordinate with a zero probability is market for becoming a planet

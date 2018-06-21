@@ -1,11 +1,14 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
+//import com.badlogic.gdx.
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import ktx.app.KtxScreen
@@ -15,14 +18,23 @@ import kotlin.math.sqrt
 /**
  * The screen where all the playing will be done
  */
-class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, GestureDetector.GestureListener {
+class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, GestureDetector.GestureListener, InputProcessor {
+
+    //Adjusting this will start the game zoomed in. Avoid if possible
+    val scaleFactor = 1
+    //Temporary place to store music
+    val music = Gdx.audio.newMusic(Gdx.files.internal("music/the intergalactic.mp3"))
 
     /**
      * Initializes the camera for the screen
      */
     init {
+        val multiplexer = InputMultiplexer()
+        multiplexer.addProcessor(GestureDetector(this))
+        multiplexer.addProcessor(this)
         game.camera.setToOrtho(false, 1600f, 900f)
-        Gdx.input.inputProcessor = GestureDetector(this)
+        Gdx.input.inputProcessor = multiplexer
+        music.play()
     }
 
     /**
@@ -44,7 +56,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         //Render highways as white lines
         game.shapeRenderer.color = Color.WHITE
         for (highway in galaxy.highways) {
-            game.shapeRenderer.line(highway.p0.x.toFloat() * game.camera.viewportWidth, highway.p0.y.toFloat() * game.camera.viewportHeight, highway.p1.x.toFloat() * game.camera.viewportWidth, highway.p1.y.toFloat() * game.camera.viewportHeight)
+            game.shapeRenderer.line(highway.p0.x.toFloat() * game.camera.viewportWidth * scaleFactor, highway.p0.y.toFloat() * game.camera.viewportHeight * scaleFactor, highway.p1.x.toFloat() * game.camera.viewportWidth * scaleFactor, highway.p1.y.toFloat() * game.camera.viewportHeight * scaleFactor)
         }
         game.shapeRenderer.end()
 
@@ -53,7 +65,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in galaxy.planets) {
             game.shapeRenderer.color = planet.color
-            game.shapeRenderer.circle((planet.x * game.camera.viewportWidth).toFloat(), (planet.y * game.camera.viewportHeight).toFloat(), 10 * planet.radius * sqrt(game.camera.viewportWidth.pow(2) + game.camera.viewportHeight.pow(2)))
+            game.shapeRenderer.circle((planet.x * game.camera.viewportWidth * scaleFactor).toFloat(), (planet.y * game.camera.viewportHeight * scaleFactor).toFloat(), 10 * planet.radius * sqrt((game.camera.viewportWidth * scaleFactor).pow(2) + (game.camera.viewportHeight * scaleFactor).pow(2)))
         }
         game.shapeRenderer.end()
     }
@@ -74,12 +86,51 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         return true
     }
 
+    /**
+     * Zooms with mouse scroll
+     */
+    override fun scrolled(amount: Int): Boolean {
+        this.game.camera.zoom += amount * 0.1f
+        val minZoom = 0.1f
+        val maxZoom = 1f
+        if (this.game.camera.zoom < minZoom) {
+            this.game.camera.zoom = minZoom
+        } else if (this.game.camera.zoom > maxZoom) {
+            this.game.camera.zoom = maxZoom
+        }
+        return true
+    }
+
+    //GestureListener abstract method implementations:
+    //Called when a finger is dragged and lifter
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean = false
+    //Called when a finger is held down for some time
     override fun longPress(x: Float, y: Float): Boolean = false
+    //Called when no longer panning
     override fun panStop(x: Float, y: Float, pointer: Int, button: Int): Boolean = false
+    //Called when distance between fingers changes in multitouch
     override fun pinch(initialPointer1: Vector2?, initialPointer2: Vector2?, pointer1: Vector2?, pointer2: Vector2?): Boolean = false
+    //Called when distance between fingers stops changing in multitouch
     override fun pinchStop() {}
+    //Called when the screen is tapped
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean = false
+    //Called when the screen is touched
     override fun touchDown(x: Float, y: Float, pointer: Int, button: Int): Boolean = false
+
+    //InputProcessor abstract method implementations:
+    //Called when the mouse button is pressed
+    override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
+    //Called when the mouse button is released
+    override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
+    //Called when the mouse moves
+    override fun mouseMoved(x: Int, y: Int): Boolean = false
+    //Called when a key mapping to a character is pressed
+    override fun keyTyped(char: Char): Boolean = false
+    //Called when a key is pressed
+    override fun keyDown(keycode: Int): Boolean = false
+    //Called when a key is released
+    override fun keyUp(keycode: Int): Boolean = false
+    //Called when a mouse button is held and the mouse is moved
+    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean = false
 
 }
