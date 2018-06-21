@@ -26,8 +26,8 @@ enum class Attributes(private val displayString: String) {
  * Planets have arbitrary attributes that are used by other entities in the game
  * Takes in its location in 2d space
  */
-class Planet(val x: Double,
-             val y: Double,
+class Planet(val x: Float,
+             val y: Float,
              val radius: Float,
              val color: Color = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f)) {
     //Arbitrary attributes that determine drone behaviour: can be changed, but each start out as a random number between 0 and 1

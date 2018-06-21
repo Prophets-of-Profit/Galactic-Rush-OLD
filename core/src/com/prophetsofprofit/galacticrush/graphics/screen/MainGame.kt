@@ -59,7 +59,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         //Render highways as white lines
         game.shapeRenderer.color = Color.WHITE
         for (highway in galaxy.highways) {
-            game.shapeRenderer.line(highway.p0.x.toFloat() * game.camera.viewportWidth, highway.p0.y.toFloat() * game.camera.viewportHeight, highway.p1.x.toFloat() * game.camera.viewportWidth, highway.p1.y.toFloat() * game.camera.viewportHeight)
+            game.shapeRenderer.line(highway.p0.x * game.camera.viewportWidth, highway.p0.y * game.camera.viewportHeight, highway.p1.x * game.camera.viewportWidth, highway.p1.y * game.camera.viewportHeight)
         }
         game.shapeRenderer.end()
 
@@ -68,7 +68,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in galaxy.planets) {
             game.shapeRenderer.color = planet.color
-            game.shapeRenderer.circle((planet.x * game.camera.viewportWidth).toFloat(), (planet.y * game.camera.viewportHeight).toFloat(), 10 * planet.radius * sqrt(game.camera.viewportWidth.pow(2) + game.camera.viewportHeight.pow(2)))
+            game.shapeRenderer.circle(planet.x * game.camera.viewportWidth, planet.y * game.camera.viewportHeight, 10 * planet.radius * sqrt(game.camera.viewportWidth.pow(2) + game.camera.viewportHeight.pow(2)))
         }
         game.shapeRenderer.end()
     }

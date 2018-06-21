@@ -1,5 +1,10 @@
 package com.prophetsofprofit.galacticrush.logic.map
 
+import com.badlogic.gdx.math.Intersector
+import com.badlogic.gdx.math.Vector2
+import kotlin.math.pow
+import kotlin.math.sqrt
+
 /**
  * A class that is basically the map that the game is played on
  * Contains a bunch of planets which are essentially the game 'tiles'
@@ -32,7 +37,7 @@ class Galaxy(numPlanets: Int) {
         */
         val worldSize = 8 * numPlanets
         //The grid is a flattened array where every worldSize elements represent a row
-        val probabilities = Array(worldSize * worldSize, { 1.0 })
+        val probabilities = Array(worldSize * worldSize) { 1.0 }
         for (i in 0 until numPlanets) {
             //The following code chooses a new location for a planet
             //Create an array where each element is the sum of the first n elements of probabilities
@@ -66,43 +71,40 @@ class Galaxy(numPlanets: Int) {
         //0.5 / worldSize accounts for the planet being at the center of the square defined by coordinates instead of its corner
         (0 until probabilities.size)
                 .filter { probabilities[it] == 0.0 }
-                .mapTo(planets) { Planet((it / worldSize).toDouble() / worldSize + 0.5 / worldSize, (it % worldSize).toDouble() / worldSize + 0.5 / worldSize, ((0.15 + Math.random() * 0.35) / worldSize).toFloat()) }
+                .mapTo(planets) { Planet((it / worldSize).toFloat() / worldSize + 0.5f / worldSize, (it % worldSize).toFloat() / worldSize + 0.5f / worldSize, ((0.15 + Math.random() * 0.35) / worldSize).toFloat()) }
         /**
          * Edge generation:
          * Goes through each planet in a random order and creates cosmic highways (connections) between planets within .2 of world size distance
          * Doesn't create highways that cross other highways TODO: Doesn't work quite perfectly
          */
-        for(p0 in planets.shuffled()) {
-            for(p1 in planets) {
-                //If the distance between the two planets is less than .2, proceed with the operation
-                if(Math.sqrt(Math.pow((p0.x - p1.x).toDouble(), 2.0) + Math.pow((p0.y - p1.y).toDouble(), 2.0)) < 0.20) {
-                    var isIntersecting = false
-                    //Check for an intersection between all existing highways
-                    for(i in highways) {
-                        if(doSegmentsIntersect(p0.x, p0.y, p1.x - p0.x, p1.y - p0.y, i.p0.x, i.p0.y, i.p1.x - i.p0.x, i.p1.y - i.p0.y)) {
-                            isIntersecting = true
-                            break
-                        }
-                    }
-                    //If there is no intersection, create a highway between the two planets
-                    if(!isIntersecting) {
-                        highways.add(CosmicHighway(p0, p1))
-                    }
+        for (p0 in planets.shuffled()) {
+            for (p1 in planets) {
+                //If the distance between the two planets is greater than .2, go to next planet
+                if (sqrt((p0.x - p1.x).pow(2) + (p0.y - p1.y).pow(2)) >= 0.2) {
+                    continue
+                }
+                //If the current planets can have a path that doesn't intersect an existing highway, make a highway
+                if (highways.find { doSegmentsIntersect(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) } == null) {
+                    highways.add(CosmicHighway(p0, p1))
                 }
             }
         }
     }
 
     /**
-     * Returns whether or not two line segments intersect
-     * For use in edge generation to ensure that edges do not intersect each other
-     * Works by finding the intersection point of the two segments extented into lines
-     * then checking if the solution point is a part of both segment boundaries
+     * Returns whether an intersection happens that isn't an intersection at the endpoints
+     * Segments are p0 -> p1 and p2 -> p3
      */
-    private fun doSegmentsIntersect(x1: Double, y1: Double, dx1: Double, dy1: Double, x2: Double, y2: Double, dx2: Double, dy2: Double): Boolean {
-        val xSoln = ((-1 * (dy2 / dx2) * x2 + y2) - (-1 * (dy1 / dx1) * x1 + y1)) / (dy1 / dx1 - dy2 / dx2)
-        val ySoln = ((-(dy1 / dx1) * x1 + y1) - ((dy1 / dx1) / (dy2 / dx2)) * (-(dy2 / dx2) * x2 + y2)) / (1 - ((dy1 / dx1) / (dy2 / dx2)))
-        return (xSoln - x1) * (xSoln - (x1 + dx1)) < 0 && (xSoln - x2) * (xSoln - (x2 + dx2)) < 0 && (ySoln - y1) * (ySoln - (y1 + dy1)) < 0 && (ySoln - y2) * (ySoln - (y2 + dy2)) < 0
+    private fun doSegmentsIntersect(p0x: Float, p0y: Float, p1x: Float, p1y: Float, p2x: Float, p2y: Float, p3x: Float, p3y: Float): Boolean {
+        val intersectionPoint = Vector2()
+        val intersect = Intersector.intersectSegments(p0x, p0y, p1x, p1y, p2x, p2y, p3x, p3y, intersectionPoint)
+        //Returns whether it intersects and that the intersection point isn't an endpoint
+        return intersect && !(
+                (intersectionPoint.x == p0x && intersectionPoint.y == p0y) ||
+                (intersectionPoint.x == p1x && intersectionPoint.y == p1y) ||
+                (intersectionPoint.x == p2x && intersectionPoint.y == p2y) ||
+                (intersectionPoint.x == p3x && intersectionPoint.y == p3y)
+        )
     }
 
 }
