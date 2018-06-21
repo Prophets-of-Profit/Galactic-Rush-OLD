@@ -30,7 +30,7 @@ class Galaxy(numPlanets: Int) {
         * As a result, the spacing of the planets will change
         * For instance, decreasing the scalar multiplier will make the planets closer together by decreasing the amount of possible locations
         */
-        val worldSize = 4 * numPlanets
+        val worldSize = 8 * numPlanets
         //The grid is a flattened array where every worldSize elements represent a row
         val probabilities = Array(worldSize * worldSize, { 1.0 })
         for (i in 0 until numPlanets) {
@@ -55,10 +55,10 @@ class Galaxy(numPlanets: Int) {
             //Update probabilities
             for (j in 0 until probabilities.size) {
                 //j / worldSize - j % worldSize is a conversion from the flattened list to a square grid coordinate system where
-                //j / worldSize is row and j & worldSize is column
+                //j / worldSize is row and j % worldSize is column
                 //We add a scalar factor based on the Manhattan distance between each tile and the new planet to its probability
                 //If the tile in question is already a planet, do nothing
-                probabilities[j] = if (probabilities[j] != 0.0) probabilities[j] + Math.abs(j / worldSize - chosenLocation / worldSize) + Math.abs(j % worldSize  - chosenLocation % worldSize) else 0.0
+                probabilities[j] = if (probabilities[j] != 0.0) probabilities[j] + Math.pow((Math.abs(j / worldSize - chosenLocation / worldSize) + Math.abs(j % worldSize  - chosenLocation % worldSize)).toDouble(), 1.0) else 0.0
             }
         }
         //When we're finished, every coordinate with a zero probability is market for becoming a planet
@@ -67,8 +67,42 @@ class Galaxy(numPlanets: Int) {
         (0 until probabilities.size)
                 .filter { probabilities[it] == 0.0 }
                 .mapTo(planets) { Planet((it / worldSize).toDouble() / worldSize + 0.5 / worldSize, (it % worldSize).toDouble() / worldSize + 0.5 / worldSize, ((0.15 + Math.random() * 0.35) / worldSize).toFloat()) }
-        //TODO: temporary; makes highways for each planet to a random other planet
-        this.planets.mapTo(highways) { CosmicHighway(it, planets.shuffled().first()) }
+        /**
+         * Edge generation:
+         * Goes through each planet in a random order and creates cosmic highways (connections) between planets within .2 of world size distance
+         * Doesn't create highways that cross other highways TODO: Doesn't work quite perfectly
+         */
+        for(p0 in planets.shuffled()) {
+            for(p1 in planets) {
+                //If the distance between the two planets is less than .2, proceed with the operation
+                if(Math.sqrt(Math.pow((p0.x - p1.x).toDouble(), 2.0) + Math.pow((p0.y - p1.y).toDouble(), 2.0)) < 0.20) {
+                    var isIntersecting = false
+                    //Check for an intersection between all existing highways
+                    for(i in highways) {
+                        if(doSegmentsIntersect(p0.x, p0.y, p1.x - p0.x, p1.y - p0.y, i.p0.x, i.p0.y, i.p1.x - i.p0.x, i.p1.y - i.p0.y)) {
+                            isIntersecting = true
+                            break
+                        }
+                    }
+                    //If there is no intersection, create a highway between the two planets
+                    if(!isIntersecting) {
+                        highways.add(CosmicHighway(p0, p1))
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns whether or not two line segments intersect
+     * For use in edge generation to ensure that edges do not intersect each other
+     * Works by finding the intersection point of the two segments extented into lines
+     * then checking if the solution point is a part of both segment boundaries
+     */
+    private fun doSegmentsIntersect(x1: Double, y1: Double, dx1: Double, dy1: Double, x2: Double, y2: Double, dx2: Double, dy2: Double): Boolean {
+        val xSoln = ((-1 * (dy2 / dx2) * x2 + y2) - (-1 * (dy1 / dx1) * x1 + y1)) / (dy1 / dx1 - dy2 / dx2)
+        val ySoln = ((-(dy1 / dx1) * x1 + y1) - ((dy1 / dx1) / (dy2 / dx2)) * (-(dy2 / dx2) * x2 + y2)) / (1 - ((dy1 / dx1) / (dy2 / dx2)))
+        return (xSoln - x1) * (xSoln - (x1 + dx1)) < 0 && (xSoln - x2) * (xSoln - (x2 + dx2)) < 0 && (ySoln - y1) * (ySoln - (y1 + dy1)) < 0 && (ySoln - y2) * (ySoln - (y2 + dy2)) < 0
     }
 
 }
