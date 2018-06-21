@@ -8,10 +8,11 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
-//import com.badlogic.gdx.
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import ktx.app.KtxScreen
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -20,8 +21,10 @@ import kotlin.math.sqrt
  */
 class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
-    //Adjusting this will start the game zoomed in. Avoid if possible
-    val scaleFactor = 1
+    //The smallest (closest) zoom factor allowed
+    val minZoom = 0.1f
+    //The highest (furthest) zoom factor allowed
+    val maxZoom = 1f
     //Temporary place to store music
     val music = Gdx.audio.newMusic(Gdx.files.internal("music/the intergalactic.mp3"))
 
@@ -56,7 +59,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         //Render highways as white lines
         game.shapeRenderer.color = Color.WHITE
         for (highway in galaxy.highways) {
-            game.shapeRenderer.line(highway.p0.x.toFloat() * game.camera.viewportWidth * scaleFactor, highway.p0.y.toFloat() * game.camera.viewportHeight * scaleFactor, highway.p1.x.toFloat() * game.camera.viewportWidth * scaleFactor, highway.p1.y.toFloat() * game.camera.viewportHeight * scaleFactor)
+            game.shapeRenderer.line(highway.p0.x.toFloat() * game.camera.viewportWidth, highway.p0.y.toFloat() * game.camera.viewportHeight, highway.p1.x.toFloat() * game.camera.viewportWidth, highway.p1.y.toFloat() * game.camera.viewportHeight)
         }
         game.shapeRenderer.end()
 
@@ -65,7 +68,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in galaxy.planets) {
             game.shapeRenderer.color = planet.color
-            game.shapeRenderer.circle((planet.x * game.camera.viewportWidth * scaleFactor).toFloat(), (planet.y * game.camera.viewportHeight * scaleFactor).toFloat(), 10 * planet.radius * sqrt((game.camera.viewportWidth * scaleFactor).pow(2) + (game.camera.viewportHeight * scaleFactor).pow(2)))
+            game.shapeRenderer.circle((planet.x * game.camera.viewportWidth).toFloat(), (planet.y * game.camera.viewportHeight).toFloat(), 10 * planet.radius * sqrt(game.camera.viewportWidth.pow(2) + game.camera.viewportHeight.pow(2)))
         }
         game.shapeRenderer.end()
     }
@@ -79,10 +82,17 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
     }
 
     /**
+     * Sets the zoom of the camera and ensures that the new zoom is clamped between acceptable values
+     */
+    private fun setZoomClamped(newZoom: Float) {
+        this.game.camera.zoom = max(this.minZoom, min(this.maxZoom, newZoom))
+    }
+
+    /**
      * Zooming moves the camera closer in or further out
      */
     override fun zoom(initialDistance: Float, distance: Float): Boolean {
-        this.game.camera.zoom = distance / initialDistance
+        this.setZoomClamped(distance / initialDistance)
         return true
     }
 
@@ -90,19 +100,12 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
      * Zooms with mouse scroll
      */
     override fun scrolled(amount: Int): Boolean {
-        this.game.camera.zoom += amount * 0.1f
-        val minZoom = 0.1f
-        val maxZoom = 1f
-        if (this.game.camera.zoom < minZoom) {
-            this.game.camera.zoom = minZoom
-        } else if (this.game.camera.zoom > maxZoom) {
-            this.game.camera.zoom = maxZoom
-        }
+        this.setZoomClamped(this.game.camera.zoom + amount * 0.1f)
         return true
     }
 
     //GestureListener abstract method implementations:
-    //Called when a finger is dragged and lifter
+    //Called when a finger is dragged and lifted
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean = false
     //Called when a finger is held down for some time
     override fun longPress(x: Float, y: Float): Boolean = false
