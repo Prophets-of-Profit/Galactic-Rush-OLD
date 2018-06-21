@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
+//import com.badlogic.gdx.
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import ktx.app.KtxScreen
@@ -21,6 +22,8 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
 
     //Adjusting this will start the game zoomed in. Avoid if possible
     val scaleFactor = 1
+    //Temporary place to store music
+    val music = Gdx.audio.newMusic(Gdx.files.internal("music/the intergalactic.mp3"))
 
     /**
      * Initializes the camera for the screen
@@ -31,6 +34,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         multiplexer.addProcessor(this)
         game.camera.setToOrtho(false, 1600f, 900f)
         Gdx.input.inputProcessor = multiplexer
+        music.play()
     }
 
     /**
