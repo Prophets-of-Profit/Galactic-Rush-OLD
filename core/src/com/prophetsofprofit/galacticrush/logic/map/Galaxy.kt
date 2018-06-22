@@ -78,9 +78,10 @@ class Galaxy(numPlanets: Int) {
          * Doesn't create highways that cross other highways TODO: Doesn't work quite perfectly
          */
         for (p0 in planets.shuffled()) {
+            var highwayChance = 1f
             for (p1 in planets) {
                 //If the distance between the two planets is greater than .2, go to next planet
-                if (sqrt((p0.x - p1.x).pow(2) + (p0.y - p1.y).pow(2)) >= 0.2) {
+                if (sqrt((p0.x - p1.x).pow(2) + (p0.y - p1.y).pow(2)) >= 0.2 || Math.random() > highwayChance) {
                     continue
                 }
                 //If the current planets can have a path that doesn't intersect an existing highway, make a highway
@@ -88,6 +89,7 @@ class Galaxy(numPlanets: Int) {
                         && !planets.filter { it != p0 && it != p1 }.any {Intersector.distanceSegmentPoint(p0.x, p0.y, p1.x, p1.y, it.x, it.y) <= it.radius}
                         ) {
                     highways.add(CosmicHighway(p0, p1))
+                    highwayChance *= 0.5f
                 }
             }
         }
