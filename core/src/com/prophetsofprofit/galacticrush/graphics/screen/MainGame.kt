@@ -18,6 +18,7 @@ import kotlin.math.sqrt
 
 /**
  * The screen where all the playing will be done
+ * TODO: make a loading screen to construct a galaxy
  */
 class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
@@ -26,7 +27,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
     //The highest (furthest) zoom factor allowed
     val maxZoom = 1f
     //Temporary place to store music
-    val music = Gdx.audio.newMusic(Gdx.files.internal("music/the intergalactic.mp3"))
+    val music = Gdx.audio.newMusic(Gdx.files.internal("music/TheIntergalactic.mp3"))
 
     /**
      * Initializes the camera for the screen
@@ -37,6 +38,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
         multiplexer.addProcessor(this)
         game.camera.setToOrtho(false, 1600f, 900f)
         Gdx.input.inputProcessor = multiplexer
+        music.isLooping = true
         music.play()
     }
 
@@ -92,7 +94,7 @@ class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, Ges
      * Zooming moves the camera closer in or further out
      */
     override fun zoom(initialDistance: Float, distance: Float): Boolean {
-        this.setZoomClamped(distance / initialDistance)
+        this.setZoomClamped(initialDistance / distance)
         return true
     }
 

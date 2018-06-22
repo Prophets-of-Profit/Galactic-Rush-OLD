@@ -15,7 +15,7 @@ import kotlin.math.min
 class Splash(val game: Main): KtxScreen {
 
     //How long to wait before going to MainMenu
-    val maxWait = 5f
+    val minWait = 5f
     //How long the user has waited
     var currentWait = 0f
     //The sound that will play on opening
@@ -25,9 +25,12 @@ class Splash(val game: Main): KtxScreen {
 
     //Initializes all assets
     init {
-        this.sound.play()
         this.game.batch.projectionMatrix = this.game.camera.combined
+        //TODO: display text over/around the capital man that says 'Prophets of Profit'
         this.logo.setCenter(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 2)
+        this.logo.scale(2f)
+        //TODO: sound doesn't play on Android for some reason
+        this.sound.play()
     }
 
     /**
@@ -38,10 +41,10 @@ class Splash(val game: Main): KtxScreen {
      */
     override fun render(delta: Float) {
         this.currentWait += delta
-        if (this.currentWait >= this.maxWait) {
+        if (this.currentWait >= this.minWait) {
             this.game.screen = MainMenu(this.game)
         }
-        this.logo.setAlpha(min(1f, 2 * this.currentWait / this.maxWait))
+        this.logo.setAlpha(min(1f, 2 * this.currentWait / this.minWait))
         this.game.batch.use {
             this.logo.draw(it)
         }
