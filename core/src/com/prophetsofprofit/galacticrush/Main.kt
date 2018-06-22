@@ -27,6 +27,7 @@ class Main : Game() {
         this.textDrawer = BitmapFont()
         this.shapeRenderer = ShapeRenderer()
         this.camera = OrthographicCamera()
+        this.camera.setToOrtho(false, 1600f, 900f)
         this.screen = Splash(this)
     }
 

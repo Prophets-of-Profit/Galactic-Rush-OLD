@@ -34,6 +34,7 @@ class Splash(val game: Main): KtxScreen {
      * Draws the splash screen
      * Updates how long the user has waited, and will move to menu screen once user has waited long enough
      * Renders the prophets of profits logo with increasing visibility with maximum visibility after the screen has appeared for half of its duration
+     * TODO: does anyone else see a small capital man in the bottom left corner when they make the window take up the whole screen
      */
     override fun render(delta: Float) {
         this.currentWait += delta

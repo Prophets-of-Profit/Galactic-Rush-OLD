@@ -11,6 +11,10 @@ import ktx.app.use
  */
 class MainMenu(val game: Main) : KtxScreen {
 
+    init {
+        this.game.batch.projectionMatrix = this.game.camera.combined
+    }
+
     /**
      * The periodic update/draw method
      * Passes in the amount of time since last render
