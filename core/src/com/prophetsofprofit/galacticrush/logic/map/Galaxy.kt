@@ -85,9 +85,12 @@ class Galaxy(numPlanets: Int) {
                     continue
                 }
                 //If the current planets can have a path that doesn't intersect an existing highway, or already is an existing highway, or intersect a planet, make a highway
-                if (!highways.any { doSegmentsIntersect(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) || (it.p0 == p0 && it.p1 == p1) || (it.p0 == p1 && it.p1 == p0)}
-                        && !planets.filter { it != p0 && it != p1 }.any {Intersector.distanceSegmentPoint(p0.x, p0.y, p1.x, p1.y, it.x, it.y) <= it.radius}
-                        ) {
+                if (!highways.any {
+                            doSegmentsIntersect(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) || //Highways crosses existing highway
+                            (it.p0 == p0 && it.p1 == p1) || (it.p0 == p1 && it.p1 == p0) //Highway already exists but with p0 and p1 switched around
+                        } && !planets.filter { it != p0 && it != p1 }.any {
+                            Intersector.distanceSegmentPoint(p0.x, p0.y, p1.x, p1.y, it.x, it.y) <= it.radius //Highway doesn't intersect planet
+                        }) {
                     highways.add(CosmicHighway(p0, p1))
                     highwayChance *= 0.5f
                 }

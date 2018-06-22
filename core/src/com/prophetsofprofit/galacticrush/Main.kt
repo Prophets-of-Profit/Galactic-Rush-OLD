@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.prophetsofprofit.galacticrush.graphics.screen.MainMenu
+import com.prophetsofprofit.galacticrush.graphics.screen.Splash
 
 /**
  * GALACTIC RUSH
@@ -27,7 +27,7 @@ class Main : Game() {
         this.textDrawer = BitmapFont()
         this.shapeRenderer = ShapeRenderer()
         this.camera = OrthographicCamera()
-        this.screen = MainMenu(this)
+        this.screen = Splash(this)
     }
 
 }
