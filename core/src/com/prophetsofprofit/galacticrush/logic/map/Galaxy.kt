@@ -84,8 +84,8 @@ class Galaxy(numPlanets: Int) {
                 if (sqrt((p0.x - p1.x).pow(2) + (p0.y - p1.y).pow(2)) >= 0.2 || Math.random() > highwayChance) {
                     continue
                 }
-                //If the current planets can have a path that doesn't intersect an existing highway, make a highway
-                if (!highways.any { doSegmentsIntersect(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) }
+                //If the current planets can have a path that doesn't intersect an existing highway, or already is an existing highway, or intersect a planet, make a highway
+                if (!highways.any { doSegmentsIntersect(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) || (it.p0 == p0 && it.p1 == p1) || (it.p0 == p1 && it.p1 == p0)}
                         && !planets.filter { it != p0 && it != p1 }.any {Intersector.distanceSegmentPoint(p0.x, p0.y, p1.x, p1.y, it.x, it.y) <= it.radius}
                         ) {
                     highways.add(CosmicHighway(p0, p1))
