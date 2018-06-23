@@ -92,7 +92,7 @@ class Galaxy(numPlanets: Int) {
                             Intersector.distanceSegmentPoint(p0.x, p0.y, p1.x, p1.y, it.x, it.y) <= it.radius //Highway doesn't intersect planet
                         }) {
                     highways.add(CosmicHighway(p0, p1))
-                    highwayChance *= 0.5f
+                    highwayChance *= f
                 }
             }
         }
