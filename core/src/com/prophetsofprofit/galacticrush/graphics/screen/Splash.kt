@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.prophetsofprofit.galacticrush.Main
@@ -26,27 +27,35 @@ class Splash(val game: Main): KtxScreen {
     //Initializes all assets
     init {
         this.game.batch.projectionMatrix = this.game.camera.combined
-        //TODO: display text over/around the capital man that says 'Prophets of Profit'
         this.logo.setCenter(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 2)
         this.logo.scale(2f)
         //TODO: sound doesn't play on Android for some reason
         this.sound.play()
+        this.game.textDrawer.setFixedWidthGlyphs("Prophetsfi ")
     }
 
     /**
      * Draws the splash screen
      * Updates how long the user has waited, and will move to menu screen once user has waited long enough
      * Renders the prophets of profits logo with increasing visibility with maximum visibility after the screen has appeared for half of its duration
-     * TODO: does anyone else see a small capital man in the bottom left corner when they make the window take up the whole screen
      */
     override fun render(delta: Float) {
+        //Color background in black
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        //Update wait time or go to next screen if wait is enough
         this.currentWait += delta
         if (this.currentWait >= this.minWait) {
             this.game.screen = MainMenu(this.game)
         }
+        //Update sprite alpha and draw sprite and text
         this.logo.setAlpha(min(1f, 2 * this.currentWait / this.minWait))
         this.game.batch.use {
             this.logo.draw(it)
+            this.game.textDrawer.draw(it,
+                    "Prophets\nof\nProfit",
+                    this.game.camera.viewportWidth / 2 - this.game.textDrawer.spaceWidth * 8,
+                    this.logo.y + this.logo.height * this.logo.scaleY + this.game.textDrawer.lineHeight * 3)
         }
     }
 
