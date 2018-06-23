@@ -20,7 +20,7 @@ import kotlin.math.sqrt
  * The screen where all the playing will be done
  * TODO: make a loading screen to construct a galaxy
  */
-class MainGame(val game: Main, val galaxy: Galaxy = Galaxy(100)): KtxScreen, GestureDetector.GestureListener, InputProcessor {
+class MainGame(val game: Main, val galaxy: Galaxy): KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
     //The smallest (closest) zoom factor allowed
     val minZoom = 0.1f
