@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.Player
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import ktx.app.KtxScreen
 import ktx.app.use
@@ -23,14 +25,14 @@ class GalaxyLoadingScreen(val game: Main): KtxScreen {
     //A list of all the frames
     val frames = Array(28) { Texture("animations/loading/LoadingScreen$it.png" ) }
     //The world being initiated
-    var world: Galaxy? = null
+    var mainGame: Game? = null
 
     /**
      * Starts initializing the galaxy and sets the screen coordinate system with the camera
      */
     init {
         Thread {
-            world = Galaxy(100)
+            mainGame = Game(Galaxy(100), Array(0, { Player() }))
         }.start()
         this.game.camera.setToOrtho(false, 1600f, 900f)
         this.game.batch.projectionMatrix = this.game.camera.combined
@@ -45,8 +47,8 @@ class GalaxyLoadingScreen(val game: Main): KtxScreen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         //Checks if the world is done loading and changes screen once the world is ready
-        if (world != null) {
-            this.game.screen = MainGameScreen(this.game, world!!)
+        if (mainGame != null) {
+            this.game.screen = MainGameScreen(this.game, mainGame!!)
         }
         //Updates the time waited and updates the image used in the loading screen for the animation
         this.timeSpent += delta

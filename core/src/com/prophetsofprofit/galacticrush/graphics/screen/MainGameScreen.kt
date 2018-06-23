@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 import com.prophetsofprofit.galacticrush.Main
-import com.prophetsofprofit.galacticrush.logic.map.Galaxy
+import com.prophetsofprofit.galacticrush.logic.Game
 import ktx.app.KtxScreen
 import kotlin.math.max
 import kotlin.math.min
@@ -19,7 +19,7 @@ import kotlin.math.sqrt
 /**
  * The screen where all the playing will be done
  */
-class MainGameScreen(val game: Main, val galaxy: Galaxy): KtxScreen, GestureDetector.GestureListener, InputProcessor {
+class MainGameScreen(val game: Main, val mainGame: Game): KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
     //The smallest (closest) zoom factor allowed
     val minZoom = 0.1f
@@ -56,22 +56,22 @@ class MainGameScreen(val game: Main, val galaxy: Galaxy): KtxScreen, GestureDete
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         //Begins rendering the objects on the screen
-        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
+        this.game.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         //Render highways as white lines
-        game.shapeRenderer.color = Color.WHITE
-        for (highway in galaxy.highways) {
-            game.shapeRenderer.line(highway.p0.x * game.camera.viewportWidth, highway.p0.y * game.camera.viewportHeight, highway.p1.x * game.camera.viewportWidth, highway.p1.y * game.camera.viewportHeight)
+        this.game.shapeRenderer.color = Color.WHITE
+        for (highway in this.mainGame.galaxy.highways) {
+            this.game.shapeRenderer.line(highway.p0.x * this.game.camera.viewportWidth, highway.p0.y * this.game.camera.viewportHeight, highway.p1.x * this.game.camera.viewportWidth, highway.p1.y * this.game.camera.viewportHeight)
         }
-        game.shapeRenderer.end()
+        this.game.shapeRenderer.end()
 
         //Render planets as colored circles
         //TODO: add textures for planets
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        for (planet in galaxy.planets) {
-            game.shapeRenderer.color = planet.color
-            game.shapeRenderer.circle(planet.x * game.camera.viewportWidth, planet.y * game.camera.viewportHeight, 10 * planet.radius * sqrt(game.camera.viewportWidth.pow(2) + game.camera.viewportHeight.pow(2)))
+        for (planet in this.mainGame.galaxy.planets) {
+            this.game.shapeRenderer.color = planet.color
+            this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 10 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
         }
-        game.shapeRenderer.end()
+        this.game.shapeRenderer.end()
     }
 
     /**
