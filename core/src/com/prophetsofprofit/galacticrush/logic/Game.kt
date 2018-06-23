@@ -12,4 +12,11 @@ class Game(val galaxy: Galaxy, val players: Array<Player>): Serializable {
     //The amount of turns that have passed since the game was created
     var turnsPlayed = 0
 
+    /**
+     * A method that collects changes, verifies their integrity, and then applies them to the game
+     */
+    fun collectChange(change: Change) {
+        //TODO: make
+    }
+
 }
