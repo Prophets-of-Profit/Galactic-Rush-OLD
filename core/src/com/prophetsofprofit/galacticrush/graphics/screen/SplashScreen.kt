@@ -13,9 +13,9 @@ import kotlin.math.min
  * The screen that first shows up that shows the user who made this game (the Prolific Prophets of Profit)
  * Displays for a short time and plays a quick jingle before procceding to the main menu 
  */
-class Splash(val game: Main): KtxScreen {
+class SplashScreen(val game: Main): KtxScreen {
 
-    //How long to wait before going to MainMenu
+    //How long to wait before going to MainMenuScreen
     val minWait = 5f
     //How long the user has waited
     var currentWait = 0f
@@ -24,7 +24,9 @@ class Splash(val game: Main): KtxScreen {
     //The prophets of profit logo
     val logo = Sprite(Texture("meta/CapitalMan.png"))
 
-    //Initializes all assets
+    /**
+     * Initializes splash assets
+     */
     init {
         this.game.batch.projectionMatrix = this.game.camera.combined
         this.logo.setCenter(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 2)
@@ -46,7 +48,7 @@ class Splash(val game: Main): KtxScreen {
         //Update wait time or go to next screen if wait is enough
         this.currentWait += delta
         if (this.currentWait >= this.minWait) {
-            this.game.screen = MainMenu(this.game)
+            this.game.screen = MainMenuScreen(this.game)
         }
         //Update sprite alpha and draw sprite and text
         this.logo.setAlpha(min(1f, 2 * this.currentWait / this.minWait))
@@ -54,7 +56,7 @@ class Splash(val game: Main): KtxScreen {
             this.logo.draw(it)
             this.game.textDrawer.draw(it,
                     "Prophets\nof\nProfit",
-                    this.game.camera.viewportWidth / 2 - this.game.textDrawer.spaceWidth * 8,
+                    this.game.camera.viewportWidth / 2 - this.game.textDrawer.spaceWidth * 24,
                     this.logo.y + this.logo.height * this.logo.scaleY + this.game.textDrawer.lineHeight * 3)
         }
     }

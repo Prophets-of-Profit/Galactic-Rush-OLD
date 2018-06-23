@@ -9,7 +9,7 @@ import ktx.app.use
 /**
  * The screen that handles all main menu actions and display and layout and such
  */
-class MainMenu(val game: Main) : KtxScreen {
+class MainMenuScreen(val game: Main) : KtxScreen {
 
     init {
         this.game.batch.projectionMatrix = this.game.camera.combined
@@ -26,7 +26,7 @@ class MainMenu(val game: Main) : KtxScreen {
             this.game.textDrawer.draw(this.game.batch, "Do you approve of this architecture?", 100f, 100f)
         }
         if (Gdx.input.isTouched) {
-            game.screen = LoadingScreen(game)
+            game.screen = GalaxyLoadingScreen(game)
         }
     }
 
