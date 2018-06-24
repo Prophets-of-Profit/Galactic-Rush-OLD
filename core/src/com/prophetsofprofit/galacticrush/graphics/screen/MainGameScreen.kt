@@ -26,7 +26,7 @@ class MainGameScreen(val game: Main, val mainGame: Game): KtxScreen, GestureDete
     //The highest (furthest) zoom factor allowed
     val maxZoom = 1f
     //Temporary place to store music
-    val music = Gdx.audio.newMusic(Gdx.files.internal("music/TheIntergalactic.mp3"))
+    val music = Gdx.audio.newMusic(Gdx.files.internal("music/Echoes.mp3"))
 
     /**
      * Initializes the camera for the screen
@@ -37,7 +37,6 @@ class MainGameScreen(val game: Main, val mainGame: Game): KtxScreen, GestureDete
         multiplexer.addProcessor(this)
         game.camera.setToOrtho(false, 1600f, 900f)
         Gdx.input.inputProcessor = multiplexer
-        music.isLooping = true
         music.play()
     }
 

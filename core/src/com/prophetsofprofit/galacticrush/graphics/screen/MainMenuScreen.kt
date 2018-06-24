@@ -11,8 +11,13 @@ import ktx.app.use
  */
 class MainMenuScreen(val game: Main) : KtxScreen {
 
+    //Music to play in the main menu
+    val music = Gdx.audio.newMusic(Gdx.files.internal("music/TheIntergalactic.mp3"))
+
     init {
         this.game.batch.projectionMatrix = this.game.camera.combined
+        music.isLooping = true
+        music.play()
     }
 
     /**
@@ -26,6 +31,7 @@ class MainMenuScreen(val game: Main) : KtxScreen {
             this.game.textDrawer.draw(this.game.batch, "Do you approve of this architecture?", 100f, 100f)
         }
         if (Gdx.input.isTouched) {
+            music.stop()
             game.screen = GalaxyLoadingScreen(game)
         }
     }
