@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.logic;
 
 import com.prophetsofprofit.galacticrush.logic.instructions.Instruction
 import com.prophetsofprofit.galacticrush.logic.map.Planet
+import java.util.*
 
 /**
  * A class that represent's a player's drone
@@ -10,6 +11,8 @@ import com.prophetsofprofit.galacticrush.logic.map.Planet
  */
 class Drone(val ownerId: Int) {
 
+    //When the drone was initialized: the game assumes that this is unique for each drone which is kinda hacky
+    val creationTime = Date()
     //What the drone will do
     val instructions: MutableList<Instruction> = mutableListOf()
     //Where the drone is TODO: get starting location based on owner id

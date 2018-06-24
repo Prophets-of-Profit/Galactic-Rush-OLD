@@ -37,7 +37,7 @@ class MainMenuScreen(val game: Main) : KtxScreen {
         }
         if (Gdx.input.isTouched) {
             music.stop()
-            game.screen = GalaxyLoadingScreen(game)
+            game.screen = GameLoadingScreen(game)
         }
     }
 

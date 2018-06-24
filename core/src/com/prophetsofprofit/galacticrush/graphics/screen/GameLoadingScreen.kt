@@ -15,7 +15,7 @@ import ktx.app.use
  * The screen that handles loading the galaxy and displaying a fancy animation to show that the program isn't broken
  * TODO: Make this universally applicable, and not just load the galaxy
  */
-class GalaxyLoadingScreen(val game: Main): KtxScreen {
+class GameLoadingScreen(val game: Main): KtxScreen {
 
     //Measures time spent loading
     var timeSpent = 0f
@@ -33,7 +33,7 @@ class GalaxyLoadingScreen(val game: Main): KtxScreen {
      */
     init {
         Thread {
-            mainGame = Game(Galaxy(100), Array(0, { LocalPlayer(0) }))
+            mainGame = Game(Array(0) { LocalPlayer(0) }, 100)
         }.start()
         this.game.camera.setToOrtho(false, 1600f, 900f)
         this.game.batch.projectionMatrix = this.game.camera.combined
