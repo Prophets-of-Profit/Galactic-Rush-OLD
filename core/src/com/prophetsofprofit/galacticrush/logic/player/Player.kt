@@ -1,4 +1,6 @@
-package com.prophetsofprofit.galacticrush.logic
+package com.prophetsofprofit.galacticrush.logic.player
+
+import com.prophetsofprofit.galacticrush.logic.Change
 
 /**
  * The game's player

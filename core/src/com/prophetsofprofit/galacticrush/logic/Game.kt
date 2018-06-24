@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic
 
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
+import com.prophetsofprofit.galacticrush.logic.player.Player
 import java.io.Serializable
 
 /**

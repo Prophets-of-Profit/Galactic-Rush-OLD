@@ -5,8 +5,9 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.logic.Game
-import com.prophetsofprofit.galacticrush.logic.Player
+import com.prophetsofprofit.galacticrush.logic.player.Player
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
+import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import ktx.app.KtxScreen
 import ktx.app.use
 
@@ -32,7 +33,7 @@ class GalaxyLoadingScreen(val game: Main): KtxScreen {
      */
     init {
         Thread {
-            mainGame = Game(Galaxy(100), Array(0, { Player() }))
+            mainGame = Game(Galaxy(100), Array(0, { LocalPlayer() }))
         }.start()
         this.game.camera.setToOrtho(false, 1600f, 900f)
         this.game.batch.projectionMatrix = this.game.camera.combined
