@@ -11,13 +11,46 @@ import com.prophetsofprofit.galacticrush.logic.map.Planet
 class Drone(val ownerId: Int) {
 
     //What the drone will do
-    val instructions: Array<Instruction> = arrayOf()
+    val instructions: MutableList<Instruction> = mutableListOf()
     //Where the drone is TODO: get starting location based on owner id
     var location: Planet = Planet(-1.0f, -1.0f, -1.0f)
-    //How much health the drone has: right now is hardcoded as 100, but if we want, we can make drone health customizable later
-    var currentHealth = 100
-    var maxHealth = 100
-    //How quickly the drone travels along a cosmic highway in percentage; currently 0.25 by default (takes 4 moves to travel across highway)
-    var warpSpeed = 0.25
+    //An arbitrary measure of how many instructions a drone can hold;
+    //Each instruction has a certain memory use, and the total cannot exceed this value
+    val maxMemory = 10
+    //How much memory the drone has available
+    val memoryAvailable: Int
+        get() {
+            return this.maxMemory - this.instructions.sumBy { it.memory }
+        }
 
+    //The following methods interface with the drone's instruction structure
+
+    /**
+     * Adds an instruction to the end of the drone's task list
+     */
+    fun add(instruction: Instruction): Boolean {
+        if(this.memoryAvailable < instruction.memory) return false
+        this.instructions.add(instruction)
+        return true
+    }
+
+    /**
+     * Swaps the positions of two instructions in the drone's task list
+     */
+    fun swap(index1: Int, index2: Int): Boolean {
+        if(index1 >= this.instructions.size || index2 >= this.instructions.size) return false
+        val placeholder = this.instructions[index1]
+        this.instructions[index1] = this.instructions[index2]
+        this.instructions[index2] = placeholder
+        return true
+    }
+
+    /**
+     * Pops the last instruction of the drone's task list, freeing memory
+     */
+    fun pop(): Boolean {
+        if(this.instructions.size == 0) return false
+        this.instructions.removeAt(this.instructions.size - 1)
+        return true
+    }
 }

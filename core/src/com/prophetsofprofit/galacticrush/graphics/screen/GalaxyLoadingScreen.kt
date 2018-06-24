@@ -33,7 +33,7 @@ class GalaxyLoadingScreen(val game: Main): KtxScreen {
      */
     init {
         Thread {
-            mainGame = Game(Galaxy(100), Array(0, { LocalPlayer() }))
+            mainGame = Game(Galaxy(100), Array(0, { LocalPlayer(0) }))
         }.start()
         this.game.camera.setToOrtho(false, 1600f, 900f)
         this.game.batch.projectionMatrix = this.game.camera.combined
