@@ -2,8 +2,7 @@ package com.prophetsofprofit.galacticrush.logic.map
 
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Vector2
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * A class that is basically the map that the game is played on
@@ -19,6 +18,115 @@ class Galaxy(numPlanets: Int) {
 
     /**
      * Galaxy constructor generates all the planets and terrain and values and such
+     * Can make use of one of several implemented construction methods
+     */
+    init {
+        distanceConstructor(numPlanets)
+    }
+
+    /**
+     * Builds the galaxy by branching off planets from others that already exist
+     * but have not yet been branched at a random distance and angle away
+     */
+    private fun randomBranchConstructor(numPlanets: Int) {
+        //Begin with one starting planet
+        var planetsCreated = 1
+        //Shows the extreme values of planet locations; Order: max x, min x, max y, min y
+        val extrema = Array<Float>(4, { 0f })
+        //Begin with one starting planet
+        planets.add(Planet(0f, 0f, (0.015 + Math.random() * 0.035).toFloat() / numPlanets))
+        //A temporary list of planets which contains all planets from which no branches have already been generated
+        val tempPlanets = mutableListOf<Planet>()
+        tempPlanets.add(planets[0])
+        //Until there exist the desired number of planets,
+        while (planetsCreated < numPlanets) {
+            //Choose a random planet from which to branch
+            val originPlanet = tempPlanets.shuffled().first()
+            //Get the number of iterations from a random generation (between two and four)
+            var i = (Math.random() * 3).toInt() + 1
+            while (i > 0) {
+                //Creates a planet at a random distance and angle from the origin
+                val angle = PI * 2 * Math.random()
+                val distance = 0.1 + 0.5 * Math.random()
+                val planet = Planet((originPlanet.x + distance * cos(angle)).toFloat(), (originPlanet.y + distance * sin(angle)).toFloat(), (0.015 + Math.random() * 0.035).toFloat() / numPlanets)
+                //Check if a highway about to be created intersects any others
+                if(!highways.any {
+                            doSegmentsIntersect(planet.x, planet.y, originPlanet.x, originPlanet.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) || //Highways crosses existing highway
+                                    (it.p0 == planet && it.p1 == originPlanet) || (it.p0 == originPlanet && it.p1 == planet) //Highway already exists but with p0 and p1 switched around
+                        }) {
+                    //If there are no intersections, add a planet and a highway
+                    highways.add(CosmicHighway(originPlanet, planet))
+                    planets.add(planet)
+                    tempPlanets.add(planet)
+                    planetsCreated++
+                    //Update extrema if necessary
+                    if (planet.x > extrema[0]) extrema[0] = planet.x
+                    if (planet.x < extrema[1]) extrema[1] = planet.x
+                    if (planet.y > extrema[2]) extrema[2] = planet.y
+                    if (planet.y < extrema[3]) extrema[3] = planet.y
+                    i--
+                }
+            }
+            //Remove the origin planet from the temp planets so that it will not be chosen again to be branched
+            tempPlanets.remove(originPlanet)
+        }
+        //Bind planets to be in coordinates such that they are between 0 and 1
+        for (planet in planets) {
+            planet.x -= extrema[1]
+            planet.y -= extrema[3]
+            planet.x /= (extrema[0] - extrema[1])
+            planet.y /= (extrema[2] - extrema[3])
+        }
+    }
+
+    /**
+     * Constructs the galaxy recursively by starting at a single point
+     * From that point it branches off to a random number of other planets
+     * which themselves branch off until there are numPlanets planets
+     */
+    private fun recursiveConstructor(numPlanets: Int) {
+        //Runs until this reaches zero; is an array in order to pass by reference
+        val numPlanetsRemaining = Array<Int>(1, { numPlanets })
+        //Shows the extreme values of planet locations; Order: max x, min x, max y, min y
+        val extrema = Array<Float>(4, { 0f })
+        //Define the function for recursively adding planets
+        fun addPlanet(originPlanet: Planet, planetsToBeCreated: Array<Int>, extrema: Array<Float>, numPlanets: Int) {
+            for (i in 0..(Math.random() * 5).toInt() + 3) { //Makes a random number of branches
+                //If there are no more planets to be made, don't run the iteration
+                if (planetsToBeCreated[0] <= 0) {
+                    return
+                }
+                //Generate random angle between 0 and 2 * PI
+                val angle = PI * 2 * Math.random()
+                //Generate a random distance; numbers generated are arbitrary and will be modified to fit screen afterward
+                val distance = 0.25 + 0.5 * Math.random()
+                //Creates a new planet the generated distance away at the angle, creates a highway between it and origin planet, and adds it to the planet list
+                val planet = Planet((originPlanet.x + distance * cos(angle)).toFloat(), (originPlanet.y + distance * sin(angle)).toFloat(), (0.015 + Math.random() * 0.035).toFloat() / numPlanets)
+                highways.add(CosmicHighway(originPlanet, planet))
+                planets.add(planet)
+                //Updates the extrema if relevant
+                if (planet.x > extrema[0]) extrema[0] = planet.x
+                if (planet.x < extrema[1]) extrema[1] = planet.x
+                if (planet.y > extrema[2]) extrema[2] = planet.y
+                if (planet.y < extrema[3]) extrema[3] = planet.y
+                //One less planet to be created
+                planetsToBeCreated[0] -= 1
+                //Run the function again from the created planet
+                addPlanet(planet, planetsToBeCreated, extrema, numPlanets)
+            }
+        }
+        //Begin the recursive function with a generic planet
+        addPlanet(Planet(0f, 0f, (0.015 + Math.random() * 0.035).toFloat() / numPlanets), numPlanetsRemaining, extrema, numPlanets)
+        //Modifies all the planets' locations such that they will have coordinates between 0 and 1
+        for (planet in planets) {
+            planet.x -= extrema[1]
+            planet.y -= extrema[3]
+            planet.x /= (extrema[0] - extrema[1])
+            planet.y /= (extrema[2] - extrema[3])
+        }
+    }
+
+    /**
      * The algorithm attempts to maximize the spread of the planets probabilistically:
      *  We start with equal probability for any setting in space
      *  For a certain number of cycles, a planet is generated based on the probability of each tile being chosen
@@ -27,7 +135,7 @@ class Galaxy(numPlanets: Int) {
      *  the planet every step
      * While this isn't a world, a good term for this would be 'worldgen'
      */
-    init {
+    private fun distanceConstructor(numPlanets: Int) {
         /*
         * The planets are generated by choosing from a finite set of locations arranged in a square grid
         * The side length of that square is worldSize
