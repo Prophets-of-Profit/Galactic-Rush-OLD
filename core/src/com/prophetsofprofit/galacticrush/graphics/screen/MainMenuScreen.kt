@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.Main
 import ktx.app.KtxScreen
 import ktx.app.use
@@ -13,6 +14,8 @@ class MainMenuScreen(val game: Main) : KtxScreen {
 
     //Music to play in the main menu
     val music = Gdx.audio.newMusic(Gdx.files.internal("music/TheIntergalactic.mp3"))
+    val backgroundTexture = Texture("meta/Background.png")
+    val titleTexture = Texture("meta/Title.png")
 
     init {
         this.game.batch.projectionMatrix = this.game.camera.combined
@@ -28,7 +31,9 @@ class MainMenuScreen(val game: Main) : KtxScreen {
         Gdx.gl.glClearColor(0f, 1f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         this.game.batch.use {
-            this.game.textDrawer.draw(this.game.batch, "Do you approve of this architecture?", 100f, 100f)
+            it.draw(backgroundTexture, 0f, 0f, 1600f, 900f)
+            it.draw(titleTexture, 0f, 400f, 1600f, 500f)
+            this.game.textDrawer.draw(this.game.batch, "Click to continue...", 750f, 200f)
         }
         if (Gdx.input.isTouched) {
             music.stop()
