@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
+import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import ktx.app.KtxScreen
 import ktx.app.use
 
@@ -37,7 +39,7 @@ class MainMenuScreen(val game: Main) : KtxScreen {
         }
         if (Gdx.input.isTouched) {
             music.stop()
-            game.screen = GameLoadingScreen(game)
+            game.screen = HostLoadingScreen(game, Array(0) { LocalPlayer(0) })
         }
     }
 
