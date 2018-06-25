@@ -32,4 +32,5 @@ class Planet(var x: Float,
              val color: Color = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f)) {
     //Arbitrary attributes that determine drone behaviour: can be changed, but each start out as a random number between 0 and 1
     val attributes = Attributes.values().map { it to Math.random() }.toMap()
+    val connectedHighways = mutableListOf<CosmicHighway>()
 }
