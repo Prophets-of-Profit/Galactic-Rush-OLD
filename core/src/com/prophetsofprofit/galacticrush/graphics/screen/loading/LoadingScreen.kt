@@ -3,7 +3,8 @@ package com.prophetsofprofit.galacticrush.graphics.screen.loading
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
-import com.prophetsofprofit.galacticrush.graphics.Animation
+import com.badlogic.gdx.graphics.g2d.Animation
+import com.badlogic.gdx.utils.Array
 import com.prophetsofprofit.galacticrush.Main
 import ktx.app.KtxScreen
 import ktx.app.use
@@ -14,9 +15,11 @@ import ktx.app.use
 abstract class LoadingScreen(val game: Main): KtxScreen {
 
     //Measures time spent loading
-    val animation = Animation(Array(28) { Texture("animations/loading/LoadingScreen$it.png" ) }, 2.25f)
+    val animation = Animation<Texture>(2.25f, Array(Array(28) { Texture("animations/loading/LoadingScreen$it.png" ) }))
     //Whether the screen is done loading or not
     var isDone = false
+    //The total time spent loading
+    var elapsedTime = 0f
 
     /**
      * Starts initializing the galaxy and sets the screen coordinate system with the camera
@@ -45,6 +48,8 @@ abstract class LoadingScreen(val game: Main): KtxScreen {
      * Draws an image of the animation every frame
      */
     override fun render(delta: Float) {
+        //Updates elapsed time
+        this.elapsedTime +=  delta
         //Clears the screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -53,9 +58,8 @@ abstract class LoadingScreen(val game: Main): KtxScreen {
             this.onLoad()
         }
         //Updates the time waited and updates the image used in the loading screen for the animation
-        animation.addTime(delta)
         this.game.batch.use {
-            it.draw(animation.getTexture(), 500f, 150f, 600f, 600f, 0, 0, 64, 64, false, false)
+            it.draw(animation.getKeyFrame(this.elapsedTime, true), 500f, 150f, 600f, 600f, 0, 0, 64, 64, false, false)
         }
     }
 
