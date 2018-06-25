@@ -12,7 +12,7 @@ import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
  * The screen that handles loading and initializing the galaxy
  * Should be called from host, as only host should actually be constructing galaxy
  */
-class ClientLoadingScreen(game: Main, val connectionId: Int): LoadingScreen(game) {
+class ClientLoadingScreen(game: Main, val connectionId: Int) : LoadingScreen(game) {
 
     var mainGame: Game? = null
 
@@ -20,9 +20,9 @@ class ClientLoadingScreen(game: Main, val connectionId: Int): LoadingScreen(game
      * Waits for the connection to receive the game
      */
     override fun load() {
-        Networker.getClient().addListener(object: Listener() {
+        Networker.getClient().addListener(object : Listener() {
             override fun received(connection: Connection?, obj: Any?) {
-                if (obj is Game) {
+                if (connection?.id == connectionId && obj is Game) {
                     mainGame = obj
                 }
                 Networker.getClient().removeListener(this)

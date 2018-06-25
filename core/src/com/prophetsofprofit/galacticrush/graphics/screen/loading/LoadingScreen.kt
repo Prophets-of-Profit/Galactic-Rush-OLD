@@ -12,10 +12,10 @@ import ktx.app.use
 /**
  * A set of behaviour common to loading screens regardless of them being client or host
  */
-abstract class LoadingScreen(val game: Main): KtxScreen {
+abstract class LoadingScreen(val game: Main) : KtxScreen {
 
     //Measures time spent loading
-    val animation = Animation<Texture>(2.25f, Array(Array(28) { Texture("animations/loading/LoadingScreen$it.png" ) }))
+    val animation = Animation<Texture>(2.25f, Array(Array(28) { Texture("animations/loading/LoadingScreen$it.png") }))
     //Whether the screen is done loading or not
     var isDone = false
     //The total time spent loading
@@ -48,16 +48,15 @@ abstract class LoadingScreen(val game: Main): KtxScreen {
      * Draws an image of the animation every frame
      */
     override fun render(delta: Float) {
-        //Updates elapsed time
-        this.elapsedTime +=  delta
         //Clears the screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        //Checks if the world is done loading and changes screen once the world is ready
+        //Checks if the screen is done loading and then performs the onLoad action if loading is done
         if (this.isDone) {
             this.onLoad()
         }
         //Updates the time waited and updates the image used in the loading screen for the animation
+        this.elapsedTime += delta
         this.game.batch.use {
             it.draw(animation.getKeyFrame(this.elapsedTime, true), 500f, 150f, 600f, 600f, 0, 0, 64, 64, false, false)
         }

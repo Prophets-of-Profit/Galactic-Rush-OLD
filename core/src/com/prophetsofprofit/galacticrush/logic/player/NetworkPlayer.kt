@@ -13,13 +13,14 @@ class NetworkPlayer(id: Int, val connectionId: Int): Player(id) {
 
     /**
      * A method that gets called form the clientside that sends a change object to the game
+     * After sending change, listens for an updated game to set as this player's game
      */
     override fun submitChanges() {
         Networker.getClient().sendTCP(this.currentChanges)
         //TODO: just have listener on permanently instead of continuously adding and removing it
         Networker.getClient().addListener(object: Listener() {
             override fun received(connection: Connection?, obj: Any?) {
-                if (obj is Game) {
+                if (connection?.id == connectionId && obj is Game) {
                     game = obj
                 }
                 Networker.getClient().removeListener(this)
