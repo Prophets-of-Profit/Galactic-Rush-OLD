@@ -35,7 +35,7 @@ class Galaxy(numPlanets: Int) {
         for (i in 0 until sideLength) {
             for (j in 0 until sideLength) {
                 //Shifts x by i and y by j, and adds to it in a random number within a range of 0 to 1 / sidelength, the length of each bounding square
-                planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), (0.015 + Math.random() * 0.035).toFloat() / numPlanets))
+                planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), (sideLength / 250.0 + Math.random() * sideLength / 500.0).toFloat() / numPlanets))
             }
         }
         //Iterate through all planets in a random order
