@@ -10,6 +10,7 @@ import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.player.Player
 import ktx.app.KtxScreen
 import kotlin.math.max
 import kotlin.math.min
@@ -19,8 +20,11 @@ import kotlin.math.sqrt
 /**
  * The screen where all the playing will be done
  */
-class MainGameScreen(val game: Main, val mainGame: Game): KtxScreen, GestureDetector.GestureListener, InputProcessor {
+class MainGameScreen(val game: Main, var player: Player): KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
+    //A convenience getter for the game because the player's game will continuously change
+    var mainGame = Game(arrayOf(), 0)
+        get() = this.player.game
     //The smallest (closest) zoom factor allowed
     val minZoom = 0.1f
     //The highest (furthest) zoom factor allowed
@@ -38,6 +42,7 @@ class MainGameScreen(val game: Main, val mainGame: Game): KtxScreen, GestureDete
         game.camera.setToOrtho(false, 1600f, 900f)
         Gdx.input.inputProcessor = multiplexer
         music.play()
+        music.isLooping = true
     }
 
     /**

@@ -26,7 +26,7 @@ class Game(val players: Array<Player>, galaxySize: Int): Serializable {
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
     fun collectChange(change: Change) {
-        //TODO: make
+        //TODO: make; instead of immediately replying with new gamestate, wait for all changes to happen and then send game states
         this.players.first { it.id == change.ownerId }.receiveNewGameState(this)
     }
 

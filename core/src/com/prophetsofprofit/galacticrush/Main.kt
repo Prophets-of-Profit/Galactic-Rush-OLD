@@ -31,4 +31,12 @@ class Main : Game() {
         this.screen = SplashScreen(this)
     }
 
+    /**
+     * What happens when the game is done
+     */
+    override fun dispose() {
+        this.batch.dispose()
+        this.textDrawer.dispose()
+    }
+
 }

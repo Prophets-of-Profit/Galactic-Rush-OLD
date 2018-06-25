@@ -39,7 +39,7 @@ class MainMenuScreen(val game: Main) : KtxScreen {
         }
         if (Gdx.input.isTouched) {
             music.stop()
-            game.screen = HostLoadingScreen(game, Array(0) { LocalPlayer(0) })
+            game.screen = HostLoadingScreen(game, Array(1) { LocalPlayer(0) })
         }
     }
 

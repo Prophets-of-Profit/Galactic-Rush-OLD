@@ -3,6 +3,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen.loading
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import com.prophetsofprofit.galacticrush.logic.player.Player
 
 /**
@@ -25,7 +26,7 @@ class HostLoadingScreen(game: Main, val players: Array<Player>): LoadingScreen(g
      * Moves host to MainGameScreen
      */
     override fun onLoad() {
-        this.game.screen = MainGameScreen(this.game, this.mainGame!!)
+        this.game.screen = MainGameScreen(this.game, this.mainGame!!.players.first { it is LocalPlayer })
     }
 
 

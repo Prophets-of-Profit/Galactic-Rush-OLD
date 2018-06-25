@@ -6,6 +6,7 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
 
 /**
  * The screen that handles loading and initializing the galaxy
@@ -20,9 +21,9 @@ class ClientLoadingScreen(game: Main, val connectionId: Int): LoadingScreen(game
      */
     override fun load() {
         Networker.getClient().addListener(object: Listener() {
-            override fun received(connection: Connection?, `object`: Any?) {
-                if (`object` is Game) {
-                    mainGame = `object`
+            override fun received(connection: Connection?, obj: Any?) {
+                if (obj is Game) {
+                    mainGame = obj
                 }
                 Networker.getClient().removeListener(this)
             }
@@ -36,7 +37,7 @@ class ClientLoadingScreen(game: Main, val connectionId: Int): LoadingScreen(game
      * Moves the game to the MainGameScreen
      */
     override fun onLoad() {
-        this.game.screen = MainGameScreen(this.game, this.mainGame!!)
+        this.game.screen = MainGameScreen(this.game, this.mainGame!!.players.first { it is NetworkPlayer && it.connectionId == this.connectionId })
     }
 
 }
