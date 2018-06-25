@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic
 
-import com.prophetsofprofit.galacticrush.logic.instructions.Instruction
+import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.drone.instructions.Instruction
 import java.io.Serializable
 
 /**

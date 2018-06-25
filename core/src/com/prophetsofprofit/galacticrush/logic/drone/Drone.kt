@@ -1,6 +1,6 @@
-package com.prophetsofprofit.galacticrush.logic;
+package com.prophetsofprofit.galacticrush.logic.drone;
 
-import com.prophetsofprofit.galacticrush.logic.instructions.Instruction
+import com.prophetsofprofit.galacticrush.logic.drone.instructions.Instruction
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import java.util.*
 

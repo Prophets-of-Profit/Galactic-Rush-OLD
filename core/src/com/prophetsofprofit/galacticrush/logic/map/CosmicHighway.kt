@@ -1,7 +1,5 @@
 package com.prophetsofprofit.galacticrush.logic.map
 
-import com.prophetsofprofit.galacticrush.logic.Drone
-
 /**
  * The class that serves as a connection between two planets
  * Is basically an edge in the graph that is the galaxy, where the nodes are planets
