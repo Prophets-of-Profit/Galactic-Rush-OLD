@@ -2,7 +2,10 @@ package com.prophetsofprofit.galacticrush.logic.map
 
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Vector2
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.atan2
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * A class that is basically the map that the game is played on
@@ -29,10 +32,10 @@ class Galaxy(numPlanets: Int) {
         /*
          * Iterates through all indices of x and y for the square and randomly places a planet in each bounding box
          */
-        for (i in 0..sideLength - 1) {
-            for (j in 0..sideLength - 1) {
+        for (i in 0 until sideLength) {
+            for (j in 0 until sideLength) {
                 //Shifts x by i and y by j, and adds to it in a random number within a range of 0 to 1 / sidelength, the length of each bounding square
-                planets.add(Planet(((Math.random() + i) / sideLength).toFloat() , ((Math.random() + j) / sideLength).toFloat(), (0.015 + Math.random() * 0.035).toFloat() / numPlanets))
+                planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), (0.015 + Math.random() * 0.035).toFloat() / numPlanets))
             }
         }
         //Iterate through all planets in a random order
@@ -74,10 +77,10 @@ class Galaxy(numPlanets: Int) {
         //Returns whether it intersects and that the intersection point isn't an endpoint
         return intersect && !(
                 (intersectionPoint.x == p0x && intersectionPoint.y == p0y) ||
-                (intersectionPoint.x == p1x && intersectionPoint.y == p1y) ||
-                (intersectionPoint.x == p2x && intersectionPoint.y == p2y) ||
-                (intersectionPoint.x == p3x && intersectionPoint.y == p3y)
-        )
+                        (intersectionPoint.x == p1x && intersectionPoint.y == p1y) ||
+                        (intersectionPoint.x == p2x && intersectionPoint.y == p2y) ||
+                        (intersectionPoint.x == p3x && intersectionPoint.y == p3y)
+                )
     }
 
     /**
@@ -87,7 +90,6 @@ class Galaxy(numPlanets: Int) {
     private fun isAngleTooSmall(p0x: Float, p0y: Float, p1x: Float, p1y: Float, p2x: Float, p2y: Float, p3x: Float, p3y: Float): Boolean {
         var angleBetween = (atan2(p1y - p0y, p1x - p0x) - atan2(p3y - p2y, p3x - p2x)) % PI
         if (angleBetween < 0) angleBetween += PI
-        println(angleBetween < PI / 6)
         return angleBetween < PI / 6
     }
 
