@@ -3,6 +3,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen.loading
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
+import com.prophetsofprofit.galacticrush.graphics.Animation
 import com.prophetsofprofit.galacticrush.Main
 import ktx.app.KtxScreen
 import ktx.app.use
@@ -13,13 +14,7 @@ import ktx.app.use
 abstract class LoadingScreen(val game: Main): KtxScreen {
 
     //Measures time spent loading
-    var timeSpent = 0f
-    //Defines how long a frame should be on screen
-    val framesTime = 2.25f
-    //The index of the image that is being drawn;
-    var image = 0
-    //A list of all the frames
-    val frames = Array(28) { Texture("animations/loading/LoadingScreen$it.png" ) }
+    val animation = Animation(Array(28) { Texture("animations/loading/LoadingScreen$it.png" ) }, 2.25f)
     //Whether the screen is done loading or not
     var isDone = false
 
@@ -58,10 +53,9 @@ abstract class LoadingScreen(val game: Main): KtxScreen {
             this.onLoad()
         }
         //Updates the time waited and updates the image used in the loading screen for the animation
-        this.timeSpent += delta
-        this.image = ((this.timeSpent % this.framesTime) / 2.25 * 28).toInt()
+        animation.addTime(delta)
         this.game.batch.use {
-            it.draw(frames[image], 500f, 150f, 600f, 600f, 0, 0, 64, 64, false, false)
+            it.draw(animation.getTexture(), 500f, 150f, 600f, 600f, 0, 0, 64, 64, false, false)
         }
     }
 
