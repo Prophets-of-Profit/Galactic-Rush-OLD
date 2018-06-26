@@ -13,8 +13,10 @@ class Drone(val ownerId: Int) {
 
     //When the drone was initialized: the game assumes that this is unique for each drone which is kinda hacky
     val creationTime = Date()
-    //What the drone will do
+    //The modifiers of the drone's behavior and abilities
     val instructions: MutableList<Instruction> = mutableListOf()
+    //Which instruction the drone is currently reading
+    var pointer = 0
     //Where the drone is TODO: get starting location based on owner id
     var location: Planet = Planet(-1.0f, -1.0f, -1.0f)
     //An arbitrary measure of how many instructions a drone can hold;
@@ -59,5 +61,15 @@ class Drone(val ownerId: Int) {
         this.instructions[this.instructions.size - 1].remove()
         this.instructions.removeAt(this.instructions.size - 1)
         return true
+    }
+
+    /**
+     * Advances the pointer by some number of steps, changing what the drone will read next
+     */
+    fun advancePointer(steps: Int) {
+        this.pointer += steps
+        if(this.pointer >= this.instructions.size) {
+            this.pointer = this.instructions.size - 1
+        }
     }
 }
