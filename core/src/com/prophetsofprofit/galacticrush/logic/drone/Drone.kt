@@ -33,6 +33,7 @@ class Drone(val ownerId: Int) {
      */
     fun add(instruction: Instruction): Boolean {
         if(this.memoryAvailable < instruction.memory) return false
+        if(!instruction.add()) return false
         this.instructions.add(instruction)
         return true
     }
@@ -44,7 +45,9 @@ class Drone(val ownerId: Int) {
         if(index1 >= this.instructions.size || index2 >= this.instructions.size) return false
         val placeholder = this.instructions[index1]
         this.instructions[index1] = this.instructions[index2]
+        this.instructions[index1].location = index1
         this.instructions[index2] = placeholder
+        this.instructions[index2].location = index2
         return true
     }
 
@@ -53,6 +56,7 @@ class Drone(val ownerId: Int) {
      */
     fun pop(): Boolean {
         if(this.instructions.size == 0) return false
+        this.instructions[this.instructions.size - 1].remove()
         this.instructions.removeAt(this.instructions.size - 1)
         return true
     }

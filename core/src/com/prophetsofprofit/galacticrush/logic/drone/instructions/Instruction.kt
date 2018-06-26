@@ -11,7 +11,7 @@ import com.prophetsofprofit.galacticrush.logic.map.Planet
  * To create an instruction with multiple types, use the bitwise or (e.g. MINING or UPGRADE)
  * To check if an instruction is of a certain type, use the bitwise and (e.g. instruction.type and ORDER)
  */
-enum class InstructionType(val value: Int){
+enum class InstructionType(val value: Int) {
     NONE(0),            //Miscellaneous
     COMBAT(1),          //Instructs the drone to do something combat-related, like attack another drone
     MOVEMENT(2),        //Instructs the drone to travel to another planet
@@ -25,8 +25,13 @@ enum class InstructionType(val value: Int){
 /**
  * An instruction is a slottable modification to a drone that either defines its behavior or modifies its stats
  * This class defines an instruction and provides default implementations for the necessary methods
+ * It also contains the definitions of instruction
  */
-abstract class Instruction(var maxHealth: Int, val memory: Int, val type: Int, var location: Int, val sprite: Sprite, val drone: Drone) {
+enum class Instruction(var maxHealth: Int, val memory: Int, val type: InstructionType, var location: Int, val sprite: Sprite, val drone: Drone) {
+
+    NOTHING(0, 0, InstructionType.NONE, 0, Sprite(), Drone(0));
+
+    //-----------METHODS BELOW----------------------------------------------------------------------
 
     /**
      * What the instruction does when added to an instruction queue
