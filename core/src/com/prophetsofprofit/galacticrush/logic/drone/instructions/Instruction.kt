@@ -2,31 +2,59 @@ package com.prophetsofprofit.galacticrush.logic.drone.instructions
 
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.map.Planet
 
 /**
- * Each instruction has one (or, eventually, more) types which determine how it's achieved and what it does
- * At the start of the game, each player drafts one of each type of instruction blueprint
+ * There are eight types of instructions
+ * They are described as integer powers of 2 for the use of Kotlin infix operators (bitwise logic)
+ * Distinguishing between the types is useful for gameplay and for other instructions to affect
+ * To create an instruction with multiple types, use the bitwise or (e.g. MINING or UPGRADE)
+ * To check if an instruction is of a certain type, use the bitwise and (e.g. instruction.type and ORDER)
  */
-enum class InstructionType {
-    NONE,           //Miscellaneous
-    MOVEMENT,       //Instructs the drone to travel along cosmic highways
-    COMBAT,         //Instructs the drone to initiate combat or do something combat-related
-    CONSTRUCTION,   //Instructs the drone to modify the world or construct facilities on planets
-    MINING,         //Instructs the drone to gather resources from a planet
-    UPGRADE,        //Modifies the properties of a drone
-    MODIFIER        //Modifies the properties of an instruction
+enum class InstructionType(val value: Int){
+    NONE(0),            //Miscellaneous
+    COMBAT(1),          //Instructs the drone to do something combat-related, like attack another drone
+    MOVEMENT(2),        //Instructs the drone to travel to another planet
+    CONSTRUCTION(4),    //Instructs the drone to modify the world or construct facilities
+    MINING(8),          //Instructs the drone to gather resources
+    MODIFICATION(16),   //Modifies the effects of other instructions in the queue
+    UPGRADE(32),        //Modifies the properties of the drone
+    ORDER(64)           //Modifies the order in which commands are executed in the queue
 }
 
 /**
- * An enumeration for instructions
- * Contains all of the instructions as well as how they look and what they do
+ * An instruction is a slottable modification to a drone that either defines its behavior or modifies its stats
+ * This class defines an instruction and provides default implementations for the necessary methods
  */
-enum class Instruction(val icon: Sprite,            //The icon of the instruction
-                       val action: (Drone) -> Unit, //What the instruction tells the drone to do every turn
-                       val memory: Int,             //How much memory the instruction takes up
-                       val type: InstructionType,   //What kind of instruction it is
-                       var health: Int              //How much health this component has, which affects the drone's survivabiliy
-) {
-    //TODO: a temporary example for how to construct an instruction: treat this as a compile-time list
-    NOTHING(Sprite(), {}, 0, InstructionType.NONE, 0)
+abstract class Instruction(var maxHealth: Int, val memory: Int, val type: Int, var location: Int, val sprite: Sprite, val drone: Drone) {
+
+    /**
+     * What the instruction does when added to an instruction queue
+     */
+    fun add(): Boolean {
+        return true
+    }
+
+    /**
+     * What the instruction does when removed from an instruction queue
+     */
+    fun remove(): Boolean {
+        return true
+    }
+
+    /**
+     * What the instruction does at the end of every turn when its turn in the queue arrives
+     */
+    fun act(): Boolean {
+        return true
+    }
+
+    /**
+     * What happens when the instruction sustains enough damage to take its health to 0
+     */
+    fun getDestroyed(): Boolean {
+        this.remove()
+        return true
+    }
+
 }
