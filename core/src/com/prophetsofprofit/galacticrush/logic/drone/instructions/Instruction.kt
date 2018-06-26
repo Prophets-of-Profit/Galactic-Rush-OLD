@@ -33,6 +33,11 @@ enum class Instruction(var maxHealth: Int, val memory: Int, val type: Instructio
 
     //-----------METHODS BELOW----------------------------------------------------------------------
 
+    //If these are null, they should be chosen when making a related action
+    //Otherwise another activity might change them in order to control selection
+    var selectedPlanet: Planet? = null
+    var selectedDrone: Drone? = null
+
     /**
      * What the instruction does when added to an instruction queue
      */
@@ -51,6 +56,8 @@ enum class Instruction(var maxHealth: Int, val memory: Int, val type: Instructio
      * What the instruction does at the end of every turn when its turn in the queue arrives
      */
     fun act(): Boolean {
+        this.selectedPlanet = null
+        this.selectedDrone = null
         return true
     }
 
