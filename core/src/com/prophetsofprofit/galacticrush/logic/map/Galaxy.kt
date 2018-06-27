@@ -27,6 +27,11 @@ class Galaxy(numPlanets: Int) {
      * the side length of the bounding boxes used to generate the planets
      */
     init {
+        generatePlanets(numPlanets)
+        generateEdges(numPlanets)
+    }
+
+    private fun generatePlanets(numPlanets: Int) {
         //Calculates the side length of a square that fits a planet
         val sideLength = sqrt(numPlanets.toDouble()).toInt()
         /*
@@ -38,6 +43,11 @@ class Galaxy(numPlanets: Int) {
                 planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), (sideLength / 250.0 + Math.random() * sideLength / 500.0).toFloat() / numPlanets))
             }
         }
+    }
+
+    private fun generateEdges(numPlanets: Int) {
+        //Calculates the side length of a square that fits a planet
+        val sideLength = sqrt(numPlanets.toDouble()).toInt()
         //Iterate through all planets in a random order
         for (p0 in planets.shuffled()) {
             //Iterate through all other planets in a random order
