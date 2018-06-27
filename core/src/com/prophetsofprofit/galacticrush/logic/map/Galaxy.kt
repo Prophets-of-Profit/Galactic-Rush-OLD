@@ -29,6 +29,7 @@ class Galaxy(numPlanets: Int) {
     init {
         generatePlanets(numPlanets)
         generateEdges(numPlanets)
+        connectAllPlanets()
     }
 
     private fun generatePlanets(numPlanets: Int) {
@@ -74,6 +75,36 @@ class Galaxy(numPlanets: Int) {
                     p1.connectedHighways.add(highwayToAdd)
                 }
             }
+        }
+    }
+
+    /**
+     * Ensures that all planets are connected
+     * Currently only connects planets which are not connected to any planets
+     * TODO: Check for seperate clusters of planets using quick-union
+     */
+    private fun connectAllPlanets() {
+        //Iterate through all planets which have no connecting planets
+        for (p0 in planets.filter {it.connectedHighways.size == 0}) {
+            //Initialize distance as 0 to start; will check for distance = 0
+            var planetDistance = 0f
+            //Closest planet starts as itself; will get changed
+            var closestPlanet = p0
+            //Iterate through all planets to find the planet closest to this one
+            for (p1 in planets) {
+                //Calculate distance between planets
+                val tempDistance = sqrt((p0.x - p1.x).pow(2) + (p0.y - p1.y).pow(2))
+                //If the planets are not the same and the distance between them is less, then set it to be so
+                if (!(p0 === p1) && (planetDistance == 0f || tempDistance < planetDistance)) {
+                    planetDistance = tempDistance
+                    closestPlanet = p1
+                }
+            }
+            //Make a connection with the planet closest to it
+            val highwayToAdd = CosmicHighway(p0, closestPlanet)
+            highways.add(highwayToAdd)
+            p0.connectedHighways.add(highwayToAdd)
+            closestPlanet.connectedHighways.add(highwayToAdd)
         }
     }
 
