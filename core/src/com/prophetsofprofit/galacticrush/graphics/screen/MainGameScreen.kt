@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.graphics.MusicPlayer
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.player.Player
 import ktx.app.KtxScreen
@@ -16,6 +17,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
+import java.io.File
 
 /**
  * The screen where all the playing will be done
@@ -29,8 +31,8 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
     val minZoom = 0.1f
     //The highest (furthest) zoom factor allowed
     val maxZoom = 1f
-    //Temporary place to store music
-    val music = Gdx.audio.newMusic(Gdx.files.internal("music/Echoes.mp3"))
+    //The music player object; initialize with all files in music folder
+    val musicPlayer = MusicPlayer(Array<String>(File("music/").list().size, { "music/" + File("music/").list()[it] }))
 
     /**
      * Initializes the camera for the screen
@@ -41,8 +43,6 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
         multiplexer.addProcessor(this)
         game.camera.setToOrtho(false, 1600f, 900f)
         Gdx.input.inputProcessor = multiplexer
-        music.play()
-        music.isLooping = true
     }
 
     /**
@@ -76,6 +76,7 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
             this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 10 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
         }
         this.game.shapeRenderer.end()
+        this.musicPlayer.update()
     }
 
     /**

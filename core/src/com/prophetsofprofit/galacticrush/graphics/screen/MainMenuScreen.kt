@@ -15,7 +15,7 @@ import ktx.app.use
 class MainMenuScreen(val game: Main) : KtxScreen {
 
     //Music to play in the main menu
-    val music = Gdx.audio.newMusic(Gdx.files.internal("music/TheIntergalactic.mp3"))
+    val music = Gdx.audio.newMusic(Gdx.files.internal("meta/TheIntergalactic.mp3"))
     val backgroundTexture = Texture("meta/Background.png")
     val titleTexture = Texture("meta/Title.png")
     var timeSpent = 0f
@@ -32,12 +32,12 @@ class MainMenuScreen(val game: Main) : KtxScreen {
      */
     override fun render(delta: Float) {
         timeSpent += delta
-        timeSpent %= 20f
+        timeSpent %= 8f
         Gdx.gl.glClearColor(0f, 1f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         this.game.batch.use {
-            it.draw(backgroundTexture, -80f * this.timeSpent, 0f, 1600f, 900f)
-            it.draw(backgroundTexture, -80f * this.timeSpent + 1600, 0f, 1600f, 900f)
+            it.draw(backgroundTexture, -200f * this.timeSpent, 0f, 1600f, 900f)
+            it.draw(backgroundTexture, -200f * this.timeSpent + 1600, 0f, 1600f, 900f)
             it.draw(titleTexture, 0f, 400f, 1600f, 500f)
             this.game.textDrawer.draw(this.game.batch, "Click to continue...", 750f, 200f)
         }
