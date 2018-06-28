@@ -53,7 +53,7 @@ class Game(val players: Array<Player>, galaxySize: Int) : Serializable {
         var dronesToAct = this.drones.toList()
         //Repeat until all drones are finished:
         //All drones execute commands "at the same time", only moving on when all commands are executed
-        while (dronesToAct.isNotEmpty()){
+        while (dronesToAct.isNotEmpty()) {
             //Complete the queued action of all drones in the queue
             dronesToAct.forEach { it.completeAction() }
             //Clean the queue of finished drones
