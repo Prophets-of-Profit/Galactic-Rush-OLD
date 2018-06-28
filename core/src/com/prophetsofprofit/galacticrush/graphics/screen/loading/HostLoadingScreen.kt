@@ -10,7 +10,7 @@ import com.prophetsofprofit.galacticrush.logic.player.Player
  * The screen that handles loading and initializing the game
  * Should be called from host, as only host should actually be constructing the game
  */
-class HostLoadingScreen(game: Main, val players: Array<Player>): LoadingScreen(game) {
+class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(game) {
 
     //The game that the host is constructing
     var mainGame: Game? = null

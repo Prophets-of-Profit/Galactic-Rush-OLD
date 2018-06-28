@@ -7,13 +7,13 @@ import com.prophetsofprofit.galacticrush.logic.Game
  * The class that represents a player that is on the host machine: a local player
  * This type of player doesn't need to do any networking or anything because it can directly communicate with the main game
  */
-class LocalPlayer(id: Int): Player(id) {
+class LocalPlayer(id: Int) : Player(id) {
 
     /**
      * The local player directly gives the local game the changes to submit
      */
     override fun submitChanges() {
-        this.game.collectChange(this.currentChanges?: Change(this.id))
+        this.game.collectChange(this.currentChanges ?: Change(this.id))
     }
 
     /**

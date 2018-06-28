@@ -85,7 +85,7 @@ class Galaxy(numPlanets: Int) {
      */
     private fun connectAllPlanets() {
         //Iterate through all planets which have no connecting planets
-        for (p0 in planets.filter {it.connectedHighways.size == 0}) {
+        for (p0 in planets.filter { it.connectedHighways.size == 0 }) {
             //Initialize distance as 0 to start; will check for distance = 0
             var planetDistance = 0f
             //Closest planet starts as itself; will get changed
@@ -95,7 +95,7 @@ class Galaxy(numPlanets: Int) {
                 //Calculate distance between planets
                 val tempDistance = sqrt((p0.x - p1.x).pow(2) + (p0.y - p1.y).pow(2))
                 //If the planets are not the same and the distance between them is less, then set it to be so
-                if (!(p0 === p1) && (planetDistance == 0f || tempDistance < planetDistance)) {
+                if (p0 !== p1 && (planetDistance == 0f || tempDistance < planetDistance)) {
                     planetDistance = tempDistance
                     closestPlanet = p1
                 }

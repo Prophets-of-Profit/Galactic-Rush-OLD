@@ -20,7 +20,7 @@ import kotlin.math.sqrt
 /**
  * The screen where all the playing will be done
  */
-class MainGameScreen(val game: Main, var player: Player): KtxScreen, GestureDetector.GestureListener, InputProcessor {
+class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
     //A convenience getter for the game because the player's game will continuously change
     var mainGame = Game(arrayOf(), 0)
@@ -112,32 +112,44 @@ class MainGameScreen(val game: Main, var player: Player): KtxScreen, GestureDete
     //GestureListener abstract method implementations:
     //Called when a finger is dragged and lifted
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean = false
+
     //Called when a finger is held down for some time
     override fun longPress(x: Float, y: Float): Boolean = false
+
     //Called when no longer panning
     override fun panStop(x: Float, y: Float, pointer: Int, button: Int): Boolean = false
+
     //Called when distance between fingers changes in multitouch
     override fun pinch(initialPointer1: Vector2?, initialPointer2: Vector2?, pointer1: Vector2?, pointer2: Vector2?): Boolean = false
+
     //Called when distance between fingers stops changing in multitouch
     override fun pinchStop() {}
+
     //Called when the screen is tapped
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean = false
+
     //Called when the screen is touched
     override fun touchDown(x: Float, y: Float, pointer: Int, button: Int): Boolean = false
 
     //InputProcessor abstract method implementations:
     //Called when the mouse button is pressed
     override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
+
     //Called when the mouse button is released
     override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
+
     //Called when the mouse moves
     override fun mouseMoved(x: Int, y: Int): Boolean = false
+
     //Called when a key mapping to a character is pressed
     override fun keyTyped(char: Char): Boolean = false
+
     //Called when a key is pressed
     override fun keyDown(keycode: Int): Boolean = false
+
     //Called when a key is released
     override fun keyUp(keycode: Int): Boolean = false
+
     //Called when a mouse button is held and the mouse is moved
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean = false
 

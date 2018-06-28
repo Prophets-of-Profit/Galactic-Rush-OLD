@@ -9,7 +9,7 @@ import com.prophetsofprofit.galacticrush.logic.Game
  * A player that plays on a different machine on the network
  * Can never be the host player, but will be initialized on host player's machine
  */
-class NetworkPlayer(id: Int, val connectionId: Int): Player(id) {
+class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
 
     /**
      * A method that gets called form the clientside that sends a change object to the game
@@ -18,7 +18,7 @@ class NetworkPlayer(id: Int, val connectionId: Int): Player(id) {
     override fun submitChanges() {
         Networker.getClient().sendTCP(this.currentChanges)
         //TODO: just have listener on permanently instead of continuously adding and removing it
-        Networker.getClient().addListener(object: Listener() {
+        Networker.getClient().addListener(object : Listener() {
             override fun received(connection: Connection?, obj: Any?) {
                 if (connection?.id == connectionId && obj is Game) {
                     game = obj

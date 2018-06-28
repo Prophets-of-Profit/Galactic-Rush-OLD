@@ -34,8 +34,8 @@ class Drone(val ownerId: Int) {
      * Adds an instruction to the end of the drone's task list
      */
     fun add(instruction: Instruction): Boolean {
-        if(this.memoryAvailable < instruction.memory) return false
-        if(!instruction.add()) return false
+        if (this.memoryAvailable < instruction.memory) return false
+        if (!instruction.add()) return false
         this.instructions.add(instruction)
         return true
     }
@@ -44,7 +44,7 @@ class Drone(val ownerId: Int) {
      * Swaps the positions of two instructions in the drone's task list
      */
     fun swap(index1: Int, index2: Int): Boolean {
-        if(index1 >= this.instructions.size || index2 >= this.instructions.size) return false
+        if (index1 >= this.instructions.size || index2 >= this.instructions.size) return false
         val placeholder = this.instructions[index1]
         this.instructions[index1] = this.instructions[index2]
         this.instructions[index1].location = index1
@@ -57,7 +57,7 @@ class Drone(val ownerId: Int) {
      * Pops the last instruction of the drone's task list, freeing memory
      */
     fun pop(): Boolean {
-        if(this.instructions.size == 0) return false
+        if (this.instructions.size == 0) return false
         this.instructions[this.instructions.size - 1].remove()
         this.instructions.removeAt(this.instructions.size - 1)
         return true
@@ -68,7 +68,7 @@ class Drone(val ownerId: Int) {
      */
     fun advancePointer(steps: Int) {
         this.pointer += steps
-        if(this.pointer >= this.instructions.size) {
+        if (this.pointer >= this.instructions.size) {
             this.pointer = this.instructions.size - 1
         }
     }

@@ -8,7 +8,7 @@ import java.io.Serializable
  * The main game object
  * Handles attributes of the current game, and is serialized for networking
  */
-class Game(val players: Array<Player>, galaxySize: Int): Serializable {
+class Game(val players: Array<Player>, galaxySize: Int) : Serializable {
 
     //The board or map on which this game is played
     val galaxy = Galaxy(galaxySize)

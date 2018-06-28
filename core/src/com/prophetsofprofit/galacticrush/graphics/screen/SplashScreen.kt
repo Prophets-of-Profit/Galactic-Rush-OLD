@@ -11,9 +11,9 @@ import kotlin.math.min
 
 /**
  * The screen that first shows up that shows the user who made this game (the Prolific Prophets of Profit)
- * Displays for a short time and plays a quick jingle before procceding to the main menu 
+ * Displays for a short time and plays a quick jingle before procceding to the main menu
  */
-class SplashScreen(val game: Main): KtxScreen {
+class SplashScreen(val game: Main) : KtxScreen {
 
     //How long to wait before going to MainMenuScreen
     val minWait = 5f
