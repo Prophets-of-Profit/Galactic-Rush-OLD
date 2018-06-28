@@ -46,21 +46,21 @@ class Game(val players: Array<Player>, galaxySize: Int) : Serializable {
      */
     fun doDroneTurn() {
         //If we're waiting, go back
-        if (waitingOn.size > 0) {
+        if (waitingOn.isNotEmpty()) {
             return
         }
         //Make a list of drones that still need to finish their action queues
         var dronesToAct = this.drones.toList()
         //Repeat until all drones are finished:
         //All drones execute commands "at the same time", only moving on when all commands are executed
-        while (dronesToAct.size > 0){
+        while (dronesToAct.isNotEmpty()){
             //Complete the queued action of all drones in the queue
-            dronesToAct.forEach {it.completeAction()}
+            dronesToAct.forEach { it.completeAction() }
             //Clean the queue of finished drones
             dronesToAct = dronesToAct.filter { !it.queueFinished }
         }
         //Set all pointers to zero
-        this.drones.forEach {it.resetQueue()}
+        this.drones.forEach { it.resetQueue() }
         //Begin waiting on players
         players.mapTo(waitingOn) { it.id }
     }
