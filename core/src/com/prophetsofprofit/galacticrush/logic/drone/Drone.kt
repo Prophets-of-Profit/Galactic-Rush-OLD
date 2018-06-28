@@ -27,6 +27,8 @@ class Drone(val ownerId: Int) {
         get() {
             return this.maxMemory - this.instructions.sumBy { it.memory }
         }
+    //Whether the drone is done completing its command queue
+    var queueFinished = false
 
     //The following methods interface with the drone's instruction structure
 
@@ -64,12 +66,29 @@ class Drone(val ownerId: Int) {
     }
 
     /**
+     * Does the queued action
+     */
+    fun completeAction() {
+        this.instructions[this.pointer].act()
+        this.advancePointer(1)
+    }
+
+    /**
      * Advances the pointer by some number of steps, changing what the drone will read next
      */
     fun advancePointer(steps: Int) {
         this.pointer += steps
         if (this.pointer >= this.instructions.size) {
             this.pointer = this.instructions.size - 1
+            this.queueFinished = true
         }
+    }
+
+    /**
+     * Resets the drone's pointer for the next turn
+     */
+    fun resetQueue() {
+        this.pointer = 0
+        this.queueFinished = false
     }
 }

@@ -1,5 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic
 
+import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.player.Player
 import java.io.Serializable
@@ -16,6 +17,9 @@ class Game(val players: Array<Player>, galaxySize: Int) : Serializable {
     var turnsPlayed = 0
     //The players who need to submit their changes for the drones to commence
     val waitingOn = mutableListOf<Int>()
+    //The drones that currently exist in the game
+    //Should be ordered in order of creation
+    val drones = mutableListOf<Drone>()
 
     /**
      * Initializes the game by setting the game of all the players to this one
@@ -41,9 +45,23 @@ class Game(val players: Array<Player>, galaxySize: Int) : Serializable {
      * The method that starts performing all the drone calculations for their turn
      */
     fun doDroneTurn() {
+        //If we're waiting, go back
         if (waitingOn.size > 0) {
             return
         }
+        //Make a list of drones that still need to finish their action queues
+        var dronesToAct = this.drones.toList()
+        //Repeat until all drones are finished:
+        //All drones execute commands "at the same time", only moving on when all commands are executed
+        while (dronesToAct.size > 0){
+            //Complete the queued action of all drones in the queue
+            dronesToAct.forEach {it.completeAction()}
+            //Clean the queue of finished drones
+            dronesToAct = dronesToAct.filter { !it.queueFinished }
+        }
+        //Set all pointers to zero
+        this.drones.forEach {it.resetQueue()}
+        //Begin waiting on players
         players.mapTo(waitingOn) { it.id }
     }
 
