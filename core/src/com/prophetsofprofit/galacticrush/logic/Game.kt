@@ -42,27 +42,20 @@ class Game(val players: Array<Player>, galaxySize: Int) : Serializable {
     }
 
     /**
-     * The method that starts performing all the drone calculations for their turn
+     * Performs one action per drone for all drones that can perform an action; won't be callable until game is ready
      */
     fun doDroneTurn() {
-        //If we're waiting, go back
+        //If waiting on players don't do anything
         if (waitingOn.isNotEmpty()) {
             return
         }
-        //Make a list of drones that still need to finish their action queues
-        var dronesToAct = this.drones.toList()
-        //Repeat until all drones are finished:
-        //All drones execute commands "at the same time", only moving on when all commands are executed
-        while (dronesToAct.isNotEmpty()) {
-            //Complete the queued action of all drones in the queue
-            dronesToAct.forEach { it.completeAction() }
-            //Clean the queue of finished drones
-            dronesToAct = dronesToAct.filter { !it.queueFinished }
+        //Complete the actions of all the drones who can do actions in the queue
+        this.drones.filterNot { it.queueFinished }.forEach { it.completeAction() }
+        //If all the drones are now finished, wait for players and reset drones
+        if (this.drones.all { it.queueFinished }) {
+            this.drones.forEach { it.resetQueue() }
+            players.mapTo(waitingOn) { it.id }
         }
-        //Set all pointers to zero
-        this.drones.forEach { it.resetQueue() }
-        //Begin waiting on players
-        players.mapTo(waitingOn) { it.id }
     }
 
 }
