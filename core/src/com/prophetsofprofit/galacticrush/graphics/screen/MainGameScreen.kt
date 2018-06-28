@@ -32,7 +32,7 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
     //The highest (furthest) zoom factor allowed
     val maxZoom = 1f
     //The music player object; initialize with all files in music folder
-    val musicPlayer = MusicPlayer(Array<String>(File("music/").list().size, { "music/" + File("music/").list()[it] }))
+    val musicPlayer = MusicPlayer(Array(File("music/").list().size) { "music/" + File("music/").list()[it] })
 
     /**
      * Initializes the camera for the screen

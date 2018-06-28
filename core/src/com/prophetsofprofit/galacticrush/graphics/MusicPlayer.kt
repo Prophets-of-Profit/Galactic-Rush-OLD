@@ -1,16 +1,15 @@
 package com.prophetsofprofit.galacticrush.graphics
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.audio.Music
 
 /**
  * A class which handles the playing of multiple tracks of music
- * Takes in a list of
+ * Takes in a list of paths to the music
  */
 class MusicPlayer(musicPath: Array<String>) {
 
     //The list of music to be played by this music player
-    val music = Array<Music>(musicPath.size, { Gdx.audio.newMusic(Gdx.files.internal(musicPath[it])) })
+    val music = Array(musicPath.size) { Gdx.audio.newMusic(Gdx.files.internal(musicPath[it])) }
     //The index of music playing
     var musicPlaying = 0
 
@@ -18,7 +17,7 @@ class MusicPlayer(musicPath: Array<String>) {
      * Initializes; starts playing the first music in the list
      */
     init {
-        if(music.size > 0) music[0].play()
+        if (music.isNotEmpty()) music[0].play()
     }
 
     /**
@@ -27,8 +26,8 @@ class MusicPlayer(musicPath: Array<String>) {
      * and play it
      */
     fun update() {
-        if (!this.music[this.musicPlaying].isPlaying()) {
-            this.musicPlaying += 1;
+        if (!this.music[this.musicPlaying].isPlaying) {
+            this.musicPlaying += 1
             this.musicPlaying %= music.size
             this.music[musicPlaying].play()
         }

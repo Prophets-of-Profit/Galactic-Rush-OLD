@@ -20,7 +20,7 @@ class SplashScreen(val game: Main) : KtxScreen {
     //How long the user has waited
     var currentWait = 0f
     //The sound that will play on opening
-    val sound = Gdx.audio.newSound(Gdx.files.internal("meta/ProphetsOfProfit.mp3"))
+    val sound = Gdx.audio.newSound(Gdx.files.internal("meta/ProphetsOfProfit.mp3"))!!
     //The prophets of profit logo
     val logo = Sprite(Texture("meta/CapitalMan.png"))
 
