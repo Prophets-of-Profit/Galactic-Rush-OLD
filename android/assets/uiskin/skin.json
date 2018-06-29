@@ -1,0 +1,65 @@
+{
+com.badlogic.gdx.graphics.Color: {
+	GreenSpace: {
+		r: 0.47058824
+		g: 0.74509805
+		b: 0.4745098
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: titleButton
+		down: titleButtonDown
+		over: titleButtonOver
+		disabled: titleButtonDisable
+	}
+	small: {
+		up: checkBox
+		down: checkBoxDown
+		over: checkBoxOver
+		disabled: checkBoxDisable
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: checkBoxDownChecked
+		checkboxOff: checkBoxDown
+		checkboxOnDisabled: checkBoxDisableChecked
+		checkboxOffDisabled: checkBoxDisable
+		font: fontSans
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: fontSans
+		background: label
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: loadingBar
+		knob: loadingKnob
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: fontSans
+		fontColor: GreenSpace
+		downFontColor: GreenSpace
+		overFontColor: GreenSpace
+		checkedFontColor: GreenSpace
+		checkedOverFontColor: GreenSpace
+		disabledFontColor: GreenSpace
+		up: titleButton
+		down: titleButtonDown
+		over: titleButtonOver
+		disabled: titleButtonDisable
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}

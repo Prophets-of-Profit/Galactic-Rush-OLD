@@ -1,0 +1,97 @@
+
+skin1.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+checkBox
+  rotate: false
+  xy: 405, 426
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+checkBoxDisable
+  rotate: false
+  xy: 286, 374
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+checkBoxDisableChecked
+  rotate: false
+  xy: 432, 426
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+checkBoxDown
+  rotate: false
+  xy: 1, 270
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+checkBoxDownChecked
+  rotate: false
+  xy: 1, 243
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+checkBoxOver
+  rotate: false
+  xy: 203, 322
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+label
+  rotate: false
+  xy: 1, 297
+  size: 200, 50
+  orig: 200, 50
+  offset: 0, 0
+  index: -1
+loadingBar
+  rotate: false
+  xy: 1, 453
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
+loadingKnob
+  rotate: false
+  xy: 203, 349
+  size: 81, 50
+  orig: 81, 50
+  offset: 0, 0
+  index: -1
+titleButton
+  rotate: false
+  xy: 1, 401
+  size: 200, 50
+  orig: 200, 50
+  offset: 0, 0
+  index: -1
+titleButtonDisable
+  rotate: false
+  xy: 203, 401
+  size: 200, 50
+  orig: 200, 50
+  offset: 0, 0
+  index: -1
+titleButtonDown
+  rotate: false
+  xy: 303, 453
+  size: 200, 50
+  orig: 200, 50
+  offset: 0, 0
+  index: -1
+titleButtonOver
+  rotate: false
+  xy: 1, 349
+  size: 200, 50
+  orig: 200, 50
+  offset: 0, 0
+  index: -1
