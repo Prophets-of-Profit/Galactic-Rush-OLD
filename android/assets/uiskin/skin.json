@@ -27,12 +27,10 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOff: checkBoxDown
 		checkboxOnDisabled: checkBoxDisableChecked
 		checkboxOffDisabled: checkBoxDisable
-		font: fontSans
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: fontSans
 		background: label
 	}
 }
@@ -44,7 +42,6 @@ com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		font: fontSans
 		fontColor: GreenSpace
 		downFontColor: GreenSpace
 		overFontColor: GreenSpace
