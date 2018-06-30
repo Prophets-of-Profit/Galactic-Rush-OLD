@@ -3,11 +3,14 @@ package com.prophetsofprofit.galacticrush.graphics.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import ktx.app.KtxScreen
 import ktx.app.use
+import ktx.scene2d.Scene2DSkin
 
 /**
  * The screen that handles all main menu actions and display and layout and such
@@ -19,11 +22,13 @@ class MainMenuScreen(val game: Main) : KtxScreen {
     val backgroundTexture = Texture("meta/Background.png")
     val titleTexture = Texture("meta/Title.png")
     var timeSpent = 0f
+    var clickToContinueLabel = Label("Click to continue...", Scene2DSkin.defaultSkin)
 
     init {
         this.game.batch.projectionMatrix = this.game.camera.combined
         music.isLooping = true
         music.play()
+        clickToContinueLabel.setPosition(this.game.camera.viewportWidth / 2, this.game.camera.viewportWidth * 0.1f, Align.center)
     }
 
     /**
@@ -39,7 +44,7 @@ class MainMenuScreen(val game: Main) : KtxScreen {
             it.draw(backgroundTexture, -200f * this.timeSpent, 0f, 1600f, 900f)
             it.draw(backgroundTexture, -200f * this.timeSpent + 1600, 0f, 1600f, 900f)
             it.draw(titleTexture, 0f, 400f, 1600f, 500f)
-            this.game.textDrawer.draw(this.game.batch, "Click to continue...", 750f, 200f)
+            this.clickToContinueLabel.draw(it, 1f)
         }
         if (Gdx.input.isTouched) {
             music.stop()
