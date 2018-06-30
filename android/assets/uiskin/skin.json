@@ -1,4 +1,7 @@
 {
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	fontDotum: { file: ../fonts/Dotum.fnt }
+}
 com.badlogic.gdx.graphics.Color: {
 	GreenSpace: {
 		r: 0.47058824
@@ -27,12 +30,12 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOff: checkBoxDown
 		checkboxOnDisabled: checkBoxDisableChecked
 		checkboxOffDisabled: checkBoxDisable
-		font: fontSans
+		font: fontDotum
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: fontSans
+		font: fontDotum
 		background: label
 	}
 }
@@ -44,7 +47,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		font: fontSans
+		font: fontDotum
 		fontColor: GreenSpace
 		downFontColor: GreenSpace
 		overFontColor: GreenSpace

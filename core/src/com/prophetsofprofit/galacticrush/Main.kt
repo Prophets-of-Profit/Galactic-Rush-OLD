@@ -31,7 +31,7 @@ class Main : Game() {
         this.shapeRenderer = ShapeRenderer()
         this.camera = OrthographicCamera()
         this.camera.setToOrtho(false, 1600f, 900f)
-        //Scene2DSkin.defaultSkin = Skin(Gdx.files.internal("uiskin/skin.json")) Skin errors for right now
+        Scene2DSkin.defaultSkin = Skin(Gdx.files.internal("uiskin/skin.json"))
         this.screen = SplashScreen(this)
     }
 
