@@ -1,11 +1,14 @@
 package com.prophetsofprofit.galacticrush
 
 import com.badlogic.gdx.Game
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.prophetsofprofit.galacticrush.graphics.screen.SplashScreen
+import ktx.scene2d.Scene2DSkin
 
 /**
  * GALACTIC RUSH
@@ -28,6 +31,7 @@ class Main : Game() {
         this.shapeRenderer = ShapeRenderer()
         this.camera = OrthographicCamera()
         this.camera.setToOrtho(false, 1600f, 900f)
+        //Scene2DSkin.defaultSkin = Skin(Gdx.files.internal("uiskin/skin.json")) Skin errors for right now
         this.screen = SplashScreen(this)
     }
 
