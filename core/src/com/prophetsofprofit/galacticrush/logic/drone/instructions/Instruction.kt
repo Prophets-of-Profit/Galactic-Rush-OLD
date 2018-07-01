@@ -37,6 +37,8 @@ enum class Instruction(var maxHealth: Int, val memory: Int, val type: Instructio
     //Otherwise another activity might change them in order to control selection
     var selectedPlanet: Planet? = null
     var selectedDrone: Drone? = null
+    //How much health the instruction currently has
+    var health = this.maxHealth
 
     /**
      * What the instruction does when added to an instruction queue
@@ -49,6 +51,7 @@ enum class Instruction(var maxHealth: Int, val memory: Int, val type: Instructio
      * What the instruction does when removed from an instruction queue
      */
     fun remove(): Boolean {
+        this.drone.instructions.removeAt(this.location)
         return true
     }
 
@@ -62,7 +65,17 @@ enum class Instruction(var maxHealth: Int, val memory: Int, val type: Instructio
     }
 
     /**
+     * Reduces this instruction's health, and handles its destruction if necessary
+     * Avoid overloading this if possible
+     */
+    fun takeDamage(damage: Int = 1): Boolean {
+        this.health -= damage
+        return true
+    }
+
+    /**
      * What happens when the instruction sustains enough damage to take its health to 0
+     * Avoid overloading this if possible
      */
     fun getDestroyed(): Boolean {
         this.remove()

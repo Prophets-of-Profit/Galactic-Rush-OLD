@@ -91,4 +91,36 @@ class Drone(val ownerId: Int) {
         this.pointer = 0
         this.queueFinished = false
     }
+
+    /**
+     * Attempts to distribute damage among instructions
+     */
+    fun takeDamage(damage: Int) {
+        /*
+         * Attempts to distribute damage among instructions
+         * Loops though instructions, damaging them one at a time until all damage has been done
+         */
+        var instructionToDamage = 0
+        for (i in 0 until damage) {
+            this.instructions[instructionToDamage].takeDamage()
+            //If the instruction's health reaches zero, destroy it and do not increment index
+            // (because it is removed from the list and the list's length changes)
+            if (this.instructions[instructionToDamage].health <= 0) {
+                this.instructions[instructionToDamage].getDestroyed()
+            } else {
+                //Increment location index
+                instructionToDamage = (instructionToDamage + 1) % this.instructions.size
+            }
+        }
+        //If the drone has no instructions left it dies a sad and lonely death
+        if (this.instructions.isEmpty()) this.getDestroyed()
+    }
+
+    /**
+     * Remove the drone from the world's list of drones so it can be garbage collected
+     * TODO
+     */
+    fun getDestroyed() {
+
+    }
 }
