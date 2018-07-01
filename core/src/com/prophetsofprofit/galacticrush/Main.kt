@@ -3,12 +3,14 @@ package com.prophetsofprofit.galacticrush
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.utils.GdxRuntimeException
 import com.prophetsofprofit.galacticrush.graphics.screen.SplashScreen
 import ktx.scene2d.Scene2DSkin
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 
 /**
  * GALACTIC RUSH
@@ -17,6 +19,12 @@ import ktx.scene2d.Scene2DSkin
  */
 class Main : Game() {
 
+    //The user controllable options: set to default values, but changes get written to file and applied
+    var userOptions: Options = Options(25, 50)
+        set(value) {
+            field = value
+            applyOptions()
+        }
     lateinit var batch: SpriteBatch //What will be used to draw sprites and textures and all game things
     lateinit var shapeRenderer: ShapeRenderer //What will be used to draw shapes
     lateinit var camera: OrthographicCamera //The object that handles coordinates for drawing game things
@@ -25,6 +33,12 @@ class Main : Game() {
      * Entry point of the game
      */
     override fun create() {
+        try {
+            userOptions = ObjectInputStream(optionsFile.read()).readObject() as Options
+        } catch (ignored: GdxRuntimeException) {
+        } finally {
+            applyOptions()
+        }
         this.batch = SpriteBatch()
         this.shapeRenderer = ShapeRenderer()
         this.camera = OrthographicCamera()
@@ -38,6 +52,15 @@ class Main : Game() {
      */
     override fun dispose() {
         this.batch.dispose()
+        this.shapeRenderer.dispose()
+    }
+
+    /**
+     * Updates the game to reflect current options and saves options to file
+     */
+    private fun applyOptions() {
+        //TODO: make changes to game based on options
+        ObjectOutputStream(optionsFile.write(false)).writeObject(this.userOptions)
     }
 
 }

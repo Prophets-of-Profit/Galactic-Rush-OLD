@@ -1,3 +1,6 @@
 package com.prophetsofprofit.galacticrush
 
-//TODO: put things in here
+import com.badlogic.gdx.Gdx
+
+//The file where the user options are stored
+val optionsFile = Gdx.files.local("UserOptions.cfg")
