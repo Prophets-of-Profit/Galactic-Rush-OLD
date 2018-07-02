@@ -27,12 +27,7 @@ enum class InstructionType(val value: Int) {
  * This class defines an instruction and provides default implementations for the necessary methods
  * It also contains the definitions of instruction
  */
-enum class Instruction(var maxHealth: Int, val memory: Int, val type: InstructionType, var location: Int, val sprite: Sprite, val drone: Drone) {
-
-    NOTHING(0, 0, InstructionType.NONE, 0, Sprite(), Drone(0));
-
-    //-----------METHODS BELOW----------------------------------------------------------------------
-
+abstract class Instruction(var maxHealth: Int, val memory: Int, val type: InstructionType, var location: Int = 0, val sprite: Sprite, val drone: Drone) {
     //If these are null, they should be chosen when making a related action
     //Otherwise another activity might change them in order to control selection
     var selectedPlanet: Planet? = null
@@ -43,14 +38,14 @@ enum class Instruction(var maxHealth: Int, val memory: Int, val type: Instructio
     /**
      * What the instruction does when added to an instruction queue
      */
-    fun add(): Boolean {
+    open fun add(): Boolean {
         return true
     }
 
     /**
      * What the instruction does when removed from an instruction queue
      */
-    fun remove(): Boolean {
+    open fun remove(): Boolean {
         this.drone.instructions.removeAt(this.location)
         return true
     }
@@ -58,7 +53,7 @@ enum class Instruction(var maxHealth: Int, val memory: Int, val type: Instructio
     /**
      * What the instruction does at the end of every turn when its turn in the queue arrives
      */
-    fun act(): Boolean {
+    open fun act(): Boolean {
         this.selectedPlanet = null
         this.selectedDrone = null
         return true
@@ -68,7 +63,7 @@ enum class Instruction(var maxHealth: Int, val memory: Int, val type: Instructio
      * Reduces this instruction's health, and handles its destruction if necessary
      * Avoid overloading this if possible
      */
-    fun takeDamage(damage: Int = 1): Boolean {
+    open fun takeDamage(damage: Int = 1): Boolean {
         this.health -= damage
         return true
     }
@@ -77,7 +72,7 @@ enum class Instruction(var maxHealth: Int, val memory: Int, val type: Instructio
      * What happens when the instruction sustains enough damage to take its health to 0
      * Avoid overloading this if possible
      */
-    fun getDestroyed(): Boolean {
+    open fun getDestroyed(): Boolean {
         this.remove()
         return true
     }

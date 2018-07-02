@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.map
 
 import com.badlogic.gdx.graphics.Color
+import com.prophetsofprofit.galacticrush.logic.drone.Drone
 
 /**
  * Names for arbitrary attributes
@@ -35,6 +36,7 @@ class Planet(var x: Float,
     //Arbitrary attributes that determine drone behaviour: can be changed, but each start out as a random number between 0 and 1
     val attributes = Attribute.values().map { it to Math.random() }.toMap()
     val connectedHighways = mutableListOf<CosmicHighway>()
+    val drones = mutableListOf<Drone>()
 
     fun getConnectedPlanets(): Array<Planet> {
         return Array(connectedHighways.size, { if (connectedHighways[it].p0 === this) connectedHighways[it].p1 else connectedHighways[it].p0 })

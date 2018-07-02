@@ -19,6 +19,8 @@ class Drone(val ownerId: Int) {
     var pointer = 0
     //Where the drone is TODO: get starting location based on owner id
     var location: Planet = Planet(-1.0f, -1.0f, -1.0f)
+    //How much base damage the drone deals when attacking
+    var attack = 5
     //An arbitrary measure of how many instructions a drone can hold;
     //Each instruction has a certain memory use, and the total cannot exceed this value
     val maxMemory = 10
