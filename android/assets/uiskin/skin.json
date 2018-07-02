@@ -1,6 +1,6 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	fontDotum: { file: ../fonts/Dotum.fnt }
+	fontDotum: { file: Dotum.fnt }
 }
 com.badlogic.gdx.graphics.Color: {
 	GreenSpace: {

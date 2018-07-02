@@ -17,7 +17,6 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
-import java.io.File
 
 /**
  * The screen where all the playing will be done
@@ -32,7 +31,7 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
     //The highest (furthest) zoom factor allowed
     val maxZoom = 1f
     //The music player object; initialize with all files in music folder
-    val musicPlayer = MusicPlayer(Array(File("music/").list().size) { "music/" + File("music/").list()[it] })
+    val musicPlayer = MusicPlayer(Array(Gdx.files.internal("music/").list().size) { "" + Gdx.files.internal("music/").list()[it] })
 
     /**
      * Initializes the camera for the screen
