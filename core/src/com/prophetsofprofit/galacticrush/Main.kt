@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -53,6 +54,7 @@ class Main : Game() {
     override fun dispose() {
         this.batch.dispose()
         this.shapeRenderer.dispose()
+        this.screen.dispose()
     }
 
     /**

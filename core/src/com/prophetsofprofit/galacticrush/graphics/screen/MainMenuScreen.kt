@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import ktx.app.KtxScreen
@@ -45,16 +46,19 @@ class MainMenuScreen(val game: Main) : KtxScreen {
         hostGameButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 music.stop()
+                music.dispose()
                 game.screen = HostLoadingScreen(game, Array(1) { LocalPlayer(0) })
             }
         })
         optionsButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 music.stop()
+                music.dispose()
                 game.screen = OptionsScreen(game, this@MainMenuScreen)
             }
         })
         Gdx.input.inputProcessor = this.uiContainer
+        Networker.reset()
     }
 
     /**

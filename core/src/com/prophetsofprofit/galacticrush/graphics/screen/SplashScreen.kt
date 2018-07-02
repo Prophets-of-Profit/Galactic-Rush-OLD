@@ -54,6 +54,7 @@ class SplashScreen(val game: Main) : KtxScreen {
         //Update wait time or go to next screen if wait is enough
         this.currentWait += delta
         if (this.currentWait >= this.minWait) {
+            this.sound.dispose()
             this.game.screen = MainMenuScreen(this.game)
         }
         //Update sprite alpha and draw sprite and text

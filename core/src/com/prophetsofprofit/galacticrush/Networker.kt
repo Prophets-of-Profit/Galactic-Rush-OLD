@@ -36,6 +36,16 @@ object Networker {
     }
 
     /**
+     * Resets the networker so that it must be initialized again befeore usage
+     */
+    fun reset() {
+        this.client?.dispose()
+        this.server?.dispose()
+        this.client = null
+        this.server = null
+    }
+
+    /**
      * Gets the client of this networker if the networker is a client
      */
     fun getClient(): Client {

@@ -33,4 +33,11 @@ class MusicPlayer(musicPath: Array<String>) {
         }
     }
 
+    /**
+     * Disposes of the music player by disposing of all of the contained music
+     */
+    fun dispose() {
+        this.music.forEach { it.dispose() }
+    }
+
 }
