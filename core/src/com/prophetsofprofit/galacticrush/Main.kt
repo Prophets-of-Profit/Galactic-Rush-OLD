@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.GdxRuntimeException
 import com.prophetsofprofit.galacticrush.graphics.screen.SplashScreen
@@ -55,6 +57,15 @@ class Main : Game() {
         this.batch.dispose()
         this.shapeRenderer.dispose()
         this.screen.dispose()
+    }
+
+    /**
+     * Converts window coordinates (as integers) into coordinates from the camera
+     * Returns the coordinates to a 2-dimensional vector
+     */
+    fun windowToCamera(x: Int, y: Int): Vector2 {
+        val convertedVector = this.camera.unproject(Vector3(x.toFloat(), y.toFloat(), 0f))
+        return Vector2(convertedVector.x, convertedVector.y)
     }
 
     /**
