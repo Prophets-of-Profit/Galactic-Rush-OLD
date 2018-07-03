@@ -10,9 +10,13 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
  * If no drone is targeted, choose a random one on the same planet
  */
 class Attack(location: Int, drone: Drone):
-        Instruction(5, 1, InstructionType.COMBAT, location, Sprite(), drone) {
+        Instruction(3, 1, InstructionType.COMBAT, location, Sprite(), drone) {
 
+    /**
+     * Activates every turn, provided there is a drone on the same planet as the user
+     */
     override fun act(): Boolean {
+        if(this.drone.location.drones.isEmpty()) return false
         if(this.selectedDrone == null) {
             this.selectedDrone = this.drone.location.drones.shuffled()[0]
         }

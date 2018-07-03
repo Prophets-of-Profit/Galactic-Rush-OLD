@@ -54,8 +54,22 @@ abstract class Instruction(var maxHealth: Int, val memory: Int, val type: Instru
      * What the instruction does at the end of every turn when its turn in the queue arrives
      */
     open fun act(): Boolean {
-        this.selectedPlanet = null
+        return true
+    }
+
+    /**
+     * What the instruction does when the drone begins reading
+     */
+    open fun startCycle(): Boolean {
+        return true
+    }
+
+    /**
+     * What the instruction does when the drone stops reading
+     */
+    open fun endCycle(): Boolean {
         this.selectedDrone = null
+        this.selectedPlanet = null
         return true
     }
 

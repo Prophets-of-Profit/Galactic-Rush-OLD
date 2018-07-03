@@ -38,8 +38,12 @@ class Planet(var x: Float,
     val connectedHighways = mutableListOf<CosmicHighway>()
     val drones = mutableListOf<Drone>()
 
-    fun getConnectedPlanets(): Array<Planet> {
-        return Array(connectedHighways.size, { if (connectedHighways[it].p0 === this) connectedHighways[it].p1 else connectedHighways[it].p0 })
-    }
+    /*
+     * The planers that are reachable within one move from here
+     */
+    val connectedPlanets: List<Planet>
+        get() {
+            return List(connectedHighways.size, { if (connectedHighways[it].p0 === this) connectedHighways[it].p1 else connectedHighways[it].p0 })
+        }
 
 }

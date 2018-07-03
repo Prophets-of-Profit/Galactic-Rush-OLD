@@ -76,6 +76,20 @@ class Drone(val ownerId: Int) {
     }
 
     /**
+     * Calls startCycle for all instructions in the queue
+     */
+    fun startCycle() {
+        this.instructions.forEach { it.startCycle() }
+    }
+
+    /**
+     * Calls endCyclye for all instructions in the queue
+     */
+    fun endCycle() {
+        this.instructions.forEach { it.endCycle() }
+    }
+
+    /**
      * Advances the pointer by some number of steps, changing what the drone will read next
      */
     fun advancePointer(steps: Int) {
