@@ -5,12 +5,14 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.MusicPlayer
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
 import ktx.app.KtxScreen
 import kotlin.math.max
@@ -32,6 +34,8 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
     val maxZoom = 1f
     //The music player object; initialize with all files in music folder
     val musicPlayer = MusicPlayer(Array(Gdx.files.internal("music/").list().size) { "" + Gdx.files.internal("music/").list()[it] })
+    //The planet currently selected by the player
+    var selectedPlanet: Planet? = null
 
     /**
      * Initializes the camera for the screen
@@ -68,14 +72,28 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
         this.game.shapeRenderer.end()
 
         //Render planets as colored circles
-        //TODO: add textures for planets
+        //Draws outline of inverted color for selected planet
+        //TODO: add textures for planets and for selected planet
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+        if (this.selectedPlanet != null) {
+            this.game.shapeRenderer.color = Color(1 - this.selectedPlanet!!.color.r, 1 - this.selectedPlanet!!.color.g, 1 - this.selectedPlanet!!.color.b, 1f)
+            this.game.shapeRenderer.circle(this.selectedPlanet!!.x * this.game.camera.viewportWidth, this.selectedPlanet!!.y * this.game.camera.viewportHeight, 15 * this.selectedPlanet!!.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
+        }
         for (planet in this.mainGame.galaxy.planets) {
             this.game.shapeRenderer.color = planet.color
             this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 10 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
         }
         this.game.shapeRenderer.end()
         this.musicPlayer.update()
+    }
+
+    /**
+     * Indicates that the selected planet is selected
+     */
+    private fun drawSelectionArrows() {
+        if (this.selectedPlanet != null) {
+
+        }
     }
 
     /**
@@ -135,8 +153,26 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
     //Called when the mouse button is pressed
     override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
 
-    //Called when the mouse button is released
-    override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
+    /**
+     * When the mouse button is released, check to see if planets are selected
+     */
+    override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean {
+        println(this.game.windowToCamera(x, y).x / this.game.camera.viewportWidth)
+        println(this.game.windowToCamera(x, y).y / this.game.camera.viewportHeight)
+        println()
+        var planetClicked = false
+        for (p in this.mainGame.galaxy.planets) {
+            if(sqrt((this.game.windowToCamera(x, y).x / this.game.camera.viewportWidth - p.x).pow(2)
+                    + (this.game.windowToCamera(x, y).y / this.game.camera.viewportHeight - p.y).pow(2))
+                    < p.radius * 10) {
+                println("Selected planet")
+                this.selectedPlanet = p
+                planetClicked = true
+                break
+            }
+        }
+        return true
+    }
 
     //Called when the mouse moves
     override fun mouseMoved(x: Int, y: Int): Boolean = false
