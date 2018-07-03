@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.Vector2
@@ -91,9 +90,10 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
      * Indicates that the selected planet is selected
      */
     private fun drawSelectionArrows() {
-        if (this.selectedPlanet != null) {
-
+        if (this.selectedPlanet == null) {
+            return
         }
+        //TODO: make
     }
 
     /**
@@ -127,6 +127,19 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
         return true
     }
 
+    /**
+     * When the screen is tapped, check to see if any planets are selected
+     * Will only consume the tap event if a planet is selected
+     */
+    override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
+        this.selectedPlanet = this.mainGame.galaxy.planets.firstOrNull {
+            //it != this.selectedPlanet && /* This line of code will unselect a selected planet if clicked on again; TODO: discuss desired behaviour */
+            sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
+                + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
+        }
+        return this.selectedPlanet != null
+    }
+
     //GestureListener abstract method implementations:
     //Called when a finger is dragged and lifted
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean = false
@@ -143,9 +156,6 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
     //Called when distance between fingers stops changing in multitouch
     override fun pinchStop() {}
 
-    //Called when the screen is tapped
-    override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean = false
-
     //Called when the screen is touched
     override fun touchDown(x: Float, y: Float, pointer: Int, button: Int): Boolean = false
 
@@ -153,26 +163,8 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
     //Called when the mouse button is pressed
     override fun touchDown(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
 
-    /**
-     * When the mouse button is released, check to see if planets are selected
-     */
-    override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean {
-        println(this.game.windowToCamera(x, y).x / this.game.camera.viewportWidth)
-        println(this.game.windowToCamera(x, y).y / this.game.camera.viewportHeight)
-        println()
-        var planetClicked = false
-        for (p in this.mainGame.galaxy.planets) {
-            if(sqrt((this.game.windowToCamera(x, y).x / this.game.camera.viewportWidth - p.x).pow(2)
-                    + (this.game.windowToCamera(x, y).y / this.game.camera.viewportHeight - p.y).pow(2))
-                    < p.radius * 10) {
-                println("Selected planet")
-                this.selectedPlanet = p
-                planetClicked = true
-                break
-            }
-        }
-        return true
-    }
+    //Called when the mouse button is released
+    override fun touchUp(x: Int, y: Int, pointer: Int, button: Int): Boolean = false
 
     //Called when the mouse moves
     override fun mouseMoved(x: Int, y: Int): Boolean = false
