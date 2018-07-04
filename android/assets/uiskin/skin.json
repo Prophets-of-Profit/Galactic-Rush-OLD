@@ -45,15 +45,15 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: Dotum
-		fontColor: GreenSpace
+		fontColor: OrangePlanetary
 		background: label
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
 		font: Dotum
-		fontColorSelected: GreenSpace
-		fontColorUnselected: GreenSpace
+		fontColorSelected: OrangePlanetary
+		fontColorUnselected: OrangePlanetary
 		selection: label
 	}
 }
@@ -72,12 +72,12 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
 		font: Dotum
-		fontColor: GreenSpace
-		downFontColor: GreenSpace
-		overFontColor: GreenSpace
-		checkedFontColor: GreenSpace
-		checkedOverFontColor: GreenSpace
-		disabledFontColor: GreenSpace
+		fontColor: OrangePlanetary
+		downFontColor: OrangePlanetary
+		overFontColor: OrangePlanetary
+		checkedFontColor: OrangePlanetary
+		checkedOverFontColor: OrangePlanetary
+		disabledFontColor: OrangePlanetary
 		up: titleButton
 		down: titleButtonDown
 		over: titleButtonOver
