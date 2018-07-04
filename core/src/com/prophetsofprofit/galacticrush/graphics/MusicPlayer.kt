@@ -40,4 +40,13 @@ class MusicPlayer(musicPath: Array<String>) {
         this.music.forEach { it.dispose() }
     }
 
+    /**
+     * Sets the volume of all of the music playing in this music player
+     */
+    fun setVolume(volume: Float) {
+        for (m in this.music) {
+            m.setVolume(volume)
+        }
+    }
+
 }

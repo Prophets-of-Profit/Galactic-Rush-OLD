@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
+import com.prophetsofprofit.galacticrush.graphics.MusicPlayer
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import ktx.app.KtxScreen
@@ -24,7 +25,7 @@ import ktx.scene2d.Scene2DSkin
 class MainMenuScreen(val game: Main) : KtxScreen {
 
     //Music to play in the main menu
-    val music = Gdx.audio.newMusic(Gdx.files.internal("meta/TheIntergalactic.mp3"))
+    val music = MusicPlayer(Array(1, { "meta/TheIntergalactic.mp3" }))
     val backgroundTexture = Texture("meta/Background.png")
     val titleTexture = Texture("meta/Title.png")
     var timeSpent = 0f
@@ -32,8 +33,6 @@ class MainMenuScreen(val game: Main) : KtxScreen {
 
     init {
         this.game.batch.projectionMatrix = this.game.camera.combined
-        music.isLooping = true
-        music.play()
         val hostGameButton = TextButton("Host a Game", Scene2DSkin.defaultSkin)
         val joinGameButton = TextButton("Join a Game", Scene2DSkin.defaultSkin)
         val optionsButton = TextButton("Options", Scene2DSkin.defaultSkin)
@@ -45,14 +44,12 @@ class MainMenuScreen(val game: Main) : KtxScreen {
         this.uiContainer.addActor(optionsButton)
         hostGameButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                music.stop()
                 music.dispose()
                 game.screen = HostLoadingScreen(game, Array(1) { LocalPlayer(0) })
             }
         })
         optionsButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                music.stop()
                 music.dispose()
                 game.screen = OptionsScreen(game, this@MainMenuScreen)
             }
@@ -76,6 +73,8 @@ class MainMenuScreen(val game: Main) : KtxScreen {
             it.draw(titleTexture, 0f, 400f, 1600f, 500f)
         }
         this.uiContainer.draw()
+        //Update the playing music
+        this.music.update()
     }
 
     /**
