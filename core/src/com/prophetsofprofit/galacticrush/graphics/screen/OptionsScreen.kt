@@ -44,13 +44,18 @@ class OptionsScreen(val game: Main, val exitProcedure: () -> Unit): KtxScreen {
         //TODO: make reset to default options button
         val musicVolumeLabel = Label("Music Volume", Scene2DSkin.defaultSkin)
         val soundVolumeLabel = Label("Sound Volume", Scene2DSkin.defaultSkin)
-        musicVolumeSlider.value = game.userOptions.musicVolume.toFloat()
-        soundVolumeSlider.value = game.userOptions.soundVolume.toFloat()
+        musicVolumeSlider.value = game.userOptions.musicVolume
+        soundVolumeSlider.value = game.userOptions.soundVolume
         musicVolumeLabel.setPosition(this.uiContainer.width * 0.5f, this.uiContainer.height * 0.9f, Align.center)
         musicVolumeSlider.setPosition(this.uiContainer.width * 0.5f, this.uiContainer.height * 0.75f, Align.center)
         soundVolumeLabel.setPosition(this.uiContainer.width * 0.5f, this.uiContainer.height * 0.60f, Align.center)
         soundVolumeSlider.setPosition(this.uiContainer.width * 0.5f, this.uiContainer.height * 0.45f, Align.center)
         backButton.setPosition(this.uiContainer.width * 0.5f, this.uiContainer.height * 0.1f, Align.center)
+        this.uiContainer.addActor(musicVolumeSlider)
+        this.uiContainer.addActor(soundVolumeSlider)
+        this.uiContainer.addActor(musicVolumeLabel)
+        this.uiContainer.addActor(soundVolumeLabel)
+        this.uiContainer.addActor(backButton)
     }
 
     /**
