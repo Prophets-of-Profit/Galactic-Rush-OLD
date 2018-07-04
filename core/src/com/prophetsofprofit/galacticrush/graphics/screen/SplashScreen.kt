@@ -33,13 +33,13 @@ class SplashScreen(val game: Main) : KtxScreen {
      * Initializes splash assets
      */
     init {
+        this.sound.setVolume(this.sound.play(), this.game.userOptions.soundVolume)
         this.game.batch.projectionMatrix = this.game.camera.combined
         this.logo.setCenter(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 2)
         this.logo.scale(2f)
         this.titleLabel.setPosition(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 1.25f, Align.center)
         this.titleLabel.setAlignment(Align.center, Align.center)
         //TODO: sound doesn't play on Android for some reason
-        this.sound.play()
     }
 
     /**

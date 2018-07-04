@@ -20,14 +20,14 @@ import ktx.scene2d.Scene2DSkin
  * The screen where the user can change their options
  * TODO: this screen errors right now because it uses sliders that error because there is no default-horizontal slider style
  */
-class OptionsScreen(val game: Main, val returnScreen: KtxScreen): KtxScreen {
+class OptionsScreen(val game: Main, val exitProcedure: () -> Unit): KtxScreen {
 
     //The container for all of the UI elements
     val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.game.camera.viewportWidth, this.game.camera.viewportHeight))
     //The horizontal slider for controlling music volume
-    val musicVolumeSlider = Slider(0f, 100f, 1f, false, Scene2DSkin.defaultSkin)
+    val musicVolumeSlider = Slider(0f, 1f, 0.1f, false, Scene2DSkin.defaultSkin)
     //The horizontal slider for controlling sound volume
-    val soundVolumeSlider = Slider(0f, 100f, 1f, false, Scene2DSkin.defaultSkin)
+    val soundVolumeSlider = Slider(0f, 1f, 0.1f, false, Scene2DSkin.defaultSkin)
 
     /**
      * Initializes UI components
@@ -57,8 +57,8 @@ class OptionsScreen(val game: Main, val returnScreen: KtxScreen): KtxScreen {
      * When the options screen is to be left, the new options are saved and the returnScreen is set as the game's screen
      */
     private fun exitScreen() {
-        game.userOptions = Options(musicVolumeSlider.value.toInt(), soundVolumeSlider.value.toInt())
-        game.screen = returnScreen
+        game.userOptions = Options(musicVolumeSlider.value, soundVolumeSlider.value)
+        this.exitProcedure()
     }
 
     /**

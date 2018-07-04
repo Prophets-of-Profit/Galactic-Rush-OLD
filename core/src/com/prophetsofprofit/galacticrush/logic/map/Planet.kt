@@ -39,7 +39,7 @@ class Planet(var x: Float,
     val drones = mutableListOf<Drone>()
 
     /*
-     * The planers that are reachable within one move from here
+     * The planets that are reachable within one move from here
      */
     val connectedPlanets: List<Planet>
         get() {

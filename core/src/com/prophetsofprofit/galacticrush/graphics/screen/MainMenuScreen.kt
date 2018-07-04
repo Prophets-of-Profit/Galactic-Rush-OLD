@@ -32,6 +32,8 @@ class MainMenuScreen(val game: Main) : KtxScreen {
     val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.game.camera.viewportWidth, this.game.camera.viewportHeight))
 
     init {
+        //should be this.music.volume = ...
+        this.music.setVolume(this.game.userOptions.musicVolume)
         this.game.batch.projectionMatrix = this.game.camera.combined
         val hostGameButton = TextButton("Host a Game", Scene2DSkin.defaultSkin)
         val joinGameButton = TextButton("Join a Game", Scene2DSkin.defaultSkin)
@@ -51,7 +53,7 @@ class MainMenuScreen(val game: Main) : KtxScreen {
         optionsButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 music.dispose()
-                game.screen = OptionsScreen(game, this@MainMenuScreen)
+                game.screen = OptionsScreen(game, { game.screen = MainMenuScreen(game) })
             }
         })
         Gdx.input.inputProcessor = this.uiContainer

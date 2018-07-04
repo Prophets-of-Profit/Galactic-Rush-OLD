@@ -23,7 +23,7 @@ import java.io.ObjectOutputStream
 class Main : Game() {
 
     //The user controllable options: set to default values, but changes get written to file and applied
-    var userOptions: Options = Options(25, 50)
+    var userOptions: Options = Options(.25f, .5f)
         set(value) {
             field = value
             applyOptions()
