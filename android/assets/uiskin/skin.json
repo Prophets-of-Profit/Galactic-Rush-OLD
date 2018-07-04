@@ -1,13 +1,20 @@
-
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	fontDotum: { file: Dotum.fnt }
+	Dotum: {
+		file: Dotum.fnt
+	}
 }
 com.badlogic.gdx.graphics.Color: {
 	GreenSpace: {
 		r: 0.47058824
 		g: 0.74509805
 		b: 0.4745098
+		a: 1
+	}
+	OrangePlanetary: {
+		r: 0.73666674
+		g: 0.5323427
+		b: 0.17188889
 		a: 1
 	}
 }
@@ -31,20 +38,20 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOff: checkBoxDown
 		checkboxOnDisabled: checkBoxDisableChecked
 		checkboxOffDisabled: checkBoxDisable
-		font: fontDotum
+		font: Dotum
 		fontColor: GreenSpace
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: fontDotum
+		font: Dotum
 		fontColor: GreenSpace
 		background: label
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: fontDotum
+		font: Dotum
 		fontColorSelected: GreenSpace
 		fontColorUnselected: GreenSpace
 		selection: label
@@ -56,9 +63,15 @@ com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 		knob: loadingKnob
 	}
 }
+com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+	default-horizontal: {
+		background: slider
+		knob: sliderKnob
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		font: fontDotum
+		font: Dotum
 		fontColor: GreenSpace
 		downFontColor: GreenSpace
 		overFontColor: GreenSpace
@@ -73,8 +86,8 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
-		font: fontDotum
-		fontColor: GreenSpace
+		font: Dotum
+		fontColor: OrangePlanetary
 		background: textField
 	}
 }

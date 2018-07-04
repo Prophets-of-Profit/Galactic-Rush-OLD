@@ -1,54 +1,61 @@
 
 skin.png
-size: 512,512
+size: 1024,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+Dotum
+  rotate: false
+  xy: 1, 505
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
 checkBox
   rotate: false
-  xy: 1, 270
+  xy: 1, 322
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisable
   rotate: false
-  xy: 1, 243
+  xy: 515, 836
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisableChecked
   rotate: false
-  xy: 28, 270
+  xy: 598, 888
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDown
   rotate: false
-  xy: 203, 322
+  xy: 203, 374
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDownChecked
   rotate: false
-  xy: 230, 322
+  xy: 789, 940
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxOver
   rotate: false
-  xy: 405, 374
+  xy: 405, 426
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 label
   rotate: false
-  xy: 1, 297
+  xy: 1, 349
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
@@ -62,14 +69,28 @@ loadingBar
   index: -1
 loadingKnob
   rotate: false
-  xy: 405, 401
+  xy: 515, 863
   size: 81, 50
   orig: 81, 50
   offset: 0, 0
   index: -1
+slider
+  rotate: false
+  xy: 515, 967
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
+sliderKnob
+  rotate: false
+  xy: 717, 915
+  size: 70, 50
+  orig: 70, 50
+  offset: 0, 0
+  index: -1
 textField
   rotate: false
-  xy: 203, 349
+  xy: 203, 401
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
@@ -83,7 +104,7 @@ titleButton
   index: -1
 titleButtonDisable
   rotate: false
-  xy: 203, 401
+  xy: 817, 967
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
@@ -97,7 +118,7 @@ titleButtonDown
   index: -1
 titleButtonOver
   rotate: false
-  xy: 1, 349
+  xy: 515, 915
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
