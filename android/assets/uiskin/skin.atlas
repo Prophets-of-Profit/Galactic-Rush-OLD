@@ -6,42 +6,42 @@ filter: Linear,Linear
 repeat: none
 checkBox
   rotate: false
-  xy: 405, 426
+  xy: 1, 270
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisable
   rotate: false
-  xy: 286, 374
+  xy: 1, 243
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisableChecked
   rotate: false
-  xy: 432, 426
+  xy: 28, 270
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDown
   rotate: false
-  xy: 1, 270
+  xy: 203, 322
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDownChecked
   rotate: false
-  xy: 1, 243
+  xy: 230, 322
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxOver
   rotate: false
-  xy: 203, 322
+  xy: 405, 374
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -62,9 +62,16 @@ loadingBar
   index: -1
 loadingKnob
   rotate: false
-  xy: 203, 349
+  xy: 405, 401
   size: 81, 50
   orig: 81, 50
+  offset: 0, 0
+  index: -1
+textField
+  rotate: false
+  xy: 203, 349
+  size: 200, 50
+  orig: 200, 50
   offset: 0, 0
   index: -1
 titleButton
