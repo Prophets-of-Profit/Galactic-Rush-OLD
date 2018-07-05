@@ -1,21 +1,14 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.Scaling
-import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.esotericsoftware.kryonet.Connection
 import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
-import ktx.app.KtxScreen
 
 /**
  * The screen where the host of the game can wait for clients and set the game settings
  */
-class WaitForClientScreen(val game: Main): KtxScreen {
-
-    //The stage that contains all of the UI components
-    val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.game.camera.viewportWidth, this.game.camera.viewportHeight))
+class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
 
     /**
      * Initializes the networker as a host
@@ -32,18 +25,7 @@ class WaitForClientScreen(val game: Main): KtxScreen {
         })
     }
 
-    /**
-     * Draws the ui of the screen
-     */
-    override fun render(delta: Float) {
-        this.uiContainer.draw()
-    }
-
-    /**
-     * Updates the uiContainer on window resize
-     */
-    override fun resize(width: Int, height: Int) {
-        this.uiContainer.viewport.update(width, height)
-    }
+    override fun draw(delta: Float) {}
+    override fun leave() {}
 
 }

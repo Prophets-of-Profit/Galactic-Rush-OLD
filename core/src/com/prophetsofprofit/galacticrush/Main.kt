@@ -2,12 +2,14 @@ package com.prophetsofprofit.galacticrush
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.SplashScreen
 import ktx.scene2d.Scene2DSkin
 import java.io.ObjectInputStream
@@ -71,8 +73,19 @@ class Main : Game() {
      * Updates the game to reflect current options and saves options to file
      */
     private fun applyOptions() {
-        //TODO: make changes to game based on options
+        if (this.screen != null) {
+            (this.screen as GalacticRushScreen).applyOptions()
+        }
         ObjectOutputStream(optionsFile.write(false)).writeObject(this.userOptions)
+    }
+
+    /**
+     * When changing screens, ensures that each screen is a GalacticRushScreen
+     */
+    override fun setScreen(screen: Screen) {
+        assert(screen is GalacticRushScreen) { "$screen is not a GalacticRushScreen!" }
+        super.setScreen(screen)
+        (screen as GalacticRushScreen).applyOptions()
     }
 
 }

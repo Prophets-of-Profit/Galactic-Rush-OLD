@@ -1,18 +1,16 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.loading
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.utils.Array
 import com.prophetsofprofit.galacticrush.Main
-import ktx.app.KtxScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import ktx.app.use
 
 /**
  * A set of behaviour common to loading screens regardless of them being client or host
  */
-abstract class LoadingScreen(val game: Main) : KtxScreen {
+abstract class LoadingScreen(game: Main) : GalacticRushScreen(game) {
 
     //Measures time spent loading
     val animation = Animation<Texture>(2.25f, Array(Array(28) { Texture("animations/loading/LoadingScreen$it.png") }))
@@ -25,8 +23,6 @@ abstract class LoadingScreen(val game: Main) : KtxScreen {
      * Starts initializing the galaxy and sets the screen coordinate system with the camera
      */
     init {
-        this.game.camera.setToOrtho(false, 1600f, 900f)
-        this.game.batch.projectionMatrix = this.game.camera.combined
         Thread {
             this.load()
             this.isDone = true
@@ -47,10 +43,7 @@ abstract class LoadingScreen(val game: Main) : KtxScreen {
      * How the screen is drawn
      * Draws an image of the animation every frame
      */
-    override fun render(delta: Float) {
-        //Clears the screen
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+    override fun draw(delta: Float) {
         //Checks if the screen is done loading and then performs the onLoad action if loading is done
         if (this.isDone) {
             this.onLoad()
@@ -61,5 +54,10 @@ abstract class LoadingScreen(val game: Main) : KtxScreen {
             it.draw(animation.getKeyFrame(this.elapsedTime, true), 500f, 150f, 600f, 600f, 0, 0, 64, 64, false, false)
         }
     }
+
+    /**
+     * No special leave procedure in loading screen
+     */
+    override fun leave() {}
 
 }

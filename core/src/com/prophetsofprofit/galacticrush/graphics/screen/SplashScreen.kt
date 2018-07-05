@@ -1,13 +1,11 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
-import ktx.app.KtxScreen
 import ktx.app.use
 import ktx.scene2d.Scene2DSkin
 import kotlin.math.min
@@ -16,7 +14,7 @@ import kotlin.math.min
  * The screen that first shows up that shows the user who made this game (the Prolific Prophets of Profit)
  * Displays for a short time and plays a quick jingle before procceding to the main menu
  */
-class SplashScreen(val game: Main) : KtxScreen {
+class SplashScreen(game: Main) : GalacticRushScreen(game) {
 
     //How long to wait before going to MainMenuScreen
     val minWait = 5f
@@ -34,7 +32,6 @@ class SplashScreen(val game: Main) : KtxScreen {
      */
     init {
         this.sound.setVolume(this.sound.play(), this.game.userOptions.soundVolume)
-        this.game.batch.projectionMatrix = this.game.camera.combined
         this.logo.setCenter(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 2)
         this.logo.scale(2f)
         this.titleLabel.setPosition(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 1.25f, Align.center)
@@ -47,10 +44,7 @@ class SplashScreen(val game: Main) : KtxScreen {
      * Updates how long the user has waited, and will move to menu screen once user has waited long enough
      * Renders the prophets of profits logo with increasing visibility with maximum visibility after the screen has appeared for half of its duration
      */
-    override fun render(delta: Float) {
-        //Color background in black
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+    override fun draw(delta: Float) {
         //Update wait time or go to next screen if wait is enough
         this.currentWait += delta
         if (this.currentWait >= this.minWait) {
@@ -63,6 +57,13 @@ class SplashScreen(val game: Main) : KtxScreen {
             this.logo.draw(it)
             this.titleLabel.draw(it, 1f)
         }
+    }
+
+    /**
+     * Disposes held assets on leave
+     */
+    override fun leave() {
+        this.sound.dispose()
     }
 
 }

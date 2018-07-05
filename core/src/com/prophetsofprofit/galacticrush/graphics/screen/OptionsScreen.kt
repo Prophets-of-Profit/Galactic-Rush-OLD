@@ -1,29 +1,20 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.Scaling
-import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Options
-import ktx.app.KtxScreen
 import ktx.scene2d.Scene2DSkin
 
 /**
  * The screen where the user can change their options
- * TODO: this screen errors right now because it uses sliders that error because there is no default-horizontal slider style
  */
-class OptionsScreen(val game: Main, val exitProcedure: () -> Unit): KtxScreen {
+class OptionsScreen(game: Main, val exitProcedure: () -> Unit) : GalacticRushScreen(game) {
 
-    //The container for all of the UI elements
-    val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.game.camera.viewportWidth, this.game.camera.viewportHeight))
     //The horizontal slider for controlling music volume
     val musicVolumeSlider = Slider(0f, 1f, 0.1f, false, Scene2DSkin.defaultSkin)
     //The horizontal slider for controlling sound volume
@@ -33,8 +24,6 @@ class OptionsScreen(val game: Main, val exitProcedure: () -> Unit): KtxScreen {
      * Initializes UI components
      */
     init {
-        this.game.batch.projectionMatrix = this.game.camera.combined
-        Gdx.input.inputProcessor = this.uiContainer
         val backButton = TextButton("Back", Scene2DSkin.defaultSkin) //TODO: change for ImageButton with back icon
         backButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -66,20 +55,7 @@ class OptionsScreen(val game: Main, val exitProcedure: () -> Unit): KtxScreen {
         this.exitProcedure()
     }
 
-    /**
-     * Drawing just clears the screen and draws all the UI components
-     */
-    override fun render(delta: Float) {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        this.uiContainer.draw()
-    }
-
-    /**
-     * Resizing just alerts the uiContainer of the new window dimensions
-     */
-    override fun resize(width: Int, height: Int) {
-        this.uiContainer.viewport.update(width, height)
-    }
+    override fun draw(delta: Float) {}
+    override fun leave() {}
 
 }

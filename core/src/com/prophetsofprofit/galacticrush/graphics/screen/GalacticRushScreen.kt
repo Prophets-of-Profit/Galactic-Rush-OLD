@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.prophetsofprofit.galacticrush.Main
-import com.prophetsofprofit.galacticrush.Options
 import com.prophetsofprofit.galacticrush.graphics.MusicPlayer
 import ktx.app.KtxScreen
 
@@ -30,7 +29,7 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
      */
     init {
         Gdx.input.inputProcessor = InputMultiplexer(this, GestureDetector(this), this.uiContainer)
-        this.musicPlayer.volume = game.userOptions.musicVolume
+        this.applyOptions()
         this.musicPlayer.start()
     }
 
@@ -45,9 +44,11 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
     abstract fun leave()
 
     /**
-     * Allows the screen to handle a change in options
+     * The procedure for the screen to handle a change in options
      */
-    open fun applyOptions(options: Options) {}
+    fun applyOptions() {
+        this.musicPlayer.volume = this.game.userOptions.musicVolume
+    }
 
     /**
      * The exit procedure for the screen just disposes of held items
