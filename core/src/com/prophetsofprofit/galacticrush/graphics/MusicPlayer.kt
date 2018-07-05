@@ -5,11 +5,12 @@ import com.badlogic.gdx.Gdx
 /**
  * A class which handles the playing of multiple tracks of music
  * Takes in a list of paths to the music
+ * TODO: make sound manager
  */
-class MusicPlayer(musicPath: Array<String>) {
+class MusicPlayer(musicPath: Array<String> = arrayOf()) {
 
     //The list of music to be played by this music player
-    val music = Array(musicPath.size) { Gdx.audio.newMusic(Gdx.files.internal(musicPath[it])) }
+    private val music = MutableList(musicPath.size) { Gdx.audio.newMusic(Gdx.files.internal(musicPath[it])) }
     //The index of music playing
     var musicPlaying = 0
     //Getters and setters for the music volume
@@ -21,8 +22,28 @@ class MusicPlayer(musicPath: Array<String>) {
      * Initializes; starts playing the first music in the list
      */
     init {
-        if (music.isNotEmpty()) music[0].play()
+        this.start()
     }
+
+    /**
+     * Starts playing the music from the beginning
+     */
+    fun start() {
+        if (music.isNotEmpty()) {
+            music[0].play()
+        }
+    }
+
+    /**
+     * Adds a music to the MusicPlayer
+     */
+    fun addMusic(path: String) {
+        val newMusic = Gdx.audio.newMusic(Gdx.files.internal(path))
+        newMusic.volume = this.volume
+        this.music.add(newMusic)
+    }
+
+    //TODO: make a removeMusic method?
 
     /**
      * Updates the music
@@ -30,11 +51,12 @@ class MusicPlayer(musicPath: Array<String>) {
      * and play it
      */
     fun update() {
-        if (!this.music[this.musicPlaying].isPlaying) {
-            this.musicPlaying += 1
-            this.musicPlaying %= music.size
-            this.music[musicPlaying].play()
+        if (this.music.isEmpty() || this.music[this.musicPlaying].isPlaying) {
+            return
         }
+        this.musicPlaying += 1
+        this.musicPlaying %= music.size
+        this.music[musicPlaying].play()
     }
 
     /**

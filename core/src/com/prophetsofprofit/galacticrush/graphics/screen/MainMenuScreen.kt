@@ -52,7 +52,7 @@ class MainMenuScreen(val game: Main) : KtxScreen {
         optionsButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 music.dispose()
-                game.screen = OptionsScreen(game, { game.screen = MainMenuScreen(game) })
+                game.screen = OptionsScreen(game) { game.screen = MainMenuScreen(game) }
             }
         })
         Gdx.input.inputProcessor = this.uiContainer
