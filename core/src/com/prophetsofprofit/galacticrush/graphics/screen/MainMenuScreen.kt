@@ -25,15 +25,14 @@ import ktx.scene2d.Scene2DSkin
 class MainMenuScreen(val game: Main) : KtxScreen {
 
     //Music to play in the main menu
-    val music = MusicPlayer(Array(1, { "meta/TheIntergalactic.mp3" }))
+    val music = MusicPlayer(arrayOf("meta/TheIntergalactic.mp3"))
     val backgroundTexture = Texture("meta/Background.png")
     val titleTexture = Texture("meta/Title.png")
     var timeSpent = 0f
     val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.game.camera.viewportWidth, this.game.camera.viewportHeight))
 
     init {
-        //should be this.music.volume = ...
-        this.music.setVolume(this.game.userOptions.musicVolume)
+        this.music.volume = this.game.userOptions.musicVolume
         this.game.batch.projectionMatrix = this.game.camera.combined
         val hostGameButton = TextButton("Host a Game", Scene2DSkin.defaultSkin)
         val joinGameButton = TextButton("Join a Game", Scene2DSkin.defaultSkin)

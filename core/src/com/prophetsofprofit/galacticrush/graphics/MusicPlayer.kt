@@ -12,6 +12,10 @@ class MusicPlayer(musicPath: Array<String>) {
     val music = Array(musicPath.size) { Gdx.audio.newMusic(Gdx.files.internal(musicPath[it])) }
     //The index of music playing
     var musicPlaying = 0
+    //Getters and setters for the music volume
+    var volume
+        get() = this.music.map { it.volume }.average().toFloat()
+        set(value) = this.music.forEach { it.volume = value }
 
     /**
      * Initializes; starts playing the first music in the list
@@ -38,15 +42,6 @@ class MusicPlayer(musicPath: Array<String>) {
      */
     fun dispose() {
         this.music.forEach { it.dispose() }
-    }
-
-    /**
-     * Sets the volume of all of the music playing in this music player
-     */
-    fun setVolume(volume: Float) {
-        for (m in this.music) {
-            m.setVolume(volume)
-        }
     }
 
 }

@@ -40,7 +40,7 @@ class MainGameScreen(val game: Main, var player: Player) : KtxScreen, GestureDet
      * Initializes the camera for the screen
      */
     init {
-        this.musicPlayer.music.forEach { it.volume = game.userOptions.musicVolume }
+        this.musicPlayer.volume = game.userOptions.musicVolume
         val multiplexer = InputMultiplexer()
         multiplexer.addProcessor(GestureDetector(this))
         multiplexer.addProcessor(this)
