@@ -13,42 +13,42 @@ Dotum
   index: -1
 checkBox
   rotate: false
-  xy: 1, 322
+  xy: 203, 374
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisable
   rotate: false
-  xy: 515, 836
+  xy: 717, 888
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisableChecked
   rotate: false
-  xy: 598, 888
+  xy: 800, 940
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDown
   rotate: false
-  xy: 203, 374
+  xy: 405, 426
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDownChecked
   rotate: false
-  xy: 789, 940
+  xy: 1, 270
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxOver
   rotate: false
-  xy: 405, 426
+  xy: 515, 586
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -69,9 +69,16 @@ loadingBar
   index: -1
 loadingKnob
   rotate: false
-  xy: 515, 863
+  xy: 717, 915
   size: 81, 50
   orig: 81, 50
+  offset: 0, 0
+  index: -1
+sidePanel
+  rotate: false
+  xy: 515, 613
+  size: 200, 300
+  orig: 200, 300
   offset: 0, 0
   index: -1
 slider
@@ -83,7 +90,7 @@ slider
   index: -1
 sliderKnob
   rotate: false
-  xy: 717, 915
+  xy: 1, 297
   size: 70, 50
   orig: 70, 50
   offset: 0, 0
