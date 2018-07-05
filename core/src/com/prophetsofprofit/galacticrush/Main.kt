@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.utils.GdxRuntimeException
 import com.prophetsofprofit.galacticrush.graphics.screen.SplashScreen
 import ktx.scene2d.Scene2DSkin
 import java.io.ObjectInputStream
@@ -22,7 +21,7 @@ import java.io.ObjectOutputStream
 class Main : Game() {
 
     //The user controllable options: set to default values, but changes get written to file and applied
-    var userOptions: Options = Options(.25f, .5f)
+    var userOptions = Options(.25f, .5f)
         set(value) {
             field = value
             applyOptions()
@@ -35,9 +34,10 @@ class Main : Game() {
      * Entry point of the game
      */
     override fun create() {
-        try {
-            userOptions = ObjectInputStream(optionsFile.read()).readObject() as Options
-        } catch (ignored: GdxRuntimeException) {
+        userOptions = try {
+            ObjectInputStream(optionsFile.read()).readObject() as Options
+        } catch (ignored: Exception) {
+            defaultOptions
         } finally {
             applyOptions()
         }
