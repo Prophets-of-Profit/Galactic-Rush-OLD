@@ -1,6 +1,5 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -20,8 +19,6 @@ class SplashScreen(game: Main) : GalacticRushScreen(game) {
     val minWait = 5f
     //How long the user has waited
     var currentWait = 0f
-    //The sound that will play on opening
-    val sound = Gdx.audio.newSound(Gdx.files.internal("meta/ProphetsOfProfit.mp3"))!!
     //The prophets of profit logo
     val logo = Sprite(Texture("meta/CapitalMan.png"))
     //The prophets of profit title
@@ -31,7 +28,7 @@ class SplashScreen(game: Main) : GalacticRushScreen(game) {
      * Initializes splash assets
      */
     init {
-        this.sound.setVolume(this.sound.play(), this.game.userOptions.soundVolume)
+        this.audioManager.playSound("meta/ProphetsOfProfit.mp3")
         this.logo.setCenter(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 2)
         this.logo.scale(2f)
         this.titleLabel.setPosition(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 1.25f, Align.center)
@@ -48,7 +45,6 @@ class SplashScreen(game: Main) : GalacticRushScreen(game) {
         //Update wait time or go to next screen if wait is enough
         this.currentWait += delta
         if (this.currentWait >= this.minWait) {
-            this.sound.dispose()
             this.game.screen = MainMenuScreen(this.game)
         }
         //Update sprite alpha and draw sprite and text
@@ -60,10 +56,8 @@ class SplashScreen(game: Main) : GalacticRushScreen(game) {
     }
 
     /**
-     * Disposes held assets on leave
+     * Does nothing on screen leave
      */
-    override fun leave() {
-        this.sound.dispose()
-    }
+    override fun leave() {}
 
 }

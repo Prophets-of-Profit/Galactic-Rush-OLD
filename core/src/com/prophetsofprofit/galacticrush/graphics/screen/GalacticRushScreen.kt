@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.prophetsofprofit.galacticrush.Main
-import com.prophetsofprofit.galacticrush.graphics.MusicPlayer
+import com.prophetsofprofit.galacticrush.graphics.AudioManager
 import ktx.app.KtxScreen
 
 /**
@@ -21,8 +21,8 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
 
     //The stage that contains all of the screen's UI elements
     protected val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.game.camera.viewportWidth, this.game.camera.viewportHeight))
-    //The MusicPlayer that is the music for the screen
-    protected val musicPlayer = MusicPlayer(musicPaths)
+    //The AudioManager that is the music for the screen
+    protected val audioManager = AudioManager(musicPaths)
 
     /**
      * Sets the screen as the main input method
@@ -30,7 +30,7 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
     init {
         Gdx.input.inputProcessor = InputMultiplexer(this, GestureDetector(this), this.uiContainer)
         this.applyOptions()
-        this.musicPlayer.start()
+        this.audioManager.start()
     }
 
     /**
@@ -47,7 +47,8 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
      * The procedure for the screen to handle a change in options
      */
     fun applyOptions() {
-        this.musicPlayer.volume = this.game.userOptions.musicVolume
+        this.audioManager.musicVolume = this.game.userOptions.musicVolume
+        this.audioManager.soundVolume = this.game.userOptions.soundVolume
     }
 
     /**
@@ -56,7 +57,7 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
     override fun dispose() {
         this.leave()
         this.uiContainer.dispose()
-        this.musicPlayer.dispose()
+        this.audioManager.dispose()
     }
 
     /**
@@ -76,7 +77,7 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
         this.uiContainer.act(delta)
         this.uiContainer.draw()
         //Updates the music player
-        this.musicPlayer.update()
+        this.audioManager.update()
     }
 
     /**

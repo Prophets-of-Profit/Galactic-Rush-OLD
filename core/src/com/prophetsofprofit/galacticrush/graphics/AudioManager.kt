@@ -1,14 +1,12 @@
 package com.prophetsofprofit.galacticrush.graphics
 
 import com.badlogic.gdx.Gdx
-import java.util.Random
 
 /**
  * A class which handles the playing of multiple tracks of music
  * Takes in a list of paths to the music
- * TODO: make sound manager
  */
-class MusicPlayer(musicPath: Array<String> = arrayOf()) {
+class AudioManager(musicPath: Array<String> = arrayOf()) {
 
     //The list of music to be played by this music player
     private val music = MutableList(musicPath.size) { Gdx.audio.newMusic(Gdx.files.internal(musicPath[it])) }
@@ -20,10 +18,12 @@ class MusicPlayer(musicPath: Array<String> = arrayOf()) {
     private var stopped = true
     //Whether or not the playlist will loop; true by default
     var looping = true
-    //Getters and setters for the music volume
-    var volume
+    //Getters and setters for the music musicVolume
+    var musicVolume
         get() = this.music.map { it.volume }.average().toFloat()
         set(value) = this.music.forEach { it.volume = value }
+    //The volume of played sounds
+    var soundVolume = 0f
 
     /**
      * Initializes; starts playing the music
@@ -52,11 +52,11 @@ class MusicPlayer(musicPath: Array<String> = arrayOf()) {
     }
 
     /**
-     * Adds a music to the MusicPlayer
+     * Adds a music to the AudioManager
      */
     fun addMusic(path: String) {
         val newMusic = Gdx.audio.newMusic(Gdx.files.internal(path))
-        newMusic.volume = this.volume
+        newMusic.volume = this.musicVolume
         this.music.add(newMusic)
     }
 
@@ -72,6 +72,14 @@ class MusicPlayer(musicPath: Array<String> = arrayOf()) {
         if (musicPlaying == index) {
             this.update()
         }
+    }
+
+    /**
+     * Plays a sound
+     */
+    fun playSound(path: String) {
+        val newSound = Gdx.audio.newSound(Gdx.files.internal(path))
+        newSound.play(this.soundVolume)
     }
 
     /**
@@ -98,7 +106,7 @@ class MusicPlayer(musicPath: Array<String> = arrayOf()) {
      * Disposes of the music player by disposing of all of the contained music
      */
     fun dispose() {
-        this.music[musicPlaying].stop()
+        this.stop()
         this.music.forEach { it.dispose() }
     }
 

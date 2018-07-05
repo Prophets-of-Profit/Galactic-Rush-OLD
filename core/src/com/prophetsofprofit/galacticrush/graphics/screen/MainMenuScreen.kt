@@ -35,13 +35,13 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         hostGameButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = HostLoadingScreen(game, Array(1) { LocalPlayer(0) })
-                leave()
+                dispose()
             }
         })
         optionsButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = OptionsScreen(game) { game.screen = MainMenuScreen(game) }
-                leave()
+                dispose()
             }
         })
         Gdx.input.inputProcessor = this.uiContainer
@@ -67,7 +67,6 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
     override fun leave() {
         this.titleTexture.dispose()
         this.backgroundTexture.dispose()
-        this.musicPlayer.stop()
     }
 
 }
