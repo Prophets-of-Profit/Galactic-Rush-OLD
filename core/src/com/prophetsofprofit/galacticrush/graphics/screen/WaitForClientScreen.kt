@@ -37,22 +37,23 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                  */
                 override fun connected(connection: Connection?) {
                     //TODO: make
+                    println("YES! Connected as a host to client ${connection?.id}")
                 }
             })
         }
         setUpNetworker()
         //Sets up portTextField to only accept valid ports
-        portTextField.maxLength = 4
-        portTextField.setTextFieldFilter { _, newChar -> newChar.isDigit() }
-        portTextField.setTextFieldListener { textField, _ ->
-            lockButton.isDisabled = textField.text.length != 4
+        this.portTextField.maxLength = 4
+        this.portTextField.setTextFieldFilter { _, newChar -> newChar.isDigit() }
+        this.portTextField.setTextFieldListener { textField, _ ->
+            this.lockButton.isDisabled = textField.text.length != 4
         }
-        portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f, Align.center)
-        portTextField.setAlignment(Align.center)
+        this.portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f, Align.center)
+        this.portTextField.setAlignment(Align.center)
         //Sets up the lockButton
         val confirmPort = "Confirm Port"
         val cancelSelection = "Cancel Selection"
-        lockButton.addListener(object : ClickListener() {
+        this.lockButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 //lockButton does nothing when disabled
                 if (lockButton.isDisabled) {
@@ -69,17 +70,17 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                 portTextField.isDisabled = !portTextField.isDisabled
             }
         })
-        lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f - portTextField.height * 1.5f, Align.center)
-        lockButton.align(Align.center)
-        lockButton.setText(confirmPort)
+        this.lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f - this.portTextField.height * 1.5f, Align.center)
+        this.lockButton.align(Align.center)
+        this.lockButton.setText(confirmPort)
         //Sets up cancelButton
-        cancelButton.addListener(object : ClickListener() {
+        this.cancelButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = MainMenuScreen(game)
                 dispose()
             }
         })
-        cancelButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.1f, Align.center)
+        this.cancelButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.1f, Align.center)
         //Adds all widgets
         this.uiContainer.addActor(this.portTextField)
         this.uiContainer.addActor(this.lockButton)
