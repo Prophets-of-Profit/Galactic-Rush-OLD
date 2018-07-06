@@ -3,10 +3,15 @@ package com.prophetsofprofit.galacticrush.graphics.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
+import javafx.scene.Scene
+import ktx.scene2d.Scene2DSkin
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -26,6 +31,14 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val maxZoom = 1f
     //The planet currently selected by the player
     var selectedPlanet: Planet? = null
+    //The label sho
+    // wing planet attributes
+    var planetLabel = Label("", Scene2DSkin.defaultSkin)
+
+    init {
+        //this.planetLabel.isVisible = false
+        this.uiContainer.addActor(this.planetLabel)
+    }
 
     /**
      * How the game is drawn
@@ -106,6 +119,14 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             //it != this.selectedPlanet && /* This line of code will unselect a selected planet if clicked on again; TODO: discuss desired behaviour */
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                 + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
+        }
+        if(this.selectedPlanet != null) {
+            this.planetLabel.setText(Attribute.values().map { it.toString() + this.selectedPlanet!!.attributes[it] + "\n" }.toString())
+            this.planetLabel.setPosition(this.uiContainer.width * this.selectedPlanet!!.x + (this.planetLabel as Label).width, this.uiContainer.height * this.selectedPlanet!!.y, Align.center)
+            this.planetLabel.isVisible = true
+        } else {
+            this.planetLabel.setText("")
+            this.planetLabel.isVisible = false
         }
         return this.selectedPlanet != null
     }

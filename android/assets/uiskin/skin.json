@@ -45,7 +45,7 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: Dotum
-		fontColor: GreenSpace
+		fontColor: OrangePlanetary
 		background: label
 	}
 }

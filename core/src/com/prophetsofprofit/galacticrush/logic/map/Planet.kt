@@ -27,7 +27,7 @@ enum class Attribute(private val displayString: String) {
  * Planets are the 'tiles' of the game
  * Planets can be traversed to and from depending on the edges of the graph, or paths in the galaxy
  * Planets have arbitrary attributes that are used by other entities in the game
- * Takes in its location in 2d space
+ * Takes in its location in 2d space between 0 and 1
  */
 class Planet(var x: Float,
              var y: Float,
