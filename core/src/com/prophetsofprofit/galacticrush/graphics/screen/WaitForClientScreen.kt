@@ -20,7 +20,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
     //The text field where the host enters in the hosting port
     val portTextField = TextField("$defaultTcpPort", Scene2DSkin.defaultSkin)
     //The button that either locks in the selected port or undoes the selection of the port
-    val lockButton = TextButton("Confirm Port", Scene2DSkin.defaultSkin)
+    val lockButton = TextButton("________________", Scene2DSkin.defaultSkin)
     //The button to leave this screen
     val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
 
@@ -43,31 +43,35 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
         setUpNetworker()
         //Sets up portTextField to only accept valid ports
         portTextField.maxLength = 4
-        portTextField.setTextFieldFilter { textField, newChar -> newChar.isDigit() }
+        portTextField.setTextFieldFilter { _, newChar -> newChar.isDigit() }
         portTextField.setTextFieldListener { textField, _ ->
             lockButton.isDisabled = textField.text.length != 4
         }
-        portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 3 / 4, Align.center)
+        portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f, Align.center)
         portTextField.setAlignment(Align.center)
         //Sets up the lockButton
+        val confirmPort = "Confirm Port"
+        val cancelSelection = "Cancel Selection"
         lockButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                //lockButton does nothing when disabled
                 if (lockButton.isDisabled) {
                     return
                 }
                 lockButton.setText(if (portTextField.isDisabled) {
                     Networker.reset()
                     setUpNetworker()
-                    "Confirm Port"
+                    confirmPort
                 } else {
                     Networker.getServer().bind(portTextField.text.toInt())
-                    "Cancel Selection"
+                    cancelSelection
                 })
                 portTextField.isDisabled = !portTextField.isDisabled
-                println(portTextField.isDisabled)
             }
         })
-        lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 3 / 4 - portTextField.height, Align.center)
+        lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f - portTextField.height * 1.5f, Align.center)
+        lockButton.align(Align.center)
+        lockButton.setText(confirmPort)
         //Sets up cancelButton
         cancelButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
