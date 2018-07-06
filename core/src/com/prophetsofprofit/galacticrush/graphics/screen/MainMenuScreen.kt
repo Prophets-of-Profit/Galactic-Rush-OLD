@@ -1,6 +1,5 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -34,7 +33,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         this.uiContainer.addActor(optionsButton)
         hostGameButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                game.screen = HostLoadingScreen(game, Array(1) { LocalPlayer(0) })
+                game.screen = WaitForClientScreen(game)
                 dispose()
             }
         })
@@ -44,8 +43,17 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
                 dispose()
             }
         })
-        Gdx.input.inputProcessor = this.uiContainer
         Networker.reset()
+
+        val tempDemoButton = TextButton("DEV", Scene2DSkin.defaultSkin)
+        tempDemoButton.setPosition(this.uiContainer.width * 0.5f, this.uiContainer.height * 0.15f, Align.center)
+        tempDemoButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                game.screen = HostLoadingScreen(game, Array(1) { LocalPlayer(0) })
+                dispose()
+            }
+        })
+        this.uiContainer.addActor(tempDemoButton)
     }
 
     /**

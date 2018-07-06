@@ -47,7 +47,7 @@ class AudioManager(musicPath: Array<String> = arrayOf()) {
      * Stops the music player
      */
     fun stop() {
-        this.music[musicPlaying].stop()
+        this.music.forEach { it.stop() }
         this.stopped = true
     }
 

@@ -43,7 +43,7 @@ class Planet(var x: Float,
      */
     val connectedPlanets: List<Planet>
         get() {
-            return List(connectedHighways.size, { if (connectedHighways[it].p0 === this) connectedHighways[it].p1 else connectedHighways[it].p0 })
+            return List(connectedHighways.size) { if (connectedHighways[it].p0 === this) connectedHighways[it].p1 else connectedHighways[it].p0 }
         }
 
 }

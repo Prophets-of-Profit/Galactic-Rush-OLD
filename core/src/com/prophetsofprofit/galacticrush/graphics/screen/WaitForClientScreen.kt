@@ -1,28 +1,85 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Align
 import com.esotericsoftware.kryonet.Connection
 import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
+import com.prophetsofprofit.galacticrush.defaultTcpPort
+import ktx.scene2d.Scene2DSkin
 
 /**
  * The screen where the host of the game can wait for clients and set the game settings
  */
 class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
 
+    //The text field where the host enters in the hosting port
+    val portTextField = TextField("$defaultTcpPort", Scene2DSkin.defaultSkin)
+    //The button that either locks in the selected port or undoes the selection of the port
+    val lockButton = TextButton("Confirm Port", Scene2DSkin.defaultSkin)
+    //The button to leave this screen
+    val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
+
     /**
-     * Initializes the networker as a host
+     * Initializes the networker as a host and also initializes GUI components
      */
     init {
-        Networker.init(false)
-        Networker.getServer().addListener(object: Listener() {
-            /**
-             * What happens when someone tries to connect to the host
-             */
-            override fun connected(connection: Connection?) {
-                //TODO: make
+        //Sets up networker as a server
+        fun setUpNetworker() {
+            Networker.init(false)
+            Networker.getServer().addListener(object : Listener() {
+                /**
+                 * What happens when someone tries to connect to the host
+                 */
+                override fun connected(connection: Connection?) {
+                    //TODO: make
+                }
+            })
+        }
+        setUpNetworker()
+        //Sets up portTextField to only accept valid ports
+        portTextField.maxLength = 4
+        portTextField.setTextFieldFilter { textField, newChar -> newChar.isDigit() }
+        portTextField.setTextFieldListener { textField, _ ->
+            lockButton.isDisabled = textField.text.length != 4
+        }
+        portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 3 / 4, Align.center)
+        portTextField.setAlignment(Align.center)
+        //Sets up the lockButton
+        lockButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                if (lockButton.isDisabled) {
+                    return
+                }
+                lockButton.setText(if (portTextField.isDisabled) {
+                    Networker.reset()
+                    setUpNetworker()
+                    "Confirm Port"
+                } else {
+                    Networker.getServer().bind(portTextField.text.toInt())
+                    "Cancel Selection"
+                })
+                portTextField.isDisabled = !portTextField.isDisabled
+                println(portTextField.isDisabled)
             }
         })
+        lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 3 / 4 - portTextField.height, Align.center)
+        //Sets up cancelButton
+        cancelButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                game.screen = MainMenuScreen(game)
+                dispose()
+            }
+        })
+        cancelButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.1f, Align.center)
+        //Adds all widgets
+        this.uiContainer.addActor(this.portTextField)
+        this.uiContainer.addActor(this.lockButton)
+        this.uiContainer.addActor(this.cancelButton)
     }
 
     override fun draw(delta: Float) {}

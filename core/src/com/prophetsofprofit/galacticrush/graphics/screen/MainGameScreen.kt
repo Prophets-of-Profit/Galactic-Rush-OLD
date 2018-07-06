@@ -10,7 +10,6 @@ import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
-import javafx.scene.Scene
 import ktx.scene2d.Scene2DSkin
 import kotlin.math.max
 import kotlin.math.min
@@ -36,7 +35,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     var planetLabel = Label("", Scene2DSkin.defaultSkin)
 
     init {
-        //this.planetLabel.isVisible = false
         this.uiContainer.addActor(this.planetLabel)
     }
 
@@ -120,9 +118,10 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                 + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
-        if(this.selectedPlanet != null) {
+        if (this.selectedPlanet != null) {
             this.planetLabel.setText(Attribute.values().map { it.toString() + this.selectedPlanet!!.attributes[it] + "\n" }.toString())
-            this.planetLabel.setPosition(this.uiContainer.width * this.selectedPlanet!!.x + (this.planetLabel as Label).width, this.uiContainer.height * this.selectedPlanet!!.y, Align.center)
+            //TODO: account for changing of camera viewport
+            this.planetLabel.setPosition(this.uiContainer.width * this.selectedPlanet!!.x + this.planetLabel.width, this.uiContainer.height * this.selectedPlanet!!.y, Align.center)
             this.planetLabel.isVisible = true
         } else {
             this.planetLabel.setText("")
