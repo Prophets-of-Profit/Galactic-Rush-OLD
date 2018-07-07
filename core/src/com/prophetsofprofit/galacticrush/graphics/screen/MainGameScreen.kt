@@ -32,11 +32,16 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     //The planet currently selected by the player
     var selectedPlanet: Planet? = null
     //The list of planet attributes
-    var planetLabel = Label("", Scene2DSkin.defaultSkin)
+    lateinit var planetLabel: Label
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8, { Texture("image/arrows/Arrow" + it + ".png") })
 
     init {
+        this.planetLabel = Label(Attribute.values().map { it.toString().capitalize() + ": " + this.mainGame.galaxy.planets[0].attributes[it] + "\n" }
+                                    .reduce {acc, it -> acc + it}
+                                    .toString(), Scene2DSkin.defaultSkin)
+        this.planetLabel.setPosition(0f + this.planetLabel.width / 2, 0f + this.planetLabel.height / 2, Align.center)
+        //this.planetLabel.isVisible = false
         this.uiContainer.addActor(this.planetLabel)
     }
 
@@ -142,13 +147,16 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
         if (this.selectedPlanet != null) {
-            this.planetLabel.setText(Attribute.values().map { it.toString() + this.selectedPlanet!!.attributes[it] + "\n" }.toString())
+            //Format the attributes nicely
+            this.planetLabel.setText(
+                    Attribute.values().map { it.toString().capitalize() + ": " + this.selectedPlanet!!.attributes[it] + "\n" }
+                            .reduce {acc, it -> acc + it}
+                            .toString()
+            )
             //TODO: account for changing of camera viewport
-            this.planetLabel.setPosition(this.uiContainer.width - this.planetLabel.width, this.uiContainer.height - this.planetLabel.height)
-            this.planetLabel.isVisible = true
+            //this.planetLabel.setPosition(this.uiContainer.width * this.selectedPlanet!!.x + this.planetLabel.width * 2f, this.uiContainer.height * this.selectedPlanet!!.y, Align.center)
         } else {
             this.planetLabel.setText("")
-            this.planetLabel.isVisible = false
         }
         return this.selectedPlanet != null
     }
