@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
@@ -30,9 +31,10 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val maxZoom = 1f
     //The planet currently selected by the player
     var selectedPlanet: Planet? = null
-    //The label sho
-    // wing planet attributes
+    //The list of planet attributes
     var planetLabel = Label("", Scene2DSkin.defaultSkin)
+    //The arrow textures used in indicating selected planets
+    private val selectionArrowTextures = Array(8, { Texture("image/arrows/Arrow" + it + ".png") })
 
     init {
         this.uiContainer.addActor(this.planetLabel)
@@ -53,18 +55,16 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.shapeRenderer.end()
 
         //Render planets as colored circles
-        //Draws outline of inverted color for selected planet
-        //TODO: add textures for planets and for selected planet
+        //TODO: add textures for planets
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        if (this.selectedPlanet != null) {
-            this.game.shapeRenderer.color = Color(1 - this.selectedPlanet!!.color.r, 1 - this.selectedPlanet!!.color.g, 1 - this.selectedPlanet!!.color.b, 1f)
-            this.game.shapeRenderer.circle(this.selectedPlanet!!.x * this.game.camera.viewportWidth, this.selectedPlanet!!.y * this.game.camera.viewportHeight, 15 * this.selectedPlanet!!.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
-        }
         for (planet in this.mainGame.galaxy.planets) {
             this.game.shapeRenderer.color = planet.color
             this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 10 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
         }
         this.game.shapeRenderer.end()
+        this.game.batch.begin()
+        this.drawSelectionArrows()
+        this.game.batch.end()
     }
 
     /**
@@ -74,7 +74,30 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         if (this.selectedPlanet == null) {
             return
         }
-        //TODO: make
+        this.game.batch.draw(this.selectionArrowTextures[0],
+                this.selectedPlanet!!.x * this.game.camera.viewportWidth - 5,
+                (this.selectedPlanet!!.y - 0.02f * this.game.camera.viewportWidth * this.selectedPlanet!!.radius) * this.game.camera.viewportHeight - 10)
+        this.game.batch.draw(this.selectionArrowTextures[1],
+                (this.selectedPlanet!!.x + 0.02f * this.game.camera.viewportHeight * this.selectedPlanet!!.radius) * this.game.camera.viewportWidth,
+                (this.selectedPlanet!!.y - 0.02f * this.game.camera.viewportWidth * this.selectedPlanet!!.radius) * this.game.camera.viewportHeight - 10)
+        this.game.batch.draw(this.selectionArrowTextures[2],
+                (this.selectedPlanet!!.x + 0.02f * this.game.camera.viewportHeight * this.selectedPlanet!!.radius) * this.game.camera.viewportWidth,
+                this.selectedPlanet!!.y * this.game.camera.viewportHeight - 5)
+        this.game.batch.draw(this.selectionArrowTextures[3],
+                (this.selectedPlanet!!.x + 0.02f * this.game.camera.viewportHeight * this.selectedPlanet!!.radius) * this.game.camera.viewportWidth,
+                (this.selectedPlanet!!.y + 0.02f * this.game.camera.viewportWidth * this.selectedPlanet!!.radius) * this.game.camera.viewportHeight)
+        this.game.batch.draw(this.selectionArrowTextures[4],
+                this.selectedPlanet!!.x * this.game.camera.viewportWidth - 5,
+                (this.selectedPlanet!!.y + 0.02f * this.game.camera.viewportWidth * this.selectedPlanet!!.radius) * this.game.camera.viewportHeight)
+        this.game.batch.draw(this.selectionArrowTextures[5],
+                (this.selectedPlanet!!.x - 0.02f * this.game.camera.viewportHeight * this.selectedPlanet!!.radius) * this.game.camera.viewportWidth - 10,
+                (this.selectedPlanet!!.y + 0.02f * this.game.camera.viewportWidth * this.selectedPlanet!!.radius) * this.game.camera.viewportHeight)
+        this.game.batch.draw(this.selectionArrowTextures[6],
+                (this.selectedPlanet!!.x - 0.02f * this.game.camera.viewportHeight * this.selectedPlanet!!.radius) * this.game.camera.viewportWidth - 10,
+                this.selectedPlanet!!.y * this.game.camera.viewportHeight - 5)
+        this.game.batch.draw(this.selectionArrowTextures[7],
+                (this.selectedPlanet!!.x - 0.02f * this.game.camera.viewportHeight * this.selectedPlanet!!.radius) * this.game.camera.viewportWidth - 10,
+                (this.selectedPlanet!!.y - 0.02f * this.game.camera.viewportWidth * this.selectedPlanet!!.radius) * this.game.camera.viewportHeight - 10)
     }
 
     /**
@@ -121,7 +144,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         if (this.selectedPlanet != null) {
             this.planetLabel.setText(Attribute.values().map { it.toString() + this.selectedPlanet!!.attributes[it] + "\n" }.toString())
             //TODO: account for changing of camera viewport
-            this.planetLabel.setPosition(this.uiContainer.width * this.selectedPlanet!!.x + this.planetLabel.width, this.uiContainer.height * this.selectedPlanet!!.y, Align.center)
+            this.planetLabel.setPosition(this.uiContainer.width - this.planetLabel.width, this.uiContainer.height - this.planetLabel.height)
             this.planetLabel.isVisible = true
         } else {
             this.planetLabel.setText("")
