@@ -11,6 +11,12 @@ com.badlogic.gdx.graphics.Color: {
 		b: 0.4745098
 		a: 1
 	}
+	OrangeDarkPlanetary: {
+		r: 0.67509806
+		g: 0.32983783
+		b: 0.06537789
+		a: 1
+	}
 	OrangePlanetary: {
 		r: 0.73666674
 		g: 0.5323427
@@ -45,7 +51,7 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: Dotum
-		fontColor: OrangePlanetary
+		fontColor: OrangeDarkPlanetary
 		background: label
 	}
 }
