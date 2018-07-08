@@ -31,16 +31,22 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val maxZoom = 1f
     //The planet currently selected by the player
     var selectedPlanet: Planet? = null
-    //The list of planet attributes TODO: get rid of trailing newline
-    var planetLabel = Label(Attribute.values().joinToString { "${it.toString().capitalize()}: ${this.mainGame.galaxy.planets[0].attributes[it]}\n" }, Scene2DSkin.defaultSkin)
+    //The list of planet attributes TODO: get rid of leading newline and format properly
+    var planetLabel = Label(Attribute.values().joinToString { "\n${it.toString().capitalize()}: ${this.mainGame.galaxy.planets[0].attributes[it]}" }, Scene2DSkin.defaultSkin)
+    //The list of drones on the planet
+    var dronesList = Label("Drones:\n Drone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\n", Scene2DSkin.defaultSkin)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
 
     init {
         this.planetLabel.setPosition(0f + this.planetLabel.width / 2, 0f + this.planetLabel.height / 2, Align.center)
-        this.planetLabel.setAlignment(Align.center)
+        this.dronesList.setPosition(this.game.camera.viewportWidth - this.dronesList.width / 2, 0f + this.dronesList.height / 2, Align.center)
+        this.planetLabel.setAlignment(Align.left)
+        this.dronesList.setAlignment(Align.topLeft)
         this.planetLabel.isVisible = false
+        this.dronesList.isVisible = false
         this.uiContainer.addActor(this.planetLabel)
+        this.uiContainer.addActor(this.dronesList)
     }
 
     /**
@@ -152,10 +158,18 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                             .reduce {acc, it -> acc + it}
                             .toString()
             )
+            this.dronesList.isVisible = true
+            this.dronesList.setText(
+                    if((this.selectedPlanet as Planet).drones.isEmpty()) "Drones: \n None" else
+                        "Drones: \n" + (this.selectedPlanet as Planet).drones.map {it.toString() + "\n"}
+                            .reduce {acc, it -> acc + it}
+                            .toString()
+            )
             //TODO: account for changing of camera viewport
             //this.planetLabel.setPosition(this.uiContainer.width * this.selectedPlanet!!.x + this.planetLabel.width * 2f, this.uiContainer.height * this.selectedPlanet!!.y, Align.center)
         } else {
             this.planetLabel.isVisible = false
+            this.dronesList.isVisible = false
         }
         return this.selectedPlanet != null
     }

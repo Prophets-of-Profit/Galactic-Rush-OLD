@@ -139,4 +139,11 @@ class Drone(val ownerId: Int) {
     fun getDestroyed() {
 
     }
+
+    /**
+     * How the drone will be displayed on the planet listing
+     */
+    override fun toString(): String {
+        return "Drone ($ownerId)"
+    }
 }

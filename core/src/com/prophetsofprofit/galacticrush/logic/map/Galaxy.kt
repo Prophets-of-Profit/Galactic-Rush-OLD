@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.logic.map
 
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Vector2
+import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -42,6 +43,8 @@ class Galaxy(numPlanets: Int) {
             for (j in 0 until sideLength) {
                 //Shifts x by i and y by j, and adds to it in a random number within a range of 0 to 1 / sidelength, the length of each bounding square
                 planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), (sideLength / 250.0 + Math.random() * sideLength / 500.0).toFloat() / numPlanets))
+                //TODO: This is a test; remove it for release
+                for(i in 0 until (Math.random() * 6).toInt()) planets.last().drones.add(Drone((Math.random() * 1000000).toInt()))
             }
         }
     }
