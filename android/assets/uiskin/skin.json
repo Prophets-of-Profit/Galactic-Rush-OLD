@@ -95,6 +95,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 		font: Dotum
 		fontColor: OrangePlanetary
 		background: textField
+		cursor: textFieldCursor
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {

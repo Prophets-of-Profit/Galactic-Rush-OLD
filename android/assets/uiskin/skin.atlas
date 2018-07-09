@@ -102,6 +102,13 @@ textField
   orig: 200, 50
   offset: 0, 0
   index: -1
+textFieldCursor
+  rotate: false
+  xy: 73, 297
+  size: 10, 50
+  orig: 10, 50
+  offset: 0, 0
+  index: -1
 titleButton
   rotate: false
   xy: 1, 401
