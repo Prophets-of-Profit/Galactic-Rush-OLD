@@ -37,6 +37,12 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
                 dispose()
             }
         })
+        joinGameButton.addListener(object: ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                game.screen = FindHostScreen(game)
+                dispose()
+            }
+        })
         optionsButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = OptionsScreen(game) { game.screen = MainMenuScreen(game) }
