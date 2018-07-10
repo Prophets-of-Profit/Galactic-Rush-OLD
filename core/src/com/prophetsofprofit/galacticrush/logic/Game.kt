@@ -12,7 +12,7 @@ import java.io.Serializable
 class Game(val players: Array<Player>, galaxySize: Int) : Serializable {
 
     //The board or map on which this game is played
-    val galaxy = Galaxy(galaxySize)
+    val galaxy = Galaxy(galaxySize, players.map {it -> it.id})
     //The amount of turns that have passed since the game was created
     var turnsPlayed = 0
     //The players who need to submit their changes for the drones to commence

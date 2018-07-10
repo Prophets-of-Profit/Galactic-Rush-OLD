@@ -3,6 +3,8 @@ package com.prophetsofprofit.galacticrush.logic.map
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Vector2
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.facility.ConstructionFacility
+import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -13,7 +15,7 @@ import kotlin.math.sqrt
  * Contains a bunch of planets which are essentially the game 'tiles'
  * Planets are connected as a graph rather than sequentially
  */
-class Galaxy(numPlanets: Int) {
+class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
 
     //The planets that are in the galaxy: serve as 'tiles' of the game, but are connected as a graph
     val planets = mutableListOf<Planet>()
@@ -31,6 +33,14 @@ class Galaxy(numPlanets: Int) {
         generatePlanets(numPlanets)
         generateEdges(numPlanets)
         connectAllPlanets()
+        var pickablePlanets = this.planets
+        var planetChoice: Planet
+        for (i in 0 until playerIDs.size){
+            planetChoice = planets.shuffled()[0]
+            planetChoice.facilities.add(HomeBase(playerIDs[i]))
+            planetChoice.facilities.add(ConstructionFacility(playerIDs[i]))
+            pickablePlanets.remove(planetChoice)
+        }
     }
 
     private fun generatePlanets(numPlanets: Int) {

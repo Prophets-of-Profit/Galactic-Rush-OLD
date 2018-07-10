@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.logic.map
 
 import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.facility.Facility
 
 /**
  * Names for arbitrary attributes
@@ -37,6 +38,7 @@ class Planet(var x: Float,
     val attributes = Attribute.values().map { it to Math.random() }.toMap()
     val connectedHighways = mutableListOf<CosmicHighway>()
     val drones = mutableListOf<Drone>()
+    val facilities = mutableListOf<Facility>()
 
     /*
      * The planets that are reachable within one move from here
