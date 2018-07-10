@@ -45,6 +45,12 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.ipTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f, Align.center)
         this.portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.8f, Align.center)
         this.ipTextField.setAlignment(Align.center)
+        //Sets up port text field
+        this.portTextField.maxLength = 4
+        this.portTextField.setTextFieldFilter { _, newChar -> newChar.isDigit() }
+        this.portTextField.setTextFieldListener { textField, _ ->
+            this.confirmButton.isDisabled = textField.text.length != 4
+        }
         this.portTextField.setAlignment(Align.center)
         //Sets up localIpAutofillButton to autofill the local ip to the ipTextField
         this.localIpAutofillButton.addListener(object: ClickListener() {
@@ -65,7 +71,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.confirmButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 try {
-                    Networker.getClient().connect(10000, ipTextField.text, portTextField.text.toInt())
+                    println(Networker.getClient().discoverHosts(portTextField.text.toInt(), 10000))
+                    Networker.getClient().connect(0, ipTextField.text, portTextField.text.toInt())
                 } catch (ignored: Exception) {}
             }
         })

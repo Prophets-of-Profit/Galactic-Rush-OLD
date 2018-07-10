@@ -25,9 +25,11 @@ object Networker {
         }
         val kryo = if (isClient) {
             this.client = Client()
+            this.client!!.start()
             this.client!!.kryo
         } else {
             this.server = Server()
+            this.server!!.start()
             this.server!!.kryo
         }
         //Registers the classes that the kryo will be sending

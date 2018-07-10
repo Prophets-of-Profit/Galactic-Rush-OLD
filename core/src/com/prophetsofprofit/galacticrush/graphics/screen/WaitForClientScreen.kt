@@ -41,7 +41,6 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                 }
             })
         }
-        setUpNetworker()
         //Sets up portTextField to only accept valid ports
         this.portTextField.maxLength = 4
         this.portTextField.setTextFieldFilter { _, newChar -> newChar.isDigit() }
@@ -61,9 +60,9 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                 }
                 lockButton.setText(if (portTextField.isDisabled) {
                     Networker.reset()
-                    setUpNetworker()
                     confirmPort
                 } else {
+                    setUpNetworker()
                     Networker.getServer().bind(portTextField.text.toInt())
                     cancelSelection
                 })
