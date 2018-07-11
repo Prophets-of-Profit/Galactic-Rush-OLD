@@ -12,11 +12,11 @@ import java.io.Serializable
 class Game(val players: Array<Player>, galaxySize: Int) : Serializable {
 
     //The board or map on which this game is played
-    val galaxy = Galaxy(galaxySize, players.map {it -> it.id})
+    val galaxy = Galaxy(galaxySize, players.map { it -> it.id })
     //The amount of turns that have passed since the game was created
     var turnsPlayed = 0
     //The players who need to submit their changes for the drones to commence
-    val waitingOn = mutableListOf<Int>()
+    val waitingOn = this.players.map { it.id }.toMutableList()
     //The drones that currently exist in the game
     //Should be ordered in order of creation
     val drones = mutableListOf<Drone>()
@@ -26,7 +26,6 @@ class Game(val players: Array<Player>, galaxySize: Int) : Serializable {
      */
     init {
         this.players.forEach { it.receiveNewGameState(this) }
-        players.mapTo(waitingOn) { it.id }
     }
 
     /**

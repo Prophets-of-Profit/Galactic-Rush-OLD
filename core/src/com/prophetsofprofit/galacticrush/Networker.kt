@@ -1,5 +1,6 @@
 package com.prophetsofprofit.galacticrush
 
+import com.esotericsoftware.kryo.serializers.JavaSerializer
 import com.esotericsoftware.kryonet.Client
 import com.esotericsoftware.kryonet.Server
 import com.prophetsofprofit.galacticrush.logic.Change
@@ -31,8 +32,9 @@ object Networker {
             this.server!!.kryo
         }
         //Registers the classes that the kryo will be sending
-        //kryo.register(Game::class.java) TODO: give game an empty constructor
-        //kryo.register(Change::class.java) TODO: give change an empty constructor
+        kryo.register(Game::class.java, JavaSerializer())
+        kryo.register(Change::class.java, JavaSerializer())
+        //TODO: register rest of classes
         this.client?.start()
         this.server?.start()
     }

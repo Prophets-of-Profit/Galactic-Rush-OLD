@@ -34,17 +34,15 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
      */
     init {
         //Sets up networker as a server
-        fun setUpNetworker() {
-            Networker.init(false)
-            Networker.getServer().addListener(object : Listener() {
-                /**
-                 * What happens when someone tries to connect to the host
-                 */
-                override fun connected(connection: Connection?) {
-                    connectionId = connection!!.id
-                }
-            })
-        }
+        Networker.init(false)
+        Networker.getServer().addListener(object : Listener() {
+            /**
+             * What happens when someone tries to connect to the host
+             */
+            override fun connected(connection: Connection?) {
+                connectionId = connection!!.id
+            }
+        })
         //Sets up portTextField to only accept valid ports
         this.portTextField.maxLength = 4
         this.portTextField.setTextFieldFilter { _, newChar -> newChar.isDigit() }
@@ -63,10 +61,10 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                     return
                 }
                 lockButton.setText(if (portTextField.isDisabled) {
-                    Networker.reset()
+                    //Unbinds the port
+                    try { Networker.getServer().bind(0) } catch (ignored: Exception) {}
                     confirmPort
                 } else {
-                    setUpNetworker()
                     Networker.getServer().bind(portTextField.text.toInt())
                     cancelSelection
                 })

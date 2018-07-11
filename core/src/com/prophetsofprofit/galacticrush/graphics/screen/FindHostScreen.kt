@@ -76,8 +76,10 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.confirmButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 try {
-                    Networker.getClient().connect(0, ipTextField.text, portTextField.text.toInt())
-                } catch (ignored: Exception) {}
+                    Networker.getClient().connect(500, ipTextField.text, portTextField.text.toInt())
+                } catch (e: Exception) {
+                    println(e.message)
+                }
             }
         })
         this.confirmButton.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.1f, Align.center)
