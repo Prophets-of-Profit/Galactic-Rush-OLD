@@ -33,7 +33,7 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
      */
     override fun receiveNewGameState(newGame: Game) {
         this.game = newGame
-        Networker.getServer().sendToTCP(this.connectionId, this)
+        Networker.getServer().sendToTCP(this.connectionId, newGame)
     }
 
 }

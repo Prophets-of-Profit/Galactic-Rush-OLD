@@ -1,10 +1,18 @@
 package com.prophetsofprofit.galacticrush
 
-import com.esotericsoftware.kryo.serializers.JavaSerializer
+import com.badlogic.gdx.graphics.Color
 import com.esotericsoftware.kryonet.Client
 import com.esotericsoftware.kryonet.Server
 import com.prophetsofprofit.galacticrush.logic.Change
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.facility.Facility
+import com.prophetsofprofit.galacticrush.logic.map.Attribute
+import com.prophetsofprofit.galacticrush.logic.map.CosmicHighway
+import com.prophetsofprofit.galacticrush.logic.map.Galaxy
+import com.prophetsofprofit.galacticrush.logic.map.Planet
+import com.prophetsofprofit.galacticrush.logic.player.Player
+import java.util.*
 
 /**
  * The utility object that handles networking
@@ -32,9 +40,19 @@ object Networker {
             this.server!!.kryo
         }
         //Registers the classes that the kryo will be sending
-        kryo.register(Game::class.java, JavaSerializer())
-        kryo.register(Change::class.java, JavaSerializer())
-        //TODO: register rest of classes
+        kryo.register(Game::class.java)
+        kryo.register(Change::class.java)
+        kryo.register(Drone::class.java)
+        kryo.register(Galaxy::class.java)
+        kryo.register(Planet::class.java)
+        kryo.register(Attribute::class.java)
+        kryo.register(CosmicHighway::class.java)
+        kryo.register(Facility::class.java)
+        kryo.register(Player::class.java)
+        kryo.register(Color::class.java)
+        kryo.register(ArrayList::class.java)
+        kryo.register(Date::class.java)
+        kryo.register(LinkedHashMap::class.java)
         this.client?.start()
         this.server?.start()
     }

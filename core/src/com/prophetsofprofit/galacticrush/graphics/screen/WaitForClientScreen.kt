@@ -41,6 +41,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
              */
             override fun connected(connection: Connection?) {
                 connectionId = connection!!.id
+                Networker.getServer().removeListener(this)
             }
         })
         //Sets up portTextField to only accept valid ports

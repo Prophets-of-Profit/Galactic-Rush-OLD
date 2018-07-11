@@ -5,7 +5,5 @@ package com.prophetsofprofit.galacticrush.logic.map
  * Is basically an edge in the graph that is the galaxy, where the nodes are planets
  * The cosmic highway is the path between p0 and p1
  * These edges are not directional, so travel is possible between p0 to p1, and p1 to p0
- * TODO: expectations for drone movement along highways: is it instant or does it take time? Current implementation is that it takes time and is really disgusting
- * TODO: clean this code: is very disgusting, courtesy of Saurabh Totey
  */
 class CosmicHighway(val p0: Planet, val p1: Planet)

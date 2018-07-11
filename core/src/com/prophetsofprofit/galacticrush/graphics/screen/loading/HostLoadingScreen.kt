@@ -26,6 +26,7 @@ class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(
      * Moves host to MainGameScreen
      */
     override fun onLoad() {
+        //Assuming that there is only one local player
         this.game.screen = MainGameScreen(this.game, this.mainGame!!.players.first { it is LocalPlayer })
     }
 

@@ -44,6 +44,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         Networker.getClient().addListener(object : Listener() {
             override fun connected(connection: Connection?) {
                 connectionId = connection!!.id
+                Networker.getClient().removeListener(this)
             }
         })
         //Sets up positions of ip and port text fields
@@ -76,7 +77,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.confirmButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 try {
-                    Networker.getClient().connect(500, ipTextField.text, portTextField.text.toInt())
+                    Networker.getClient().connect(5000, ipTextField.text, portTextField.text.toInt())
                 } catch (e: Exception) {
                     println(e.message)
                 }

@@ -15,13 +15,15 @@ class Move(location: Int, drone: Drone):
 
     /**
      * Activates every turn, provided there is a planet reachable from the drone's location
+     * TODO: fix
      */
     override fun act(): Boolean {
-        if(this.drone.location.connectedPlanets.isEmpty()) return false
-        if(this.selectedPlanet == null) {
-            this.selectedPlanet = this.drone.location.connectedPlanets.shuffled()[0]
-        }
-        this.drone.location = (this.selectedPlanet as Planet)
-        return true
+//        if (this.drone.location.connectedPlanets.isEmpty()) return false
+//        if (this.selectedPlanet == null) {
+//            this.selectedPlanet = this.drone.location.connectedPlanets.shuffled()[0]
+//        }
+//        this.drone.location = this.selectedPlanet as Planet
+//        return true
+        return false
     }
 }

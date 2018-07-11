@@ -33,7 +33,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         generatePlanets(numPlanets)
         generateEdges(numPlanets)
         connectAllPlanets()
-        var pickablePlanets = this.planets
+        val pickablePlanets = this.planets
         var planetChoice: Planet
         for (i in 0 until playerIDs.size){
             planetChoice = planets.shuffled()[0]
@@ -54,7 +54,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
                 //Shifts x by i and y by j, and adds to it in a random number within a range of 0 to 1 / sidelength, the length of each bounding square
                 planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), (sideLength / 250.0 + Math.random() * sideLength / 500.0).toFloat() / numPlanets))
                 //TODO: This is a test; remove it for release
-                for(i in 0 until (Math.random() * 6).toInt()) planets.last().drones.add(Drone((Math.random() * 1000000).toInt()))
+                for(k in 0 until (Math.random() * 6).toInt()) planets.last().drones.add(Drone((Math.random() * 1000000).toInt()))
             }
         }
     }
@@ -77,15 +77,13 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
                         } && !planets.filter { it != p0 && it != p1 }.any {
                             Intersector.distanceSegmentPoint(p0.x, p0.y, p1.x, p1.y, it.x, it.y) <= it.radius
                         }//Highway doesn't intersect planet
-                        && !p1.connectedHighways.any { isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) } //Highway angle between others
-                        && !p0.connectedHighways.any { isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) } //is not too small
+                        && !p1.getConnectedHighways().any { isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) } //Highway angle between others
+                        && !p0.getConnectedHighways().any { isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) } //is not too small
 
                 ) {
                     //Add a highway to the galaxy and to the connecting planets
                     val highwayToAdd = CosmicHighway(p0, p1)
                     highways.add(highwayToAdd)
-                    p0.connectedHighways.add(highwayToAdd)
-                    p1.connectedHighways.add(highwayToAdd)
                 }
             }
         }
@@ -98,7 +96,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
      */
     private fun connectAllPlanets() {
         //Iterate through all planets which have no connecting planets
-        for (p0 in planets.filter { it.connectedHighways.size == 0 }) {
+        for (p0 in planets.filter { it.getConnectedHighways().isEmpty() }) {
             //Initialize distance as 0 to start; will check for distance = 0
             var planetDistance = 0f
             //Closest planet starts as itself; will get changed
@@ -116,8 +114,6 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
             //Make a connection with the planet closest to it
             val highwayToAdd = CosmicHighway(p0, closestPlanet)
             highways.add(highwayToAdd)
-            p0.connectedHighways.add(highwayToAdd)
-            closestPlanet.connectedHighways.add(highwayToAdd)
         }
     }
 
@@ -145,6 +141,22 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         var angleBetween = (atan2(p1y - p0y, p1x - p0x) - atan2(p3y - p2y, p3x - p2x)) % PI
         if (angleBetween < 0) angleBetween += PI
         return angleBetween < PI / 6
+    }
+
+    /**
+     * Gets the connected highways of a planet
+     * TODO: remove this method: is bad practice to have
+     */
+    private fun Planet.getConnectedHighways(): Array<CosmicHighway> {
+        return highways.filter { it.p0 == this || it.p1 == this }.toTypedArray()
+    }
+
+    /**
+     * Gets al planets adjacent to the given planet
+     * TODO: remove this method: is bad practice to have
+     */
+    fun planetsAdjacentTo(p: Planet): Array<Planet> {
+        return this.planets.filter { it.getConnectedHighways().any { it.p0 == p || it.p1 == p } }.toTypedArray()
     }
 
 }

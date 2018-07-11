@@ -34,18 +34,12 @@ class Planet(var x: Float,
              var y: Float,
              val radius: Float,
              val color: Color = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f)) {
+
     //Arbitrary attributes that determine drone behaviour: can be changed, but each start out as a random number between 0 and 1
     val attributes = Attribute.values().map { it to Math.random() }.toMap()
-    val connectedHighways = mutableListOf<CosmicHighway>()
+    //All the drones on the planet
     val drones = mutableListOf<Drone>()
+    //All the facilities on the planet
     val facilities = mutableListOf<Facility>()
-
-    /*
-     * The planets that are reachable within one move from here
-     */
-    val connectedPlanets: List<Planet>
-        get() {
-            return List(connectedHighways.size) { if (connectedHighways[it].p0 === this) connectedHighways[it].p1 else connectedHighways[it].p0 }
-        }
 
 }
