@@ -25,22 +25,24 @@ object Networker {
         }
         val kryo = if (isClient) {
             this.client = Client()
-            this.client!!.start()
             this.client!!.kryo
         } else {
             this.server = Server()
-            this.server!!.start()
             this.server!!.kryo
         }
         //Registers the classes that the kryo will be sending
-        kryo.register(Game::class.java)
-        kryo.register(Change::class.java)
+        //kryo.register(Game::class.java) TODO: give game an empty constructor
+        //kryo.register(Change::class.java) TODO: give change an empty constructor
+        this.client?.start()
+        this.server?.start()
     }
 
     /**
      * Resets the networker so that it must be initialized again befeore usage
      */
     fun reset() {
+        this.client?.stop()
+        this.server?.stop()
         this.client?.dispose()
         this.server?.dispose()
         this.client = null

@@ -10,6 +10,9 @@ import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.defaultTcpPort
+import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
+import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
+import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -23,6 +26,8 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
     val lockButton = TextButton("________________", Scene2DSkin.defaultSkin)
     //The button to leave this screen
     val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
+    //The id of the hosts's connection to the client
+    var connectionId: Int? = null
 
     /**
      * Initializes the networker as a host and also initializes GUI components
@@ -36,8 +41,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                  * What happens when someone tries to connect to the host
                  */
                 override fun connected(connection: Connection?) {
-                    //TODO: make
-                    println("YES! Connected as a host to client ${connection?.id}")
+                    connectionId = connection!!.id
                 }
             })
         }
@@ -86,7 +90,17 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
         this.uiContainer.addActor(this.cancelButton)
     }
 
-    override fun draw(delta: Float) {}
+    /**
+     * Checks whether a connection has been made and if it has, it moves to the next screen
+     */
+    override fun draw(delta: Float) {
+        if (this.connectionId == null) {
+            return
+        }
+        this.game.screen = HostLoadingScreen(this.game, arrayOf(LocalPlayer(0), NetworkPlayer(1, this.connectionId!!)))
+        this.dispose()
+    }
+
     override fun leave() {}
 
 }

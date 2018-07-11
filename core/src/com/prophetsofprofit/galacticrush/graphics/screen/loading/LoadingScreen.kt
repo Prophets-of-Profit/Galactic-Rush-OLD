@@ -13,7 +13,7 @@ import ktx.app.use
 abstract class LoadingScreen(game: Main) : GalacticRushScreen(game) {
 
     //Measures time spent loading
-    val animation = Animation<Texture>(2.25f, Array(Array(28) { Texture("animations/loading/LoadingScreen$it.png") }))
+    val animation = Animation<Texture>(0.25f, Array(Array(28) { Texture("animations/loading/LoadingScreen$it.png") }))
     //Whether the screen is done loading or not
     var isDone = false
     //The total time spent loading

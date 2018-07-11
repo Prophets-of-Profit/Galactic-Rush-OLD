@@ -10,6 +10,7 @@ import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.defaultTcpPort
+import com.prophetsofprofit.galacticrush.graphics.screen.loading.ClientLoadingScreen
 import com.prophetsofprofit.galacticrush.localHostIp
 import ktx.scene2d.Scene2DSkin
 
@@ -28,6 +29,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
     val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
     //The button that starts searching for the specified host
     val confirmButton = TextButton("Confirm", Scene2DSkin.defaultSkin)
+    //The id of the connection between the client and the host
+    var connectionId: Int? = null
 
     /**
      * Initializes the networker as a client
@@ -35,10 +38,12 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
     init {
         //Sets up the networker as a client
         Networker.init(true)
+        /**
+         * What happens when a host is found
+         */
         Networker.getClient().addListener(object : Listener() {
             override fun connected(connection: Connection?) {
-                //TODO: make
-                println("YES! Connected as a client to host ${connection?.id}")
+                connectionId = connection!!.id
             }
         })
         //Sets up positions of ip and port text fields
@@ -71,7 +76,6 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.confirmButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 try {
-                    println(Networker.getClient().discoverHosts(portTextField.text.toInt(), 10000))
                     Networker.getClient().connect(0, ipTextField.text, portTextField.text.toInt())
                 } catch (ignored: Exception) {}
             }
@@ -85,7 +89,17 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.uiContainer.addActor(this.confirmButton)
     }
 
-    override fun draw(delta: Float) {}
+    /**
+     * Checks continually whether a connection has been made: if there is a connection, moves the screen to the next screen
+     */
+    override fun draw(delta: Float) {
+        if (this.connectionId == null) {
+            return
+        }
+        this.game.screen = ClientLoadingScreen(this.game, this.connectionId!!)
+        this.dispose()
+    }
+
     override fun leave() {}
 
 }
