@@ -6,8 +6,13 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
 /**
  * Provides a small (+2) boost to attack for the drone
  */
-class MinorAttackBuff(location: Int = -1, drone: Drone = Drone()):
+class MinorAttackBuff(location: Int, drone: Drone):
         Instruction(3, 1, InstructionType.UPGRADE, location, Sprite(), drone) {
+
+    /**
+     * Empty constructor for serialization
+     */
+    constructor(): this(-1, Drone())
 
     //TODO: Handle if the parent add or remove methods return false
     /**

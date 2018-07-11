@@ -8,7 +8,12 @@ import com.prophetsofprofit.galacticrush.logic.player.Player
  * The main game object
  * Handles attributes of the current game, and is serialized for networking
  */
-class Game(val players: Array<Int> = arrayOf(), galaxySize: Int = 100) {
+class Game(val players: Array<Int>, galaxySize: Int) {
+
+    /**
+     * Empty constructor for serialization
+     */
+    constructor(): this(arrayOf(), -1)
 
     //The board or map on which this game is played
     val galaxy = Galaxy(galaxySize, players.toList())

@@ -27,7 +27,7 @@ enum class InstructionType(val value: Int) {
  * This class defines an instruction and provides default implementations for the necessary methods
  * It also contains the definitions of instruction
  */
-abstract class Instruction(var maxHealth: Int = 100, val memory: Int = 1, val type: InstructionType = InstructionType.NONE, var location: Int = 0, val sprite: Sprite, val drone: Drone) {
+abstract class Instruction(var maxHealth: Int, val memory: Int, val type: InstructionType, var location: Int, val sprite: Sprite, val drone: Drone) {
     //If these are null, they should be chosen when making a related action
     //Otherwise another activity might change them in order to control selection
     var selectedPlanet: Planet? = null

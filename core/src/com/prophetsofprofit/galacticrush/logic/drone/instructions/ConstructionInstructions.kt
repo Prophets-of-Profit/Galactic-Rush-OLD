@@ -9,8 +9,13 @@ import com.prophetsofprofit.galacticrush.logic.facility.ConstructionFacility
 /**
  * Constructs a drone construction facility
  */
-class BuildFacility(location: Int = -1, drone: Drone = Drone()):
+class BuildFacility(location: Int, drone: Drone):
         Instruction(2, 5, InstructionType.CONSTRUCTION, location, Sprite(), drone) {
+
+    /**
+     * Empty constructor for serialization
+     */
+    constructor(): this(-1, Drone())
 
     /**
      * Activates every turn

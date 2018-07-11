@@ -10,6 +10,11 @@ import com.prophetsofprofit.galacticrush.logic.Game
 class LocalPlayer(id: Int) : Player(id) {
 
     /**
+     * Empty constructor for serialization
+     */
+    constructor(): this(-1)
+
+    /**
      * The local player directly gives the local game the changes to submit
      */
     override fun submitChanges() {

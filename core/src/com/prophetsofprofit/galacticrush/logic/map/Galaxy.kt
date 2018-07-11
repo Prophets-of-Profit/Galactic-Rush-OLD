@@ -15,12 +15,17 @@ import kotlin.math.sqrt
  * Contains a bunch of planets which are essentially the game 'tiles'
  * Planets are connected as a graph rather than sequentially
  */
-class Galaxy(numPlanets: Int = 100, playerIDs: List<Int> = listOf()) {
+class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
 
     //The planets that are in the galaxy: serve as 'tiles' of the game, but are connected as a graph
     val planets = mutableListOf<Planet>()
     //The cosmic highways that are in the galaxy: serve as the 'paths' or 'connections' of the game
     val highways = mutableListOf<CosmicHighway>()
+
+    /**
+     * Empty constructor for serialization
+     */
+    constructor(): this(-1, listOf())
 
     /**
      * Galaxy constructor generates all the planets and terrain and values and such

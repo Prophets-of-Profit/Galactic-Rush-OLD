@@ -9,8 +9,13 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
  * according to half the target's attack
  * If no drone is targeted, choose a random one on the same planet
  */
-class Attack(location: Int = -1, drone: Drone = Drone()):
+class Attack(location: Int, drone: Drone):
         Instruction(3, 1, InstructionType.COMBAT, location, Sprite(), drone) {
+
+    /**
+     * Empty constructor for serialization
+     */
+    constructor(): this(-1, Drone())
 
     /**
      * Activates every turn, provided there is a drone on the same planet as the user

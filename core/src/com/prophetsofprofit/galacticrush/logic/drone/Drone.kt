@@ -9,7 +9,7 @@ import java.util.*
  * Is the main unit of the game that carries out instructions
  * Is what is used to achieve victory
  */
-class Drone(val ownerId: Int = -1) {
+class Drone(val ownerId: Int) {
 
     //When the drone was initialized: the game assumes that this is unique for each drone which is kinda hacky
     val creationTime = Date()
@@ -31,6 +31,11 @@ class Drone(val ownerId: Int = -1) {
         }
     //Whether the drone is done completing its command queue
     var queueFinished = false
+
+    /**
+     * Empty constructor for serialization
+     */
+    constructor(): this(-1)
 
     //The following methods interface with the drone's instruction structure
 
