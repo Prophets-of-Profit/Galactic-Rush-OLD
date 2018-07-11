@@ -9,7 +9,7 @@ import java.util.*
  * Is the main unit of the game that carries out instructions
  * Is what is used to achieve victory
  */
-class Drone(val ownerId: Int) {
+class Drone(val ownerId: Int = -1) {
 
     //When the drone was initialized: the game assumes that this is unique for each drone which is kinda hacky
     val creationTime = Date()

@@ -13,6 +13,7 @@ import com.prophetsofprofit.galacticrush.defaultTcpPort
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
+import com.prophetsofprofit.galacticrush.logic.player.Player
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -28,6 +29,8 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
     val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
     //The id of the hosts's connection to the client
     var connectionId: Int? = null
+    //The players of the game
+    var players: Array<Player>? = null
 
     /**
      * Initializes the networker as a host and also initializes GUI components
@@ -96,9 +99,11 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
         if (this.connectionId == null) {
             return
         }
-        val players = arrayOf(LocalPlayer(0), NetworkPlayer(1, this.connectionId!!))
-        println(players)
-        this.game.screen = HostLoadingScreen(this.game, players)
+        this.players = arrayOf(LocalPlayer(0), NetworkPlayer(1, this.connectionId!!))
+        if (this.players == null) {
+            return
+        }
+        this.game.screen = HostLoadingScreen(this.game, this.players!!)
         this.dispose()
     }
 

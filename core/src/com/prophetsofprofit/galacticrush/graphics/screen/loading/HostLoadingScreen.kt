@@ -21,13 +21,12 @@ class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(
      * Constructs the galaxy
      */
     override fun load() {
-        println(this.players)
         this.mainGame = Game(this.players.map { it.id }.toTypedArray(), 100)
         this.players.forEach {
+            it.game = this.mainGame!!
             if (it is NetworkPlayer) {
                 Networker.getServer().sendToTCP(it.connectionId, it)
             }
-            it.receiveNewGameState(this.mainGame!!)
         }
     }
 

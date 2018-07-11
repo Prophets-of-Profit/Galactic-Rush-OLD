@@ -9,7 +9,7 @@ import com.prophetsofprofit.galacticrush.logic.Game
  * A player that plays on a different machine on the network
  * Can never be the host player, but will be initialized on host player's machine
  */
-class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
+class NetworkPlayer(id: Int = -1, val connectionId: Int = -1) : Player(id) {
 
     /**
      * A method that gets called form the clientside that sends a change object to the game

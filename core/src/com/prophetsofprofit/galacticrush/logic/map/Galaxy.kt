@@ -15,7 +15,7 @@ import kotlin.math.sqrt
  * Contains a bunch of planets which are essentially the game 'tiles'
  * Planets are connected as a graph rather than sequentially
  */
-class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
+class Galaxy(numPlanets: Int = 100, playerIDs: List<Int> = listOf()) {
 
     //The planets that are in the galaxy: serve as 'tiles' of the game, but are connected as a graph
     val planets = mutableListOf<Planet>()

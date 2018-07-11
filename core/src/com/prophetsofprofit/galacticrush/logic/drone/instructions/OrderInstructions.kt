@@ -6,7 +6,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
 /**
  * Forces the drone to repeat the previous instruction
  */
-class RepeatPrevious(location: Int, drone: Drone):
+class RepeatPrevious(location: Int = -1, drone: Drone = Drone()):
         Instruction(3, 1, InstructionType.ORDER, location, Sprite(), drone) {
 
     /**

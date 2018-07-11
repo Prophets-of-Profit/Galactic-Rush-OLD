@@ -57,6 +57,7 @@ object Networker {
         kryo.register(LocalPlayer::class.java)
         kryo.register(NetworkPlayer::class.java)
         kryo.register(Color::class.java)
+        kryo.register(Array<Int>::class.java)
         kryo.register(ArrayList::class.java)
         kryo.register(Date::class.java)
         kryo.register(LinkedHashMap::class.java)

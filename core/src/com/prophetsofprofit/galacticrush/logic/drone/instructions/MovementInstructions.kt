@@ -10,7 +10,7 @@ import com.prophetsofprofit.galacticrush.logic.map.Planet
  * Moves the user to a planet across a single cosmic highway
  * If no planet is targeted, choose a random reachable one
  */
-class Move(location: Int, drone: Drone):
+class Move(location: Int = -1, drone: Drone = Drone()):
         Instruction(3, 1, InstructionType.MOVEMENT, location, Sprite(), drone) {
 
     /**

@@ -9,7 +9,7 @@ import com.prophetsofprofit.galacticrush.logic.facility.ConstructionFacility
 /**
  * Constructs a drone construction facility
  */
-class BuildFacility(location: Int, drone: Drone):
+class BuildFacility(location: Int = -1, drone: Drone = Drone()):
         Instruction(2, 5, InstructionType.CONSTRUCTION, location, Sprite(), drone) {
 
     /**
