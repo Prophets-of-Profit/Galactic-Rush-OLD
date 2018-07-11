@@ -6,11 +6,14 @@ import com.esotericsoftware.kryonet.Server
 import com.prophetsofprofit.galacticrush.logic.Change
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import com.prophetsofprofit.galacticrush.logic.facility.Facility
+import com.prophetsofprofit.galacticrush.logic.facility.ConstructionFacility
+import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.CosmicHighway
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
+import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
+import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.logic.player.Player
 import java.util.*
 
@@ -32,11 +35,12 @@ object Networker {
         if (this.client != null || this.server != null) {
             throw Error("Networker has already been initialized!")
         }
+        val bufferSize = Int.MAX_VALUE / 16
         val kryo = if (isClient) {
-            this.client = Client()
+            this.client = Client(bufferSize, bufferSize)
             this.client!!.kryo
         } else {
-            this.server = Server()
+            this.server = Server(bufferSize, bufferSize)
             this.server!!.kryo
         }
         //Registers the classes that the kryo will be sending
@@ -47,8 +51,11 @@ object Networker {
         kryo.register(Planet::class.java)
         kryo.register(Attribute::class.java)
         kryo.register(CosmicHighway::class.java)
-        kryo.register(Facility::class.java)
-        kryo.register(Player::class.java)
+        kryo.register(ConstructionFacility::class.java)
+        kryo.register(HomeBase::class.java)
+        kryo.register(Array<Player>::class.java)
+        kryo.register(LocalPlayer::class.java)
+        kryo.register(NetworkPlayer::class.java)
         kryo.register(Color::class.java)
         kryo.register(ArrayList::class.java)
         kryo.register(Date::class.java)

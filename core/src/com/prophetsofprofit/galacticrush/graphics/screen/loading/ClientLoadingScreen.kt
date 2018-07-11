@@ -14,7 +14,7 @@ import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
  */
 class ClientLoadingScreen(game: Main, val connectionId: Int) : LoadingScreen(game) {
 
-    var mainGame: Game? = null
+    var player: NetworkPlayer? = null
 
     /**
      * Waits for the connection to receive the game
@@ -22,13 +22,13 @@ class ClientLoadingScreen(game: Main, val connectionId: Int) : LoadingScreen(gam
     override fun load() {
         Networker.getClient().addListener(object : Listener() {
             override fun received(connection: Connection?, obj: Any?) {
-                if (connection?.id == connectionId && obj is Game) {
-                    mainGame = obj
+                if (connection?.id == connectionId && obj is NetworkPlayer) {
+                    player = obj
                 }
                 Networker.getClient().removeListener(this)
             }
         })
-        while (this.mainGame == null) {
+        while (this.player == null) {
             Thread.sleep(250)
         }
     }
@@ -37,7 +37,7 @@ class ClientLoadingScreen(game: Main, val connectionId: Int) : LoadingScreen(gam
      * Moves the game to the MainGameScreen
      */
     override fun onLoad() {
-        this.game.screen = MainGameScreen(this.game, this.mainGame!!.players.first { it is NetworkPlayer && it.connectionId == this.connectionId })
+        this.game.screen = MainGameScreen(this.game, this.player!!)
     }
 
 }

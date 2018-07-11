@@ -1,9 +1,11 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.loading
 
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
+import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.logic.player.Player
 
 /**
@@ -19,7 +21,14 @@ class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(
      * Constructs the galaxy
      */
     override fun load() {
-        this.mainGame = Game(this.players, 100)
+        println(this.players)
+        this.mainGame = Game(this.players.map { it.id }.toTypedArray(), 100)
+        this.players.forEach {
+            if (it is NetworkPlayer) {
+                Networker.getServer().sendToTCP(it.connectionId, it)
+            }
+            it.receiveNewGameState(this.mainGame!!)
+        }
     }
 
     /**
@@ -27,7 +36,7 @@ class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(
      */
     override fun onLoad() {
         //Assuming that there is only one local player
-        this.game.screen = MainGameScreen(this.game, this.mainGame!!.players.first { it is LocalPlayer })
+        this.game.screen = MainGameScreen(this.game, this.players.first { it is LocalPlayer })
     }
 
 

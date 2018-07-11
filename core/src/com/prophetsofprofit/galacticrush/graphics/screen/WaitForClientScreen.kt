@@ -96,7 +96,9 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
         if (this.connectionId == null) {
             return
         }
-        this.game.screen = HostLoadingScreen(this.game, arrayOf(LocalPlayer(0), NetworkPlayer(1, this.connectionId!!)))
+        val players = arrayOf(LocalPlayer(0), NetworkPlayer(1, this.connectionId!!))
+        println(players)
+        this.game.screen = HostLoadingScreen(this.game, players)
         this.dispose()
     }
 
