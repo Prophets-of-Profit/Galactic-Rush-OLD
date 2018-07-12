@@ -16,9 +16,9 @@ import ktx.scene2d.Scene2DSkin
 class OptionsScreen(game: Main, val exitProcedure: () -> Unit) : GalacticRushScreen(game) {
 
     //The horizontal slider for controlling music musicVolume
-    val musicVolumeSlider = Slider(0f, 1f, 0.1f, false, Scene2DSkin.defaultSkin)
+    val musicVolumeSlider = Slider(0f, 1f, 0.05f, false, Scene2DSkin.defaultSkin)
     //The horizontal slider for controlling sound musicVolume
-    val soundVolumeSlider = Slider(0f, 1f, 0.1f, false, Scene2DSkin.defaultSkin)
+    val soundVolumeSlider = Slider(0f, 1f, 0.05f, false, Scene2DSkin.defaultSkin)
 
     /**
      * Initializes UI components

@@ -9,11 +9,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.utils.Json
+import com.badlogic.gdx.utils.JsonWriter
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.SplashScreen
 import ktx.scene2d.Scene2DSkin
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
 
 /**
  * GALACTIC RUSH
@@ -23,7 +23,7 @@ import java.io.ObjectOutputStream
 class Main : Game() {
 
     //The user controllable options: set to default values, but changes get written to file and applied
-    var userOptions = Options(.25f, .5f)
+    var userOptions = Options()
         set(value) {
             field = value
             applyOptions()
@@ -31,15 +31,16 @@ class Main : Game() {
     lateinit var batch: SpriteBatch //What will be used to draw sprites and textures and all game things
     lateinit var shapeRenderer: ShapeRenderer //What will be used to draw shapes
     lateinit var camera: OrthographicCamera //The object that handles coordinates for drawing game things
+    val jsonObject = Json(JsonWriter.OutputType.json).also { it.setUsePrototypes(false) } //The object that handles reading/writing JSON
 
     /**
      * Entry point of the game
      */
     override fun create() {
         userOptions = try {
-            ObjectInputStream(optionsFile.read()).readObject() as Options
+            jsonObject.fromJson(Options::class.java, optionsFile.readString())
         } catch (ignored: Exception) {
-            defaultOptions
+            Options()
         } finally {
             applyOptions()
         }
@@ -76,7 +77,7 @@ class Main : Game() {
         if (this.screen != null) {
             (this.screen as GalacticRushScreen).applyOptions()
         }
-        ObjectOutputStream(optionsFile.write(false)).writeObject(this.userOptions)
+        optionsFile.writeString(this.jsonObject.prettyPrint(this.userOptions), false)
     }
 
     /**

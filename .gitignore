@@ -5,3 +5,4 @@ local.properties
 *.iml
 *.ser
 *.cfg
+UserOptions.json
