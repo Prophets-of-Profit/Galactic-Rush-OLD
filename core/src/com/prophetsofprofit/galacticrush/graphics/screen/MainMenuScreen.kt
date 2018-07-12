@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.FindHostScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.WaitForClientScreen
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import ktx.app.use
 import ktx.scene2d.Scene2DSkin

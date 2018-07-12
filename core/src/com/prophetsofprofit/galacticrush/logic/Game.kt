@@ -29,11 +29,9 @@ class Game(val players: Array<Int>, galaxySize: Int) {
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
     fun collectChange(change: Change) {
-        //TODO: make; instead of immediately replying with new gamestate, wait for all changes to happen and then send game states
         if (waitingOn.contains(change.ownerId)) {
             waitingOn.remove(change.ownerId)
         }
-        //TODO: call doDroneTurn here?
     }
 
     /**

@@ -24,6 +24,13 @@ class ClientLoadingScreen(game: Main, val connectionId: Int) : LoadingScreen(gam
             override fun received(connection: Connection?, obj: Any?) {
                 if (connection?.id == connectionId && obj is NetworkPlayer) {
                     player = obj
+                    Networker.getClient().addListener(object: Listener() {
+                        override fun received(connection: Connection?, obj: Any?) {
+                            if (connection?.id == connectionId && obj is Game) {
+                                player!!.game = obj
+                            }
+                        }
+                    })
                 }
                 Networker.getClient().removeListener(this)
             }
