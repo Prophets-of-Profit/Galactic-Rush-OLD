@@ -95,7 +95,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         if (this.connectionId == null) {
             return
         }
-        this.game.screen = ClientLoadingScreen(this.game, this.connectionId!!)
+        this.game.screen = ClientLoadingScreen(this.game)
         this.dispose()
     }
 

@@ -21,17 +21,21 @@ class Game(val players: Array<Int>, galaxySize: Int) {
     var turnsPlayed = 0
     //The players who need to submit their changes for the drones to commence
     val waitingOn = this.players.toMutableList()
-    //The drones that currently exist in the game
-    //Should be ordered in order of creation
+    //The drones that currently exist in the game; should be ordered in order of creation
     val drones = mutableListOf<Drone>()
+    //Whether the game has been changed since last send
+    var gameChanged = false
 
     /**
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
     fun collectChange(change: Change) {
-        if (waitingOn.contains(change.ownerId)) {
-            waitingOn.remove(change.ownerId)
+        if (!waitingOn.contains(change.ownerId)) {
+            return
         }
+        //TODO: verify change integrity
+        waitingOn.remove(change.ownerId)
+        gameChanged = true
     }
 
     /**
