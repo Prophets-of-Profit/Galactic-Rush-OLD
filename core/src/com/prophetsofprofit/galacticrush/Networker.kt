@@ -27,6 +27,9 @@ object Networker {
     private var client: Client? = null
     //The server of the networker (if it is a server); will be null if networker is client
     private var server: Server? = null
+    //What the Networker is
+    var isClient: Boolean? = null
+        private set(value) { field = value }
 
     /**
      * Initializes the networker
@@ -35,6 +38,7 @@ object Networker {
         if (this.client != null || this.server != null) {
             throw Error("Networker has already been initialized!")
         }
+        this.isClient = isClient
         val bufferSize = Int.MAX_VALUE / 16
         val kryo = if (isClient) {
             this.client = Client(bufferSize, bufferSize)
@@ -75,6 +79,7 @@ object Networker {
         this.server?.dispose()
         this.client = null
         this.server = null
+        this.isClient = null
     }
 
     /**
