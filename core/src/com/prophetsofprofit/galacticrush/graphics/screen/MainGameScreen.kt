@@ -37,7 +37,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     //The list of planet attributes TODO: get rid of leading newline and format properly
     var planetLabel = Label(Attribute.values().joinToString { "\n${it.toString().capitalize()}: ${this.mainGame.galaxy.planets[0].attributes[it]}" }, Scene2DSkin.defaultSkin)
     //The list of drones on the planet
-    var dronesList = Label("Drones:\n Drone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\n", Scene2DSkin.defaultSkin)
+    var dronesList = Label("Drones:\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\n", Scene2DSkin.defaultSkin)
     //The button which causes the player to submit their change
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
     //The arrow textures used in indicating selected planets

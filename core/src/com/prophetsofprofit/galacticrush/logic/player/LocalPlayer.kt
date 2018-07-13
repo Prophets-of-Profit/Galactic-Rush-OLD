@@ -33,11 +33,13 @@ class LocalPlayer(id: Int) : Player(id) {
             Thread {
                 //TODO: exit condition
                 while (true) {
-                    if (!this.game.gameChanged) {
-                        Thread.sleep(50)
-                        continue
-                    }
-                    Networker.getServer().sendToAllTCP(this.game)
+                    try {
+                        if (!this.game.gameChanged) {
+                            Thread.sleep(50)
+                            continue
+                        }
+                        Networker.getServer().sendToAllTCP(this.game)
+                    } catch (ignored: Exception) {}
                 }
             }.start()
         }
@@ -47,7 +49,8 @@ class LocalPlayer(id: Int) : Player(id) {
      * The local player directly gives the local game the changes to submit
      */
     override fun submitChanges() {
-        this.game.collectChange(this.currentChanges ?: Change(this.id))
+        this.game.collectChange(this.currentChanges)
+        this.currentChanges = Change(this.id)
     }
 
     /**

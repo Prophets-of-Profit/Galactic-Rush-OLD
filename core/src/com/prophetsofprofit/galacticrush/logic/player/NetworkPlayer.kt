@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.player
 
 import com.prophetsofprofit.galacticrush.Networker
+import com.prophetsofprofit.galacticrush.logic.Change
 import com.prophetsofprofit.galacticrush.logic.Game
 
 /**
@@ -20,6 +21,7 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
      */
     override fun submitChanges() {
         Networker.getClient().sendTCP(this.currentChanges)
+        this.currentChanges = Change(this.id)
     }
 
     /**

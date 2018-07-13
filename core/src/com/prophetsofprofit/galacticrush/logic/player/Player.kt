@@ -10,7 +10,7 @@ import com.prophetsofprofit.galacticrush.logic.Game
 abstract class Player(val id: Int) {
 
     //What the player has done and will submit to the game once their turn is over
-    var currentChanges: Change? = null
+    var currentChanges: Change = Change()
     //The game that the player is in
     lateinit var game: Game
 
