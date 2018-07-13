@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.logic.Game
@@ -35,18 +38,27 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     var planetLabel = Label(Attribute.values().joinToString { "\n${it.toString().capitalize()}: ${this.mainGame.galaxy.planets[0].attributes[it]}" }, Scene2DSkin.defaultSkin)
     //The list of drones on the planet
     var dronesList = Label("Drones:\n Drone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\n", Scene2DSkin.defaultSkin)
+    //The button which causes the player to submit their change
+    val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
 
     init {
         this.planetLabel.setPosition(0f + this.planetLabel.width / 2, 0f + this.planetLabel.height / 2, Align.center)
-        this.dronesList.setPosition(this.game.camera.viewportWidth - this.dronesList.width / 2, 0f + this.dronesList.height / 2, Align.center)
+        this.dronesList.setPosition(this.game.camera.viewportWidth - this.dronesList.width / 2, 0f + (this.dronesList.height / 2 + this.endTurnButton.height), Align.center)
+        this.endTurnButton.setPosition(this.game.camera.viewportWidth - this.endTurnButton.width, 0f)
         this.planetLabel.setAlignment(Align.left)
         this.dronesList.setAlignment(Align.topLeft)
         this.planetLabel.isVisible = false
         this.dronesList.isVisible = false
         this.uiContainer.addActor(this.planetLabel)
         this.uiContainer.addActor(this.dronesList)
+        this.uiContainer.addActor(this.endTurnButton)
+        endTurnButton.addListener(object: ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                player.submitChanges()
+            }
+        })
     }
 
     /**
