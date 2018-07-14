@@ -3,6 +3,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
@@ -42,6 +44,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
+    //The font that is displayed when there is no label
+    val font = BitmapFont()
 
     init {
         this.planetLabel.setPosition(0f + this.planetLabel.width / 2, 0f + this.planetLabel.height / 2, Align.center)
@@ -59,6 +63,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 player.submitChanges()
             }
         })
+
     }
 
     /**
@@ -74,17 +79,31 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             this.game.shapeRenderer.line(highway.p0.x * this.game.camera.viewportWidth, highway.p0.y * this.game.camera.viewportHeight, highway.p1.x * this.game.camera.viewportWidth, highway.p1.y * this.game.camera.viewportHeight)
         }
         this.game.shapeRenderer.end()
-
         //Render planets as colored circles
-        //TODO: add textures for planets
+        //TODO: add textures for planets, make planet size
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in this.mainGame.galaxy.planets) {
             this.game.shapeRenderer.color = planet.color
             this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 10 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
+            //this.game.batch.draw(baseDroneImage, planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, this.game.camera.viewportWidth, this.game.camera.viewportHeight)
         }
+        //Draw arrows pointing at the selected planet
         this.game.shapeRenderer.end()
         this.game.batch.begin()
         this.drawSelectionArrows()
+        //Draw a drone on every planet if the planet has drones on it
+        for (planet in this.mainGame.galaxy.planets) {
+            this.game.batch.draw(
+                    baseDroneImage,
+                    planet.x * this.game.camera.viewportWidth - baseDroneImage.width / 4,
+                    planet.y * this.game.camera.viewportHeight - baseDroneImage.height / 4,
+                    baseDroneImage.width / 2f,
+                    baseDroneImage.height / 2f
+            )
+            //Write how many drones it has
+            this.font.draw(this.game.batch, planet.drones.size.toString(), planet.x * this.game.camera.viewportWidth + this.font.spaceWidth / 2, planet.y * this.game.camera.viewportHeight + this.font.xHeight)
+
+        }
         this.game.batch.end()
     }
 
@@ -189,6 +208,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     /**
      * Does nothing on leave
      */
-    override fun leave() {}
+    override fun leave() {
+        this.font.dispose()
+    }
 
 }

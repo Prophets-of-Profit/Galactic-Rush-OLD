@@ -1,8 +1,11 @@
 package com.prophetsofprofit.galacticrush.logic.drone;
 
+import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.logic.drone.instructions.Instruction
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import java.util.*
+
+val baseDroneImage = Texture("image/drone/base.png")
 
 /**
  * A class that represent's a player's drone
