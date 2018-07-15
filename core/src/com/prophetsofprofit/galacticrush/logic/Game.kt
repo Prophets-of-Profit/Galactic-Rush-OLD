@@ -30,12 +30,14 @@ class Game(val players: Array<Int>, galaxySize: Int) {
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
     fun collectChange(change: Change) {
-        if (!waitingOn.contains(change.ownerId)) {
+        if (!this.waitingOn.contains(change.ownerId)) {
             return
         }
         //TODO: verify change integrity
-        waitingOn.remove(change.ownerId)
-        gameChanged = true
+        this.waitingOn.remove(change.ownerId)
+        if (waitingOn.isEmpty()) {
+            this.doDroneTurn()
+        }
     }
 
     /**
@@ -53,6 +55,7 @@ class Game(val players: Array<Int>, galaxySize: Int) {
             this.drones.forEach { it.resetQueue() }
             players.mapTo(waitingOn) { it }
         }
+        this.gameChanged = true
     }
 
 }

@@ -38,6 +38,7 @@ class LocalPlayer(id: Int) : Player(id) {
                             Thread.sleep(50)
                             continue
                         }
+                        this.game.gameChanged = false
                         Networker.getServer().sendToAllTCP(this.game)
                     } catch (ignored: Exception) {}
                 }

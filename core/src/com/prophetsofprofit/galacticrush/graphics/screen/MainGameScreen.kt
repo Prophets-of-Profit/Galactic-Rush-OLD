@@ -27,6 +27,8 @@ import kotlin.math.sqrt
  */
 class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, Array(Gdx.files.internal("music/").list().size) { "" + Gdx.files.internal("music/").list()[it] }) {
 
+    //A variable that stores an older game state if one exists; TODO: animate difference between mainGame and oldGameState
+    var oldGameState: Game? = null
     //A convenience getter for the game because the player's game will continuously change
     var mainGame = Game(arrayOf(), 0)
         get() = this.player.game

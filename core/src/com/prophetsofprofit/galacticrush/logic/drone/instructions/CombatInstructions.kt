@@ -21,8 +21,8 @@ class Attack(location: Int, drone: Drone):
      * Activates every turn, provided there is a drone on the same planet as the user
      */
     override fun act(): Boolean {
-        if(this.drone.location.drones.isEmpty()) return false
-        if(this.selectedDrone == null) {
+        if (this.drone.location.drones.isEmpty()) return false
+        if (this.selectedDrone == null) {
             this.selectedDrone = this.drone.location.drones.shuffled()[0]
         }
         (this.selectedDrone as Drone).takeDamage(this.drone.attack)
