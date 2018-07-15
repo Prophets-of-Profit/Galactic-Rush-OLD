@@ -46,6 +46,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
+    //The texture used as the base panels for the gui
+    private val basePanelTexture = Texture("image/SidePanel.png")
     //The font that is displayed when there is no label
     val font = BitmapFont()
 
@@ -93,19 +95,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.shapeRenderer.end()
         this.game.batch.begin()
         this.drawSelectionArrows()
-        //Draw a drone on every planet if the planet has drones on it
-        for (planet in this.mainGame.galaxy.planets) {
-            this.game.batch.draw(
-                    baseDroneImage,
-                    planet.x * this.game.camera.viewportWidth - baseDroneImage.width / 4,
-                    planet.y * this.game.camera.viewportHeight - baseDroneImage.height / 4,
-                    baseDroneImage.width / 2f,
-                    baseDroneImage.height / 2f
-            )
-            //Write how many drones it has
-            this.font.draw(this.game.batch, planet.drones.size.toString(), planet.x * this.game.camera.viewportWidth + this.font.spaceWidth / 2, planet.y * this.game.camera.viewportHeight + this.font.xHeight)
-
-        }
+        this.drawDrones()
+        this.drawUI()
         this.game.batch.end()
     }
 
@@ -140,6 +131,33 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.batch.draw(this.selectionArrowTextures[7],
                 (this.selectedPlanet!!.x - 0.02f * this.game.camera.viewportHeight * this.selectedPlanet!!.radius) * this.game.camera.viewportWidth - 10,
                 (this.selectedPlanet!!.y - 0.02f * this.game.camera.viewportWidth * this.selectedPlanet!!.radius) * this.game.camera.viewportHeight - 10)
+    }
+
+    /**
+     * Indicates the drones on each planet
+     */
+    private fun drawDrones() {
+        for (planet in this.mainGame.galaxy.planets) {
+            this.game.batch.draw(
+                    baseDroneImage,
+                    planet.x * this.game.camera.viewportWidth - baseDroneImage.width / 3,
+                    planet.y * this.game.camera.viewportHeight - baseDroneImage.height / 3,
+                    baseDroneImage.width / 1.5f,
+                    baseDroneImage.height / 1.5f
+            )
+            //Write how many drones it has
+            this.font.draw(this.game.batch, planet.drones.size.toString(),
+                    planet.x * this.game.camera.viewportWidth + this.font.spaceWidth / 2,
+                    planet.y * this.game.camera.viewportHeight + this.font.xHeight)
+        }
+    }
+
+    /**
+     * Draws the user interface to the screen
+     * TODO:
+     */
+    private fun drawUI() {
+
     }
 
     /**
