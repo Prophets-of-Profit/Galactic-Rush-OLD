@@ -204,16 +204,9 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         if (this.selectedPlanet != null) {
             //Format the attributes nicely
             this.planetLabel.isVisible = true
-            this.planetLabel.setText(
-                    Attribute.values().map { it.toString().capitalize() + ": " + this.selectedPlanet!!.attributes[it] + "\n" }
-                            .reduce { acc, it -> acc + it }
-                            .toString()
-            )
+            this.planetLabel.setText(Attribute.values().joinToString { "${it.toString().capitalize()}:${this.selectedPlanet!!.attributes[it]}\n" })
             this.dronesList.isVisible = true
-            this.dronesList.setText(
-                    if ((this.selectedPlanet as Planet).drones.isEmpty()) "Drones: \n None" else
-                        "Drones: \n" + (this.selectedPlanet as Planet).drones.joinToString { "$it\n" }
-            )
+            this.dronesList.setText("Drones: \n ${if (this.selectedPlanet!!.drones.isEmpty()) "None" else this.selectedPlanet!!.drones.joinToString{ "$it\n" }}")
             //TODO: account for changing of camera viewport
             //this.planetLabel.setPosition(this.uiContainer.width * this.selectedPlanet!!.x + this.planetLabel.width * 2f, this.uiContainer.height * this.selectedPlanet!!.y, Align.center)
         } else {
