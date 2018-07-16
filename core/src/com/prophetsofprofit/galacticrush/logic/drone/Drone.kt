@@ -38,7 +38,7 @@ class Drone(val ownerId: Int) {
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(-1)
+    constructor() : this(-1)
 
     //The following methods interface with the drone's instruction structure
 

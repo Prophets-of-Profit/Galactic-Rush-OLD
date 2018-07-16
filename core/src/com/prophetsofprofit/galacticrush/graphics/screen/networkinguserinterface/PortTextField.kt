@@ -7,7 +7,7 @@ import ktx.scene2d.Scene2DSkin
 /**
  * A text field used for inputting ports
  */
-class PortTextField: TextField("$defaultTcpPort", Scene2DSkin.defaultSkin) {
+class PortTextField : TextField("$defaultTcpPort", Scene2DSkin.defaultSkin) {
 
     //Whether the text inside the field is a valid port
     var isValid = true

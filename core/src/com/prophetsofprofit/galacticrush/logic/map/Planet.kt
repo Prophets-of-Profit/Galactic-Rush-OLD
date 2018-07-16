@@ -38,7 +38,7 @@ class Planet(var x: Float,
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(-1f, -1f, -1f)
+    constructor() : this(-1f, -1f, -1f)
 
     //Arbitrary attributes that determine drone behaviour: can be changed, but each start out as a random number between 0 and 1
     val attributes = Attribute.values().map { it to Math.random() }.toMap()

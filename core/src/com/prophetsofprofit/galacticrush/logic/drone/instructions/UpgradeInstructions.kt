@@ -12,7 +12,7 @@ class MinorAttackBuff(location: Int, drone: Drone):
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(-1, Drone())
+    constructor() : this(-1, Drone())
 
     //TODO: Handle if the parent add or remove methods return false
     /**

@@ -25,7 +25,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(-1, listOf())
+    constructor() : this(-1, listOf())
 
     /**
      * Galaxy constructor generates all the planets and terrain and values and such
@@ -40,7 +40,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         connectAllPlanets()
         val pickablePlanets = this.planets
         var planetChoice: Planet
-        for (i in 0 until playerIDs.size){
+        for (i in 0 until playerIDs.size) {
             planetChoice = planets.shuffled()[0]
             planetChoice.facilities.add(HomeBase(playerIDs[i]))
             planetChoice.facilities.add(ConstructionFacility(playerIDs[i]))
@@ -59,7 +59,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
                 //Shifts x by i and y by j, and adds to it in a random number within a range of 0 to 1 / sidelength, the length of each bounding square
                 planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), (sideLength / 250.0 + Math.random() * sideLength / 500.0).toFloat() / numPlanets))
                 //TODO: This is a test; remove it for release
-                for(k in 0 until (Math.random() * 6).toInt()) planets.last().drones.add(Drone((Math.random() * 1000000).toInt()))
+                for (k in 0 until (Math.random() * 6).toInt()) planets.last().drones.add(Drone((Math.random() * 1000000).toInt()))
             }
         }
     }

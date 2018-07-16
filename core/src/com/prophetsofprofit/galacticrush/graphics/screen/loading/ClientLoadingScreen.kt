@@ -27,7 +27,7 @@ class ClientLoadingScreen(game: Main) : LoadingScreen(game) {
                     return
                 }
                 player = obj
-                Networker.getClient().addListener(object: Listener() {
+                Networker.getClient().addListener(object : Listener() {
                     override fun received(connection: Connection?, obj: Any?) {
                         if (obj !is Game) {
                             return

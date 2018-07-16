@@ -15,7 +15,7 @@ class LocalPlayer(id: Int) : Player(id) {
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(-1)
+    constructor() : this(-1)
 
     /**
      * When a LocalPlayer is made, networking logic is initialized to receive changes and send the game
@@ -23,7 +23,7 @@ class LocalPlayer(id: Int) : Player(id) {
     init {
         //TODO: below line is for dev version: remove on release
         if (Networker.isClient == false) {
-            Networker.getServer().addListener(object: Listener() {
+            Networker.getServer().addListener(object : Listener() {
                 override fun received(connection: Connection?, obj: Any?) {
                     if (obj is Change) {
                         game.collectChange(obj)
@@ -40,7 +40,8 @@ class LocalPlayer(id: Int) : Player(id) {
                         }
                         this.game.gameChanged = false
                         Networker.getServer().sendToAllTCP(this.game)
-                    } catch (ignored: Exception) {}
+                    } catch (ignored: Exception) {
+                    }
                 }
             }.start()
         }

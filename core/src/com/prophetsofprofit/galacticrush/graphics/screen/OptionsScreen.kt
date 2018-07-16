@@ -25,7 +25,7 @@ class OptionsScreen(game: Main, val exitProcedure: () -> Unit) : GalacticRushScr
      */
     init {
         val backButton = TextButton("Back", Scene2DSkin.defaultSkin) //TODO: change for ImageButton with back icon
-        backButton.addListener(object: ClickListener() {
+        backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 exitScreen()
             }

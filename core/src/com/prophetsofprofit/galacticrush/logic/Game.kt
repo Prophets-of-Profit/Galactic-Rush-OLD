@@ -13,7 +13,7 @@ class Game(val players: Array<Int>, galaxySize: Int) {
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(arrayOf(), -1)
+    constructor() : this(arrayOf(), -1)
 
     //The board or map on which this game is played
     val galaxy = Galaxy(galaxySize, players.toList())

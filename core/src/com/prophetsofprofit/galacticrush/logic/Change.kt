@@ -12,7 +12,7 @@ class Change(val ownerId: Int) {
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(-1)
+    constructor() : this(-1)
 
     //What the player has changed in regards to drones
     val changedDrones = mutableListOf<Drone>()

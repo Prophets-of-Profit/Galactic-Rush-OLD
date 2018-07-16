@@ -36,7 +36,7 @@ abstract class LoadingScreen(game: Main) : GalacticRushScreen(game) {
         val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
         cancelButton.setPosition(0.1f * this.uiContainer.width, 0.1f * this.uiContainer.height, Align.center)
         cancelButton.align(Align.center)
-        cancelButton.addListener(object: ClickListener() {
+        cancelButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = MainMenuScreen(game)
             }

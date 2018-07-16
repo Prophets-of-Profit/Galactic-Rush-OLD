@@ -13,7 +13,7 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(-1, -1)
+    constructor() : this(-1, -1)
 
     /**
      * A method that gets called form the clientside that sends a change object to the game

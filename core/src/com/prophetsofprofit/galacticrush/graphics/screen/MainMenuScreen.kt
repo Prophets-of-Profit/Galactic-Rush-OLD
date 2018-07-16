@@ -33,19 +33,19 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         this.uiContainer.addActor(hostGameButton)
         this.uiContainer.addActor(joinGameButton)
         this.uiContainer.addActor(optionsButton)
-        hostGameButton.addListener(object: ClickListener() {
+        hostGameButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = WaitForClientScreen(game)
                 dispose()
             }
         })
-        joinGameButton.addListener(object: ClickListener() {
+        joinGameButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = FindHostScreen(game)
                 dispose()
             }
         })
-        optionsButton.addListener(object: ClickListener() {
+        optionsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = OptionsScreen(game) { game.screen = MainMenuScreen(game) }
                 dispose()

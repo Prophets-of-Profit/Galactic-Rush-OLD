@@ -62,7 +62,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(this.planetLabel)
         this.uiContainer.addActor(this.dronesList)
         this.uiContainer.addActor(this.endTurnButton)
-        endTurnButton.addListener(object: ClickListener() {
+        endTurnButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 player.submitChanges()
             }
@@ -199,22 +199,20 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.selectedPlanet = this.mainGame.galaxy.planets.firstOrNull {
             //it != this.selectedPlanet && /* This line of code will unselect a selected planet if clicked on again; TODO: discuss desired behaviour */
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
-                + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
+                    + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
         if (this.selectedPlanet != null) {
             //Format the attributes nicely
             this.planetLabel.isVisible = true
             this.planetLabel.setText(
                     Attribute.values().map { it.toString().capitalize() + ": " + this.selectedPlanet!!.attributes[it] + "\n" }
-                            .reduce {acc, it -> acc + it}
+                            .reduce { acc, it -> acc + it }
                             .toString()
             )
             this.dronesList.isVisible = true
             this.dronesList.setText(
-                    if((this.selectedPlanet as Planet).drones.isEmpty()) "Drones: \n None" else
-                        "Drones: \n" + (this.selectedPlanet as Planet).drones.map {it.toString() + "\n"}
-                            .reduce {acc, it -> acc + it}
-                            .toString()
+                    if ((this.selectedPlanet as Planet).drones.isEmpty()) "Drones: \n None" else
+                        "Drones: \n" + (this.selectedPlanet as Planet).drones.joinToString { "$it\n" }
             )
             //TODO: account for changing of camera viewport
             //this.planetLabel.setPosition(this.uiContainer.width * this.selectedPlanet!!.x + this.planetLabel.width * 2f, this.uiContainer.height * this.selectedPlanet!!.y, Align.center)

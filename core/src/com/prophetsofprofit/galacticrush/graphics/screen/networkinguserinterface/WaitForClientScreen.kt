@@ -61,7 +61,10 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                 }
                 lockButton.setText(if (portTextField.isDisabled) {
                     //Unbinds the port
-                    try { Networker.getServer().bind(0) } catch (ignored: Exception) {}
+                    try {
+                        Networker.getServer().bind(0)
+                    } catch (ignored: Exception) {
+                    }
                     confirmPort
                 } else {
                     Networker.getServer().bind(portTextField.text.toInt())

@@ -29,7 +29,9 @@ object Networker {
     private var server: Server? = null
     //What the Networker is
     var isClient: Boolean? = null
-        private set(value) { field = value }
+        private set(value) {
+            field = value
+        }
 
     /**
      * Initializes the networker

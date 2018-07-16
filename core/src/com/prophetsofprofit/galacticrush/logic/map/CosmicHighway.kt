@@ -11,6 +11,6 @@ class CosmicHighway(val p0: Planet, val p1: Planet) {
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(Planet(), Planet())
+    constructor() : this(Planet(), Planet())
 
 }

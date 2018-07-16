@@ -54,7 +54,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         ipTextField.setAlignment(Align.center)
         this.portTextField.setAlignment(Align.center)
         //Sets up localIpAutofillButton to autofill the local ip to the ipTextField
-        localIpAutofillButton.addListener(object: ClickListener() {
+        localIpAutofillButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 ipTextField.text = localHostIp
             }

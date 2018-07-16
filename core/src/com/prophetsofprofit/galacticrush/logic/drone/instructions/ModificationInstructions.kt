@@ -9,13 +9,13 @@ import com.prophetsofprofit.galacticrush.logic.map.Planet
 /**
  * If possible, forces the next instruction to select the drone with the lowest attack as of this instruction's action
  */
-class SelectLowestAttack(location: Int, drone: Drone):
+class SelectLowestAttack(location: Int, drone: Drone) :
         Instruction(5, 2, InstructionType.MODIFICATION, location, Sprite(), drone) {
 
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(-1, Drone())
+    constructor() : this(-1, Drone())
 
     /**
      * Selects the drone with lowest attack if reachable.

@@ -17,7 +17,7 @@ import ktx.app.KtxScreen
  * An abstract class that is what each screen in Galactic Rush should handle
  * Is a screen that allows for screen lifetime and input/gesturedetection to be handled
  */
-abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = arrayOf()): KtxScreen, GestureDetector.GestureListener, InputProcessor {
+abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = arrayOf()) : KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
     //The stage that contains all of the screen's UI elements
     protected val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.game.camera.viewportWidth, this.game.camera.viewportHeight))
