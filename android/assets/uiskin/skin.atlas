@@ -17,6 +17,48 @@ size: 1024,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+Atmosphere
+  rotate: false
+  xy: 255, 374
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+Humidity
+  rotate: false
+  xy: 432, 426
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+Mass
+  rotate: false
+  xy: 515, 559
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+Modify
+  rotate: false
+  xy: 542, 586
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+Solidity
+  rotate: false
+  xy: 717, 861
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+Temperature
+  rotate: false
+  xy: 744, 888
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
 SansSerif
   rotate: false
   xy: 1, 505
@@ -26,42 +68,42 @@ SansSerif
   index: -1
 checkBox
   rotate: false
-  xy: 203, 374
+  xy: 405, 426
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisable
   rotate: false
-  xy: 717, 888
+  xy: 800, 940
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisableChecked
   rotate: false
-  xy: 800, 940
+  xy: 1, 270
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDown
   rotate: false
-  xy: 405, 426
+  xy: 515, 586
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDownChecked
   rotate: false
-  xy: 1, 270
+  xy: 73, 322
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxOver
   rotate: false
-  xy: 515, 586
+  xy: 717, 888
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -71,6 +113,13 @@ label
   xy: 1, 349
   size: 200, 50
   orig: 200, 50
+  offset: 0, 0
+  index: -1
+labelSmall
+  rotate: false
+  xy: 203, 374
+  size: 50, 25
+  orig: 50, 25
   offset: 0, 0
   index: -1
 loadingBar
@@ -117,7 +166,7 @@ textField
   index: -1
 textFieldCursor
   rotate: false
-  xy: 73, 297
+  xy: 1, 218
   size: 10, 50
   orig: 10, 50
   offset: 0, 0

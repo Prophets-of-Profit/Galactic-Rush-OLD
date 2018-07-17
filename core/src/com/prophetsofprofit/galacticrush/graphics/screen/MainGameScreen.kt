@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -38,10 +39,20 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val maxZoom = 1f
     //The planet currently selected by the player
     var selectedPlanet: Planet? = null
-    //The list of planet attributes
-    val planetLabel = Label("", Scene2DSkin.defaultSkin, "ui")
-    //The list of drones on the planet
-    val dronesList = Label("", Scene2DSkin.defaultSkin, "ui")
+    //The two panels on the side of the screen that are always displayed
+    val planetLabel = Label("Planet Stats", Scene2DSkin.defaultSkin, "ui")
+    val dronesList = Label("Drones", Scene2DSkin.defaultSkin, "ui")
+    //The icons and labels for planet information
+    val massIcon = ImageButton(Scene2DSkin.defaultSkin, "mass")
+    val temperatureIcon = ImageButton(Scene2DSkin.defaultSkin, "temp")
+    val atmosphereIcon = ImageButton(Scene2DSkin.defaultSkin, "atm")
+    val humidityIcon = ImageButton(Scene2DSkin.defaultSkin, "humid")
+    val solidityIcon = ImageButton(Scene2DSkin.defaultSkin, "solid")
+    val massLabel = Label("", Scene2DSkin.defaultSkin, "small")
+    val temperatureLabel = Label("", Scene2DSkin.defaultSkin, "small")
+    val atmosphereLabel = Label("", Scene2DSkin.defaultSkin, "small")
+    val humidityLabel = Label("", Scene2DSkin.defaultSkin, "small")
+    val solidityLabel = Label("", Scene2DSkin.defaultSkin, "small")
     //Below are the menu buttons: end turn, quit game, etc
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
     val quitGameButton = TextButton("Quit", Scene2DSkin.defaultSkin)
@@ -59,10 +70,12 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.dronesList.height = this.game.camera.viewportHeight / 3
         this.dronesList.setPosition(this.game.camera.viewportWidth - this.dronesList.width,
                 this.game.camera.viewportHeight / 3)
+        this.dronesList.setAlignment(Align.top)
         this.planetLabel.width = this.game.camera.viewportWidth / 8
         this.planetLabel.height = this.game.camera.viewportHeight / 3
         this.planetLabel.setPosition(this.game.camera.viewportWidth - this.dronesList.width,
                 this.game.camera.viewportHeight - this.planetLabel.height)
+        this.planetLabel.setAlignment(Align.top)
 
         this.endTurnButton.setPosition(this.game.camera.viewportWidth - this.endTurnButton.width, 0f)
         this.quitGameButton.setPosition(this.game.camera.viewportWidth - this.endTurnButton.width, this.endTurnButton.height)
@@ -78,6 +91,17 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 confirmationButtonNo.isVisible = true
             }
         })
+
+        this.massIcon.setPosition(this.planetLabel.getX() + this.massIcon.width / 5f, this.planetLabel.getY() + 9f * this.massIcon.height)
+        this.temperatureIcon.setPosition(this.planetLabel.getX() + this.temperatureIcon.width / 5f, this.planetLabel.getY() + 7f * this.temperatureIcon.height)
+        this.atmosphereIcon.setPosition(this.planetLabel.getX() + this.atmosphereIcon.width / 5f, this.planetLabel.getY() + 5f * this.atmosphereIcon.height)
+        this.humidityIcon.setPosition(this.planetLabel.getX() + this.humidityIcon.width / 5f, this.planetLabel.getY() + 3f * this.humidityIcon.height)
+        this.solidityIcon.setPosition(this.planetLabel.getX() + this.solidityIcon.width / 5f, this.planetLabel.getY() + 1f * this.solidityIcon.height)
+        this.massLabel.setPosition(this.planetLabel.getX() + 2f * this.massIcon.width, this.planetLabel.getY() + 9.5f * this.massIcon.height)
+        this.temperatureLabel.setPosition(this.planetLabel.getX() + 2f * this.temperatureIcon.width, this.planetLabel.getY() + 7.5f * this.temperatureIcon.height)
+        this.atmosphereLabel.setPosition(this.planetLabel.getX() + 2f * this.atmosphereIcon.width, this.planetLabel.getY() + 5.5f * this.atmosphereIcon.height)
+        this.humidityLabel.setPosition(this.planetLabel.getX() + 2f * this.humidityIcon.width, this.planetLabel.getY() + 3.5f * this.humidityIcon.height)
+        this.solidityLabel.setPosition(this.planetLabel.getX() + 2f * this.solidityIcon.width, this.planetLabel.getY() + 1.5f * this.solidityIcon.height)
 
         this.confirmationLabel.setAlignment(Align.top)
         this.confirmationLabel.width = this.game.camera.viewportWidth / 3
@@ -106,6 +130,16 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
 
         this.uiContainer.addActor(this.planetLabel)
         this.uiContainer.addActor(this.dronesList)
+        this.uiContainer.addActor(this.massIcon)
+        this.uiContainer.addActor(this.temperatureIcon)
+        this.uiContainer.addActor(this.atmosphereIcon)
+        this.uiContainer.addActor(this.humidityIcon)
+        this.uiContainer.addActor(this.solidityIcon)
+        this.uiContainer.addActor(this.massLabel)
+        this.uiContainer.addActor(this.temperatureLabel)
+        this.uiContainer.addActor(this.atmosphereLabel)
+        this.uiContainer.addActor(this.humidityLabel)
+        this.uiContainer.addActor(this.solidityLabel)
         this.uiContainer.addActor(this.endTurnButton)
         this.uiContainer.addActor(this.quitGameButton)
         this.uiContainer.addActor(this.confirmationLabel)
@@ -237,11 +271,17 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
         if (this.selectedPlanet != null) {
-            this.planetLabel.setText(Attribute.values().joinToString { "${it.toString().capitalize()}:${ (this.selectedPlanet!!.attributes[it]!! * 100).toInt() }%\n" })
-            this.dronesList.setText("Drones: \n${if (this.selectedPlanet!!.drones.isEmpty()) "None" else this.selectedPlanet!!.drones.joinToString{ "$it\n" }}")
+            this.massLabel.setText((this.selectedPlanet!!.attributes[Attribute.MASS]!! * 100).toInt().toString() + "%")
+            this.temperatureLabel.setText((this.selectedPlanet!!.attributes[Attribute.TEMPERATURE]!! * 100).toInt().toString() + "%")
+            this.atmosphereLabel.setText((this.selectedPlanet!!.attributes[Attribute.ATMOSPHERE]!! * 100).toInt().toString() + "%")
+            this.humidityLabel.setText((this.selectedPlanet!!.attributes[Attribute.WATER]!! * 100).toInt().toString() + "%")
+            this.solidityLabel.setText((this.selectedPlanet!!.attributes[Attribute.SOLIDITY]!! * 100).toInt().toString() + "%")
         } else {
-            this.planetLabel.setText("")
-            this.dronesList.setText("")
+            this.massLabel.setText("")
+            this.temperatureLabel.setText("")
+            this.atmosphereLabel.setText("")
+            this.humidityLabel.setText("")
+            this.solidityLabel.setText("")
         }
         return this.selectedPlanet != null
     }

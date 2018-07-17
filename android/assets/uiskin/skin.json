@@ -69,6 +69,22 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageDown: checkBoxDown
 		imageOver: checkBoxOver
 	}
+	mass: {
+		imageUp: Mass
+	}
+	temp: {
+		imageUp: Temperature
+	}
+	atm: {
+		imageUp: Atmosphere
+	}
+	humid: {
+		imageUp: Humidity
+	}
+	solid: {
+		imageUp: Solidity
+		checkedOver: Solidity
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
@@ -80,6 +96,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: SansSerif
 		fontColor: PurpleSpace
 		background: sidePanel
+	}
+	small: {
+		font: SansSerif
+		background: labelSmall
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
