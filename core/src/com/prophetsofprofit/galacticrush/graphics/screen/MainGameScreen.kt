@@ -16,9 +16,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
-import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import ktx.scene2d.Scene2DSkin
-import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -40,10 +38,10 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val maxZoom = 1f
     //The planet currently selected by the player
     var selectedPlanet: Planet? = null
-    //The list of planet attributes TODO: get rid of leading newline and format properly
-    var planetLabel = Label("", Scene2DSkin.defaultSkin, "ui")
+    //The list of planet attributes
+    val planetLabel = Label("", Scene2DSkin.defaultSkin, "ui")
     //The list of drones on the planet
-    var dronesList = Label("", Scene2DSkin.defaultSkin, "ui")
+    val dronesList = Label("", Scene2DSkin.defaultSkin, "ui")
     //Below are the menu buttons: end turn, quit game, etc
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
     val quitGameButton = TextButton("Quit", Scene2DSkin.defaultSkin)
@@ -57,12 +55,12 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val font = BitmapFont()
 
     init {
-        this.dronesList.setWidth(this.game.camera.viewportWidth / 8)
-        this.dronesList.setHeight(this.game.camera.viewportHeight / 3)
+        this.dronesList.width = this.game.camera.viewportWidth / 8
+        this.dronesList.height = this.game.camera.viewportHeight / 3
         this.dronesList.setPosition(this.game.camera.viewportWidth - this.dronesList.width,
                 this.game.camera.viewportHeight / 3)
-        this.planetLabel.setWidth(this.game.camera.viewportWidth / 8)
-        this.planetLabel.setHeight(this.game.camera.viewportHeight / 3)
+        this.planetLabel.width = this.game.camera.viewportWidth / 8
+        this.planetLabel.height = this.game.camera.viewportHeight / 3
         this.planetLabel.setPosition(this.game.camera.viewportWidth - this.dronesList.width,
                 this.game.camera.viewportHeight - this.planetLabel.height)
 
@@ -82,8 +80,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         })
 
         this.confirmationLabel.setAlignment(Align.top)
-        this.confirmationLabel.setWidth(this.game.camera.viewportWidth / 3)
-        this.confirmationLabel.setHeight(this.game.camera.viewportHeight / 7)
+        this.confirmationLabel.width = this.game.camera.viewportWidth / 3
+        this.confirmationLabel.height = this.game.camera.viewportHeight / 7
         this.confirmationLabel.setPosition(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 2, Align.center)
         this.confirmationButtonYes.setPosition(this.game.camera.viewportWidth / 2 - this.confirmationButtonYes.width,
                 this.game.camera.viewportHeight / 2 - this.confirmationButtonYes.height)
@@ -240,7 +238,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         }
         if (this.selectedPlanet != null) {
             this.planetLabel.setText(Attribute.values().joinToString { "${it.toString().capitalize()}:${ (this.selectedPlanet!!.attributes[it]!! * 100).toInt() }%\n" })
-            this.dronesList.setText("Drones: \n ${if (this.selectedPlanet!!.drones.isEmpty()) "None" else this.selectedPlanet!!.drones.joinToString{ "$it\n" }}")
+            this.dronesList.setText("Drones: \n${if (this.selectedPlanet!!.drones.isEmpty()) "None" else this.selectedPlanet!!.drones.joinToString{ "$it\n" }}")
         } else {
             this.planetLabel.setText("")
             this.dronesList.setText("")
