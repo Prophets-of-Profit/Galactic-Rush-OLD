@@ -47,7 +47,7 @@ class Main : Game() {
         this.batch = SpriteBatch()
         this.shapeRenderer = ShapeRenderer()
         this.camera = OrthographicCamera()
-        this.camera.setToOrtho(false, 1600f, 900f)
+        this.resetCamera()
         Scene2DSkin.defaultSkin = Skin(Gdx.files.internal("uiskin/skin.json"))
         this.screen = SplashScreen(this)
     }
@@ -65,6 +65,7 @@ class Main : Game() {
      * Resets the game's camera to be the default setting
      */
     fun resetCamera() {
+        this.camera.setToOrtho(false, 1600f, 900f)
         this.camera.zoom = 1f
         this.camera.position.x = this.camera.viewportWidth / 2
         this.camera.position.y = this.camera.viewportHeight / 2
