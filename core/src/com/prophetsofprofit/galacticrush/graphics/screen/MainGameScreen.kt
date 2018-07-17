@@ -16,6 +16,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
+import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import ktx.scene2d.Scene2DSkin
 import kotlin.math.floor
 import kotlin.math.max
@@ -43,10 +44,15 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     var planetLabel = Label("", Scene2DSkin.defaultSkin, "ui")
     //The list of drones on the planet
     var dronesList = Label("", Scene2DSkin.defaultSkin, "ui")
-    //The button which causes the player to submit their change
+    //Below are the menu buttons: end turn, quit game, etc
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
+    val quitGameButton = TextButton("Quit", Scene2DSkin.defaultSkin)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
+    //The menu that gets confirmation for quitting the game; consists of three parts
+    val confirmationLabel = Label("Quit game?", Scene2DSkin.defaultSkin, "ui")
+    val confirmationButtonYes = TextButton("Yes", Scene2DSkin.defaultSkin)
+    val confirmationButtonNo = TextButton("No", Scene2DSkin.defaultSkin)
     //The font that is displayed when there is no label
     val font = BitmapFont()
 
@@ -59,15 +65,54 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.planetLabel.setHeight(this.game.camera.viewportHeight / 3)
         this.planetLabel.setPosition(this.game.camera.viewportWidth - this.dronesList.width,
                 this.game.camera.viewportHeight - this.planetLabel.height)
+
         this.endTurnButton.setPosition(this.game.camera.viewportWidth - this.endTurnButton.width, 0f)
-        this.uiContainer.addActor(this.planetLabel)
-        this.uiContainer.addActor(this.dronesList)
-        this.uiContainer.addActor(this.endTurnButton)
-        endTurnButton.addListener(object : ClickListener() {
+        this.quitGameButton.setPosition(this.game.camera.viewportWidth - this.endTurnButton.width, this.endTurnButton.height)
+        this.endTurnButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 player.submitChanges()
             }
         })
+        this.quitGameButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                confirmationLabel.isVisible = true
+                confirmationButtonYes.isVisible = true
+                confirmationButtonNo.isVisible = true
+            }
+        })
+
+        this.confirmationLabel.setAlignment(Align.top)
+        this.confirmationLabel.setWidth(this.game.camera.viewportWidth / 3)
+        this.confirmationLabel.setHeight(this.game.camera.viewportHeight / 7)
+        this.confirmationLabel.setPosition(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 2, Align.center)
+        this.confirmationButtonYes.setPosition(this.game.camera.viewportWidth / 2 - this.confirmationButtonYes.width,
+                this.game.camera.viewportHeight / 2 - this.confirmationButtonYes.height)
+        this.confirmationButtonNo.setPosition(this.game.camera.viewportWidth / 2,
+                this.game.camera.viewportHeight / 2 - this.confirmationButtonYes.height)
+        this.confirmationLabel.isVisible = false
+        this.confirmationButtonYes.isVisible = false
+        this.confirmationButtonNo.isVisible = false
+        this.confirmationButtonYes.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                game.screen = MainMenuScreen(game)
+                dispose()
+            }
+        })
+        this.confirmationButtonNo.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                confirmationLabel.isVisible = false
+                confirmationButtonYes.isVisible = false
+                confirmationButtonNo.isVisible = false
+            }
+        })
+
+        this.uiContainer.addActor(this.planetLabel)
+        this.uiContainer.addActor(this.dronesList)
+        this.uiContainer.addActor(this.endTurnButton)
+        this.uiContainer.addActor(this.quitGameButton)
+        this.uiContainer.addActor(this.confirmationLabel)
+        this.uiContainer.addActor(this.confirmationButtonYes)
+        this.uiContainer.addActor(this.confirmationButtonNo)
     }
 
     /**
