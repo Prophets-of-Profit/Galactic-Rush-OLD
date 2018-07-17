@@ -253,6 +253,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      */
     override fun leave() {
         this.font.dispose()
+        this.game.resetCamera()
     }
 
 }

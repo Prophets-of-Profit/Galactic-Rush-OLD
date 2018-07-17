@@ -62,6 +62,15 @@ class Main : Game() {
     }
 
     /**
+     * Resets the game's camera to be the default setting
+     */
+    fun resetCamera() {
+        this.camera.zoom = 1f
+        this.camera.position.x = this.camera.viewportWidth / 2
+        this.camera.position.y = this.camera.viewportHeight / 2
+    }
+
+    /**
      * Converts window coordinates (as integers) into coordinates from the camera
      * Returns the coordinates to a 2-dimensional vector
      */
