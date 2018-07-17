@@ -6,6 +6,19 @@ filter: Linear,Linear
 repeat: none
 Dotum
   rotate: false
+  xy: 1, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+skin2.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+SansSerif
+  rotate: false
   xy: 1, 505
   size: 512, 512
   orig: 512, 512

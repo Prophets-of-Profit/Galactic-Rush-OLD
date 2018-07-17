@@ -17,6 +17,7 @@ import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
 import ktx.scene2d.Scene2DSkin
+import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
@@ -39,26 +40,26 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     //The planet currently selected by the player
     var selectedPlanet: Planet? = null
     //The list of planet attributes TODO: get rid of leading newline and format properly
-    var planetLabel = Label(Attribute.values().joinToString { "\n${it.toString().capitalize()}: ${this.mainGame.galaxy.planets[0].attributes[it]}" }, Scene2DSkin.defaultSkin)
+    var planetLabel = Label("", Scene2DSkin.defaultSkin, "ui")
     //The list of drones on the planet
-    var dronesList = Label("Drones:\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\nDrone(000000000)\n", Scene2DSkin.defaultSkin)
+    var dronesList = Label("", Scene2DSkin.defaultSkin, "ui")
     //The button which causes the player to submit their change
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
-    //The texture used as the base panels for the gui
-    private val basePanelTexture = Texture("image/SidePanel.png")
     //The font that is displayed when there is no label
     val font = BitmapFont()
 
     init {
-        this.planetLabel.setPosition(0f + this.planetLabel.width / 2, 0f + this.planetLabel.height / 2, Align.center)
-        this.dronesList.setPosition(this.game.camera.viewportWidth - this.dronesList.width / 2, 0f + (this.dronesList.height / 2 + this.endTurnButton.height), Align.center)
+        this.dronesList.setWidth(this.game.camera.viewportWidth / 8)
+        this.dronesList.setHeight(this.game.camera.viewportHeight / 3)
+        this.dronesList.setPosition(this.game.camera.viewportWidth - this.dronesList.width,
+                this.game.camera.viewportHeight / 3)
+        this.planetLabel.setWidth(this.game.camera.viewportWidth / 8)
+        this.planetLabel.setHeight(this.game.camera.viewportHeight / 3)
+        this.planetLabel.setPosition(this.game.camera.viewportWidth - this.dronesList.width,
+                this.game.camera.viewportHeight - this.planetLabel.height)
         this.endTurnButton.setPosition(this.game.camera.viewportWidth - this.endTurnButton.width, 0f)
-        this.planetLabel.setAlignment(Align.left)
-        this.dronesList.setAlignment(Align.topLeft)
-        this.planetLabel.isVisible = false
-        this.dronesList.isVisible = false
         this.uiContainer.addActor(this.planetLabel)
         this.uiContainer.addActor(this.dronesList)
         this.uiContainer.addActor(this.endTurnButton)
@@ -67,7 +68,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 player.submitChanges()
             }
         })
-
     }
 
     /**
@@ -96,7 +96,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.batch.begin()
         this.drawSelectionArrows()
         this.drawDrones()
-        this.drawUI()
         this.game.batch.end()
     }
 
@@ -153,14 +152,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     }
 
     /**
-     * Draws the user interface to the screen
-     * TODO:
-     */
-    private fun drawUI() {
-
-    }
-
-    /**
      * Panning moves the camera laterally to adjust what is being seen
      */
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
@@ -202,16 +193,11 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
         if (this.selectedPlanet != null) {
-            //Format the attributes nicely
-            this.planetLabel.isVisible = true
-            this.planetLabel.setText(Attribute.values().joinToString { "${it.toString().capitalize()}:${this.selectedPlanet!!.attributes[it]}\n" })
-            this.dronesList.isVisible = true
+            this.planetLabel.setText(Attribute.values().joinToString { "${it.toString().capitalize()}:${ (this.selectedPlanet!!.attributes[it]!! * 100).toInt() }%\n" })
             this.dronesList.setText("Drones: \n ${if (this.selectedPlanet!!.drones.isEmpty()) "None" else this.selectedPlanet!!.drones.joinToString{ "$it\n" }}")
-            //TODO: account for changing of camera viewport
-            //this.planetLabel.setPosition(this.uiContainer.width * this.selectedPlanet!!.x + this.planetLabel.width * 2f, this.uiContainer.height * this.selectedPlanet!!.y, Align.center)
         } else {
-            this.planetLabel.isVisible = false
-            this.dronesList.isVisible = false
+            this.planetLabel.setText("")
+            this.dronesList.setText("")
         }
         return this.selectedPlanet != null
     }

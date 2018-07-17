@@ -11,7 +11,7 @@ enum class Attribute(private val displayString: String) {
 
     MASS("mass"),
     TEMPERATURE("temperature"),
-    ATMOSPHERE("atmosphere density"),
+    ATMOSPHERE("atmosphere"),
     WATER("humidity"),
     SOLIDITY("solidity");
 

@@ -3,12 +3,21 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	Dotum: {
 		file: Dotum.fnt
 	}
+	SansSerif: {
+		file: SansSerif.fnt
+	}
 }
 com.badlogic.gdx.graphics.Color: {
 	GreenSpace: {
 		r: 0.47058824
 		g: 0.74509805
 		b: 0.4745098
+		a: 1
+	}
+	GreenSpaceDark: {
+		r: 0.3137255
+		g: 0.49019608
+		b: 0.3137255
 		a: 1
 	}
 	OrangeDarkPlanetary: {
@@ -21,6 +30,12 @@ com.badlogic.gdx.graphics.Color: {
 		r: 0.73666674
 		g: 0.5323427
 		b: 0.17188889
+		a: 1
+	}
+	PurpleSpace: {
+		r: 0.41
+		g: 0.21319997
+		b: 0.38918284
 		a: 1
 	}
 }
@@ -44,20 +59,25 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOff: checkBoxDown
 		checkboxOnDisabled: checkBoxDisableChecked
 		checkboxOffDisabled: checkBoxDisable
-		font: Dotum
+		font: SansSerif
 		fontColor: GreenSpace
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: Dotum
-		fontColor: OrangeDarkPlanetary
+		font: SansSerif
+		fontColor: GreenSpaceDark
 		background: label
+	}
+	ui: {
+		font: SansSerif
+		fontColor: PurpleSpace
+		background: sidePanel
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: Dotum
+		font: SansSerif
 		fontColorSelected: GreenSpace
 		fontColorUnselected: GreenSpace
 		selection: sidePanel
@@ -77,13 +97,8 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		font: Dotum
-		fontColor: GreenSpace
-		downFontColor: GreenSpace
-		overFontColor: GreenSpace
-		checkedFontColor: GreenSpace
-		checkedOverFontColor: GreenSpace
-		disabledFontColor: GreenSpace
+		font: SansSerif
+		fontColor: PurpleSpace
 		up: titleButton
 		down: titleButtonDown
 		over: titleButtonOver
@@ -92,8 +107,8 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
-		font: Dotum
-		fontColor: OrangePlanetary
+		font: SansSerif
+		fontColor: PurpleSpace
 		background: textField
 		cursor: textFieldCursor
 	}
