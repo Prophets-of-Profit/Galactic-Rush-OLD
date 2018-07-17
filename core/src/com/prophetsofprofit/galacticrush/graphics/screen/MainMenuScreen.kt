@@ -1,5 +1,6 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -27,12 +28,15 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         val hostGameButton = TextButton("Host a Game", Scene2DSkin.defaultSkin)
         val joinGameButton = TextButton("Join a Game", Scene2DSkin.defaultSkin)
         val optionsButton = TextButton("Options", Scene2DSkin.defaultSkin)
-        hostGameButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.3f, Align.center)
-        joinGameButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.2f, Align.center)
-        optionsButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.1f, Align.center)
+        val exitGameButton = TextButton("Exit", Scene2DSkin.defaultSkin)
+        hostGameButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.4f, Align.center)
+        joinGameButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.3f, Align.center)
+        optionsButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.2f, Align.center)
+        exitGameButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.1f, Align.center)
         this.uiContainer.addActor(hostGameButton)
         this.uiContainer.addActor(joinGameButton)
         this.uiContainer.addActor(optionsButton)
+        this.uiContainer.addActor(exitGameButton)
         hostGameButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = WaitForClientScreen(game)
@@ -51,13 +55,18 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
                 dispose()
             }
         })
+        exitGameButton.addListener(object: ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Gdx.app.exit()
+            }
+        })
         Networker.reset()
 
         val tempDemoButton = TextButton("DEV", Scene2DSkin.defaultSkin)
         tempDemoButton.setPosition(this.uiContainer.width * 0.5f, this.uiContainer.height * 0.15f, Align.center)
         tempDemoButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                game.screen = HostLoadingScreen(game, Array(1) { LocalPlayer(0) })
+                game.screen = HostLoadingScreen(game, arrayOf(LocalPlayer(0)))
                 dispose()
             }
         })

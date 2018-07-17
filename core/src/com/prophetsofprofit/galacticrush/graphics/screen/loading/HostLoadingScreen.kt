@@ -21,6 +21,7 @@ class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(
      * Constructs the galaxy
      */
     override fun load() {
+        Thread.sleep(5) //Necessary to ensure that this.players isn't null
         this.mainGame = Game(this.players.map { it.id }.toTypedArray(), 100)
         this.players.forEach {
             it.game = this.mainGame!!
@@ -37,6 +38,5 @@ class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(
         //Assuming that there is only one local player
         this.game.screen = MainGameScreen(this.game, this.players.first { it is LocalPlayer })
     }
-
 
 }
