@@ -170,7 +170,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Zooming moves the camera closer in or further out
      */
     override fun zoom(initialDistance: Float, distance: Float): Boolean {
-        this.setZoomClamped(initialDistance / distance)
+        val zoomWeight = 0.15f
+        this.setZoomClamped(zoomWeight * initialDistance / distance + this.game.camera.zoom * (1 - zoomWeight))
         return true
     }
 
