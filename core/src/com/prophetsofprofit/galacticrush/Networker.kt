@@ -41,7 +41,7 @@ object Networker {
             throw Error("Networker has already been initialized!")
         }
         this.isClient = isClient
-        val bufferSize = Int.MAX_VALUE / 16
+        val bufferSize = Int.MAX_VALUE / 1024
         val kryo = if (isClient) {
             this.client = Client(bufferSize, bufferSize)
             this.client!!.kryo
@@ -75,13 +75,19 @@ object Networker {
      * Resets the networker so that it must be initialized again befeore usage
      */
     fun reset() {
-        this.client?.stop()
-        this.server?.stop()
-        this.client?.dispose()
-        this.server?.dispose()
-        this.client = null
-        this.server = null
-        this.isClient = null
+        try {
+            this.client?.close()
+            this.server?.close()
+            this.client?.stop()
+            this.server?.stop()
+            Thread.sleep(50)
+            this.client?.dispose()
+            this.server?.dispose()
+            this.client = null
+            this.server = null
+            this.isClient = null
+        } catch (ignored: Exception) {
+        }
     }
 
     /**
