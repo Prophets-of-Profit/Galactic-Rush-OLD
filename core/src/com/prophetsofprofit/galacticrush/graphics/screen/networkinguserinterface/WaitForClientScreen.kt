@@ -34,8 +34,6 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
      * Initializes the networker as a host and also initializes GUI components
      */
     init {
-        //The button to leave this screen
-        val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
         //Sets up networker as a server
         Networker.init(false)
         Networker.getServer().addListener(object : Listener() {
@@ -47,9 +45,11 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                 Networker.getServer().removeListener(this)
             }
         })
+
         //Sets up portTextField
         this.portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f, Align.center)
         this.portTextField.setAlignment(Align.center)
+
         //Sets up the lockButton
         val confirmPort = "Confirm Port"
         val cancelSelection = "Cancel Selection"
@@ -73,10 +73,12 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                 portTextField.isDisabled = !portTextField.isDisabled
             }
         })
+        this.lockButton.setText(confirmPort)
         this.lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f - portTextField.height * 1.5f, Align.center)
         this.lockButton.align(Align.center)
-        this.lockButton.setText(confirmPort)
+
         //Sets up cancelButton
+        val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
         cancelButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = MainMenuScreen(game)
@@ -84,6 +86,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
             }
         })
         cancelButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.1f, Align.center)
+
         //Adds all widgets
         this.uiContainer.addActor(this.portTextField)
         this.uiContainer.addActor(this.lockButton)

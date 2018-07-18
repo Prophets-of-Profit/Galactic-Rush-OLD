@@ -25,7 +25,7 @@ import kotlin.collections.HashMap
 object Networker {
 
     //A hashmap of the user's stored addresses
-    var savedAdresses = hashMapOf<String, String>()
+    var savedAdresses = hashMapOf("Localhost" to localHostIp)
 
     //The client of the networker (if it is a client); will be null if networker is server
     private var client: Client? = null
@@ -118,7 +118,7 @@ object Networker {
     /**
      * Tries to retrieve the user's saved addresses
      */
-    fun getSavedAdresses() {
+    fun updateSavedAdresses() {
         try {
             this.savedAdresses = jsonObject.fromJson(HashMap::class.java, userAddressesFile.readString()) as HashMap<String, String>
         } catch (ignored: Exception) {
