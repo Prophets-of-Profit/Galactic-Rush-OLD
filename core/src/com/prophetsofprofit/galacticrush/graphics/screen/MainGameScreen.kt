@@ -270,11 +270,11 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
         if (this.selectedPlanet != null) {
-            this.massLabel.setText((this.selectedPlanet!!.attributes[Attribute.MASS]!! * 100).toInt().toString() + "%")
-            this.temperatureLabel.setText((this.selectedPlanet!!.attributes[Attribute.TEMPERATURE]!! * 100).toInt().toString() + "%")
-            this.atmosphereLabel.setText((this.selectedPlanet!!.attributes[Attribute.ATMOSPHERE]!! * 100).toInt().toString() + "%")
-            this.humidityLabel.setText((this.selectedPlanet!!.attributes[Attribute.WATER]!! * 100).toInt().toString() + "%")
-            this.solidityLabel.setText((this.selectedPlanet!!.attributes[Attribute.SOLIDITY]!! * 100).toInt().toString() + "%")
+            this.massLabel.setText(Attribute.MASS.stringValue(this.selectedPlanet!!.attributes[Attribute.MASS]!!))
+            this.temperatureLabel.setText(Attribute.TEMPERATURE.stringValue(this.selectedPlanet!!.attributes[Attribute.TEMPERATURE]!!))
+            this.atmosphereLabel.setText(Attribute.ATMOSPHERE.stringValue(this.selectedPlanet!!.attributes[Attribute.ATMOSPHERE]!!))
+            this.humidityLabel.setText(Attribute.WATER.stringValue(this.selectedPlanet!!.attributes[Attribute.WATER]!!))
+            this.solidityLabel.setText(Attribute.SOLIDITY.stringValue(this.selectedPlanet!!.attributes[Attribute.SOLIDITY]!!))
         } else {
             this.massLabel.setText("")
             this.temperatureLabel.setText("")

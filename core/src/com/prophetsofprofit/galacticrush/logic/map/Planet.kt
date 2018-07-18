@@ -3,17 +3,19 @@ package com.prophetsofprofit.galacticrush.logic.map
 import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.facility.Facility
+import kotlin.math.pow
 
 /**
  * Names for arbitrary attributes
+ * stringValue converts a value from 0 to 1 into suitable units
  */
-enum class Attribute(private val displayString: String) {
+enum class Attribute(private val displayString: String, val stringValue: (Double) -> String) {
 
-    MASS("mass"),
-    TEMPERATURE("temperature"),
-    ATMOSPHERE("atmosphere"),
-    WATER("humidity"),
-    SOLIDITY("solidity");
+    MASS("Mass", { "%e".format(10.0.pow(22) * Math.E.pow(9.21 * it)) + " kg" }),
+    TEMPERATURE("Surface Temperature", { "%.4f".format(50 + it * 700) + " K" }),
+    ATMOSPHERE("Atmospheric Density", { "%.4f".format(10.0.pow(2 * it)) + " atm" }),
+    WATER("Humidity", { "%.4f".format(it * 100) + "%" } ),
+    SOLIDITY("Solidity", { "%.4f".format(it * 100) + "%" });
 
     /**
      * Each attribute displays as it's displayString

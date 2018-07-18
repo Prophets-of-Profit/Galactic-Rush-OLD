@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.logic.drone;
 
 import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.logic.drone.instructions.Instruction
+import com.prophetsofprofit.galacticrush.logic.drone.instructions.InstructionMaker
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import java.util.*
 
@@ -45,7 +46,8 @@ class Drone(val ownerId: Int) {
     /**
      * Adds an instruction to the end of the drone's task list
      */
-    fun add(instruction: Instruction): Boolean {
+    fun add(instructionMaker: InstructionMaker): Boolean {
+        val instruction = instructionMaker.createInstructionInstanceFor(this)
         if (this.memoryAvailable < instruction.memory) return false
         if (!instruction.add()) return false
         this.instructions.add(instruction)
