@@ -11,7 +11,7 @@ import kotlin.math.pow
  */
 enum class Attribute(private val displayString: String, val stringValue: (Double) -> String) {
 
-    MASS("Mass", { "%e".format(10.0.pow(22) * Math.E.pow(9.21 * it)) + " kg" }),
+    MASS("Mass", { val string = "%e".format((10.0.pow(22) * Math.E.pow(9.21 * it))); string.slice(0 until 4) + string.slice(string.length - 5 until string.length) + " kg" }),
     TEMPERATURE("Surface Temperature", { "%.4f".format(50 + it * 700) + " K" }),
     ATMOSPHERE("Atmospheric Density", { "%.4f".format(10.0.pow(2 * it)) + " atm" }),
     WATER("Humidity", { "%.4f".format(it * 100) + "%" } ),
