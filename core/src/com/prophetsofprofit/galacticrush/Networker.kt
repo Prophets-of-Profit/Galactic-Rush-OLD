@@ -16,12 +16,16 @@ import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.logic.player.Player
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * The utility object that handles networking
  * Can only ever be either a client or a server at once, but not both
  */
 object Networker {
+
+    //A hashmap of the user's stored addresses
+    var savedAdresses = hashMapOf<String, String>()
 
     //The client of the networker (if it is a client); will be null if networker is server
     private var client: Client? = null
@@ -102,6 +106,23 @@ object Networker {
      */
     fun getServer(): Server {
         return this.server!!
+    }
+
+    /**
+     * Saves the hashmap of saved addresses to the json file specified in constants
+     */
+    fun saveAdresses() {
+        userAddressesFile.writeString(jsonObject.prettyPrint(this.savedAdresses), false)
+    }
+
+    /**
+     * Tries to retrieve the user's saved addresses
+     */
+    fun getSavedAdresses() {
+        try {
+            this.savedAdresses = jsonObject.fromJson(HashMap::class.java, userAddressesFile.readString()) as HashMap<String, String>
+        } catch (ignored: Exception) {
+        }
     }
 
 }

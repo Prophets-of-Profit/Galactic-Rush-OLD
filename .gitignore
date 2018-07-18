@@ -6,3 +6,5 @@ local.properties
 *.ser
 *.cfg
 UserOptions.json
+SavedAddresses.json
+\.DS_Store
