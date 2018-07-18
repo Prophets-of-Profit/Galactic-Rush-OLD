@@ -92,16 +92,16 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             }
         })
 
-        this.massIcon.setPosition(this.planetLabel.getX() + this.massIcon.width / 5f, this.planetLabel.getY() + 9f * this.massIcon.height)
-        this.temperatureIcon.setPosition(this.planetLabel.getX() + this.temperatureIcon.width / 5f, this.planetLabel.getY() + 7f * this.temperatureIcon.height)
-        this.atmosphereIcon.setPosition(this.planetLabel.getX() + this.atmosphereIcon.width / 5f, this.planetLabel.getY() + 5f * this.atmosphereIcon.height)
-        this.humidityIcon.setPosition(this.planetLabel.getX() + this.humidityIcon.width / 5f, this.planetLabel.getY() + 3f * this.humidityIcon.height)
-        this.solidityIcon.setPosition(this.planetLabel.getX() + this.solidityIcon.width / 5f, this.planetLabel.getY() + 1f * this.solidityIcon.height)
-        this.massLabel.setPosition(this.planetLabel.getX() + 2f * this.massIcon.width, this.planetLabel.getY() + 9.5f * this.massIcon.height)
-        this.temperatureLabel.setPosition(this.planetLabel.getX() + 2f * this.temperatureIcon.width, this.planetLabel.getY() + 7.5f * this.temperatureIcon.height)
-        this.atmosphereLabel.setPosition(this.planetLabel.getX() + 2f * this.atmosphereIcon.width, this.planetLabel.getY() + 5.5f * this.atmosphereIcon.height)
-        this.humidityLabel.setPosition(this.planetLabel.getX() + 2f * this.humidityIcon.width, this.planetLabel.getY() + 3.5f * this.humidityIcon.height)
-        this.solidityLabel.setPosition(this.planetLabel.getX() + 2f * this.solidityIcon.width, this.planetLabel.getY() + 1.5f * this.solidityIcon.height)
+        this.massIcon.setPosition(this.planetLabel.x + this.massIcon.width / 5f, this.planetLabel.y + 9f * this.massIcon.height)
+        this.temperatureIcon.setPosition(this.planetLabel.x + this.temperatureIcon.width / 5f, this.planetLabel.y + 7f * this.temperatureIcon.height)
+        this.atmosphereIcon.setPosition(this.planetLabel.x + this.atmosphereIcon.width / 5f, this.planetLabel.y + 5f * this.atmosphereIcon.height)
+        this.humidityIcon.setPosition(this.planetLabel.x + this.humidityIcon.width / 5f, this.planetLabel.y + 3f * this.humidityIcon.height)
+        this.solidityIcon.setPosition(this.planetLabel.x + this.solidityIcon.width / 5f, this.planetLabel.y + 1f * this.solidityIcon.height)
+        this.massLabel.setPosition(this.planetLabel.x + 2f * this.massIcon.width, this.planetLabel.y + 9.5f * this.massIcon.height)
+        this.temperatureLabel.setPosition(this.planetLabel.x + 2f * this.temperatureIcon.width, this.planetLabel.y + 7.5f * this.temperatureIcon.height)
+        this.atmosphereLabel.setPosition(this.planetLabel.x + 2f * this.atmosphereIcon.width, this.planetLabel.y + 5.5f * this.atmosphereIcon.height)
+        this.humidityLabel.setPosition(this.planetLabel.x + 2f * this.humidityIcon.width, this.planetLabel.y + 3.5f * this.humidityIcon.height)
+        this.solidityLabel.setPosition(this.planetLabel.x + 2f * this.solidityIcon.width, this.planetLabel.y + 1.5f * this.solidityIcon.height)
 
         this.confirmationLabel.setAlignment(Align.top)
         this.confirmationLabel.width = this.game.camera.viewportWidth / 3
@@ -266,7 +266,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      */
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
         this.selectedPlanet = this.mainGame.galaxy.planets.firstOrNull {
-            //it != this.selectedPlanet && /* This line of code will unselect a selected planet if clicked on again; TODO: discuss desired behaviour */
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
