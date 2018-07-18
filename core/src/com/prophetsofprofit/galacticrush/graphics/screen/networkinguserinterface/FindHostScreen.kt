@@ -25,7 +25,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
     //The text field where the client enters in the hosting port
     val portTextField = PortTextField()
     //The button that starts searching for the specified host
-    val confirmButton = TextButton("Confirm", Scene2DSkin.defaultSkin)
+    val confirmButton = TextButton("Connect", Scene2DSkin.defaultSkin)
     //The id of the connection between the client and the host
     var connectionId: Int? = null
 
@@ -33,6 +33,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
      * Initializes the networker as a client
      */
     init {
+        Networker.updateSavedAdresses()
         val fieldAndLabelWidth = this.uiContainer.width * 0.15f
 
         //Sets up the direct connect to address field
@@ -65,12 +66,12 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
                 }
             }
         })
-        this.confirmButton.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.77f, Align.center)
+        this.confirmButton.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.1f, Align.center)
 
         //All local addresses on the network
         val localAddresses = mutableListOf<String>()
 
-        //Sets up the list to display saved and local addresses
+        //Sets up the list to display saved and local addresses TODO: undo selection if click happens outside scrollpane
         var acceptChange = true
         val selectableAddressesList = List<String>(Scene2DSkin.defaultSkin)
         selectableAddressesList.setAlignment(Align.center)
@@ -97,16 +98,18 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         selectableAddressesPane.setPosition(this.uiContainer.width / 2, this.uiContainer.height / 2, Align.center)
 
         //Sets up the thread to look for local connections and update the list
+        fun updateSelectableAddressesList() {
+            val allNames: MutableList<String> = Networker.savedAdresses.keys.toMutableList()
+            allNames.addAll(localAddresses.mapIndexed { index: Int, _ -> "LOCAL: $index" })
+            acceptChange = false
+            val prevSelected = selectableAddressesList.selectedIndex
+            selectableAddressesList.setItems(com.badlogic.gdx.utils.Array<String>(allNames.toTypedArray()))
+            selectableAddressesList.selectedIndex = prevSelected //TODO: what if there are less items and prevSelected is now too high?
+            acceptChange = true
+        }
         Thread {
             while (this.connectionId == null) {
-                Networker.updateSavedAdresses()
-                val allNames: MutableList<String> = Networker.savedAdresses.keys.toMutableList()
-                allNames.addAll(localAddresses.mapIndexed { index: Int, _ -> "LOCAL: $index" })
-                acceptChange = false
-                val prevSelected = selectableAddressesList.selectedIndex
-                selectableAddressesList.setItems(com.badlogic.gdx.utils.Array<String>(allNames.toTypedArray()))
-                selectableAddressesList.selectedIndex = prevSelected //TODO: what if there are less items and prevSelected is now too high?
-                acceptChange = true
+                updateSelectableAddressesList()
                 localAddresses.clear()
                 try {
                     Networker.getClient().discoverHosts(this.portTextField.text.toInt(), 5000).mapTo(localAddresses) { it.toString() }
@@ -115,6 +118,37 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
                 }
             }
         }.start()
+
+        //Sets up the field and button to save address
+        val nameField = TextField("AddressName", Scene2DSkin.defaultSkin)
+        nameField.width = fieldAndLabelWidth
+        nameField.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.6f, Align.center)
+        nameField.setAlignment(Align.center)
+        nameField.setTextFieldFilter { _, newChar -> newChar.isLetter() }
+        val addButton = TextButton("Save Address", Scene2DSkin.defaultSkin)
+        addButton.width = fieldAndLabelWidth
+        addButton.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.52f, Align.center)
+        addButton.align(Align.center)
+        addButton.addListener(object: ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Networker.savedAdresses[nameField.text] = directConnectField.text
+                Networker.saveAdresses()
+                updateSelectableAddressesList()
+            }
+        })
+
+        //Sets up the button to remove saved addresses
+        val removeButton = TextButton("Remove Address", Scene2DSkin.defaultSkin)
+        removeButton.width = fieldAndLabelWidth
+        removeButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.56f, Align.center)
+        removeButton.align(Align.center)
+        removeButton.addListener(object: ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                Networker.savedAdresses.remove(selectableAddressesList.selected)
+                Networker.saveAdresses()
+                updateSelectableAddressesList()
+            }
+        })
 
         //Sets up the networker as a client
         Networker.init(true)
@@ -146,6 +180,9 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.uiContainer.addActor(cancelButton)
         this.uiContainer.addActor(this.confirmButton)
         this.uiContainer.addActor(selectableAddressesPane)
+        this.uiContainer.addActor(nameField)
+        this.uiContainer.addActor(addButton)
+        this.uiContainer.addActor(removeButton)
     }
 
     /**
