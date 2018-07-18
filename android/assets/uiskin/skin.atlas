@@ -19,182 +19,189 @@ filter: Linear,Linear
 repeat: none
 Atmosphere
   rotate: false
-  xy: 255, 374
+  xy: 432, 432
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 Humidity
   rotate: false
-  xy: 432, 426
+  xy: 515, 565
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 Mass
   rotate: false
-  xy: 515, 559
+  xy: 542, 592
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 Modify
   rotate: false
-  xy: 542, 586
-  size: 25, 25
-  orig: 25, 25
-  offset: 0, 0
-  index: -1
-Solidity
-  rotate: false
-  xy: 717, 861
-  size: 25, 25
-  orig: 25, 25
-  offset: 0, 0
-  index: -1
-Temperature
-  rotate: false
-  xy: 744, 888
+  xy: 717, 867
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 SansSerif
   rotate: false
-  xy: 1, 505
+  xy: 1, 511
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
+Solidity
+  rotate: false
+  xy: 744, 894
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+Temperature
+  rotate: false
+  xy: 827, 946
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
 checkBox
   rotate: false
-  xy: 405, 426
+  xy: 405, 432
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisable
   rotate: false
-  xy: 800, 940
+  xy: 800, 946
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisableChecked
   rotate: false
-  xy: 1, 270
+  xy: 73, 328
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDown
   rotate: false
-  xy: 515, 586
+  xy: 515, 592
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDownChecked
   rotate: false
-  xy: 73, 322
+  xy: 255, 380
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxOver
   rotate: false
-  xy: 717, 888
+  xy: 717, 894
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 label
   rotate: false
-  xy: 1, 349
+  xy: 1, 355
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 labelSmall
   rotate: false
-  xy: 203, 374
+  xy: 203, 380
   size: 50, 25
   orig: 50, 25
   offset: 0, 0
   index: -1
 loadingBar
   rotate: false
-  xy: 1, 453
+  xy: 1, 459
   size: 300, 50
   orig: 300, 50
   offset: 0, 0
   index: -1
 loadingKnob
   rotate: false
-  xy: 717, 915
+  xy: 717, 921
   size: 81, 50
   orig: 81, 50
   offset: 0, 0
   index: -1
 sidePanel
   rotate: false
-  xy: 515, 613
+  xy: 515, 619
   size: 200, 300
   orig: 200, 300
   offset: 0, 0
   index: -1
 slider
   rotate: false
-  xy: 515, 967
+  xy: 515, 973
   size: 300, 50
   orig: 300, 50
   offset: 0, 0
   index: -1
 sliderKnob
   rotate: false
-  xy: 1, 297
+  xy: 1, 303
   size: 70, 50
   orig: 70, 50
   offset: 0, 0
   index: -1
+sliderVertical
+  rotate: false
+  xy: 1, 1
+  size: 50, 300
+  orig: 50, 300
+  offset: 0, 0
+  index: -1
 textField
   rotate: false
-  xy: 203, 401
+  xy: 203, 407
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 textFieldCursor
   rotate: false
-  xy: 1, 218
+  xy: 53, 251
   size: 10, 50
   orig: 10, 50
   offset: 0, 0
   index: -1
 titleButton
   rotate: false
-  xy: 1, 401
+  xy: 1, 407
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 titleButtonDisable
   rotate: false
-  xy: 817, 967
+  xy: 817, 973
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 titleButtonDown
   rotate: false
-  xy: 303, 453
+  xy: 303, 459
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 titleButtonOver
   rotate: false
-  xy: 515, 915
+  xy: 515, 921
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
