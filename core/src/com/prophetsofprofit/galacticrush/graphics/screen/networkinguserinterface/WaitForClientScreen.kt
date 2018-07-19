@@ -67,7 +67,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                     }
                     confirmPort
                 } else {
-                    Networker.getServer().bind(portTextField.text.toInt())
+                    Networker.getServer().bind(portTextField.text.toInt(), portTextField.text.toInt())
                     cancelSelection
                 })
                 portTextField.isDisabled = !portTextField.isDisabled
