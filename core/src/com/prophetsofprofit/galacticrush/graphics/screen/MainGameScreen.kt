@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -168,8 +169,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             }
         })
         this.menuOptions.addListener(object : ClickListener() {
-            //TODO: make options screen able to switch back to the existing screen
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                game.screen = OptionsScreen(game) { game.screen = MainGameScreen(game, player) }
             }
         })
         this.menuSave.addListener(object : ClickListener() {
@@ -332,6 +333,11 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Will only consume the tap event if a planet is selected
      */
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
+        menuBase.isVisible = false
+        menuResume.isVisible = false
+        menuOptions.isVisible = false
+        menuSave.isVisible = false
+        menuQuit.isVisible = false
         this.selectedPlanet = this.mainGame.galaxy.planets.firstOrNull {
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
@@ -350,6 +356,17 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             this.solidityLabel.setText("")
         }
         return this.selectedPlanet != null
+    }
+
+    override fun keyDown(keycode: Int): Boolean {
+        if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
+            menuBase.isVisible = !menuBase.isVisible
+            menuResume.isVisible = !menuResume.isVisible
+            menuOptions.isVisible = !menuOptions.isVisible
+            menuSave.isVisible = !menuSave.isVisible
+            menuQuit.isVisible = !menuQuit.isVisible
+        }
+        return false
     }
 
     /**
