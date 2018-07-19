@@ -55,13 +55,19 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val solidityLabel = Label("", Scene2DSkin.defaultSkin, "small")
     //Below are the menu buttons: end turn, quit game, etc
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
-    val quitGameButton = TextButton("Quit", Scene2DSkin.defaultSkin)
+    val gameMenuButton = TextButton("Game Menu", Scene2DSkin.defaultSkin)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
     //The menu that gets confirmation for quitting the game; consists of three parts
-    val confirmationLabel = Label("Quit game?", Scene2DSkin.defaultSkin, "ui")
+    val confirmationLabel = Label("Quit to main menu?", Scene2DSkin.defaultSkin, "ui")
     val confirmationButtonYes = TextButton("Yes", Scene2DSkin.defaultSkin)
     val confirmationButtonNo = TextButton("No", Scene2DSkin.defaultSkin)
+    //The game menu for doing options, saving, quitting, etc.
+    val menuBase = Label("", Scene2DSkin.defaultSkin, "ui")
+    val menuResume = TextButton("Resume", Scene2DSkin.defaultSkin)
+    val menuOptions = TextButton("Options", Scene2DSkin.defaultSkin)
+    val menuSave = TextButton("Save", Scene2DSkin.defaultSkin)
+    val menuQuit = TextButton("Quit", Scene2DSkin.defaultSkin)
     //The font that is displayed when there is no label
     val font = BitmapFont()
 
@@ -78,17 +84,19 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.planetLabel.setAlignment(Align.top)
 
         this.endTurnButton.setPosition(this.game.camera.viewportWidth - this.endTurnButton.width, 0f)
-        this.quitGameButton.setPosition(this.game.camera.viewportWidth - this.endTurnButton.width, this.endTurnButton.height)
+        this.gameMenuButton.setPosition(this.game.camera.viewportWidth - this.endTurnButton.width, this.endTurnButton.height)
         this.endTurnButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 player.submitChanges()
             }
         })
-        this.quitGameButton.addListener(object : ClickListener() {
+        this.gameMenuButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                confirmationLabel.isVisible = true
-                confirmationButtonYes.isVisible = true
-                confirmationButtonNo.isVisible = true
+                menuBase.isVisible = true
+                menuResume.isVisible = true
+                menuOptions.isVisible = true
+                menuSave.isVisible = true
+                menuQuit.isVisible = true
             }
         })
 
@@ -125,6 +133,60 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 confirmationLabel.isVisible = false
                 confirmationButtonYes.isVisible = false
                 confirmationButtonNo.isVisible = false
+                menuBase.isVisible = true
+                menuResume.isVisible = true
+                menuOptions.isVisible = true
+                menuSave.isVisible = true
+                menuQuit.isVisible = true
+            }
+        })
+
+        this.menuBase.setAlignment(Align.top)
+        this.menuBase.width = this.game.camera.viewportWidth / 5
+        this.menuBase.height = this.game.camera.viewportHeight / 2
+        this.menuBase.setPosition(this.game.camera.viewportWidth / 2, this.game.camera.viewportHeight / 2, Align.center)
+        this.menuResume.setPosition(this.game.camera.viewportWidth / 2,
+                this.game.camera.viewportHeight / 2 + 3 * this.menuResume.height, Align.center)
+        this.menuOptions.setPosition(this.game.camera.viewportWidth / 2,
+                this.game.camera.viewportHeight / 2 + this.menuOptions.height, Align.center)
+        this.menuSave.setPosition(this.game.camera.viewportWidth / 2,
+                this.game.camera.viewportHeight / 2 - this.menuSave.height, Align.center)
+        this.menuQuit.setPosition(this.game.camera.viewportWidth / 2,
+                this.game.camera.viewportHeight / 2 - 3 * this.menuSave.height, Align.center)
+        this.menuBase.isVisible = false
+        this.menuResume.isVisible = false
+        this.menuOptions.isVisible = false
+        this.menuSave.isVisible = false
+        this.menuQuit.isVisible = false
+        this.menuResume.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                menuBase.isVisible = false
+                menuResume.isVisible = false
+                menuOptions.isVisible = false
+                menuSave.isVisible = false
+                menuQuit.isVisible = false
+            }
+        })
+        this.menuOptions.addListener(object : ClickListener() {
+            //TODO: make options screen able to switch back to the existing screen
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+            }
+        })
+        this.menuSave.addListener(object : ClickListener() {
+            //TODO
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+            }
+        })
+        this.menuQuit.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                confirmationLabel.isVisible = true
+                confirmationButtonYes.isVisible = true
+                confirmationButtonNo.isVisible = true
+                menuBase.isVisible = false
+                menuResume.isVisible = false
+                menuOptions.isVisible = false
+                menuSave.isVisible = false
+                menuQuit.isVisible = false
             }
         })
 
@@ -141,10 +203,15 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(this.humidityLabel)
         this.uiContainer.addActor(this.solidityLabel)
         this.uiContainer.addActor(this.endTurnButton)
-        this.uiContainer.addActor(this.quitGameButton)
+        this.uiContainer.addActor(this.gameMenuButton)
         this.uiContainer.addActor(this.confirmationLabel)
         this.uiContainer.addActor(this.confirmationButtonYes)
         this.uiContainer.addActor(this.confirmationButtonNo)
+        this.uiContainer.addActor(this.menuBase)
+        this.uiContainer.addActor(this.menuResume)
+        this.uiContainer.addActor(this.menuOptions)
+        this.uiContainer.addActor(this.menuSave)
+        this.uiContainer.addActor(this.menuQuit)
     }
 
     /**

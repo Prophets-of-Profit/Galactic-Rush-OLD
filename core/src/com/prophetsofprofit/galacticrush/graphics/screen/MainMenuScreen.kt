@@ -50,6 +50,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
             }
         })
         optionsButton.addListener(object : ClickListener() {
+            //TODO: make options screen able to switch back to the existing screen
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = OptionsScreen(game) { game.screen = MainMenuScreen(game) }
                 dispose()
