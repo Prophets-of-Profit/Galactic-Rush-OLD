@@ -60,7 +60,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.confirmButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 try {
-                    Networker.getClient().connect(5000, directConnectField.text, portTextField.text.toInt())
+                    Networker.getClient().connect(5000, directConnectField.text, portTextField.text.toInt(), portTextField.text.toInt())
                 } catch (e: Exception) {
                     println(e.message)
                 }
@@ -69,7 +69,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.confirmButton.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.1f, Align.center)
 
         //All local addresses on the network
-        val localAddresses = mutableListOf<String>()
+        var localAddresses = listOf<String>()
+        val localAddressString = "LOCAL: "
 
         //Sets up the list to display saved and local addresses TODO: undo selection if click happens outside scrollpane
         var acceptChange = true
@@ -81,12 +82,12 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
                     return
                 }
                 try {
-                    directConnectField.text = Networker.savedAdresses[selectableAddressesList.selected]
-                } catch (ignored: Exception) {
-                    try {
-                        directConnectField.text = localAddresses[selectableAddressesList.selected.split(" ")[1].toInt()]
-                    } catch (ignoredAgain: Exception) {
+                    directConnectField.text = if (Networker.savedAdresses.containsKey(selectableAddressesList.selected)) {
+                        Networker.savedAdresses[selectableAddressesList.selected]
+                    } else {
+                        localAddresses[selectableAddressesList.selected.removePrefix(localAddressString).toInt()].removePrefix("/")
                     }
+                } catch (ignored: Exception) {
                 }
             }
         })
@@ -100,19 +101,21 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         //Sets up the thread to look for local connections and update the list
         fun updateSelectableAddressesList() {
             val allNames: MutableList<String> = Networker.savedAdresses.keys.toMutableList()
-            allNames.addAll(localAddresses.mapIndexed { index: Int, _ -> "LOCAL: $index" })
+            allNames.addAll(localAddresses.mapIndexed { index: Int, _ -> "$localAddressString$index" })
             acceptChange = false
             val prevSelected = selectableAddressesList.selectedIndex
             selectableAddressesList.setItems(com.badlogic.gdx.utils.Array<String>(allNames.toTypedArray()))
-            selectableAddressesList.selectedIndex = prevSelected //TODO: what if there are less items and prevSelected is now too high?
+            try {
+                selectableAddressesList.selectedIndex = prevSelected
+            } catch (ignored: Exception){
+            }
             acceptChange = true
         }
         Thread {
             while (this.connectionId == null) {
                 updateSelectableAddressesList()
-                localAddresses.clear()
                 try {
-                    Networker.getClient().discoverHosts(this.portTextField.text.toInt(), 5000).mapTo(localAddresses) { it.toString() }
+                    localAddresses = Networker.getClient().discoverHosts(this.portTextField.text.toInt(), 5000).map { it.toString() }
                 } catch (ignored: Exception) {
                     Thread.sleep(5000)
                 }
