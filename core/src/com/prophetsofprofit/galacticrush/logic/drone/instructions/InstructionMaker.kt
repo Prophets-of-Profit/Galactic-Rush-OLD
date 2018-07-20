@@ -3,8 +3,11 @@ package com.prophetsofprofit.galacticrush.logic.drone.instructions
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 
 /**
- * Creates instructions given a drone
- * Each instruction maker should create a new instruction for the drone to add
+ * An enumeration of templates for instructions
+ * Each contains a function which creates an instruction of a certain type given a drone,
+ * as well as a rarity (higher rarity in this case is more common) and a binary type as defined
+ * in instruction
+ * Each instruction maker template's function should create an instruction of its type
  */
 enum class InstructionMaker(val createInstructionInstanceFor: (Drone) -> Instruction, val rarity: Int, val type: Int) {
     ATTACK({ Attack(it) }, 5, InstructionType.COMBAT.value),
@@ -12,5 +15,5 @@ enum class InstructionMaker(val createInstructionInstanceFor: (Drone) -> Instruc
     SELECTLOWESTATTACK({ SelectLowestAttack(it) }, 2, InstructionType.MODIFICATION.value),
     MOVE({ Move(it) }, 7, InstructionType.MOVEMENT.value),
     REPEATPREVIOUS({ RepeatPrevious(it) }, 2, InstructionType.ORDER.value),
-    MINORATTACKBUFF({ MinorAttackBuff(it) }, 4, InstructionType.UPGRADE.value)
+    MINORATTACKBUFF({ AttackModification(it, 2) }, 4, InstructionType.UPGRADE.value) //Minor attack buff is +2
 }

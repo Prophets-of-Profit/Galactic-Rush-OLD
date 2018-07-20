@@ -24,4 +24,9 @@ class BuildFacility(drone: Drone) :
         this.drone.location.facilities.add(ConstructionFacility(this.drone.ownerId))
         return true
     }
+
+    override fun getDisplayString(): String {
+        return "Build Facility"
+    }
+
 }

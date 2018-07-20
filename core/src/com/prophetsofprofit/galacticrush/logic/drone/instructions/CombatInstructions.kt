@@ -30,4 +30,9 @@ class Attack(drone: Drone) :
         this.drone.takeDamage((this.selectedDrone as Drone).attack / 2)
         return true
     }
+
+    override fun getDisplayString(): String {
+        return "Attack Target"
+    }
+
 }

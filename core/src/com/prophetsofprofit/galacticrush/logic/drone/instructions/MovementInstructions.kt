@@ -31,4 +31,8 @@ class Move(drone: Drone) :
 //        return true
         return false
     }
+
+    override fun getDisplayString(): String {
+        return "Move"
+    }
 }

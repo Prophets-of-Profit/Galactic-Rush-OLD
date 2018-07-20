@@ -23,4 +23,8 @@ class RepeatPrevious(drone: Drone) :
         return super.act()
     }
 
+    override fun getDisplayString(): String {
+        return "Repeat"
+    }
+
 }

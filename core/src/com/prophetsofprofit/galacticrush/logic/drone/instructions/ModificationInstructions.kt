@@ -26,4 +26,9 @@ class SelectLowestAttack(drone: Drone) :
         this.drone.instructions[this.location + 1].selectedDrone = (this.drone.location.drones.sortedBy { it.attack })[0]
         return true
     }
+
+    override fun getDisplayString(): String {
+        return "Select Lowest Attack"
+    }
+
 }
