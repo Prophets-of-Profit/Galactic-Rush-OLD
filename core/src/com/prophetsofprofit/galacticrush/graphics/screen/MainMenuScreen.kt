@@ -52,8 +52,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         optionsButton.addListener(object : ClickListener() {
             //TODO: make options screen able to switch back to the existing screen
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                game.screen = OptionsScreen(game) { game.screen = MainMenuScreen(game) }
-                dispose()
+                this@MainMenuScreen.options.isVisible = true
             }
         })
         exitGameButton.addListener(object: ClickListener() {
@@ -64,7 +63,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         Networker.reset()
 
         val tempDemoButton = TextButton("DEV", Scene2DSkin.defaultSkin)
-        tempDemoButton.setPosition(this.uiContainer.width * 0.5f, this.uiContainer.height * 0.15f, Align.center)
+        tempDemoButton.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.15f, Align.center)
         tempDemoButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = HostLoadingScreen(game, arrayOf(LocalPlayer(0)))

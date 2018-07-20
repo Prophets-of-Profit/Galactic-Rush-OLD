@@ -23,6 +23,8 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
     protected val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.game.camera.viewportWidth, this.game.camera.viewportHeight))
     //The AudioManager that is the music for the screen
     protected val audioManager = AudioManager(musicPaths)
+    //The options menu that can be activated and deactivated for each screen
+    val options = OptionsMenu(this.game)
 
     /**
      * Sets the screen as the main input method
@@ -31,6 +33,7 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
         Gdx.input.inputProcessor = InputMultiplexer(this, GestureDetector(this), this.uiContainer)
         this.applyOptions()
         this.audioManager.start()
+        this.uiContainer.addActor(this.options)
     }
 
     /**

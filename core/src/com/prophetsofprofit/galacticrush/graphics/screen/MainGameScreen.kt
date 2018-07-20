@@ -170,7 +170,12 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         })
         this.menuOptions.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                game.screen = OptionsScreen(game) { game.screen = MainGameScreen(game, player) }
+                this@MainGameScreen.options.isVisible = true
+                menuBase.isVisible = false
+                menuResume.isVisible = false
+                menuOptions.isVisible = false
+                menuSave.isVisible = false
+                menuQuit.isVisible = false
             }
         })
         this.menuSave.addListener(object : ClickListener() {
@@ -190,7 +195,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 menuQuit.isVisible = false
             }
         })
-
         this.uiContainer.addActor(this.planetLabel)
         this.uiContainer.addActor(this.dronesList)
         this.uiContainer.addActor(this.massIcon)
