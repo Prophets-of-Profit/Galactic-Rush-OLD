@@ -53,7 +53,7 @@ class OverlayMenu(val gameScreen: MainGameScreen): Group() {
         this.gameMenuButton.setPosition(this.gameScreen.game.camera.viewportWidth - this.endTurnButton.width, this.endTurnButton.height)
         this.endTurnButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                gameScreen.player.submitChanges()
+                gameScreen.submitConfirmation.isVisible = true
             }
         })
         this.gameMenuButton.addListener(object : ClickListener() {

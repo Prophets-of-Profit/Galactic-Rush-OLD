@@ -6,8 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.prophetsofprofit.galacticrush.logic.map.Attribute
-import com.prophetsofprofit.galacticrush.logic.map.Planet
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -60,8 +58,8 @@ class GameMenu(val gameScreen: MainGameScreen): Group() {
         this.menuQuit.addListener(object : ClickListener() {
             //TODO
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                gameScreen.game.screen = MainMenuScreen(gameScreen.game)
-                gameScreen.dispose()
+                gameScreen.quitConfirmation.isVisible = true
+                isVisible = false
             }
         })
 

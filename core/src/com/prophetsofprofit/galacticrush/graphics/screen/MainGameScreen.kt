@@ -46,6 +46,10 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val overlay = OverlayMenu(this)
     //The game menu for handling options and quitting, etc
     val gameMenu = GameMenu(this)
+    //The confirmation menu for quitting
+    val quitConfirmation = ConfirmationMenu(this, "Quit game?", this.gameMenu) { game.screen = MainMenuScreen(game); dispose() }
+    //The confirmation menu for submitting
+    val submitConfirmation = ConfirmationMenu(this, "Submit?", this.overlay) { player.submitChanges() }
     //The font that is displayed when there is no label
     val font = BitmapFont()
 
@@ -53,6 +57,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.gameMenu.isVisible = false
         this.uiContainer.addActor(this.overlay)
         this.uiContainer.addActor(this.gameMenu)
+        this.uiContainer.addActor(this.quitConfirmation)
+        this.uiContainer.addActor(this.submitConfirmation)
     }
 
     /**
