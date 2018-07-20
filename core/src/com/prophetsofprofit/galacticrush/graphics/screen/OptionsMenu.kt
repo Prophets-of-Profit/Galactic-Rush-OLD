@@ -25,7 +25,7 @@ class OptionsMenu(val game: Main): Group() {
      * Initializes UI components
      */
     init {
-        val basePanel = Label("Options", Scene2DSkin.defaultSkin, "ui")
+        val basePanel = Label("Options", Scene2DSkin.defaultSkin, "small")
         basePanel.width = this.game.camera.viewportWidth * 0.5f
         basePanel.height = this.game.camera.viewportHeight * 0.9f
         basePanel.setAlignment(Align.top)
