@@ -10,14 +10,14 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.OverlayMenu
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.PlanetAttributesPanel
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.PlanetDronesPanel
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planetoverlay.PlanetOverlay
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
 import kotlin.math.*
+
 
 /**
  * The screen where all the playing will be done
@@ -39,10 +39,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
     //The permanent overlay of the game screen; see OverlayMenu
     val overlay = OverlayMenu(this)
-    //The panel that handles displaying the selected planet's attributes
-    val attributesPanel = PlanetAttributesPanel(this)
-    //The panel that handles displaying the selected planet's drones
-    val planetDronesPanel = PlanetDronesPanel(this)
+    //The panel that handles displaying information about the selected planet
+    val planetOverlay = PlanetOverlay(this)
     //The game menu for handling options and quitting, etc
     val gameMenu = PauseMenu(this)
     //The confirmation menu for quitting
@@ -55,8 +53,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     init {
         this.gameMenu.isVisible = false
         this.uiContainer.addActor(this.overlay)
-        this.uiContainer.addActor(this.attributesPanel)
-        this.uiContainer.addActor(this.planetDronesPanel)
+        this.uiContainer.addActor(this.planetOverlay)
         this.uiContainer.addActor(this.gameMenu)
         this.uiContainer.addActor(this.quitConfirmation)
         this.uiContainer.addActor(this.submitConfirmation)
@@ -188,8 +185,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
-        this.attributesPanel.updateInformation()
-        this.planetDronesPanel.updateInformation()
+        this.planetOverlay.updateInformation()
         return this.selectedPlanet != null
     }
 
