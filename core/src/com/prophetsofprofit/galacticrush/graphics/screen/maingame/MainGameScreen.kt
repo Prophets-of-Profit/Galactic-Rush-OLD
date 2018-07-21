@@ -1,4 +1,4 @@
-package com.prophetsofprofit.galacticrush.graphics.screen
+package com.prophetsofprofit.galacticrush.graphics.screen.maingame
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
@@ -6,19 +6,13 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
-import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
-import ktx.scene2d.Scene2DSkin
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow

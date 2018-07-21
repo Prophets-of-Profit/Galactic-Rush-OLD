@@ -1,4 +1,4 @@
-package com.prophetsofprofit.galacticrush.graphics.screen
+package com.prophetsofprofit.galacticrush.graphics.screen.maingame
 
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
-import com.prophetsofprofit.galacticrush.logic.map.Planet
 import ktx.scene2d.Scene2DSkin
 
 /**

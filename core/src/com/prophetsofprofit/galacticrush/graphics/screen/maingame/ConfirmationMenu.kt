@@ -1,4 +1,4 @@
-package com.prophetsofprofit.galacticrush.graphics.screen
+package com.prophetsofprofit.galacticrush.graphics.screen.maingame
 
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent

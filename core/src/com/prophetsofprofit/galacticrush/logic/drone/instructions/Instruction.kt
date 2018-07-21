@@ -96,5 +96,5 @@ abstract class Instruction(var maxHealth: Int, val memory: Int, val type: Instru
     /**
      * Returns the display string of the instruction that the player will see
      */
-    open abstract fun getDisplayString(): String
+    abstract fun getDisplayString(): String
 }
