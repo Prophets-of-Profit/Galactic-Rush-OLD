@@ -74,7 +74,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in this.mainGame.galaxy.planets) {
             if (planet.facilities.any { it is HomeBase }) {
-                this.game.shapeRenderer.color = Color.PINK
+                this.game.shapeRenderer.color = this.mainGame.playerColors[planet.facilities.first().ownerId]
                 this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 15 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
             }
             this.game.shapeRenderer.color = planet.color
