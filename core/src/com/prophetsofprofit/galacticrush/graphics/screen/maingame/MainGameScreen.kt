@@ -9,13 +9,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.OverlayMenu
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.Overlay
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
-import kotlin.math.*
 
 
 /**
@@ -36,8 +35,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     var selectedPlanet: Planet? = null
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
-    //The permanent overlay of the game screen; see OverlayMenu
-    val overlay = OverlayMenu(this)
+    //The permanent overlay of the game screen; see Overlay
+    val overlay = Overlay(this)
     //The game menu for handling options and quitting, etc
     val gameMenu = PauseMenu(this)
     //The confirmation menu for quitting

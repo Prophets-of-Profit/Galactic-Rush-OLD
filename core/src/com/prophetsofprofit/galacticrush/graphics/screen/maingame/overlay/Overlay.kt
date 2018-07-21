@@ -16,7 +16,7 @@ import ktx.scene2d.Scene2DSkin
  * The actor group which makes up the overlay of the main game
  * Must always be tied to a main game, should not be placed in another screen
  */
-class OverlayMenu(val gameScreen: MainGameScreen): Group() {
+class Overlay(val gameScreen: MainGameScreen): Group() {
 
     //The button pressed to submit a player's turn
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
