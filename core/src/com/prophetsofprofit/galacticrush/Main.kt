@@ -3,6 +3,7 @@ package com.prophetsofprofit.galacticrush
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -72,8 +73,8 @@ class Main : Game() {
      * Converts window coordinates (as integers) into coordinates from the camera
      * Returns the coordinates to a 2-dimensional vector
      */
-    fun windowToCamera(x: Int, y: Int): Vector2 {
-        val convertedVector = this.camera.unproject(Vector3(x.toFloat(), y.toFloat(), 0f))
+    fun windowToCamera(x: Int, y: Int, camera: Camera = this.camera): Vector2 {
+        val convertedVector = camera.unproject(Vector3(x.toFloat(), y.toFloat(), 0f))
         return Vector2(convertedVector.x, convertedVector.y)
     }
 
