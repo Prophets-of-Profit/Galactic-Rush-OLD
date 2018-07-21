@@ -149,7 +149,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         if (this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false) != null) {
             return false
         }
-        this.game.camera.translate(-deltaX, deltaY)
+        this.game.camera.translate(-deltaX * this.game.camera.zoom, deltaY * this.game.camera.zoom)
         return false
     }
 

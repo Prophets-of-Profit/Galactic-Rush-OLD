@@ -9,7 +9,7 @@ import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 class BaseOverlay(val gameScreen: MainGameScreen): Group() {
 
     //Shows all facilities on the planet
-    val facilitiesPanel = BaseFacilitiesPanel(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 6, this.gameScreen.game.camera.viewportHeight / 3)
+    val facilitiesPanel = BaseFacilitiesPanel(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 6, 2 * this.gameScreen.game.camera.viewportHeight / 3)
 
     init {
         this.addActor(facilitiesPanel)
