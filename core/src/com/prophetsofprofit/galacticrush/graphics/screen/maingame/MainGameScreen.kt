@@ -10,7 +10,6 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.OverlayMenu
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planetoverlay.PlanetOverlay
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
@@ -48,12 +47,19 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     //The font that is displayed when there is no label
     val font = BitmapFont()
 
+    /**
+     * Initializes the main game screen by adding UI components and moving the camera to the player's home base
+     */
     init {
         this.gameMenu.isVisible = false
         this.uiContainer.addActor(this.overlay)
         this.uiContainer.addActor(this.gameMenu)
         this.uiContainer.addActor(this.quitConfirmation)
         this.uiContainer.addActor(this.submitConfirmation)
+        //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
+        val homeBaseLocation = this.mainGame.galaxy.planets.first { it.facilities.firstOrNull { it is HomeBase && it.ownerId == this.player.id } != null }
+        this.game.camera.translate(homeBaseLocation.x * this.game.camera.viewportWidth - this.game.camera.viewportWidth / 2, homeBaseLocation.y * this.game.camera.viewportHeight - this.game.camera.viewportHeight / 2)
+        this.game.camera.zoom = 0.5f
     }
 
     /**
