@@ -17,20 +17,12 @@ import ktx.scene2d.Scene2DSkin
  */
 class OverlayMenu(val gameScreen: MainGameScreen): Group() {
 
-    //The label for the drones on the currently selected planet
-    val dronesList = Label("Drones", Scene2DSkin.defaultSkin, "ui")
     //The button pressed to submit a player's turn
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
     //The button which brings up the main game menu
     val gameMenuButton = TextButton("Game Menu", Scene2DSkin.defaultSkin)
 
     init {
-        this.dronesList.width = this.gameScreen.game.camera.viewportWidth / 8
-        this.dronesList.height = this.gameScreen.game.camera.viewportHeight / 3
-        this.dronesList.setPosition(this.gameScreen.game.camera.viewportWidth - this.dronesList.width,
-                this.gameScreen.game.camera.viewportHeight / 3)
-        this.dronesList.setAlignment(Align.top)
-
         this.endTurnButton.setPosition(this.gameScreen.game.camera.viewportWidth - this.endTurnButton.width, 0f)
         this.gameMenuButton.setPosition(this.gameScreen.game.camera.viewportWidth - this.endTurnButton.width, this.endTurnButton.height)
         this.endTurnButton.addListener(object : ClickListener() {
@@ -43,9 +35,6 @@ class OverlayMenu(val gameScreen: MainGameScreen): Group() {
                 gameScreen.gameMenu.isVisible = true
             }
         })
-
-        this.addActor(this.dronesList)
-
         this.addActor(this.endTurnButton)
         this.addActor(this.gameMenuButton)
     }

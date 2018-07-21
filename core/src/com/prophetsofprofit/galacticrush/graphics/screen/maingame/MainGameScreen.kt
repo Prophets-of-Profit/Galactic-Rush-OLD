@@ -11,6 +11,7 @@ import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.OverlayMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.PlanetAttributesPanel
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.PlanetDronesPanel
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
@@ -40,6 +41,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val overlay = OverlayMenu(this)
     //The panel that handles displaying the selected planet's attributes
     val attributesPanel = PlanetAttributesPanel(this)
+    //The panel that handles displaying the selected planet's drones
+    val planetDronesPanel = PlanetDronesPanel(this)
     //The game menu for handling options and quitting, etc
     val gameMenu = PauseMenu(this)
     //The confirmation menu for quitting
@@ -53,6 +56,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.gameMenu.isVisible = false
         this.uiContainer.addActor(this.overlay)
         this.uiContainer.addActor(this.attributesPanel)
+        this.uiContainer.addActor(this.planetDronesPanel)
         this.uiContainer.addActor(this.gameMenu)
         this.uiContainer.addActor(this.quitConfirmation)
         this.uiContainer.addActor(this.submitConfirmation)
@@ -148,7 +152,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      */
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
         this.game.camera.translate(-deltaX, deltaY)
-        return true
+        return false
     }
 
     /**
@@ -185,6 +189,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
         this.attributesPanel.updateInformation()
+        this.planetDronesPanel.updateInformation()
         return this.selectedPlanet != null
     }
 
