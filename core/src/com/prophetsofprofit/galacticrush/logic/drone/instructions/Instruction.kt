@@ -12,14 +12,14 @@ import com.prophetsofprofit.galacticrush.logic.map.Planet
  * To check if an instruction is of a certain type, use the bitwise and (e.g. instruction.type and ORDER)
  */
 enum class InstructionType(val value: Int) {
-    NONE(0),            //Miscellaneous
-    COMBAT(1),          //Instructs the drone to do something combat-related, like attack another drone
-    MOVEMENT(2),        //Instructs the drone to travel to another planet
-    CONSTRUCTION(4),    //Instructs the drone to modify the world or construct facilities
-    MINING(8),          //Instructs the drone to gather resources
-    MODIFICATION(16),   //Modifies the effects of other instructions in the queue
-    UPGRADE(32),        //Modifies the properties of the drone
-    ORDER(64)           //Modifies the order in which commands are executed in the queue
+    NONE(0b00000000),            //Miscellaneous
+    COMBAT(0b00000001),          //Instructs the drone to do something combat-related, like attack another drone
+    MOVEMENT(0b00000010),        //Instructs the drone to travel to another planet
+    CONSTRUCTION(0b00000100),    //Instructs the drone to modify the world or construct facilities
+    MINING(0b00001000),          //Instructs the drone to gather resources
+    MODIFICATION(0b00010000),   //Modifies the effects of other instructions in the queue
+    UPGRADE(0b00100000),        //Modifies the properties of the drone
+    ORDER(0b01000000)           //Modifies the order in which commands are executed in the queue
 }
 
 /**

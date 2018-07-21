@@ -15,5 +15,16 @@ enum class InstructionMaker(val createInstructionInstanceFor: (Drone) -> Instruc
     SELECTLOWESTATTACK({ SelectLowestAttack(it) }, 2, InstructionType.MODIFICATION.value),
     MOVE({ Move(it) }, 7, InstructionType.MOVEMENT.value),
     REPEATPREVIOUS({ RepeatPrevious(it) }, 2, InstructionType.ORDER.value),
-    MINORATTACKBUFF({ AttackModification(it, 2) }, 4, InstructionType.UPGRADE.value) //Minor attack buff is +2
+    MINORATTACKBUFF({ AttackModification(it, 2) }, 4, InstructionType.UPGRADE.value); //Minor attack buff is +2
+
+    //The list of players that have access to this instructionmaker (in terms of id)
+    val owners = mutableListOf<Int>()
+
+}
+
+/**
+ * Gives any amount of players (by id) some instructions
+ */
+fun giveInstructions(ids: Array<Int>, instructions: Array<InstructionMaker> = InstructionMaker.values()) {
+    instructions.forEach { ids.mapTo(it.owners) { it } }
 }

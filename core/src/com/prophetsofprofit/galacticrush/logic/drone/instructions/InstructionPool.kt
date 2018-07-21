@@ -24,7 +24,7 @@ class InstructionPool(val size: Int) {
      * Selects a number of random instructions from the pool with specified type(s)
      * and returns them in a list
      */
-    fun pull(amount: Int, type: Int = 127): List<InstructionMaker> {
+    fun pull(amount: Int, type: Int = 0b11111111): List<InstructionMaker> {
         val pool = this.instructions.filter { (it.type and type) != 0 }
         return pool.shuffled().slice(0 until amount)
     }

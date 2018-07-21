@@ -25,6 +25,8 @@ class Game(val players: Array<Int>, galaxySize: Int) {
     val drones = mutableListOf<Drone>()
     //Whether the game has been changed since last send
     var gameChanged = false
+    //How much money each player has; maps id to money
+    val money = mutableMapOf<Int, Int>()
 
     /**
      * A method that collects changes, verifies their integrity, and then applies them to the game
