@@ -64,9 +64,8 @@ class PlanetAttributesPanel(val gameScreen: MainGameScreen, val labelWidth: Floa
     /**
      * Updates all of the information found on the overlay
      * Uses the game screen's selected planet
-     * TODO: Implement drone information and editing pieces
      */
-    fun updateInformation() {
+    fun update() {
         this.massLabel.setText(com.prophetsofprofit.galacticrush.logic.map.Attribute.MASS.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.MASS]!!))
         this.temperatureLabel.setText(com.prophetsofprofit.galacticrush.logic.map.Attribute.TEMPERATURE.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.TEMPERATURE]!!))
         this.atmosphereLabel.setText(com.prophetsofprofit.galacticrush.logic.map.Attribute.ATMOSPHERE.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.ATMOSPHERE]!!))

@@ -8,7 +8,9 @@ import com.prophetsofprofit.galacticrush.logic.map.Planet
  */
 abstract class Facility(val ownerId: Int) {
 
-    //Where the facility is; TODO: get location based on ownerID
+    //Where the facility is
     var location: Planet = Planet(-1.0f, -1.0f, -1.0f)
+    //All derived classes must define a toString method for the UI display
+    abstract override fun toString(): String
 
 }

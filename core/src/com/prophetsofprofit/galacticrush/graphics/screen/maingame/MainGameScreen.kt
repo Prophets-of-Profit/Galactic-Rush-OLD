@@ -190,7 +190,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
-        this.overlay.planetOverlay.updateInformation()
+        this.overlay.planetOverlay.update()
         return this.selectedPlanet != null
     }
 

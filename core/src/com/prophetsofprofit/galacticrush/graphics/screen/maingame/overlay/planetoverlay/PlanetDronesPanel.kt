@@ -42,7 +42,7 @@ class PlanetDronesPanel(val gameScreen: MainGameScreen, val labelWidth: Float, v
     /**
      * Updates all of the drones on the game screen's selected planet
      */
-    fun updateInformation() {
+    fun update() {
         this.dronesList.setItems(Array(this.gameScreen.selectedPlanet!!.drones.map { it.toString() }.toTypedArray()))
     }
 
