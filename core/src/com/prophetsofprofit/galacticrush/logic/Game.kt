@@ -1,5 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic
 
+import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.player.Player
@@ -27,6 +28,15 @@ class Game(val players: Array<Int>, galaxySize: Int) {
     var gameChanged = false
     //How much money each player has; maps id to money
     val money = mutableMapOf<Int, Int>()
+    //The map of player id to their color
+    val playerColors = mutableMapOf<Int, Color>()
+
+    /**
+     * Assigns each player a random colors
+     */
+    init {
+        this.players.forEach { playerColors[it] = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f) }
+    }
 
     /**
      * A method that collects changes, verifies their integrity, and then applies them to the game

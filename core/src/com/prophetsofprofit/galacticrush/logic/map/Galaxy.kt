@@ -38,10 +38,10 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         generatePlanets(numPlanets)
         generateEdges(numPlanets)
         connectAllPlanets()
-        val pickablePlanets = this.planets
+        val pickablePlanets = this.planets.toMutableList()
         var planetChoice: Planet
         for (i in 0 until playerIDs.size) {
-            planetChoice = planets.shuffled()[0]
+            planetChoice = pickablePlanets.shuffled()[0]
             planetChoice.facilities.add(HomeBase(playerIDs[i]))
             planetChoice.facilities.add(ConstructionFacility(playerIDs[i]))
             pickablePlanets.remove(planetChoice)
