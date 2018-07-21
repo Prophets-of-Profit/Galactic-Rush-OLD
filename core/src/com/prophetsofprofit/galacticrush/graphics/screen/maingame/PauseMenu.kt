@@ -13,7 +13,7 @@ import ktx.scene2d.Scene2DSkin
  * The actor group which makes up the game menu which handles saving,
  * quitting, and options
  */
-class GameMenu(val gameScreen: MainGameScreen): Group() {
+class PauseMenu(val gameScreen: MainGameScreen): Group() {
 
     //The base, background of the menu
     val menuBase = Label("", Scene2DSkin.defaultSkin, "ui")

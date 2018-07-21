@@ -9,14 +9,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.OverlayMenu
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.PlanetAttributesPanel
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * The screen where all the playing will be done
@@ -38,8 +37,10 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
     //The permanent overlay of the game screen; see OverlayMenu
     val overlay = OverlayMenu(this)
+    //The panel that handles displaying the selected planet's attributes
+    val attributesPanel = PlanetAttributesPanel(this)
     //The game menu for handling options and quitting, etc
-    val gameMenu = GameMenu(this)
+    val gameMenu = PauseMenu(this)
     //The confirmation menu for quitting
     val quitConfirmation = ConfirmationMenu(this, "Quit game?", this.gameMenu) { game.screen = MainMenuScreen(game); dispose() }
     //The confirmation menu for submitting
@@ -50,6 +51,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     init {
         this.gameMenu.isVisible = false
         this.uiContainer.addActor(this.overlay)
+        this.uiContainer.addActor(this.attributesPanel)
         this.uiContainer.addActor(this.gameMenu)
         this.uiContainer.addActor(this.quitConfirmation)
         this.uiContainer.addActor(this.submitConfirmation)
@@ -177,7 +179,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
-        this.overlay.updateInformation()
+        this.attributesPanel.updateInformation()
         return this.selectedPlanet != null
     }
 
