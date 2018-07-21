@@ -39,8 +39,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
     //The permanent overlay of the game screen; see OverlayMenu
     val overlay = OverlayMenu(this)
-    //The panel that handles displaying information about the selected planet
-    val planetOverlay = PlanetOverlay(this)
     //The game menu for handling options and quitting, etc
     val gameMenu = PauseMenu(this)
     //The confirmation menu for quitting
@@ -53,7 +51,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     init {
         this.gameMenu.isVisible = false
         this.uiContainer.addActor(this.overlay)
-        this.uiContainer.addActor(this.planetOverlay)
         this.uiContainer.addActor(this.gameMenu)
         this.uiContainer.addActor(this.quitConfirmation)
         this.uiContainer.addActor(this.submitConfirmation)
@@ -193,7 +190,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
-        this.planetOverlay.updateInformation()
+        this.overlay.planetOverlay.updateInformation()
         return this.selectedPlanet != null
     }
 

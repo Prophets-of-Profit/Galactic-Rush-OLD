@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planetoverlay.PlanetOverlay
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import ktx.scene2d.Scene2DSkin
 
@@ -21,6 +22,8 @@ class OverlayMenu(val gameScreen: MainGameScreen): Group() {
     val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
     //The button which brings up the main game menu
     val gameMenuButton = TextButton("Game Menu", Scene2DSkin.defaultSkin)
+    //The overlay that comes up when planets are selected
+    val planetOverlay = PlanetOverlay(gameScreen)
 
     init {
         this.endTurnButton.setPosition(this.gameScreen.game.camera.viewportWidth - this.endTurnButton.width, 0f)
@@ -37,6 +40,7 @@ class OverlayMenu(val gameScreen: MainGameScreen): Group() {
         })
         this.addActor(this.endTurnButton)
         this.addActor(this.gameMenuButton)
+        this.addActor(planetOverlay)
     }
 
 }
