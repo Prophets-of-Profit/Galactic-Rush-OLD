@@ -3,7 +3,6 @@ package com.prophetsofprofit.galacticrush.logic
 import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
-import com.prophetsofprofit.galacticrush.logic.player.Player
 
 /**
  * The main game object
@@ -23,7 +22,10 @@ class Game(val players: Array<Int>, galaxySize: Int) {
     //The players who need to submit their changes for the drones to commence
     val waitingOn = this.players.toMutableList()
     //The drones that currently exist in the game; should be ordered in order of creation
-    val drones = mutableListOf<Drone>()
+    val drones: Array<Drone>
+        get() {
+            return this.galaxy.planets.fold(mutableListOf<Drone>()) { list, currentPlanet -> list.addAll(currentPlanet.drones); list }.toTypedArray()
+        }
     //Whether the game has been changed since last send
     var gameChanged = false
     //How much money each player has; maps id to money
@@ -46,16 +48,26 @@ class Game(val players: Array<Int>, galaxySize: Int) {
             return
         }
         //TODO: verify change integrity
+        //Add all the changes into the game
+        println(this.drones.size)
+        println(change.changedDrones)
+        for (changedDrone in change.changedDrones) {
+            this.drones.filter { it.ownerId == changedDrone.ownerId && it.creationTime == changedDrone.creationTime }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.remove(it) }
+            changedDrone.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.add(changedDrone)
+        }
+        println(this.drones.size)
+        //TODO apply changes to instructions
         this.waitingOn.remove(change.ownerId)
         if (waitingOn.isEmpty()) {
-            this.doDroneTurn()
+            //this.doDroneTurn()
+            this.gameChanged = true
         }
     }
 
     /**
      * Performs one action per drone for all drones that can perform an action; won't be callable until game is ready
      */
-    fun doDroneTurn() {
+    /*fun doDroneTurn() {
         //If waiting on players don't do anything
         if (waitingOn.isNotEmpty()) {
             return
@@ -68,6 +80,6 @@ class Game(val players: Array<Int>, galaxySize: Int) {
             players.mapTo(waitingOn) { it }
         }
         this.gameChanged = true
-    }
+    }*/
 
 }

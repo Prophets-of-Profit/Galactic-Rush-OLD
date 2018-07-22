@@ -1,8 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic
 
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import com.prophetsofprofit.galacticrush.logic.drone.instructions.Instruction
-import com.prophetsofprofit.galacticrush.logic.drone.instructions.InstructionMaker
 
 /**
  * A class that represents a change that a player wants to make to the game
@@ -17,7 +15,5 @@ class Change(val ownerId: Int) {
 
     //What the player has changed in regards to drones
     val changedDrones = mutableListOf<Drone>()
-    //What instruction the user has gained
-    val gainedInstruction = mutableListOf<InstructionMaker>()
 
 }

@@ -33,7 +33,7 @@ class BaseActionsPanel(val gameScreen: MainGameScreen, val bottomLeftX: Float, v
                 this.createDroneButton.y + this.createDroneButton.height + this.modifyDroneButton.height / 4)
         this.createDroneButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                val newDrone = Drone(gameScreen.player.id)
+                val newDrone = Drone(gameScreen.player.id, gameScreen.selectedPlanet!!.id)
                 gameScreen.selectedPlanet!!.drones.add(newDrone)
                 gameScreen.player.currentChanges.changedDrones.add(newDrone)
             }

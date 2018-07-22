@@ -30,17 +30,18 @@ enum class Attribute(private val displayString: String, val stringValue: (Double
  * Planets are the 'tiles' of the game
  * Planets can be traversed to and from depending on the edges of the graph, or paths in the galaxy
  * Planets have arbitrary attributes that are used by other entities in the game
- * Takes in its location in 2d space between 0 and 1
+ * Takes in its locationId in 2d space between 0 and 1
  */
 class Planet(var x: Float,
              var y: Float,
              val radius: Float,
+             val id: Int,
              val color: Color = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f)) {
 
     /**
      * Empty constructor for serialization
      */
-    constructor() : this(-1f, -1f, -1f)
+    constructor() : this(-1f, -1f, -1f, -1)
 
     //Arbitrary attributes that determine drone behaviour: can be changed, but each start out as a random number between 0 and 1
     val attributes = Attribute.values().map { it to Math.random() }.toMap()

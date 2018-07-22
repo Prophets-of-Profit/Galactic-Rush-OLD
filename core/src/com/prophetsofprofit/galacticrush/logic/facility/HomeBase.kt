@@ -1,7 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.facility
 
 /**
- * Denotes the user's base location; destroy this to win the game!
+ * Denotes the user's base locationId; destroy this to win the game!
  */
 class HomeBase(ownerId: Int) : Facility(ownerId) {
 

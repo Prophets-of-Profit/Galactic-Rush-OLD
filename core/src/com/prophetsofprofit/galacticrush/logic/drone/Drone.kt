@@ -1,8 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic.drone;
 
 import com.badlogic.gdx.graphics.Texture
-import com.prophetsofprofit.galacticrush.logic.drone.instructions.Instruction
-import com.prophetsofprofit.galacticrush.logic.drone.instructions.InstructionMaker
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import java.util.*
 
@@ -12,41 +10,32 @@ val baseDroneImage = Texture("image/drone/base.png")
  * A class that represent's a player's drone
  * Is the main unit of the game that carries out instructions
  * Is what is used to achieve victory
+ * Location stores the id of the planet
  */
-class Drone(val ownerId: Int) {
+class Drone(val ownerId: Int, var locationId: Int) {
 
     //When the drone was initialized: the game assumes that this is unique for each drone which is kinda hacky
     val creationTime = Date()
-    //The modifiers of the drone's behavior and abilities
-    val instructions: MutableList<Instruction> = mutableListOf()
     //Which instruction the drone is currently reading
     var pointer = 0
-    //Where the drone is TODO: get starting location based on owner id
-    var location: Planet = Planet(-1.0f, -1.0f, -1.0f)
     //How much base damage the drone deals when attacking
     var attack = 5
-    //An arbitrary measure of how many instructions a drone can hold;
-    //Each instruction has a certain memory use, and the total cannot exceed this value
-    val maxMemory = 10
-    //How much memory the drone has available
-    val memoryAvailable: Int
-        get() {
-            return this.maxMemory - this.instructions.sumBy { it.memory }
-        }
+
+
     //Whether the drone is done completing its command queue
     var queueFinished = false
 
     /**
      * Empty constructor for serialization
      */
-    constructor() : this(-1)
+    constructor() : this(-1, -1)
 
     //The following methods interface with the drone's instruction structure
 
     /**
      * Adds an instruction to the end of the drone's task list
      */
-    fun add(instructionMaker: InstructionMaker): Boolean {
+    /*fun add(instructionMaker: InstructionMaker): Boolean {
         val instruction = instructionMaker.createInstructionInstanceFor(this)
         if (this.memoryAvailable < instruction.memory) return false
         if (!instruction.add()) return false
@@ -81,6 +70,10 @@ class Drone(val ownerId: Int) {
      * Does the queued action
      */
     fun completeAction() {
+        if (this.instructions.isEmpty()) {
+            this.queueFinished = true
+            return
+        }
         this.instructions[this.pointer].act()
         this.advancePointer(1)
     }
@@ -134,13 +127,13 @@ class Drone(val ownerId: Int) {
             if (this.instructions[instructionToDamage].health <= 0) {
                 this.instructions[instructionToDamage].getDestroyed()
             } else {
-                //Increment location index
+                //Increment locationId index
                 instructionToDamage = (instructionToDamage + 1) % this.instructions.size
             }
         }
         //If the drone has no instructions left it dies a sad and lonely death
         if (this.instructions.isEmpty()) this.getDestroyed()
-    }
+    }*/
 
     /**
      * Remove the drone from the world's list of drones so it can be garbage collected
@@ -148,6 +141,13 @@ class Drone(val ownerId: Int) {
      */
     fun getDestroyed() {
 
+    }
+
+    /**
+     * Gets the locationId of the drone among a list of planets, or null if it does not exist
+     */
+    fun getLocationAmong(planets: Array<Planet>): Planet? {
+        return planets.firstOrNull { it.id == this.locationId }
     }
 
     /**

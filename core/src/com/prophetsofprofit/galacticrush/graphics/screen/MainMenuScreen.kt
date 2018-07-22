@@ -11,7 +11,6 @@ import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.FindHostScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.WaitForClientScreen
-import com.prophetsofprofit.galacticrush.logic.drone.instructions.giveInstructions
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import ktx.app.use
 import ktx.scene2d.Scene2DSkin
@@ -68,7 +67,6 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         tempDemoButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = HostLoadingScreen(game, arrayOf(LocalPlayer(0)))
-                giveInstructions(arrayOf(0))
                 dispose()
             }
         })

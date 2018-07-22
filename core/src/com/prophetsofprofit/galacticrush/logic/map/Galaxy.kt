@@ -59,9 +59,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         for (i in 0 until sideLength) {
             for (j in 0 until sideLength) {
                 //Shifts x by i and y by j, and adds to it in a random number within a range of 0 to 1 / sidelength, the length of each bounding square
-                planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), (sideLength / 250.0 + Math.random() * sideLength / 500.0).toFloat() / numPlanets))
-                //TODO: This is a test; remove it for release
-                for (k in 0 until (Math.random() * 6).toInt()) planets.last().drones.add(Drone((Math.random() * 1000000).toInt()))
+                this.planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), (sideLength / 250.0 + Math.random() * sideLength / 500.0).toFloat() / numPlanets, this.planets.size))
             }
         }
     }
