@@ -44,10 +44,21 @@ class Planet(var x: Float,
     constructor() : this(-1f, -1f, -1f, -1)
 
     //Arbitrary attributes that determine drone behaviour: can be changed, but each start out as a random number between 0 and 1
-    val attributes = Attribute.values().map { it to Math.random() }.toMap()
+    val attributes = Attribute.values().map { it to Math.random() }.toMap().toMutableMap()
     //All the drones on the planet
     val drones = mutableListOf<Drone>()
     //All the facilities on the planet
     val facilities = mutableListOf<Facility>()
+
+    /**
+     * Makes a copy of the planet
+     */
+    fun clone(): Planet {
+        val clone = Planet(this.x, this.y, this.radius, this.id, this.color)
+        this.attributes.keys.forEach { clone.attributes[it] = this.attributes[it]!! }
+        this.drones.mapTo(clone.drones) { it }
+        this.facilities.mapTo(clone.facilities) { it }
+        return clone
+    }
 
 }

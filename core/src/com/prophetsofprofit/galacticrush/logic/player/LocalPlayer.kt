@@ -12,6 +12,8 @@ import com.prophetsofprofit.galacticrush.logic.Game
  */
 class LocalPlayer(id: Int) : Player(id) {
 
+    lateinit var hostedGame: Game
+
     /**
      * Empty constructor for serialization
      */
@@ -26,7 +28,7 @@ class LocalPlayer(id: Int) : Player(id) {
             Networker.getServer().addListener(object : Listener() {
                 override fun received(connection: Connection?, obj: Any?) {
                     if (obj is Change) {
-                        game.collectChange(obj)
+                        hostedGame.collectChange(obj)
                     }
                 }
             })
@@ -34,12 +36,13 @@ class LocalPlayer(id: Int) : Player(id) {
                 //TODO: exit condition
                 while (true) {
                     try {
-                        if (!this.game.gameChanged) {
+                        if (!this.hostedGame.gameChanged) {
                             Thread.sleep(50)
                             continue
                         }
-                        this.game.gameChanged = false
-                        Networker.getServer().sendToAllTCP(this.game)
+                        this.hostedGame.gameChanged = false
+                        Networker.getServer().sendToAllTCP(this.hostedGame)
+                        this.receiveNewGameState(this.hostedGame)
                     } catch (ignored: Exception) {
                     }
                 }
@@ -51,7 +54,7 @@ class LocalPlayer(id: Int) : Player(id) {
      * The local player directly gives the local game the changes to submit
      */
     override fun submitChanges() {
-        this.game.collectChange(this.currentChanges)
+        this.hostedGame.collectChange(this.currentChanges)
         this.currentChanges = Change(this.id)
     }
 
@@ -60,7 +63,7 @@ class LocalPlayer(id: Int) : Player(id) {
      * It doesn't even really need to set the game to a new game because the local game shouldn't be a different object
      */
     override fun receiveNewGameState(newGame: Game) {
-        this.game = newGame
+        this.game = newGame.clone()
     }
 
 }

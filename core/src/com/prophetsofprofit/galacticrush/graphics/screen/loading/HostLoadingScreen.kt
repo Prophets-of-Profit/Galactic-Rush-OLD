@@ -4,6 +4,7 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.logic.player.Player
@@ -22,11 +23,13 @@ class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(
      */
     override fun load() {
         Thread.sleep(50) //Necessary to ensure that this.players isn't null
-        this.mainGame = Game(this.players.map { it.id }.toTypedArray(), 100)
+        this.mainGame = Game(this.players.map { it.id }.toTypedArray(), Galaxy(100, this.players.map { it.id }))
         this.players.forEach {
             it.game = this.mainGame!!
             if (it is NetworkPlayer) {
                 Networker.getServer().sendToTCP(it.connectionId, it)
+            } else if (it is LocalPlayer) {
+                it.hostedGame = this.mainGame!!.clone()
             }
         }
     }

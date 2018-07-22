@@ -8,15 +8,13 @@ import com.prophetsofprofit.galacticrush.logic.map.Galaxy
  * The main game object
  * Handles attributes of the current game, and is serialized for networking
  */
-class Game(val players: Array<Int>, galaxySize: Int) {
+class Game(val players: Array<Int>, val galaxy: Galaxy) {
 
     /**
      * Empty constructor for serialization
      */
-    constructor() : this(arrayOf(), -1)
+    constructor() : this(arrayOf(), Galaxy(0, listOf()))
 
-    //The board or map on which this game is played
-    val galaxy = Galaxy(galaxySize, players.toList())
     //The amount of turns that have passed since the game was created
     var turnsPlayed = 0
     //The players who need to submit their changes for the drones to commence
@@ -41,6 +39,17 @@ class Game(val players: Array<Int>, galaxySize: Int) {
     }
 
     /**
+     * Makes a copy of the game object
+     */
+    fun clone(): Game {
+        val clone = Game(this.players, this.galaxy.clone())
+        clone.turnsPlayed = turnsPlayed
+        this.money.keys.forEach { clone.money[it] = this.money[it]!! }
+        this.playerColors.keys.forEach { clone.playerColors[it] = this.playerColors[it]!! }
+        return clone
+    }
+
+    /**
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
     fun collectChange(change: Change) {
@@ -58,9 +67,10 @@ class Game(val players: Array<Int>, galaxySize: Int) {
         println(this.drones.size)
         //TODO apply changes to instructions
         this.waitingOn.remove(change.ownerId)
-        if (waitingOn.isEmpty()) {
+        if (this.waitingOn.isEmpty()) {
             //this.doDroneTurn()
             this.gameChanged = true
+            this.players.mapTo(this.waitingOn) { it }
         }
     }
 
