@@ -77,6 +77,8 @@ class Game(val players: Array<Int>, val galaxy: Galaxy) {
         }
         //Complete the actions of all the drones who can do actions in the queue
         this.drones.filterNot { it.queueFinished }.forEach { it.mainAction() }
+        //Removes all of the destroyed drones
+        this.drones.filter { it.isDestroyed }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.remove(it) }
         //If all the drones are now finished, wait for players and reset drones
         if (this.drones.all { it.queueFinished }) {
             this.drones.forEach { it.endCycle() }

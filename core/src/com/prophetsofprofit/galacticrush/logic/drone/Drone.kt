@@ -5,6 +5,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import java.util.*
 
+//How the drone looks by default
 val baseDroneImage = Texture("image/drone/base.png")
 
 /**
@@ -23,7 +24,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
     val totalMemory = 10
     //A convenience getter to get how much free memory the drone has
     val memoryAvailable
-        get() = this.totalMemory - instructions.fold(0) { consumedMemory, instruction -> consumedMemory + instruction.memorySize}
+        get() = this.totalMemory - instructions.fold(0) { consumedMemory, instruction -> consumedMemory + instruction.memorySize }
     //Which instruction the drone is currently reading
     var pointer = 0
     //The planet that the drone has selected
@@ -32,6 +33,8 @@ class Drone(val ownerId: Int, var locationId: Int) {
     var selectedDrone: Drone? = null
     //Whether the drone is done completing its command queue
     var queueFinished = false
+    //Whether the drone is destroyed or not
+    var isDestroyed = false
 
     /**
      * Empty constructor for serialization
@@ -84,6 +87,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
      */
     fun takeDamage(damage: Int) {
         //TODO: handle instruction damage
+        this.isDestroyed = this.instructions.isEmpty()
     }
 
     /**
