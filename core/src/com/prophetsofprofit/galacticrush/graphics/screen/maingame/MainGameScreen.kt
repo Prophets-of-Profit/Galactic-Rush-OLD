@@ -26,7 +26,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     //A variable that stores an older game state if one exists; TODO: animate difference between mainGame and oldGameState
     var oldGameState: Game? = null
     //A convenience getter for the game because the player's game will continuously change
-    var mainGame = Game(arrayOf(), 0)
+    val mainGame: Game
         get() = this.player.game
     //The smallest (closest) zoom factor allowed
     val minZoom = 0.1f
