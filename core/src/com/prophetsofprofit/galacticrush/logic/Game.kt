@@ -26,6 +26,8 @@ class Game(val players: Array<Int>, val galaxy: Galaxy) {
         }
     //Whether the game has been changed since last send
     var gameChanged = false
+    //When the previous doDroneTurn was called
+    var prevDroneTurn = -1
     //How much money each player has; maps id to money
     val money = mutableMapOf<Int, Int>()
     //The map of player id to their color
@@ -54,29 +56,33 @@ class Game(val players: Array<Int>, val galaxy: Galaxy) {
         //TODO apply changes to instructions
         this.waitingOn.remove(change.ownerId)
         if (this.waitingOn.isEmpty()) {
-            //this.doDroneTurn()
-            this.gameChanged = true
             this.players.mapTo(this.waitingOn) { it }
             this.turnsPlayed++
+            this.gameChanged = true
         }
     }
 
     /**
      * Performs one action per drone for all drones that can perform an action; won't be callable until game is ready
      */
-    /*fun doDroneTurn() {
+    fun doDroneTurn() {
         //If waiting on players don't do anything
         if (waitingOn.isNotEmpty()) {
             return
         }
+        //If this is the first doDroneTurn call for this turn, start the cycle for each drone
+        if (this.prevDroneTurn != this.turnsPlayed) {
+            this.prevDroneTurn = this.turnsPlayed
+            this.drones.forEach { it.startCycle() }
+        }
         //Complete the actions of all the drones who can do actions in the queue
-        this.drones.filterNot { it.queueFinished }.forEach { it.completeAction() }
+        this.drones.filterNot { it.queueFinished }.forEach { it.mainAction() }
         //If all the drones are now finished, wait for players and reset drones
         if (this.drones.all { it.queueFinished }) {
+            this.drones.forEach { it.endCycle() }
             this.drones.forEach { it.resetQueue() }
             players.mapTo(waitingOn) { it }
         }
-        this.gameChanged = true
-    }*/
+    }
 
 }

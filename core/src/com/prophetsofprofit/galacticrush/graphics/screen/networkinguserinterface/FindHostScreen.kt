@@ -95,7 +95,6 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         selectableAddressesPane.width = this.uiContainer.width / 2
         selectableAddressesPane.height = this.uiContainer.height / 2
         selectableAddressesList.width = this.uiContainer.width / 2
-        selectableAddressesList.setPosition(this.uiContainer.width / 2, this.uiContainer.height / 2, Align.center)
         selectableAddressesPane.setPosition(this.uiContainer.width / 2, this.uiContainer.height / 2, Align.center)
 
         //Sets up the thread to look for local connections and update the list
