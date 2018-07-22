@@ -39,17 +39,6 @@ class Game(val players: Array<Int>, val galaxy: Galaxy) {
     }
 
     /**
-     * Makes a copy of the game object
-     */
-    fun clone(): Game {
-        val clone = Game(this.players, this.galaxy.clone())
-        clone.turnsPlayed = turnsPlayed
-        this.money.keys.forEach { clone.money[it] = this.money[it]!! }
-        this.playerColors.keys.forEach { clone.playerColors[it] = this.playerColors[it]!! }
-        return clone
-    }
-
-    /**
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
     fun collectChange(change: Change) {

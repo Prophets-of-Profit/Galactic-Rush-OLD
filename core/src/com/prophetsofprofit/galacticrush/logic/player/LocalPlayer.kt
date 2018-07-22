@@ -3,6 +3,7 @@ package com.prophetsofprofit.galacticrush.logic.player
 import com.esotericsoftware.kryonet.Connection
 import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.Networker
+import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.Change
 import com.prophetsofprofit.galacticrush.logic.Game
 
@@ -63,7 +64,7 @@ class LocalPlayer(id: Int) : Player(id) {
      * It doesn't even really need to set the game to a new game because the local game shouldn't be a different object
      */
     override fun receiveNewGameState(newGame: Game) {
-        this.game = newGame.clone()
+        this.game = kryo.copy(newGame)
     }
 
 }

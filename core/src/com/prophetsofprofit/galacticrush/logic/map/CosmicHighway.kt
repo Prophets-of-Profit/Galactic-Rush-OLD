@@ -13,11 +13,4 @@ class CosmicHighway(val p0: Planet, val p1: Planet) {
      */
     constructor() : this(Planet(), Planet())
 
-    /**
-     * Returns a copy of the highway
-     */
-    fun clone(): CosmicHighway {
-        return CosmicHighway(this.p0.clone(), this.p1.clone())
-    }
-
 }

@@ -3,6 +3,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen.loading
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
+import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
@@ -29,7 +30,7 @@ class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(
             if (it is NetworkPlayer) {
                 Networker.getServer().sendToTCP(it.connectionId, it)
             } else if (it is LocalPlayer) {
-                it.hostedGame = this.mainGame!!.clone()
+                it.hostedGame = kryo.copy(mainGame!!)
             }
         }
     }

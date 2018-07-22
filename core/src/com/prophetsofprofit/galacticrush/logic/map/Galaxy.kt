@@ -51,16 +51,6 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     }
 
     /**
-     * Makes a copy of the galaxy
-     */
-    fun clone(): Galaxy {
-        val clone = Galaxy()
-        this.planets.mapTo(clone.planets) { it.clone() }
-        this.highways.mapTo(clone.highways) { it.clone() }
-        return clone
-    }
-
-    /**
      * Generates planets
      */
     private fun generatePlanets(numPlanets: Int) {

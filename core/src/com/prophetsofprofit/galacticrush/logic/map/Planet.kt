@@ -50,15 +50,4 @@ class Planet(var x: Float,
     //All the facilities on the planet
     val facilities = mutableListOf<Facility>()
 
-    /**
-     * Makes a copy of the planet
-     */
-    fun clone(): Planet {
-        val clone = Planet(this.x, this.y, this.radius, this.id, this.color)
-        this.attributes.keys.forEach { clone.attributes[it] = this.attributes[it]!! }
-        this.drones.mapTo(clone.drones) { it }
-        this.facilities.mapTo(clone.facilities) { it }
-        return clone
-    }
-
 }
