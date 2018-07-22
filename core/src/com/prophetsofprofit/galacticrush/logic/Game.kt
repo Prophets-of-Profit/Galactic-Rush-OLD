@@ -58,19 +58,17 @@ class Game(val players: Array<Int>, val galaxy: Galaxy) {
         }
         //TODO: verify change integrity
         //Add all the changes into the game
-        println(this.drones.size)
-        println(change.changedDrones)
         for (changedDrone in change.changedDrones) {
             this.drones.filter { it.ownerId == changedDrone.ownerId && it.creationTime == changedDrone.creationTime }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.remove(it) }
             changedDrone.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.add(changedDrone)
         }
-        println(this.drones.size)
         //TODO apply changes to instructions
         this.waitingOn.remove(change.ownerId)
         if (this.waitingOn.isEmpty()) {
             //this.doDroneTurn()
             this.gameChanged = true
             this.players.mapTo(this.waitingOn) { it }
+            this.turnsPlayed++
         }
     }
 
