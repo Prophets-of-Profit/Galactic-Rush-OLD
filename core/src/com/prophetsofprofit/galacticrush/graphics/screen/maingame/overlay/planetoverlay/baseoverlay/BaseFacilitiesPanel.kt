@@ -43,7 +43,6 @@ class BaseFacilitiesPanel(val gameScreen: MainGameScreen, val labelWidth: Float,
      */
     fun update() {
         this.facilitiesList.setItems(Array(this.gameScreen.selectedPlanet!!.facilities.map { it.toString() }.toTypedArray()))
-        println(this.gameScreen.selectedPlanet!!.facilities.map { it.toString() })
     }
 
 }

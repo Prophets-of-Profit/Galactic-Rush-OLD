@@ -1,9 +1,9 @@
 package com.prophetsofprofit.galacticrush.logic.facility
 
 /**
- * Allows the user to construct new drones here!
+ * Allows the user to modify drone instructions here!
  */
-class ConstructionFacility(ownerId: Int) : Facility(ownerId) {
+class ProgrammingFacility(ownerId: Int) : Facility(ownerId) {
 
     /**
      * Empty constructor for serialization
@@ -14,6 +14,6 @@ class ConstructionFacility(ownerId: Int) : Facility(ownerId) {
      * Displays the type of facility as a string
      */
     override fun toString(): String {
-        return "Construction Facility"
+        return "Programming Facility"
     }
 }

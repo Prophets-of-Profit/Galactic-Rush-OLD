@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.facility.ConstructionFacility
 import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
+import com.prophetsofprofit.galacticrush.logic.facility.ProgrammingFacility
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -44,6 +45,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
             planetChoice = pickablePlanets.shuffled()[0]
             planetChoice.facilities.add(HomeBase(playerIDs[i]))
             planetChoice.facilities.add(ConstructionFacility(playerIDs[i]))
+            planetChoice.facilities.add(ProgrammingFacility(playerIDs[i]))
             pickablePlanets.remove(planetChoice)
         }
     }
