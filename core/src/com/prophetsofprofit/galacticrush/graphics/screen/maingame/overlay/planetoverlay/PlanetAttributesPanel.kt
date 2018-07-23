@@ -14,18 +14,18 @@ import ktx.scene2d.Scene2DSkin
 class PlanetAttributesPanel(val gameScreen: MainGameScreen, val labelWidth: Float, val labelHeight: Float): com.badlogic.gdx.scenes.scene2d.Group() {
 
     //The label for the currently selected planet
-    val planetLabel = com.badlogic.gdx.scenes.scene2d.ui.Label("Planet Stats", Scene2DSkin.defaultSkin, "ui")
+    val planetLabel = Label("Planet Stats", Scene2DSkin.defaultSkin, "ui")
     //The icons and labels for planet information
-    val massIcon = com.badlogic.gdx.scenes.scene2d.ui.ImageButton(Scene2DSkin.defaultSkin, "mass")
-    val temperatureIcon = com.badlogic.gdx.scenes.scene2d.ui.ImageButton(Scene2DSkin.defaultSkin, "temp")
-    val atmosphereIcon = com.badlogic.gdx.scenes.scene2d.ui.ImageButton(Scene2DSkin.defaultSkin, "atm")
-    val humidityIcon = com.badlogic.gdx.scenes.scene2d.ui.ImageButton(Scene2DSkin.defaultSkin, "humid")
-    val solidityIcon = com.badlogic.gdx.scenes.scene2d.ui.ImageButton(Scene2DSkin.defaultSkin, "solid")
-    val massLabel = com.badlogic.gdx.scenes.scene2d.ui.Label("", Scene2DSkin.defaultSkin, "small")
-    val temperatureLabel = com.badlogic.gdx.scenes.scene2d.ui.Label("", Scene2DSkin.defaultSkin, "small")
-    val atmosphereLabel = com.badlogic.gdx.scenes.scene2d.ui.Label("", Scene2DSkin.defaultSkin, "small")
-    val humidityLabel = com.badlogic.gdx.scenes.scene2d.ui.Label("", Scene2DSkin.defaultSkin, "small")
-    val solidityLabel = com.badlogic.gdx.scenes.scene2d.ui.Label("", Scene2DSkin.defaultSkin, "small")
+    val massIcon = ImageButton(Scene2DSkin.defaultSkin, "mass")
+    val temperatureIcon = ImageButton(Scene2DSkin.defaultSkin, "temp")
+    val atmosphereIcon = ImageButton(Scene2DSkin.defaultSkin, "atm")
+    val humidityIcon = ImageButton(Scene2DSkin.defaultSkin, "humid")
+    val solidityIcon = ImageButton(Scene2DSkin.defaultSkin, "solid")
+    val massLabel = Label("", Scene2DSkin.defaultSkin, "small")
+    val temperatureLabel = Label("", Scene2DSkin.defaultSkin, "small")
+    val atmosphereLabel = Label("", Scene2DSkin.defaultSkin, "small")
+    val humidityLabel = Label("", Scene2DSkin.defaultSkin, "small")
+    val solidityLabel = Label("", Scene2DSkin.defaultSkin, "small")
 
     init {
         //Tweak the label position
@@ -66,11 +66,11 @@ class PlanetAttributesPanel(val gameScreen: MainGameScreen, val labelWidth: Floa
      * Uses the game screen's selected planet
      */
     fun update() {
-        this.massLabel.setText(com.prophetsofprofit.galacticrush.logic.map.Attribute.MASS.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.MASS]!!))
-        this.temperatureLabel.setText(com.prophetsofprofit.galacticrush.logic.map.Attribute.TEMPERATURE.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.TEMPERATURE]!!))
-        this.atmosphereLabel.setText(com.prophetsofprofit.galacticrush.logic.map.Attribute.ATMOSPHERE.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.ATMOSPHERE]!!))
-        this.humidityLabel.setText(com.prophetsofprofit.galacticrush.logic.map.Attribute.WATER.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.WATER]!!))
-        this.solidityLabel.setText(com.prophetsofprofit.galacticrush.logic.map.Attribute.SOLIDITY.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.SOLIDITY]!!))
+        this.massLabel.setText(Attribute.MASS.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.MASS]!!))
+        this.temperatureLabel.setText(Attribute.TEMPERATURE.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.TEMPERATURE]!!))
+        this.atmosphereLabel.setText(Attribute.ATMOSPHERE.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.ATMOSPHERE]!!))
+        this.humidityLabel.setText(Attribute.WATER.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.WATER]!!))
+        this.solidityLabel.setText(Attribute.SOLIDITY.stringValue(this.gameScreen.selectedPlanet!!.attributes[Attribute.SOLIDITY]!!))
     }
 
 }
