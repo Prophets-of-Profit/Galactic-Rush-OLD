@@ -8,10 +8,10 @@ import ktx.scene2d.Scene2DSkin
 /**
  * Handles all actors that appear when a planet with a base on it is selected
  */
-class BaseOverlay(val gameScreen: MainGameScreen): Group() {
+class BaseOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group() {
 
     //Shows all facilities on the planet
-    val facilitiesPanel = BaseFacilitiesPanel(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 6, 2 * this.gameScreen.game.camera.viewportHeight / 3)
+    val facilitiesPanel = BaseFacilitiesPanel(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 6, 2 * this.gameScreen.game.camera.viewportHeight / 3, this.yOffset)
     //Handles all the buttons for facility actions
     val actionsPanel = BaseActionsPanel(this.gameScreen,
             this.facilitiesPanel.panelLabel.x,

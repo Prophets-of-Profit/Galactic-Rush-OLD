@@ -7,14 +7,14 @@ import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planet
 /**
  * Manages all actors that appear when a planet is selected
  */
-class PlanetOverlay(val gameScreen: MainGameScreen): Group() {
+class PlanetOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group() {
 
     //Displays a scrollable list of all the drones on the planet
-    val dronesPanel = PlanetDronesPanel(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 6, this.gameScreen.game.camera.viewportHeight / 3)
+    val dronesPanel = PlanetDronesPanel(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 6, this.gameScreen.game.camera.viewportHeight / 3, this.yOffset)
     //Display the planet's attributes
-    val attributesPanel = PlanetAttributesPanel(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 6, this.gameScreen.game.camera.viewportHeight / 3)
+    val attributesPanel = PlanetAttributesPanel(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 6, this.gameScreen.game.camera.viewportHeight / 3, this.yOffset)
     //Display the base's information
-    val baseOverlay = BaseOverlay(this.gameScreen)
+    val baseOverlay = BaseOverlay(this.gameScreen, this.yOffset)
 
     /**
      * Initializes the UI elements

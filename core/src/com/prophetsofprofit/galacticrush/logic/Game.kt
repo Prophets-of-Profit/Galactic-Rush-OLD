@@ -29,7 +29,7 @@ class Game(val players: Array<Int>, val galaxy: Galaxy) {
     //When the previous doDroneTurn was called
     var prevDroneTurn = -1
     //How much money each player has; maps id to money
-    val money = mutableMapOf<Int, Int>()
+    val money = this.players.map { it to 0 }.toMap().toMutableMap()
     //The map of player id to their color
     val playerColors = mutableMapOf<Int, Color>()
 

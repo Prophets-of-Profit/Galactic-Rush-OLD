@@ -11,7 +11,7 @@ import ktx.scene2d.Scene2DSkin
 /**
  * The actor group that handles displaying drones that are on a selected planet
  */
-class BaseFacilitiesPanel(val gameScreen: MainGameScreen, val labelWidth: Float, val labelHeight: Float): Group() {
+class BaseFacilitiesPanel(val gameScreen: MainGameScreen, val labelWidth: Float, val labelHeight: Float, val yOffset: Float): Group() {
 
     val panelLabel = Label("Facilities", Scene2DSkin.defaultSkin, "ui")
     //The list where each element is the string representation of the drone on the selected planet
@@ -25,12 +25,12 @@ class BaseFacilitiesPanel(val gameScreen: MainGameScreen, val labelWidth: Float,
     init {
         this.panelLabel.width = this.labelWidth
         this.panelLabel.setPosition(0f,
-                this.gameScreen.game.camera.viewportHeight / 3)
+                this.gameScreen.game.camera.viewportHeight / 3 - this.yOffset)
         this.panelLabel.setAlignment(Align.top)
         this.facilityListContainer.width = this.labelWidth
         this.facilityListContainer.height = this.labelHeight - this.panelLabel.height
         this.facilityListContainer.setPosition(0f,
-                this.gameScreen.game.camera.viewportHeight / 3)
+                this.gameScreen.game.camera.viewportHeight / 3 - this.yOffset)
         this.facilitiesList.width = this.labelWidth
         this.facilitiesList.setAlignment(Align.center)
         this.panelLabel.height = this.labelHeight

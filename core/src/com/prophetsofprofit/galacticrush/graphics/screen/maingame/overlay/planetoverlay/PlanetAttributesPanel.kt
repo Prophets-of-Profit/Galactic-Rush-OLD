@@ -11,7 +11,7 @@ import ktx.scene2d.Scene2DSkin
 /**
  * The actor group which displays planet attributes (such as temperature, mass, etc.) in a label
  */
-class PlanetAttributesPanel(val gameScreen: MainGameScreen, val labelWidth: Float, val labelHeight: Float): com.badlogic.gdx.scenes.scene2d.Group() {
+class PlanetAttributesPanel(val gameScreen: MainGameScreen, val labelWidth: Float, val labelHeight: Float, val yOffset: Float): com.badlogic.gdx.scenes.scene2d.Group() {
 
     //The label for the currently selected planet
     val planetLabel = Label("Planet Stats", Scene2DSkin.defaultSkin, "ui")
@@ -32,7 +32,7 @@ class PlanetAttributesPanel(val gameScreen: MainGameScreen, val labelWidth: Floa
         this.planetLabel.width = this.labelWidth
         this.planetLabel.height = this.labelHeight
         this.planetLabel.setPosition(this.gameScreen.game.camera.viewportWidth - this.labelWidth ,
-                this.gameScreen.game.camera.viewportHeight - this.planetLabel.height)
+                this.gameScreen.game.camera.viewportHeight - this.planetLabel.height - this.yOffset)
         this.planetLabel.setAlignment(com.badlogic.gdx.utils.Align.top)
 
         //Set the position of all the labels

@@ -93,6 +93,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.drawSelectionArrows()
         this.drawDrones()
         this.game.batch.end()
+        //Updates game information
+        this.overlay.overlayInformation.update()
     }
 
     /**

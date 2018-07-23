@@ -18,28 +18,16 @@ import ktx.scene2d.Scene2DSkin
  */
 class Overlay(val gameScreen: MainGameScreen): Group() {
 
-    //The button pressed to submit a player's turn
-    val endTurnButton = TextButton("Submit", Scene2DSkin.defaultSkin)
-    //The button which brings up the main game menu
-    val gameMenuButton = TextButton("Game Menu", Scene2DSkin.defaultSkin)
+    //The actor group that handles displaying the overlay's possible actions
+    val overlayMenu = OverlayMenu(this.gameScreen)
+    //The actor group that handles displaying the overlay information
+    val overlayInformation = OverlayInformation(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 4, this.gameScreen.game.camera.viewportHeight / 16)
     //The overlay that comes up when planets are selected
-    val planetOverlay = PlanetOverlay(gameScreen)
+    val planetOverlay = PlanetOverlay(gameScreen, this.gameScreen.game.camera.viewportHeight / 16)
 
     init {
-        this.endTurnButton.setPosition(this.gameScreen.game.camera.viewportWidth - this.endTurnButton.width, 0f)
-        this.gameMenuButton.setPosition(this.gameScreen.game.camera.viewportWidth - this.endTurnButton.width, this.endTurnButton.height)
-        this.endTurnButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                gameScreen.submitConfirmation.isVisible = true
-            }
-        })
-        this.gameMenuButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                gameScreen.gameMenu.isVisible = true
-            }
-        })
-        this.addActor(this.endTurnButton)
-        this.addActor(this.gameMenuButton)
+        this.addActor(this.overlayInformation)
+        this.addActor(this.overlayMenu)
         this.addActor(planetOverlay)
     }
 
