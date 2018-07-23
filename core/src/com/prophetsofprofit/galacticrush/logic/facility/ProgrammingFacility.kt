@@ -3,7 +3,7 @@ package com.prophetsofprofit.galacticrush.logic.facility
 /**
  * Allows the user to modify drone instructions here!
  */
-class ProgrammingFacility(ownerId: Int, locationId: Int) : Facility(ownerId, 20) {
+class ProgrammingFacility(ownerId: Int, locationId: Int) : Facility(ownerId, locationId, 20) {
 
     /**
      * Empty constructor for serialization

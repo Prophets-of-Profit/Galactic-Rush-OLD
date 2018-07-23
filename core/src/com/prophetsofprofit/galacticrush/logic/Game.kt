@@ -79,7 +79,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
      */
     fun doDroneTurn() {
         //If waiting on players don't do anything
-        if (this.waitingOn.isNotEmpty()) {
+        if (this.waitingOn.isNotEmpty() || this.players.size <= 1) {
             return
         }
         //If this is the first doDroneTurn call for this turn, start the cycle for each drone
