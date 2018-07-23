@@ -2,13 +2,15 @@ package com.prophetsofprofit.galacticrush.logic
 
 import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.facility.Facility
+import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 
 /**
  * The main game object
  * Handles attributes of the current game, and is serialized for networking
  */
-class Game(val players: Array<Int>, val galaxy: Galaxy) {
+class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
 
     /**
      * Empty constructor for serialization
@@ -17,13 +19,23 @@ class Game(val players: Array<Int>, val galaxy: Galaxy) {
 
     //The amount of turns that have passed since the game was created
     var turnsPlayed = 0
-    //The players who need to submit their changes for the drones to commence
-    val waitingOn = this.players.toMutableList()
     //The drones that currently exist in the game; should be ordered in order of creation
     val drones: Array<Drone>
         get() {
-            return this.galaxy.planets.fold(mutableListOf<Drone>()) { list, currentPlanet -> list.addAll(currentPlanet.drones); list }.toTypedArray()
+            return this.galaxy.planets.fold(mutableListOf<Drone>()) { list, currentPlanet -> list.addAll(currentPlanet.drones); list }.sortedBy { it.creationTime }.toTypedArray()
         }
+    //The facilities that currently exist in the game; ordered arbitrarily
+    val facilities: Array<Facility>
+        get() {
+            return this.galaxy.planets.fold(mutableListOf<Facility>()) { list, currentPlanet -> list.addAll(currentPlanet.facilities); list }.toTypedArray()
+        }
+    //The players that are still in the game
+    val players: Array<Int>
+        get() {
+            return this.facilities.filter { it is HomeBase }.map { it.ownerId }.toTypedArray()
+        }
+    //The players who need to submit their changes for the drones to commence
+    val waitingOn = this.players.toMutableList()
     //Whether the game has been changed since last send
     var gameChanged = false
     //When the previous doDroneTurn was called
@@ -67,7 +79,7 @@ class Game(val players: Array<Int>, val galaxy: Galaxy) {
      */
     fun doDroneTurn() {
         //If waiting on players don't do anything
-        if (waitingOn.isNotEmpty()) {
+        if (this.waitingOn.isNotEmpty()) {
             return
         }
         //If this is the first doDroneTurn call for this turn, start the cycle for each drone
@@ -79,11 +91,13 @@ class Game(val players: Array<Int>, val galaxy: Galaxy) {
         this.drones.filterNot { it.queueFinished }.forEach { it.mainAction() }
         //Removes all of the destroyed drones
         this.drones.filter { it.isDestroyed }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.remove(it) }
+        //Remove all of the destroyed facilites
+        this.facilities.filter { it.health <= 0 }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.facilities.remove(it) }
         //If all the drones are now finished, wait for players and reset drones
         if (this.drones.all { it.queueFinished }) {
             this.drones.forEach { it.endCycle() }
             this.drones.forEach { it.resetQueue() }
-            players.mapTo(waitingOn) { it }
+            this.players.mapTo(this.waitingOn) { it }
         }
     }
 
