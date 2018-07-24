@@ -1,7 +1,7 @@
-package com.prophetsofprofit.galacticrush.logic.drone;
+package com.prophetsofprofit.galacticrush.logic.drone
 
 import com.badlogic.gdx.graphics.Texture
-import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import java.util.*
 
@@ -19,12 +19,12 @@ class Drone(val ownerId: Int, var locationId: Int) {
     //When the drone was initialized: the game assumes that this along with ownerId are unique
     val creationTime = Date()
     //The instructions the drone currently has
-    val instructions = mutableListOf<Instruction>()
+    val instructions = mutableListOf<InstructionInstance>()
     //How much memory the drone has
     val totalMemory = 10
     //A convenience getter to get how much free memory the drone has
     val memoryAvailable
-        get() = this.totalMemory - instructions.fold(0) { consumedMemory, instruction -> consumedMemory + instruction.memorySize }
+        get() = this.totalMemory - instructions.fold(0) { consumedMemory, instruction -> consumedMemory + instruction.baseInstruction.memorySize }
     //Which instruction the drone is currently reading
     var pointer = 0
     //The planet that the drone has selected
@@ -45,14 +45,14 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Calls startCycle for all instructions in the queue
      */
     fun startCycle() {
-        this.instructions.forEach { it.startCycleAction(this) }
+        this.instructions.forEach { it.baseInstruction.startCycleAction(this) }
     }
 
     /**
      * Calls mainAction for the drone's current instruction and then increments its pointer
      */
     fun mainAction() {
-        this.instructions[this.pointer].mainAction(this)
+        this.instructions[this.pointer].baseInstruction.mainAction(this)
         this.advancePointer(1)
     }
 
@@ -60,7 +60,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Calls endCyclye for all instructions in the queue
      */
     fun endCycle() {
-        this.instructions.forEach { it.endCylcleAction(this) }
+        this.instructions.forEach { it.baseInstruction.endCylcleAction(this) }
     }
 
     /**
@@ -86,7 +86,11 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Attempts to distribute damage among instructions
      */
     fun takeDamage(damage: Int) {
-        //TODO: handle instruction damage
+        val damageToAll = damage / this.instructions.size
+        val numToReceieveExtra = damage % this.instructions.size
+        this.instructions.forEach { it.health -= damageToAll }
+        this.instructions.subList(0, numToReceieveExtra).forEach { it.health-- }
+        this.instructions.removeAll { it.health <= 0 }
         this.isDestroyed = this.instructions.isEmpty()
     }
 

@@ -27,3 +27,10 @@ enum class Instruction(
 ) {
 
 }
+
+/**
+ * A class that is an instruction but with mutable properties
+ */
+class InstructionInstance(val baseInstruction: Instruction) {
+    var health = this.baseInstruction.health
+}
