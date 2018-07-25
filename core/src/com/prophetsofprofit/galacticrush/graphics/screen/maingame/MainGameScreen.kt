@@ -57,9 +57,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(this.quitConfirmation)
         this.uiContainer.addActor(this.submitConfirmation)
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
-        val homeBaseLocation = this.mainGame.galaxy.planets.first { it.facilities.firstOrNull { it is HomeBase && it.ownerId == this.player.id } != null }
-        this.game.camera.translate(homeBaseLocation.x * this.game.camera.viewportWidth - this.game.camera.viewportWidth / 2, homeBaseLocation.y * this.game.camera.viewportHeight - this.game.camera.viewportHeight / 2)
-        this.game.camera.zoom = 0.5f
+        this.selectPlanet(this.mainGame.galaxy.planets.first { it.facilities.firstOrNull { it is HomeBase && it.ownerId == this.player.id } != null })
     }
 
     /**
@@ -147,6 +145,15 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                     planet.x * this.game.camera.viewportWidth + this.font.spaceWidth / 2,
                     planet.y * this.game.camera.viewportHeight + this.font.xHeight)
         }
+    }
+
+    /**
+     * Selects a planet and moves the camera to it and zooms in a little
+     */
+    fun selectPlanet(p: Planet) {
+        this.selectedPlanet = p
+        this.game.camera.translate(p.x * this.game.camera.viewportWidth - this.game.camera.viewportWidth / 2, p.y * this.game.camera.viewportHeight - this.game.camera.viewportHeight / 2)
+        this.game.camera.zoom = 0.5f
     }
 
     /**
