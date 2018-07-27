@@ -160,7 +160,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Panning moves the camera laterally to adjust what is being seen
      */
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
-        val mouseLocation = this.game.windowToCamera(x.roundToInt(), y.roundToInt(), this.uiContainer.camera)
+        val mouseLocation = this.game.windowToCamera(x.roundToInt(), y.roundToInt(), this.uiCamera)
         if (this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false) != null) {
             return false
         }
@@ -197,7 +197,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Will only consume the tap event if a planet is selected
      */
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
-        val mouseLocation = this.game.windowToCamera(x.roundToInt(), y.roundToInt(), this.uiContainer.camera)
+        val mouseLocation = this.game.windowToCamera(x.roundToInt(), y.roundToInt(), this.uiCamera)
         if (this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false) != null) {
             return false
         }

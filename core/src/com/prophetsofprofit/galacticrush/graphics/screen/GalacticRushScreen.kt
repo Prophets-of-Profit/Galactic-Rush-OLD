@@ -21,6 +21,9 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
 
     //The stage that contains all of the screen's UI elements
     protected val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.game.camera.viewportWidth, this.game.camera.viewportHeight))
+    //Gets the camera for the ui components
+    val uiCamera
+        get() = this.uiContainer.camera
     //The AudioManager that is the music for the screen
     protected val audioManager = AudioManager(musicPaths)
     //The options menu that can be activated and deactivated for each screen
