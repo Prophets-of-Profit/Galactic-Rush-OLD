@@ -6,6 +6,8 @@ import com.esotericsoftware.kryonet.Server
 import com.prophetsofprofit.galacticrush.logic.Change
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.facility.ConstructionFacility
 import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
 import com.prophetsofprofit.galacticrush.logic.facility.ProgrammingFacility
@@ -68,6 +70,8 @@ object Networker {
         kryo.register(Galaxy::class.java)
         kryo.register(Game::class.java)
         kryo.register(HomeBase::class.java)
+        kryo.register(Instruction::class.java)
+        kryo.register(InstructionInstance::class.java)
         kryo.register(LinkedHashMap::class.java)
         kryo.register(LocalPlayer::class.java)
         kryo.register(NetworkPlayer::class.java)
