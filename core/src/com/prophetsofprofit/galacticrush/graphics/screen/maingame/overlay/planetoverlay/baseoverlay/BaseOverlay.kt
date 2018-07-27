@@ -1,9 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planetoverlay.baseoverlay
 
 import com.badlogic.gdx.scenes.scene2d.Group
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
-import ktx.scene2d.Scene2DSkin
 
 /**
  * Handles all actors that appear when a planet with a base on it is selected
@@ -13,11 +11,11 @@ class BaseOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group() {
     //Shows all facilities on the planet
     val facilitiesPanel = BaseFacilitiesPanel(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 6, 2 * this.gameScreen.game.camera.viewportHeight / 3, this.yOffset)
     //Handles all the buttons for facility actions
-    val actionsPanel = BaseActionsPanel(this.gameScreen,
-            this.facilitiesPanel.panelLabel.x,
-            this.facilitiesPanel.panelLabel.y,
-            this.facilitiesPanel.labelWidth,
-            this.facilitiesPanel.labelHeight / 3
+    val actionsPanel = BaseActionButtons(this.gameScreen,
+            this.facilitiesPanel.baseLabel.x,
+            this.facilitiesPanel.baseLabel.y,
+            this.facilitiesPanel.baseLabel.width,
+            this.facilitiesPanel.baseLabel.height / 3
             )
 
     /**

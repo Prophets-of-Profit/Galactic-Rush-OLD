@@ -21,7 +21,7 @@ class Overlay(val gameScreen: MainGameScreen): Group() {
     //The actor group that handles displaying the overlay's possible actions
     val overlayMenu = OverlayMenu(this.gameScreen)
     //The actor group that handles displaying the overlay information
-    val overlayInformation = OverlayInformation(this.gameScreen, this.gameScreen.game.camera.viewportWidth / 4, this.gameScreen.game.camera.viewportHeight / 16)
+    val overlayInformation = OverlayInformation(this.gameScreen, this.gameScreen.game.camera.viewportWidth, this.gameScreen.game.camera.viewportHeight / 16)
     //The overlay that comes up when planets are selected
     val planetOverlay = PlanetOverlay(gameScreen, this.gameScreen.game.camera.viewportHeight / 16)
 

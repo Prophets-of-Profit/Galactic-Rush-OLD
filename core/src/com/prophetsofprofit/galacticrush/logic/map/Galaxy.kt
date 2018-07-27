@@ -44,8 +44,8 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         for (i in 0 until playerIDs.size) {
             planetChoice = pickablePlanets.shuffled()[0]
             planetChoice.facilities.add(HomeBase(playerIDs[i], planetChoice.id))
-            //planetChoice.facilities.add(ConstructionFacility(playerIDs[i], planetChoice.id))
-            //planetChoice.facilities.add(ProgrammingFacility(playerIDs[i], planetChoice.id))
+            planetChoice.facilities.add(ConstructionFacility(playerIDs[i], planetChoice.id))
+            planetChoice.facilities.add(ProgrammingFacility(playerIDs[i], planetChoice.id))
             pickablePlanets.remove(planetChoice)
         }
     }

@@ -13,7 +13,7 @@ import ktx.scene2d.Scene2DSkin
 /**
  * A container for a group of buttons that control what the player can do at the
  */
-class BaseActionsPanel(val gameScreen: MainGameScreen, val bottomLeftX: Float, val bottomLeftY: Float, val labelWidth: Float, val labelHeight: Float): Group() {
+class BaseActionButtons(val gameScreen: MainGameScreen, val bottomLeftX: Float, val bottomLeftY: Float, val labelWidth: Float, val labelHeight: Float): Group() {
 
     //The button which creates a drone on the facility, provided there is a ConstructionFacility on the selected planet
     val createDroneButton = TextButton("Create Drone", Scene2DSkin.defaultSkin)

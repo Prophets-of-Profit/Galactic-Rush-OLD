@@ -36,10 +36,12 @@ class OverlayInformation(val gameScreen: MainGameScreen, val labelWidth: Float, 
         this.turnsLabel.height = this.labelHeight
         this.turnsLabel.setPosition(this.gameScreen.game.camera.viewportWidth - this.turnsLabel.width,
                                     this.gameScreen.game.camera.viewportHeight - this.turnsLabel.height)
+        this.turnsLabel.setAlignment(Align.center)
         this.moneyLabel.width = this.labelWidth / 4
         this.moneyLabel.height = this.labelHeight
         this.moneyLabel.setPosition(this.gameScreen.game.camera.viewportWidth - this.turnsLabel.width - this.moneyLabel.width,
                 this.gameScreen.game.camera.viewportHeight - this.moneyLabel.height)
+        this.moneyLabel.setAlignment(Align.center)
         this.winnerLabel.width = this.gameScreen.game.camera.viewportWidth
         this.winnerLabel.height = this.gameScreen.game.camera.viewportHeight
         this.winnerLabel.setPosition(0f, 0f)
