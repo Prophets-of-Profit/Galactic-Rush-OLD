@@ -2,7 +2,6 @@ package com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.plane
 
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener
 import com.prophetsofprofit.galacticrush.logic.drone.Drone

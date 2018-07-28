@@ -1,8 +1,6 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.maingame
 
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 
 /**
  * Handles panning the selected screen from place to place over a time

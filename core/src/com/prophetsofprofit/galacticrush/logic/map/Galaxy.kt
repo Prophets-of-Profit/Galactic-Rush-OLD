@@ -2,7 +2,6 @@ package com.prophetsofprofit.galacticrush.logic.map
 
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Vector2
-import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.facility.ConstructionFacility
 import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
 import com.prophetsofprofit.galacticrush.logic.facility.ProgrammingFacility

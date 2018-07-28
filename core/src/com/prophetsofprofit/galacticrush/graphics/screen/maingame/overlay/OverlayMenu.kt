@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planetoverlay.PlanetOverlay
 import ktx.scene2d.Scene2DSkin
 
 /**

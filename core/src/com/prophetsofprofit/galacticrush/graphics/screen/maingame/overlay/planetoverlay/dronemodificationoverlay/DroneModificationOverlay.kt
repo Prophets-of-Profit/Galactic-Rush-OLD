@@ -2,7 +2,6 @@ package com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.plane
 
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
-import com.prophetsofprofit.galacticrush.logic.drone.Drone
 
 /**
  * Handles all actions of drone modification using draggable modal dialogs
