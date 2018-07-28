@@ -41,6 +41,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val overlay = Overlay(this)
     //The mechanism to handle simultaneous animations
     val movementHandler = MovementHandler()
+    //The mechanism to handle panning the screen over a time
+    val panHandler = PanHandler(this.game.camera)
     //The game menu for handling options and quitting, etc
     val gameMenu = PauseMenu(this)
     //The confirmation menu for quitting
@@ -98,6 +100,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         //Updates game information and animations
         this.overlay.update()
         this.movementHandler.update(delta)
+        this.panHandler.update(delta)
     }
 
     /**
@@ -157,8 +160,10 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      */
     fun selectPlanet(p: Planet) {
         this.selectedPlanet = p
-        this.game.camera.translate(p.x * this.game.camera.viewportWidth - this.game.camera.viewportWidth / 2, p.y * this.game.camera.viewportHeight - this.game.camera.viewportHeight / 2)
-        this.game.camera.zoom = 0.5f
+        this.panHandler.add(p.x * this.game.camera.viewportWidth - this.game.camera.position.x,
+                p.y * this.game.camera.viewportHeight - this.game.camera.position.y,
+                0.5f - this.game.camera.zoom,
+                0.1f)
     }
 
     /**
@@ -206,10 +211,12 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         if (this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false) != null) {
             return false
         }
+        //Leaving this here for convenience, in case we want to disable centering on planet when selecting it
         this.selectedPlanet = this.mainGame.galaxy.planets.firstOrNull {
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
+        if (this.selectedPlanet != null) this.selectPlanet(this.selectedPlanet!!)
         return this.selectedPlanet != null
     }
 
