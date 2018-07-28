@@ -91,17 +91,17 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         //If this is the first doDroneTurn call for this turn, start the cycle for each drone
         if (this.prevDroneTurn != this.turnsPlayed) {
             this.prevDroneTurn = this.turnsPlayed
-            this.drones.forEach { it.startCycle() }
+            this.drones.forEach { it.startCycle(this.galaxy) }
         }
         //Complete the actions of all the drones who can do actions in the queue
-        this.drones.filterNot { it.queueFinished }.forEach { it.mainAction(); changedDrones.add(kryo.copy(it)) }
+        this.drones.filterNot { it.queueFinished }.forEach { it.mainAction(this.galaxy); changedDrones.add(kryo.copy(it)) }
         //Removes all of the destroyed drones
         this.drones.filter { it.isDestroyed }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.remove(it) }
         //Remove all of the destroyed facilities
         this.facilities.filter { it.health <= 0 }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.facilities.remove(it) }
         //If all the drones are now finished, wait for players and reset drones
         if (this.drones.all { it.queueFinished }) {
-            this.drones.forEach { it.endCycle() }
+            this.drones.forEach { it.endCycle(this.galaxy) }
             this.drones.forEach { it.resetQueue() }
             this.players.mapTo(this.waitingOn) { it }
         }

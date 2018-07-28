@@ -73,7 +73,9 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         //Render highways as white lines
         this.game.shapeRenderer.color = Color.WHITE
         for (highway in this.mainGame.galaxy.highways) {
-            this.game.shapeRenderer.line(highway.p0.x * this.game.camera.viewportWidth, highway.p0.y * this.game.camera.viewportHeight, highway.p1.x * this.game.camera.viewportWidth, highway.p1.y * this.game.camera.viewportHeight)
+            val planet0 = this.mainGame.galaxy.getPlanetWithId(highway.p0)!!
+            val planet1 = this.mainGame.galaxy.getPlanetWithId(highway.p1)!!
+            this.game.shapeRenderer.line(planet0.x * this.game.camera.viewportWidth, planet0.y * this.game.camera.viewportHeight, planet1.x * this.game.camera.viewportWidth, planet1.y * this.game.camera.viewportHeight)
         }
         this.game.shapeRenderer.end()
         //Render planets as colored circles

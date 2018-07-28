@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.logic.drone
 
 import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
+import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import java.util.*
 
@@ -46,23 +47,23 @@ class Drone(val ownerId: Int, var locationId: Int) {
     /**
      * Calls startCycle for all instructions in the queue
      */
-    fun startCycle() {
-        this.instructions.forEach { it.baseInstruction.startCycleAction(this) }
+    fun startCycle(galaxy: Galaxy) {
+        this.instructions.forEach { it.baseInstruction.startCycleAction(this, galaxy) }
     }
 
     /**
      * Calls mainAction for the drone's current instruction and then increments its pointer
      */
-    fun mainAction() {
-        this.instructions[this.pointer].baseInstruction.mainAction(this)
+    fun mainAction(galaxy: Galaxy) {
+        this.instructions[this.pointer].baseInstruction.mainAction(this, galaxy)
         this.advancePointer(1)
     }
 
     /**
      * Calls endCyclye for all instructions in the queue
      */
-    fun endCycle() {
-        this.instructions.forEach { it.baseInstruction.endCylcleAction(this) }
+    fun endCycle(galaxy: Galaxy) {
+        this.instructions.forEach { it.baseInstruction.endCycleAction(this, galaxy) }
     }
 
     /**
@@ -87,12 +88,12 @@ class Drone(val ownerId: Int, var locationId: Int) {
     /**
      * Attempts to distribute damage among instructions
      */
-    fun takeDamage(damage: Int) {
+    fun takeDamage(damage: Int, galaxy: Galaxy) {
         val damageToAll = damage / this.instructions.size
         val numToReceieveExtra = damage % this.instructions.size
         this.instructions.forEach { it.health -= damageToAll }
         this.instructions.subList(0, numToReceieveExtra).forEach { it.health-- }
-        this.instructions.removeAll { it.health <= 0 }
+        this.instructions.filter { it.health <= 0 }.forEach { it.baseInstruction.removeAction(this, galaxy); this.instructions.remove(it) }
         this.isDestroyed = this.instructions.isEmpty()
     }
 

@@ -78,18 +78,28 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
                     continue
                 }
                 //If the current planets can have a path that doesn't intersect an existing highway, or already is an existing highway, or intersect a planet, make a highway
-                if (!highways.any {
-                            doSegmentsIntersect(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) || //Highways crosses existing highway
-                                    (it.p0 == p0 && it.p1 == p1) || (it.p0 == p1 && it.p1 == p0) //Highway already exists but with p0 and p1 switched around
+                if (!highways.any { it ->
+                    val planet0 = this.getPlanetWithId(it.p0)!!
+                    val planet1 = this.getPlanetWithId(it.p1)!!
+                            doSegmentsIntersect(p0.x, p0.y, p1.x, p1.y, planet0.x, planet0.y, planet1.x, planet1.y) || //Highways crosses existing highway
+                                    (planet0 == p0 && planet1 == p1) || (planet0 == p1 && planet1 == p0) //Highway already exists but with p0 and p1 switched around
                         } && !planets.filter { it != p0 && it != p1 }.any {
                             Intersector.distanceSegmentPoint(p0.x, p0.y, p1.x, p1.y, it.x, it.y) <= it.radius
-                        }//Highway doesn't intersect planet
-                        && !p1.getConnectedHighways().any { isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) } //Highway angle between others
-                        && !p0.getConnectedHighways().any { isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, it.p0.x, it.p0.y, it.p1.x, it.p1.y) } //is not too small
+                        } //Highway doesn't intersect planet
+                        && !this.highwaysConnectedTo(p1.id).any {
+                            val planet0 = this.getPlanetWithId(it.p0)!!
+                            val planet1 = this.getPlanetWithId(it.p1)!!
+                            isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, planet0.x, planet0.y, planet1.x, planet1.y)
+                        } //Highway angle between others
+                        && !this.highwaysConnectedTo(p0.id).any {
+                            val planet0 = this.getPlanetWithId(it.p0)!!
+                            val planet1 = this.getPlanetWithId(it.p1)!!
+                            isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, planet0.x, planet0.y, planet1.x, planet1.y)
+                        } //is not too small
 
                 ) {
                     //Add a highway to the galaxy and to the connecting planets
-                    val highwayToAdd = CosmicHighway(p0, p1)
+                    val highwayToAdd = CosmicHighway(p0.id, p1.id)
                     highways.add(highwayToAdd)
                 }
             }
@@ -99,11 +109,11 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     /**
      * Ensures that all planets are connected
      * Currently only connects planets which are not connected to any planets
-     * TODO: Check for seperate clusters of planets using quick-union
+     * TODO: Check for separate clusters of planets using quick-union
      */
     private fun connectAllPlanets() {
         //Iterate through all planets which have no connecting planets
-        for (p0 in planets.filter { it.getConnectedHighways().isEmpty() }) {
+        for (p0 in planets.filter { this.highwaysConnectedTo(it.id).isEmpty() }) {
             //Initialize distance as 0 to start; will check for distance = 0
             var planetDistance = 0f
             //Closest planet starts as itself; will get changed
@@ -119,7 +129,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
                 }
             }
             //Make a connection with the planet closest to it
-            val highwayToAdd = CosmicHighway(p0, closestPlanet)
+            val highwayToAdd = CosmicHighway(p0.id, closestPlanet.id)
             highways.add(highwayToAdd)
         }
     }
@@ -151,19 +161,24 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     }
 
     /**
-     * Gets the connected highways of a planet
-     * TODO: remove this method: is bad practice to have
+     * Returns all highways connected to the planet with the specified ID
      */
-    private fun Planet.getConnectedHighways(): Array<CosmicHighway> {
-        return highways.filter { it.p0 == this || it.p1 == this }.toTypedArray()
+    fun highwaysConnectedTo(id: Int): Array<CosmicHighway> {
+        return this.highways.filter { it.connects(id) != null }.toTypedArray()
     }
 
     /**
      * Gets al planets adjacent to the given planet
-     * TODO: remove this method: is bad practice to have
      */
-    fun planetsAdjacentTo(p: Planet): Array<Planet> {
-        return this.planets.filter { it.getConnectedHighways().any { it.p0 == p || it.p1 == p } }.toTypedArray()
+    fun planetsAdjacentTo(id: Int): Array<Int> {
+        return this.highways.mapNotNull { it.connects(id) }.toTypedArray()
+    }
+
+    /**
+     * Gets the planet with a specified ID
+     */
+    fun getPlanetWithId(id: Int): Planet? {
+        return this.planets.firstOrNull { it.id == id }
     }
 
 }
