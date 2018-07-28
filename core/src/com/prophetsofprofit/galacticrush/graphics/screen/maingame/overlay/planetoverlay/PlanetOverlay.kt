@@ -40,7 +40,6 @@ class PlanetOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group()
                 //Ensure that there is not already a move command for the panels in place
                 this.gameScreen.movementHandler.queue.remove(this.attributesPanel)
                 this.gameScreen.movementHandler.queue.remove(this.dronesPanel)
-                this.gameScreen.movementHandler.queue.remove(this.baseOverlay)
                 //Start moving the attributes panel
                 this.gameScreen.movementHandler.add(this.attributesPanel,
                         - this.attributesPanel.x - this.attributesPanel.baseLabel.width,
@@ -53,23 +52,16 @@ class PlanetOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group()
                         - this.dronesPanel.x - this.attributesPanel.baseLabel.width,
                         0f,
                         this.zoomSpeed * abs(- this.dronesPanel.x - this.dronesPanel.baseLabel.width) / this.dronesPanel.baseLabel.width)
-                //Start moving the base overlay
-                println(this.baseOverlay.x)
-                this.gameScreen.movementHandler.add(this.baseOverlay,
-                        this.baseOverlay.facilitiesPanel.baseLabel.width - this.baseOverlay.x,
-                        0f,
-                        this.zoomSpeed * abs(this.baseOverlay.facilitiesPanel.baseLabel.width - this.baseOverlay.x) / this.baseOverlay.facilitiesPanel.baseLabel.width)
             }
+            //Update the information for all the overlays
             this.dronesPanel.update()
             this.attributesPanel.update()
-            this.baseOverlay.update()
             this.isInView = true
         } else {
             if (this.isInView) {
                 //Ensure that there is not already a move command for the panels in place
                 this.gameScreen.movementHandler.queue.remove(this.attributesPanel)
                 this.gameScreen.movementHandler.queue.remove(this.dronesPanel)
-                this.gameScreen.movementHandler.queue.remove(this.baseOverlay)
                 //Start moving the attributes panel
                 this.gameScreen.movementHandler.add(this.attributesPanel,
                         - this.attributesPanel.x,
@@ -80,15 +72,12 @@ class PlanetOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group()
                         - this.dronesPanel.x,
                         0f,
                         this.zoomSpeed * abs( - this.dronesPanel.x) / this.dronesPanel.baseLabel.width)
-                //Start moving the base overlay
-                this.gameScreen.movementHandler.add(this.baseOverlay,
-                        - this.baseOverlay.x,
-                        0f,
-                        this.zoomSpeed * abs( - this.baseOverlay.x) / this.baseOverlay.facilitiesPanel.baseLabel.width)
             }
             //If the overlay is becoming invisible
             this.isInView = false
         }
+        //Update this separately because it also controls its own visibility
+        this.baseOverlay.update()
     }
 
 }
