@@ -25,10 +25,21 @@ class Overlay(val gameScreen: MainGameScreen): Group() {
     //The overlay that comes up when planets are selected
     val planetOverlay = PlanetOverlay(gameScreen, this.gameScreen.game.camera.viewportHeight / 16)
 
+    /**
+     * Adds all of the sub overlays as children
+     */
     init {
         this.addActor(this.overlayInformation)
         this.addActor(this.overlayMenu)
         this.addActor(planetOverlay)
+    }
+
+    /**
+     * Updates all contained overlays
+     */
+    fun update() {
+        this.overlayInformation.update()
+        this.planetOverlay.update()
     }
 
 }

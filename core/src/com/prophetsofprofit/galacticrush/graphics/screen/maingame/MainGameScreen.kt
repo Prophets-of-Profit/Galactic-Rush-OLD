@@ -21,7 +21,7 @@ import kotlin.math.*
 /**
  * The screen where all the playing will be done
  */
-class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, Array(Gdx.files.internal("music/").list().size) { "" + Gdx.files.internal("music/").list()[it] }) {
+class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, Array(Gdx.files.internal("music/").list().size) { "${Gdx.files.internal("music/").list()[it]}" }) {
 
     //A variable that stores an older game state if one exists; TODO: animate difference between mainGame and oldGameState
     var oldGameState: Game? = null
@@ -92,7 +92,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.drawDrones()
         this.game.batch.end()
         //Updates game information
-        this.overlay.overlayInformation.update()
+        this.overlay.update()
     }
 
     /**
@@ -205,7 +205,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }
-        this.overlay.planetOverlay.update()
         return this.selectedPlanet != null
     }
 
