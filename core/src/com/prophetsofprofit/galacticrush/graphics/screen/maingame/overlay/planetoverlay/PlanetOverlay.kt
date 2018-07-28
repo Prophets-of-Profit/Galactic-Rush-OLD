@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.plane
 
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MovementHandler
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planetoverlay.baseoverlay.BaseOverlay
 import kotlin.math.abs
 
@@ -38,17 +39,17 @@ class PlanetOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group()
             //If the overlay is becoming visible
             if (!this.isInView) {
                 //Ensure that there is not already a move command for the panels in place
-                this.gameScreen.movementHandler.queue.remove(this.attributesPanel)
-                this.gameScreen.movementHandler.queue.remove(this.dronesPanel)
+                MovementHandler.currentlyMoving.remove(this.attributesPanel)
+                MovementHandler.currentlyMoving.remove(this.dronesPanel)
                 //Start moving the attributes panel
-                this.gameScreen.movementHandler.add(this.attributesPanel,
+                MovementHandler.add(this.attributesPanel,
                         - this.attributesPanel.x - this.attributesPanel.baseLabel.width,
                         0f,
                         //Time is proportional to distance to move
                         //If there is no shift, time should equal zoomSpeed
                         this.zoomSpeed * abs(- this.attributesPanel.x - this.attributesPanel.baseLabel.width) / this.attributesPanel.baseLabel.width)
                 //Start moving the drone panel
-                this.gameScreen.movementHandler.add(this.dronesPanel,
+                MovementHandler.add(this.dronesPanel,
                         - this.dronesPanel.x - this.attributesPanel.baseLabel.width,
                         0f,
                         this.zoomSpeed * abs(- this.dronesPanel.x - this.dronesPanel.baseLabel.width) / this.dronesPanel.baseLabel.width)
@@ -60,15 +61,15 @@ class PlanetOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group()
         } else {
             if (this.isInView) {
                 //Ensure that there is not already a move command for the panels in place
-                this.gameScreen.movementHandler.queue.remove(this.attributesPanel)
-                this.gameScreen.movementHandler.queue.remove(this.dronesPanel)
+                MovementHandler.currentlyMoving.remove(this.attributesPanel)
+                MovementHandler.currentlyMoving.remove(this.dronesPanel)
                 //Start moving the attributes panel
-                this.gameScreen.movementHandler.add(this.attributesPanel,
+                MovementHandler.add(this.attributesPanel,
                         - this.attributesPanel.x,
                         0f,
                         this.zoomSpeed * abs( - this.attributesPanel.x) / this.attributesPanel.baseLabel.width)
                 //Start moving the drone panel
-                this.gameScreen.movementHandler.add(this.dronesPanel,
+                MovementHandler.add(this.dronesPanel,
                         - this.dronesPanel.x,
                         0f,
                         this.zoomSpeed * abs( - this.dronesPanel.x) / this.dronesPanel.baseLabel.width)

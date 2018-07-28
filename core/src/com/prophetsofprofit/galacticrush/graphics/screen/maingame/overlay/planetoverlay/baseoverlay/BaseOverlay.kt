@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.plane
 
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MovementHandler
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planetoverlay.dronemodificationoverlay.DroneModificationOverlay
 import kotlin.math.abs
 
@@ -43,9 +44,9 @@ class BaseOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group() {
             //If the overlay is becoming visible
             if (!this.isInView) {
                 //Ensure that there is not already a move command for the panels in place
-                this.gameScreen.movementHandler.queue.remove(this)
+                MovementHandler.currentlyMoving.remove(this)
                 //Start moving the base overlay
-                this.gameScreen.movementHandler.add(this,
+                MovementHandler.add(this,
                         this.facilitiesPanel.baseLabel.width - this.x,
                         0f,
                         this.zoomSpeed * abs(this.facilitiesPanel.baseLabel.width - this.x) / this.facilitiesPanel.baseLabel.width)
@@ -56,9 +57,9 @@ class BaseOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group() {
         } else {
             if (this.isInView) {
                 //Ensure that there is not already a move command for the panels in place
-                this.gameScreen.movementHandler.queue.remove(this)
+                MovementHandler.currentlyMoving.remove(this)
                 //Start moving the base overlay
-                this.gameScreen.movementHandler.add(this,
+                MovementHandler.add(this,
                         - this.x,
                         0f,
                         this.zoomSpeed * abs( - this.x) / this.facilitiesPanel.baseLabel.width)

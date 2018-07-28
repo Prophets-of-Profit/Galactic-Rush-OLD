@@ -10,7 +10,6 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.Overlay
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planetoverlay.dronemodificationoverlay.RenamePanel
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
@@ -39,8 +38,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
     //The permanent overlay of the game screen; see Overlay
     val overlay = Overlay(this)
-    //The mechanism to handle simultaneous animations
-    val movementHandler = MovementHandler()
     //The mechanism to handle panning the screen over a time
     val panHandler = PanHandler(this.game.camera)
     //The game menu for handling options and quitting, etc
@@ -99,7 +96,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.batch.end()
         //Updates game information and animations
         this.overlay.update()
-        this.movementHandler.update(delta)
         this.panHandler.update(delta)
     }
 
