@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.player
 
 import com.prophetsofprofit.galacticrush.logic.Change
+import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
 
 /**
@@ -23,5 +24,10 @@ abstract class Player(val id: Int) {
      * The method that handles receiving an updated game
      */
     abstract fun receiveNewGameState(newGame: Game)
+
+    /**
+     * The method that handles receiving changes that occur during the drone turns
+     */
+    abstract fun receiveDroneTurnChanges(changes: MutableList<DroneTurnChange>)
 
 }

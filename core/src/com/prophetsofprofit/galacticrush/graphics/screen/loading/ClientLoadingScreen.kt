@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
+import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
 
@@ -29,10 +30,13 @@ class ClientLoadingScreen(game: Main) : LoadingScreen(game) {
                 player = obj
                 Networker.getClient().addListener(object : Listener() {
                     override fun received(connection: Connection?, obj: Any?) {
-                        if (obj !is Game) {
-                            return
+                        if (obj is Game) {
+                            player!!.game = obj
                         }
-                        player!!.game = obj
+                        //TODO: make this a mutable list of drone turn changes
+                        if (obj is MutableList<*>) {
+                            player!!.game.droneTurnChanges = obj as MutableList<DroneTurnChange>
+                        }
                     }
                 })
                 Networker.getClient().removeListener(this)

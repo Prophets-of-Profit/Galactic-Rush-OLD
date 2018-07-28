@@ -1,10 +1,12 @@
 package com.prophetsofprofit.galacticrush.logic
 
 import com.badlogic.gdx.graphics.Color
+import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.facility.Facility
 import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
+import com.prophetsofprofit.galacticrush.logic.map.Planet
 
 /**
  * The main game object
@@ -44,6 +46,8 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     val money = this.players.map { it to 0 }.toMap().toMutableMap()
     //The map of player id to their color
     val playerColors = mutableMapOf<Int, Color>()
+    //The list of things that happen after each drone turn
+    var droneTurnChanges = mutableListOf<DroneTurnChange>()
 
     /**
      * Assigns each player a random colors
@@ -78,6 +82,8 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
      * Performs one action per drone for all drones that can perform an action; won't be callable until game is ready
      */
     fun doDroneTurn() {
+        val changedDrones = mutableListOf<Drone>()
+        val changedPlanets = mutableListOf<Planet>()
         //If waiting on players don't do anything
         if (this.waitingOn.isNotEmpty() || this.players.size <= 1) {
             return
@@ -88,10 +94,10 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
             this.drones.forEach { it.startCycle() }
         }
         //Complete the actions of all the drones who can do actions in the queue
-        this.drones.filterNot { it.queueFinished }.forEach { it.mainAction() }
+        this.drones.filterNot { it.queueFinished }.forEach { it.mainAction(); changedDrones.add(kryo.copy(it)) }
         //Removes all of the destroyed drones
         this.drones.filter { it.isDestroyed }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.remove(it) }
-        //Remove all of the destroyed facilites
+        //Remove all of the destroyed facilities
         this.facilities.filter { it.health <= 0 }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.facilities.remove(it) }
         //If all the drones are now finished, wait for players and reset drones
         if (this.drones.all { it.queueFinished }) {
@@ -99,6 +105,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
             this.drones.forEach { it.resetQueue() }
             this.players.mapTo(this.waitingOn) { it }
         }
+        this.droneTurnChanges.add(DroneTurnChange(changedDrones.toTypedArray(), changedPlanets.toTypedArray()))
     }
 
 }

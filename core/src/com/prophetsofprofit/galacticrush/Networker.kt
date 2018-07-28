@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.esotericsoftware.kryonet.Client
 import com.esotericsoftware.kryonet.Server
 import com.prophetsofprofit.galacticrush.logic.Change
+import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
@@ -67,6 +68,7 @@ object Networker {
         kryo.register(CosmicHighway::class.java)
         kryo.register(Date::class.java)
         kryo.register(Drone::class.java)
+        kryo.register(DroneTurnChange::class.java)
         kryo.register(Galaxy::class.java)
         kryo.register(Game::class.java)
         kryo.register(HomeBase::class.java)

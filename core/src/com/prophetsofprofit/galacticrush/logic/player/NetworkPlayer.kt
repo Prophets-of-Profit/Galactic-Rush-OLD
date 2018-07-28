@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.logic.player
 
 import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.logic.Change
+import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
 
 /**
@@ -30,6 +31,14 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
     override fun receiveNewGameState(newGame: Game) {
         this.game = newGame
         Networker.getServer().sendToTCP(this.connectionId, newGame)
+    }
+
+    /**
+     * The game stores drone changes
+     */
+    override fun receiveDroneTurnChanges(changes: MutableList<DroneTurnChange>) {
+        this.game.droneTurnChanges = changes
+        Networker.getServer().sendToTCP(this.connectionId, changes)
     }
 
 }

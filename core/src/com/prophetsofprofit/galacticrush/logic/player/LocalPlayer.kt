@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.Change
+import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
 
 /**
@@ -44,6 +45,11 @@ class LocalPlayer(id: Int) : Player(id) {
                         this.hostedGame.gameChanged = false
                         Networker.getServer().sendToAllTCP(this.hostedGame)
                         this.receiveNewGameState(this.hostedGame)
+                        while (this.hostedGame.drones.any { !it.queueFinished }) {
+                            this.hostedGame.doDroneTurn()
+                        }
+                        Networker.getServer().sendToAllTCP(this.hostedGame.droneTurnChanges)
+                        this.receiveDroneTurnChanges(this.hostedGame.droneTurnChanges)
                     } catch (ignored: Exception) {
                     }
                 }
@@ -65,6 +71,13 @@ class LocalPlayer(id: Int) : Player(id) {
      */
     override fun receiveNewGameState(newGame: Game) {
         this.game = kryo.copy(newGame)
+    }
+
+    /**
+     * The game stores drone changes
+     */
+    override fun receiveDroneTurnChanges(changes: MutableList<DroneTurnChange>) {
+        this.game.droneTurnChanges = changes
     }
 
 }
