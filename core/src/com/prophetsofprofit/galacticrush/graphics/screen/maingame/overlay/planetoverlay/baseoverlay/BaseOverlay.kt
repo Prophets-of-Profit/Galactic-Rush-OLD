@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.plane
 
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.planetoverlay.dronemodificationoverlay.DroneModificationOverlay
 import kotlin.math.abs
 
 /**
@@ -18,6 +19,8 @@ class BaseOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group() {
             this.facilitiesPanel.baseLabel.width,
             this.facilitiesPanel.baseLabel.height / 3
             )
+    //Handles modifying drones if available
+    val droneModificationOverlay = DroneModificationOverlay(this.gameScreen)
     //Whether the panels are inside the camera view
     var isInView = false
     //How fast the panels slide into view
@@ -29,6 +32,7 @@ class BaseOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group() {
     init {
         this.addActor(this.facilitiesPanel)
         this.addActor(this.actionsPanel)
+        this.addActor(this.droneModificationOverlay)
     }
 
     /**
@@ -60,6 +64,7 @@ class BaseOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group() {
                         this.zoomSpeed * abs( - this.x) / this.facilitiesPanel.baseLabel.width)
             }
             //If the overlay is becoming invisible
+            this.droneModificationOverlay.isVisible = false
             this.isInView = false
         }
     }

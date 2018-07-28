@@ -35,6 +35,8 @@ class Drone(val ownerId: Int, var locationId: Int) {
     var queueFinished = false
     //Whether the drone is destroyed or not
     var isDestroyed = false
+    //What the drone displays as
+    var name = "Drone"
 
     /**
      * Empty constructor for serialization
@@ -105,6 +107,6 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * How the drone will be displayed on the planet listing
      */
     override fun toString(): String {
-        return "Drone ($ownerId)"
+        return "$name ($ownerId)"
     }
 }

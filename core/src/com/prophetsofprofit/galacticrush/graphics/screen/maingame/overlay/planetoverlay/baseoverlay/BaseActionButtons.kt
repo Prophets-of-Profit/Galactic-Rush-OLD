@@ -38,6 +38,20 @@ class BaseActionButtons(val gameScreen: MainGameScreen, val bottomLeftX: Float, 
                 gameScreen.player.currentChanges.changedDrones.add(newDrone)
             }
         })
+        this.modifyDroneButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                if (gameScreen.overlay.planetOverlay.dronesPanel.dronesList.selectedIndex == -1)
+                    return
+                gameScreen.overlay.planetOverlay.baseOverlay.droneModificationOverlay.isVisible = !gameScreen.overlay.planetOverlay.baseOverlay.droneModificationOverlay.isVisible
+                if (gameScreen.overlay.planetOverlay.baseOverlay.droneModificationOverlay.isVisible) {
+                    gameScreen.overlay.planetOverlay.baseOverlay.droneModificationOverlay.update()
+                    modifyDroneButton.setText("Confirm")
+                } else {
+                    gameScreen.overlay.planetOverlay.baseOverlay.droneModificationOverlay.confirm()
+                    modifyDroneButton.setText("Modify Drone")
+                }
+            }
+        })
         this.addActor(this.createDroneButton)
         this.addActor(this.modifyDroneButton)
     }
