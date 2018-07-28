@@ -11,7 +11,7 @@ import ktx.scene2d.Scene2DSkin
 /**
  * The actor group that handles displaying drones that are on a selected planet
  */
-class PlanetDronesPanel(gameScreen: MainGameScreen, labelWidth: Float, labelHeight: Float, yOffset: Float): Panel(gameScreen, "Drones", labelWidth, labelHeight, gameScreen.uiCamera.viewportWidth, gameScreen.uiCamera.viewportHeight - yOffset - labelHeight, Align.topRight) {
+class PlanetDronesPanel(gameScreen: MainGameScreen, labelWidth: Float, labelHeight: Float, yOffset: Float): Panel(gameScreen, "Drones", labelWidth, labelHeight, gameScreen.uiCamera.viewportWidth, gameScreen.uiCamera.viewportHeight - yOffset - labelHeight, Align.topLeft) {
 
     //The list where each element is the string representation of the drone on the selected planet
     val dronesList = List<String>(Scene2DSkin.defaultSkin)
@@ -24,7 +24,7 @@ class PlanetDronesPanel(gameScreen: MainGameScreen, labelWidth: Float, labelHeig
     init {
         this.droneListContainer.width = labelWidth
         this.droneListContainer.height = labelHeight - this.verticalTextOffset
-        this.droneListContainer.setPosition(this.screen.uiCamera.viewportWidth - labelWidth,
+        this.droneListContainer.setPosition(this.screen.uiCamera.viewportWidth,
                 this.screen.uiCamera.viewportHeight / 3 - yOffset)
         this.dronesList.width = labelWidth
         this.dronesList.setAlignment(Align.center)

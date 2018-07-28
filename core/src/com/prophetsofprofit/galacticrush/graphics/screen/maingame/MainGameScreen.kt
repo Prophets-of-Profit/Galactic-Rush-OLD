@@ -38,6 +38,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
     //The permanent overlay of the game screen; see Overlay
     val overlay = Overlay(this)
+    //The mechanism to handle simultaneous animations
+    val movementHandler = MovementHandler()
     //The game menu for handling options and quitting, etc
     val gameMenu = PauseMenu(this)
     //The confirmation menu for quitting
@@ -58,6 +60,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(this.submitConfirmation)
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
         this.selectPlanet(this.mainGame.galaxy.planets.first { it.facilities.firstOrNull { it is HomeBase && it.ownerId == this.player.id } != null })
+        this.overlay.planetOverlay.update()
     }
 
     /**
@@ -91,8 +94,9 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.drawSelectionArrows()
         this.drawDrones()
         this.game.batch.end()
-        //Updates game information
+        //Updates game information and animations
         this.overlay.update()
+        this.movementHandler.update(delta)
     }
 
     /**

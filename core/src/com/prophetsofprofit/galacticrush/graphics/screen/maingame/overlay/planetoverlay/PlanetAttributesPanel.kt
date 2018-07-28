@@ -11,7 +11,7 @@ import ktx.scene2d.Scene2DSkin
 /**
  * The actor group which displays planet attributes (such as temperature, mass, etc.) in a label
  */
-class PlanetAttributesPanel(gameScreen: MainGameScreen, labelWidth: Float, labelHeight: Float, yOffset: Float): Panel(gameScreen, "Planet Stats", labelWidth, labelHeight, gameScreen.uiCamera.viewportWidth, gameScreen.uiCamera.viewportHeight - yOffset, Align.topRight) {
+class PlanetAttributesPanel(gameScreen: MainGameScreen, labelWidth: Float, labelHeight: Float, yOffset: Float): Panel(gameScreen, "Planet Stats", labelWidth, labelHeight, gameScreen.uiCamera.viewportWidth, gameScreen.uiCamera.viewportHeight - yOffset, Align.topLeft) {
 
     //The icons and labels for planet information
     val massIcon = ImageButton(Scene2DSkin.defaultSkin, "mass")

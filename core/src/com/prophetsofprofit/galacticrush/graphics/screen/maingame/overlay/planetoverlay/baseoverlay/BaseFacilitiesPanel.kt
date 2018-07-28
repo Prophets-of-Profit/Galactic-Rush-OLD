@@ -10,7 +10,7 @@ import ktx.scene2d.Scene2DSkin
 /**
  * The actor group that handles displaying facilities that are on a selected planet
  */
-class BaseFacilitiesPanel(gameScreen: MainGameScreen, labelWidth: Float, labelHeight: Float, yOffset: Float): Panel(gameScreen, "Facilities", labelWidth, labelHeight, 0f, gameScreen.uiCamera.viewportHeight - yOffset, Align.topLeft) {
+class BaseFacilitiesPanel(gameScreen: MainGameScreen, labelWidth: Float, labelHeight: Float, yOffset: Float): Panel(gameScreen, "Facilities", labelWidth, labelHeight, 0f, gameScreen.uiCamera.viewportHeight - yOffset, Align.topRight) {
 
     //The list where each element is the string representation of the drone on the selected planet
     val facilitiesList = com.badlogic.gdx.scenes.scene2d.ui.List<String>(Scene2DSkin.defaultSkin)
@@ -23,7 +23,7 @@ class BaseFacilitiesPanel(gameScreen: MainGameScreen, labelWidth: Float, labelHe
     init {
         this.facilityListContainer.width = labelWidth
         this.facilityListContainer.height = labelHeight - this.verticalTextOffset
-        this.facilityListContainer.setPosition(0f,
+        this.facilityListContainer.setPosition(this.baseLabel.x,
                 this.screen.uiCamera.viewportHeight / 3 - yOffset)
         this.facilitiesList.width = labelWidth
         this.facilitiesList.setAlignment(Align.center)
