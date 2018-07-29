@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -33,6 +35,8 @@ class BaseActionButtons(val gameScreen: MainGameScreen, val bottomLeftX: Float, 
         this.createDroneButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 val newDrone = Drone(gameScreen.player.id, gameScreen.selectedPlanet!!.id)
+                //TODO: below line is temporary
+                newDrone.instructions.addAll(arrayOf(InstructionInstance(Instruction.SELECT_HOTTEST), InstructionInstance(Instruction.MOVE_SELECTED)))
                 gameScreen.selectedPlanet!!.drones.add(newDrone)
                 gameScreen.player.currentChanges.changedDrones.add(newDrone)
             }

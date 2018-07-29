@@ -29,9 +29,10 @@ class Drone(val ownerId: Int, var locationId: Int) {
     //Which instruction the drone is currently reading
     var pointer = 0
     //The planet that the drone has selected
-    var selectedPlanet: Planet? = null
+    var selectedPlanet: Int? = null
     //The drone that this drone has selected
-    var selectedDrone: Drone? = null
+    var selectedDroneCreation: Date? = null
+    var selectedDroneOwner: Int? = null
     //Whether the drone is done completing its command queue
     var queueFinished = false
     //Whether the drone is destroyed or not
@@ -102,6 +103,15 @@ class Drone(val ownerId: Int, var locationId: Int) {
     }
 
     /**
+     * Moves the drone to the given planet
+     */
+    fun moveToPlanet(id: Int, galaxy: Galaxy) {
+        this.getLocationAmong(galaxy.planets.toTypedArray())!!.drones.remove(this)
+        this.locationId = id
+        this.getLocationAmong(galaxy.planets.toTypedArray())!!.drones.add(this)
+    }
+
+    /**
      * Gets the locationId of the drone among a list of planets, or null if it does not exist
      */
     fun getLocationAmong(planets: Array<Planet>): Planet? {
@@ -114,4 +124,5 @@ class Drone(val ownerId: Int, var locationId: Int) {
     override fun toString(): String {
         return "$name ($ownerId)"
     }
+
 }

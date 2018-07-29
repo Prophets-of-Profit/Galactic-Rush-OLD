@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.drone.instruction
 
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 
 //Utility alias for calling (Drone, Galaxy) -> Unit a DroneAction
@@ -27,17 +28,28 @@ enum class Instruction(
         val endCycleAction: DroneAction = { _, _ -> }
 ) {
     NONE("None", 0, 100000, 100000, arrayOf()),
-    MOVE(
-        "Move",
+    SELECT_HOTTEST(
+            "Select Hottest Adjacent Planet",
+            30,
+            1,
+            3,
+            arrayOf(), //TODO: ?
+            mainAction = { drone, galaxy ->
+                drone.selectedPlanet = galaxy.planetsAdjacentTo(drone.locationId)
+                        .map { galaxy.getPlanetWithId(it)!! }
+                        .reduce { hottestPlanet, currentPlanet -> if (hottestPlanet.attributes[Attribute.TEMPERATURE]!! > currentPlanet.attributes[Attribute.TEMPERATURE]!!) hottestPlanet else currentPlanet }.id
+            }
+    ),
+    MOVE_SELECTED(
+            "Move to Selected Planet",
         10,
         2,
         5,
         arrayOf(InstructionType.MOVEMENT),
         mainAction = { drone, galaxy ->
-            galaxy.getPlanetWithId(drone.locationId)!!.drones.remove(drone)
-            val planetId = galaxy.planetsAdjacentTo(drone.locationId).toList().shuffled().first()
-            drone.locationId = planetId
-            galaxy.getPlanetWithId(drone.locationId)!!.drones.add(drone)
+            if (drone.selectedPlanet != null) {
+                drone.moveToPlanet(drone.selectedPlanet!!, galaxy)
+            }
         }
     )
 }
