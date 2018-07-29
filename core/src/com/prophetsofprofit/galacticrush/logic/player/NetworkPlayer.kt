@@ -33,12 +33,4 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
         Networker.getServer().sendToTCP(this.connectionId, newGame)
     }
 
-    /**
-     * The game stores drone changes
-     */
-    override fun receiveDroneTurnChanges(changes: MutableList<DroneTurnChange>) {
-        this.game.droneTurnChanges = changes
-        Networker.getServer().sendToTCP(this.connectionId, changes)
-    }
-
 }

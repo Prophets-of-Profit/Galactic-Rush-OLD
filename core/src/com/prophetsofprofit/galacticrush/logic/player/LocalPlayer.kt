@@ -48,8 +48,9 @@ class LocalPlayer(id: Int) : Player(id) {
                         while (this.hostedGame.drones.any { !it.queueFinished }) {
                             this.hostedGame.doDroneTurn()
                         }
-                        Networker.getServer().sendToAllTCP(this.hostedGame.droneTurnChanges)
-                        this.receiveDroneTurnChanges(this.hostedGame.droneTurnChanges)
+                        this.hostedGame.drones.forEach { it.resetQueue() }
+                        Networker.getServer().sendToAllTCP(this.hostedGame)
+                        this.receiveNewGameState(this.hostedGame)
                     } catch (ignored: Exception) {
                     }
                 }
@@ -71,13 +72,6 @@ class LocalPlayer(id: Int) : Player(id) {
      */
     override fun receiveNewGameState(newGame: Game) {
         this.game = kryo.copy(newGame)
-    }
-
-    /**
-     * The game stores drone changes
-     */
-    override fun receiveDroneTurnChanges(changes: MutableList<DroneTurnChange>) {
-        this.game.droneTurnChanges = changes
     }
 
 }

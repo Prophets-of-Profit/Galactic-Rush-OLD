@@ -33,10 +33,6 @@ class ClientLoadingScreen(game: Main) : LoadingScreen(game) {
                         if (obj is Game) {
                             player!!.game = obj
                         }
-                        //TODO: make this a mutable list of drone turn changes
-                        if (obj is MutableList<*>) {
-                            player!!.game.droneTurnChanges = obj as MutableList<DroneTurnChange>
-                        }
                     }
                 })
                 Networker.getClient().removeListener(this)

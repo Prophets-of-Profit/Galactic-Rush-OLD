@@ -25,9 +25,4 @@ abstract class Player(val id: Int) {
      */
     abstract fun receiveNewGameState(newGame: Game)
 
-    /**
-     * The method that handles receiving changes that occur during the drone turns
-     */
-    abstract fun receiveDroneTurnChanges(changes: MutableList<DroneTurnChange>)
-
 }

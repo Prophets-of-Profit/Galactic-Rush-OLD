@@ -26,15 +26,18 @@ enum class Instruction(
         val mainAction: DroneAction = { _, _ -> },
         val endCycleAction: DroneAction = { _, _ -> }
 ) {
+    NONE("None", 0, 100000, 100000, arrayOf()),
     MOVE(
         "Move",
         10,
         2,
         5,
         arrayOf(InstructionType.MOVEMENT),
-        mainAction = {
-            drone, galaxy ->
-            null
+        mainAction = { drone, galaxy ->
+            galaxy.getPlanetWithId(drone.locationId)!!.drones.remove(drone)
+            val planetId = galaxy.planetsAdjacentTo(drone.locationId).toList().shuffled().first()
+            drone.locationId = planetId
+            galaxy.getPlanetWithId(drone.locationId)!!.drones.add(drone)
         }
     )
 }
@@ -44,4 +47,10 @@ enum class Instruction(
  */
 class InstructionInstance(val baseInstruction: Instruction) {
     var health = this.baseInstruction.health
+
+    /**
+     * Empty constructor for serialization
+     */
+    constructor(): this(Instruction.NONE)
+
 }

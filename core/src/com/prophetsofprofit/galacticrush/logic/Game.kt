@@ -72,8 +72,8 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         //TODO apply changes to instructions
         this.waitingOn.remove(change.ownerId)
         if (this.waitingOn.isEmpty()) {
-            this.players.mapTo(this.waitingOn) { it }
             this.turnsPlayed++
+            this.droneTurnChanges.clear()
             this.gameChanged = true
         }
     }
@@ -85,7 +85,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         val changedDrones = mutableListOf<Drone>()
         val changedPlanets = mutableListOf<Planet>()
         //If waiting on players don't do anything
-        if (this.waitingOn.isNotEmpty() || this.players.size <= 1) {
+        if (this.players.size <= 1) {
             return
         }
         //If this is the first doDroneTurn call for this turn, start the cycle for each drone
@@ -102,10 +102,9 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         //If all the drones are now finished, wait for players and reset drones
         if (this.drones.all { it.queueFinished }) {
             this.drones.forEach { it.endCycle(this.galaxy) }
-            this.drones.forEach { it.resetQueue() }
             this.players.mapTo(this.waitingOn) { it }
         }
-        this.droneTurnChanges.add(DroneTurnChange(changedDrones.toTypedArray(), changedPlanets.toTypedArray()))
+        this.droneTurnChanges.add(DroneTurnChange(changedDrones, changedPlanets))
     }
 
 }

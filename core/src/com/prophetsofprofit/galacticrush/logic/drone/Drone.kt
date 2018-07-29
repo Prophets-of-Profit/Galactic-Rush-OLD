@@ -60,7 +60,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
     }
 
     /**
-     * Calls endCyclye for all instructions in the queue
+     * Calls endCycle for all instructions in the queue
      */
     fun endCycle(galaxy: Galaxy) {
         this.instructions.forEach { it.baseInstruction.endCycleAction(this, galaxy) }
