@@ -2,9 +2,9 @@ package com.prophetsofprofit.galacticrush.logic
 
 import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.kryo
+import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import com.prophetsofprofit.galacticrush.logic.facility.Facility
-import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
+import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 
@@ -26,16 +26,12 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         get() {
             return this.galaxy.planets.fold(mutableListOf<Drone>()) { list, currentPlanet -> list.addAll(currentPlanet.drones); list }.sortedBy { it.creationTime }.toTypedArray()
         }
-    //The facilities that currently exist in the game; ordered arbitrarily
-    val facilities: Array<Facility>
-        get() {
-            return this.galaxy.planets.fold(mutableListOf<Facility>()) { list, currentPlanet -> list.addAll(currentPlanet.facilities); list }.toTypedArray()
-        }
+    //The bases that currently exist in the game; ordered arbitrarily
+    val bases: Array<Base>
+        get() = this.galaxy.planets.mapNotNull { it.base }.toTypedArray()
     //The players that are still in the game
     val players: Array<Int>
-        get() {
-            return this.facilities.filter { it is HomeBase }.map { it.ownerId }.toTypedArray()
-        }
+        get() = this.bases.filter { it.facilityHealths.containsKey(Facility.HOME_BASE) }.map { it.ownerId }.toTypedArray()
     //The players who need to submit their changes for the drones to commence
     val waitingOn = this.players.toMutableList()
     //Whether the game has been changed since last send
@@ -97,8 +93,8 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         this.drones.filterNot { it.queueFinished }.forEach { it.mainAction(this.galaxy); changedDrones.add(kryo.copy(it)) }
         //Removes all of the destroyed drones
         this.drones.filter { it.isDestroyed }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.remove(it) }
-        //Remove all of the destroyed facilities
-        this.facilities.filter { it.health <= 0 }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.facilities.remove(it) }
+        //Remove all of the destroyed facilities and bases
+        this.bases.filter { it.health <= 0 || it.facilityHealths.isEmpty() }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.base = null }
         //If all the drones are now finished, wait for players and reset drones
         if (this.drones.all { it.queueFinished }) {
             this.drones.forEach { it.endCycle(this.galaxy) }

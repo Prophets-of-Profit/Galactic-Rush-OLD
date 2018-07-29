@@ -11,8 +11,8 @@ import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.Overlay
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
-import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
 import kotlin.math.*
@@ -59,7 +59,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(this.quitConfirmation)
         this.uiContainer.addActor(this.submitConfirmation)
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
-        this.selectPlanet(this.mainGame.galaxy.planets.first { it.facilities.firstOrNull { it is HomeBase && it.ownerId == this.player.id } != null })
+        this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id &&  it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
         this.overlay.planetOverlay.update()
     }
 
@@ -82,8 +82,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         //TODO: add textures for planets, make planet size
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in this.mainGame.galaxy.planets) {
-            if (planet.facilities.any { it is HomeBase }) {
-                this.game.shapeRenderer.color = this.mainGame.playerColors[planet.facilities.first().ownerId]
+            if (planet.base != null && planet.base!!.facilityHealths.containsKey(Facility.HOME_BASE)) {
+                this.game.shapeRenderer.color = this.mainGame.playerColors[planet.base!!.ownerId]
                 this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 15 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
             }
             this.game.shapeRenderer.color = planet.color

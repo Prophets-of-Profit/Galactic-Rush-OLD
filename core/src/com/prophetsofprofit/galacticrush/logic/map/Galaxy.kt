@@ -2,9 +2,8 @@ package com.prophetsofprofit.galacticrush.logic.map
 
 import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Vector2
-import com.prophetsofprofit.galacticrush.logic.facility.ConstructionFacility
-import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
-import com.prophetsofprofit.galacticrush.logic.facility.ProgrammingFacility
+import com.prophetsofprofit.galacticrush.logic.base.Base
+import com.prophetsofprofit.galacticrush.logic.base.Facility
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -42,9 +41,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         var planetChoice: Planet
         for (i in 0 until playerIDs.size) {
             planetChoice = pickablePlanets.shuffled()[0]
-            planetChoice.facilities.add(HomeBase(playerIDs[i], planetChoice.id))
-            planetChoice.facilities.add(ConstructionFacility(playerIDs[i], planetChoice.id))
-            planetChoice.facilities.add(ProgrammingFacility(playerIDs[i], planetChoice.id))
+            planetChoice.base = Base(playerIDs[i], planetChoice.id, arrayOf(Facility.HOME_BASE, Facility.CONSTUCTION, Facility.PROGRAMMING))
             pickablePlanets.remove(planetChoice)
         }
     }

@@ -1,8 +1,9 @@
 package com.prophetsofprofit.galacticrush.logic.map
 
 import com.badlogic.gdx.graphics.Color
+import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import com.prophetsofprofit.galacticrush.logic.facility.Facility
+import com.prophetsofprofit.galacticrush.logic.base.Facility
 import kotlin.math.pow
 
 /**
@@ -47,7 +48,7 @@ class Planet(var x: Float,
     val attributes = Attribute.values().map { it to Math.random() }.toMap().toMutableMap()
     //All the drones on the planet
     val drones = mutableListOf<Drone>()
-    //All the facilities on the planet
-    val facilities = mutableListOf<Facility>()
+    //The base that is on the planet
+    var base: Base? = null
 
 }

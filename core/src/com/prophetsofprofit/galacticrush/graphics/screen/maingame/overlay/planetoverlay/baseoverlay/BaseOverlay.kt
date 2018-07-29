@@ -40,7 +40,7 @@ class BaseOverlay(val gameScreen: MainGameScreen, val yOffset: Float): Group() {
      * Become visible if the planet selected has a base
      */
     fun update() {
-        if (this.gameScreen.selectedPlanet != null && this.gameScreen.selectedPlanet!!.facilities.any { it.ownerId == this.gameScreen.player.id }) {
+        if (this.gameScreen.selectedPlanet != null && this.gameScreen.selectedPlanet!!.base != null && this.gameScreen.selectedPlanet!!.base!!.ownerId == this.gameScreen.player.id) {
             //If the overlay is becoming visible
             if (!this.isInView) {
                 //Ensure that there is not already a move command for the panels in place

@@ -34,7 +34,7 @@ class BaseFacilitiesPanel(gameScreen: MainGameScreen, labelWidth: Float, labelHe
      * Updates all of the drones on the game screen's selected planet
      */
     fun update() {
-        this.facilitiesList.setItems(Array(this.screen.selectedPlanet!!.facilities.map { it.toString() }.toTypedArray()))
+        this.facilitiesList.setItems(Array(this.screen.selectedPlanet!!.base!!.facilityHealths.map { it.key.label }.toTypedArray()))
     }
 
 }

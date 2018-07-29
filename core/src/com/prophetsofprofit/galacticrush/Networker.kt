@@ -9,9 +9,8 @@ import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
-import com.prophetsofprofit.galacticrush.logic.facility.ConstructionFacility
-import com.prophetsofprofit.galacticrush.logic.facility.HomeBase
-import com.prophetsofprofit.galacticrush.logic.facility.ProgrammingFacility
+import com.prophetsofprofit.galacticrush.logic.base.Base
+import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.CosmicHighway
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
@@ -62,23 +61,22 @@ object Networker {
         kryo.register(Array<Player>::class.java)
         kryo.register(ArrayList::class.java)
         kryo.register(Attribute::class.java)
+        kryo.register(Base::class.java)
         kryo.register(Change::class.java)
         kryo.register(Color::class.java)
-        kryo.register(ConstructionFacility::class.java)
         kryo.register(CosmicHighway::class.java)
         kryo.register(Date::class.java)
         kryo.register(Drone::class.java)
         kryo.register(DroneTurnChange::class.java)
+        kryo.register(Facility::class.java)
         kryo.register(Galaxy::class.java)
         kryo.register(Game::class.java)
-        kryo.register(HomeBase::class.java)
         kryo.register(Instruction::class.java)
         kryo.register(InstructionInstance::class.java)
         kryo.register(LinkedHashMap::class.java)
         kryo.register(LocalPlayer::class.java)
         kryo.register(NetworkPlayer::class.java)
         kryo.register(Planet::class.java)
-        kryo.register(ProgrammingFacility::class.java)
         this.client?.start()
         this.server?.start()
     }
