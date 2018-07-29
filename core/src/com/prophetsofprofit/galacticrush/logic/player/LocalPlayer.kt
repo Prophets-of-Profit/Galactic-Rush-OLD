@@ -1,12 +1,9 @@
 package com.prophetsofprofit.galacticrush.logic.player
 
-import com.esotericsoftware.kryonet.Connection
-import com.esotericsoftware.kryonet.Listener
-import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.Change
-import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 
 /**
  * The class that represents a player that is on the host machine: a local player
@@ -14,51 +11,16 @@ import com.prophetsofprofit.galacticrush.logic.Game
  */
 class LocalPlayer(id: Int) : Player(id) {
 
-    lateinit var hostedGame: Game
-
     /**
      * Empty constructor for serialization
      */
     constructor() : this(-1)
 
     /**
-     * When a LocalPlayer is made, networking logic is initialized to receive changes and send the game
-     */
-    init {
-        Networker.getServer().addListener(object : Listener() {
-            override fun received(connection: Connection?, obj: Any?) {
-                if (obj is Change) {
-                    hostedGame.collectChange(obj)
-                }
-            }
-        })
-        Thread {
-            while (Networker.isClient == false) {
-                try {
-                    if (!this.hostedGame.gameChanged) {
-                        Thread.sleep(50)
-                        continue
-                    }
-                    this.hostedGame.gameChanged = false
-                    Networker.getServer().sendToAllTCP(this.hostedGame)
-                    this.receiveNewGameState(this.hostedGame)
-                    while (this.hostedGame.drones.any { !it.queueFinished }) {
-                        this.hostedGame.doDroneTurn()
-                    }
-                    this.hostedGame.drones.forEach { it.resetQueue() }
-                    Networker.getServer().sendToAllTCP(this.hostedGame)
-                    this.receiveNewGameState(this.hostedGame)
-                } catch (ignored: Exception) {
-                }
-            }
-        }.start()
-    }
-
-    /**
      * The local player directly gives the local game the changes to submit
      */
     override fun submitChanges() {
-        this.hostedGame.collectChange(this.currentChanges)
+        GalacticRushServer.hostedGame!!.collectChange(this.currentChanges)
         this.currentChanges = Change(this.id)
     }
 

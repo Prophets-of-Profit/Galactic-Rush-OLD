@@ -55,6 +55,10 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Calls mainAction for the drone's current instruction and then increments its pointer
      */
     fun mainAction(galaxy: Galaxy) {
+        if (this.instructions.isEmpty()) {
+            this.queueFinished = true
+            return
+        }
         this.instructions[this.pointer].baseInstruction.mainAction(this, galaxy)
         this.advancePointer(1)
     }

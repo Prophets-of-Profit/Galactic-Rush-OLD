@@ -21,7 +21,7 @@ class PortTextField : TextField("$defaultTcpPort", Scene2DSkin.defaultSkin) {
         this.setTextFieldListener { _, _ ->
             this.isValid = try {
                 val value = this.text.toInt()
-                value in 1025..65535
+                value in 1025..65534
             } catch (ignored: Exception) {
                 false
             }

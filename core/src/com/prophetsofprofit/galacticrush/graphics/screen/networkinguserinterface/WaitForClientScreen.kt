@@ -4,16 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.esotericsoftware.kryonet.Connection
-import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.Main
-import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
 import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
-import com.prophetsofprofit.galacticrush.logic.player.Player
+import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -25,27 +22,11 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
     val portTextField = PortTextField()
     //The button that either locks in the selected port or undoes the selection of the port
     val lockButton = TextButton("________________", Scene2DSkin.defaultSkin)
-    //The id of the hosts's connection to the client
-    var connectionId: Int? = null
-    //The players of the game
-    var players: Array<Player>? = null
 
     /**
      * Initializes the networker as a host and also initializes GUI components
      */
     init {
-        //Sets up networker as a server
-        Networker.init(false)
-        Networker.getServer().addListener(object : Listener() {
-            /**
-             * What happens when someone tries to connect to the host
-             */
-            override fun connected(connection: Connection?) {
-                connectionId = connection!!.id
-                Networker.getServer().removeListener(this)
-            }
-        })
-
         //Sets up portTextField
         this.portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f, Align.center)
         this.portTextField.setAlignment(Align.center)
@@ -60,14 +41,11 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                     return
                 }
                 lockButton.setText(if (portTextField.isDisabled) {
-                    //Unbinds the port
-                    try {
-                        Networker.getServer().bind(0)
-                    } catch (ignored: Exception) {
-                    }
+                    GalacticRushServer.close()
                     confirmPort
                 } else {
-                    Networker.getServer().bind(portTextField.text.toInt(), portTextField.text.toInt())
+                    GalacticRushServer.start()
+                    GalacticRushServer.usePort(portTextField.text.toInt())
                     cancelSelection
                 })
                 portTextField.isDisabled = !portTextField.isDisabled
@@ -98,14 +76,10 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
      */
     override fun draw(delta: Float) {
         this.lockButton.isDisabled = !this.portTextField.isValid
-        if (this.connectionId == null) {
+        if (GalacticRushServer.connections.isEmpty()) {
             return
         }
-        this.players = arrayOf(LocalPlayer(0), NetworkPlayer(1, this.connectionId!!))
-        if (this.players == null) {
-            return
-        }
-        this.game.screen = HostLoadingScreen(this.game, this.players!!)
+        this.game.screen = HostLoadingScreen(this.game, arrayOf(LocalPlayer(0), NetworkPlayer(1, GalacticRushServer.connections.first().id)))
         this.dispose()
     }
 

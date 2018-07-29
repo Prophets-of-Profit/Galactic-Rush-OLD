@@ -7,11 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
-import com.prophetsofprofit.galacticrush.Networker
-import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.FindHostScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.WaitForClientScreen
-import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
+import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
+import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 import ktx.app.use
 import ktx.scene2d.Scene2DSkin
 
@@ -60,7 +59,8 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
                 Gdx.app.exit()
             }
         })
-        Networker.reset()
+        GalacticRushServer.stop()
+        GalacticRushClient.stop()
     }
 
     /**

@@ -7,14 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.esotericsoftware.kryonet.Connection
-import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.Main
-import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.ClientLoadingScreen
 import com.prophetsofprofit.galacticrush.localHostIp
+import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
+import com.prophetsofprofit.galacticrush.networking.SavedHostAddresses
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -26,14 +25,13 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
     val portTextField = PortTextField()
     //The button that starts searching for the specified host
     val confirmButton = TextButton("Connect", Scene2DSkin.defaultSkin)
-    //The id of the connection between the client and the host
-    var connectionId: Int? = null
 
     /**
      * Initializes the networker as a client
      */
     init {
-        Networker.updateSavedAdresses()
+        GalacticRushClient.start()
+        SavedHostAddresses.updateSavedAddresses()
         val fieldAndLabelWidth = this.uiContainer.width * 0.15f
 
         //Sets up the direct connect to address field
@@ -60,7 +58,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         this.confirmButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 try {
-                    Networker.getClient().connect(5000, directConnectField.text, portTextField.text.toInt(), portTextField.text.toInt())
+                    GalacticRushClient.connect(directConnectField.text, portTextField.text.toInt())
                 } catch (e: Exception) {
                     println(e.message)
                 }
@@ -82,8 +80,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
                     return
                 }
                 try {
-                    directConnectField.text = if (Networker.savedAdresses.containsKey(selectableAddressesList.selected)) {
-                        Networker.savedAdresses[selectableAddressesList.selected]
+                    directConnectField.text = if (SavedHostAddresses.savedAddresses.containsKey(selectableAddressesList.selected)) {
+                        SavedHostAddresses.savedAddresses[selectableAddressesList.selected]
                     } else {
                         localAddresses[selectableAddressesList.selected.removePrefix(localAddressString).toInt()].removePrefix("/")
                     }
@@ -99,7 +97,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
 
         //Sets up the thread to look for local connections and update the list
         fun updateSelectableAddressesList() {
-            val allNames: MutableList<String> = Networker.savedAdresses.keys.toMutableList()
+            val allNames: MutableList<String> = SavedHostAddresses.savedAddresses.keys.toMutableList()
             allNames.addAll(localAddresses.mapIndexed { index: Int, _ -> "$localAddressString$index" })
             acceptChange = false
             val prevSelected = selectableAddressesList.selectedIndex
@@ -111,10 +109,10 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
             acceptChange = true
         }
         Thread {
-            while (this.connectionId == null) {
+            while (!GalacticRushClient.isConnected) {
                 updateSelectableAddressesList()
                 try {
-                    localAddresses = Networker.getClient().discoverHosts(this.portTextField.text.toInt(), 5000).map { it.toString() }
+                    localAddresses = GalacticRushClient.discoverHosts(this.portTextField.text.toInt() + 1, 5000).map { "$it" }
                 } catch (ignored: Exception) {
                     Thread.sleep(5000)
                 }
@@ -133,8 +131,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         addButton.align(Align.center)
         addButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Networker.savedAdresses[nameField.text] = directConnectField.text
-                Networker.saveAdresses()
+                SavedHostAddresses.savedAddresses[nameField.text] = directConnectField.text
+                SavedHostAddresses.saveAddresses()
                 updateSelectableAddressesList()
             }
         })
@@ -146,21 +144,9 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         removeButton.align(Align.center)
         removeButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                Networker.savedAdresses.remove(selectableAddressesList.selected)
-                Networker.saveAdresses()
+                SavedHostAddresses.savedAddresses.remove(selectableAddressesList.selected)
+                SavedHostAddresses.saveAddresses()
                 updateSelectableAddressesList()
-            }
-        })
-
-        //Sets up the networker as a client
-        Networker.init(true)
-        /**
-         * What happens when a host is found
-         */
-        Networker.getClient().addListener(object : Listener() {
-            override fun connected(connection: Connection?) {
-                connectionId = connection!!.id
-                Networker.getClient().removeListener(this)
             }
         })
 
@@ -192,7 +178,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
      */
     override fun draw(delta: Float) {
         this.confirmButton.isDisabled = !this.portTextField.isValid
-        if (this.connectionId == null) {
+        if (!GalacticRushClient.isConnected) {
             return
         }
         this.game.screen = ClientLoadingScreen(this.game)
@@ -203,7 +189,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
      * When the screen is left, the addresses that the user has saved are written to file
      */
     override fun leave() {
-        Networker.saveAdresses()
+        SavedHostAddresses.saveAddresses()
     }
 
 }

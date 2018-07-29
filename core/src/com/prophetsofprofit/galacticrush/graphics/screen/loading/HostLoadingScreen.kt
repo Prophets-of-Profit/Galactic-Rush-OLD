@@ -1,14 +1,10 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.loading
 
 import com.prophetsofprofit.galacticrush.Main
-import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
-import com.prophetsofprofit.galacticrush.kryo
-import com.prophetsofprofit.galacticrush.logic.Game
-import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
-import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.logic.player.Player
+import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 
 /**
  * The screen that handles loading and initializing the game
@@ -16,22 +12,16 @@ import com.prophetsofprofit.galacticrush.logic.player.Player
  */
 class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(game) {
 
-    //The game that the host is constructing
-    var mainGame: Game? = null
-
     /**
      * Constructs the galaxy
      */
     override fun load() {
         Thread.sleep(50) //Necessary to ensure that this.players isn't null
-        this.mainGame = Game(this.players.map { it.id }.toTypedArray(), Galaxy(100, this.players.map { it.id }))
-        this.players.forEach {
-            it.game = this.mainGame!!
-            if (it is NetworkPlayer) {
-                Networker.getServer().sendToTCP(it.connectionId, it)
-            } else if (it is LocalPlayer) {
-                it.hostedGame = kryo.copy(mainGame!!)
-            }
+        Thread {
+            GalacticRushServer.runGame(this.players)
+        }.start()
+        while (GalacticRushServer.hostedGame == null) {
+            Thread.sleep(50)
         }
     }
 

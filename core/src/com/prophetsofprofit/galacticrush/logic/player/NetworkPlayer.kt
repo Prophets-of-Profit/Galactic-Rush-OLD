@@ -1,9 +1,9 @@
 package com.prophetsofprofit.galacticrush.logic.player
 
-import com.prophetsofprofit.galacticrush.Networker
 import com.prophetsofprofit.galacticrush.logic.Change
-import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
+import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 
 /**
  * A player that plays on a different machine on the network
@@ -21,7 +21,7 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
      * After sending change, listens for an updated game to set as this player's game
      */
     override fun submitChanges() {
-        Networker.getClient().sendTCP(this.currentChanges)
+        GalacticRushClient.sendTCP(this.currentChanges)
         this.currentChanges = Change(this.id)
     }
 
@@ -30,7 +30,7 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
      */
     override fun receiveNewGameState(newGame: Game) {
         this.game = newGame
-        Networker.getServer().sendToTCP(this.connectionId, newGame)
+        GalacticRushServer.sendToTCP(this.connectionId, newGame)
     }
 
 }

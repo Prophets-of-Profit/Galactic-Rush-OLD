@@ -12,6 +12,8 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.SplashScreen
+import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
+import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -57,6 +59,8 @@ class Main : Game() {
         this.batch.dispose()
         this.shapeRenderer.dispose()
         this.screen.dispose()
+        GalacticRushServer.dispose()
+        GalacticRushClient.dispose()
     }
 
     /**
