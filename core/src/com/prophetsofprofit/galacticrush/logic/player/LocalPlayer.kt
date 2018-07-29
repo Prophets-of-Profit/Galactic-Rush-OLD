@@ -25,37 +25,33 @@ class LocalPlayer(id: Int) : Player(id) {
      * When a LocalPlayer is made, networking logic is initialized to receive changes and send the game
      */
     init {
-        //TODO: below line is for dev version: remove on release
-        if (Networker.isClient == false) {
-            Networker.getServer().addListener(object : Listener() {
-                override fun received(connection: Connection?, obj: Any?) {
-                    if (obj is Change) {
-                        hostedGame.collectChange(obj)
-                    }
+        Networker.getServer().addListener(object : Listener() {
+            override fun received(connection: Connection?, obj: Any?) {
+                if (obj is Change) {
+                    hostedGame.collectChange(obj)
                 }
-            })
-            Thread {
-                //TODO: exit condition
-                while (true) {
-                    try {
-                        if (!this.hostedGame.gameChanged) {
-                            Thread.sleep(50)
-                            continue
-                        }
-                        this.hostedGame.gameChanged = false
-                        Networker.getServer().sendToAllTCP(this.hostedGame)
-                        this.receiveNewGameState(this.hostedGame)
-                        while (this.hostedGame.drones.any { !it.queueFinished }) {
-                            this.hostedGame.doDroneTurn()
-                        }
-                        this.hostedGame.drones.forEach { it.resetQueue() }
-                        Networker.getServer().sendToAllTCP(this.hostedGame)
-                        this.receiveNewGameState(this.hostedGame)
-                    } catch (ignored: Exception) {
+            }
+        })
+        Thread {
+            while (Networker.isClient == false) {
+                try {
+                    if (!this.hostedGame.gameChanged) {
+                        Thread.sleep(50)
+                        continue
                     }
+                    this.hostedGame.gameChanged = false
+                    Networker.getServer().sendToAllTCP(this.hostedGame)
+                    this.receiveNewGameState(this.hostedGame)
+                    while (this.hostedGame.drones.any { !it.queueFinished }) {
+                        this.hostedGame.doDroneTurn()
+                    }
+                    this.hostedGame.drones.forEach { it.resetQueue() }
+                    Networker.getServer().sendToAllTCP(this.hostedGame)
+                    this.receiveNewGameState(this.hostedGame)
+                } catch (ignored: Exception) {
                 }
-            }.start()
-        }
+            }
+        }.start()
     }
 
     /**

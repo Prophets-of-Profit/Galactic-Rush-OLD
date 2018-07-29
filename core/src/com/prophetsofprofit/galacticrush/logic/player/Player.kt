@@ -1,7 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic.player
 
 import com.prophetsofprofit.galacticrush.logic.Change
-import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
 
 /**

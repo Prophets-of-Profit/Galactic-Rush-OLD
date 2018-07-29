@@ -61,16 +61,6 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
             }
         })
         Networker.reset()
-
-        val tempDemoButton = TextButton("DEV", Scene2DSkin.defaultSkin)
-        tempDemoButton.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.15f, Align.center)
-        tempDemoButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                game.screen = HostLoadingScreen(game, arrayOf(LocalPlayer(0)))
-                dispose()
-            }
-        })
-        this.uiContainer.addActor(tempDemoButton)
     }
 
     /**
