@@ -10,6 +10,7 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.Overlay
+import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
@@ -40,6 +41,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val overlay = Overlay(this)
     //The mechanism to handle panning the screen over a time
     val panHandler = PanHandler(this.game.camera)
+    //The mechanism that handles animating turn transitions
+    val turnAnimationHandler = TurnAnimationHandler(this)
     //The game menu for handling options and quitting, etc
     val gameMenu = PauseMenu(this)
     //The confirmation menu for quitting
@@ -92,13 +95,27 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         }
         //Draw arrows pointing at the selected planet
         this.game.shapeRenderer.end()
+        this.turnAnimationHandler.update(delta)
         this.game.batch.begin()
+        this.drawTurnChanges()
         this.drawSelectionArrows()
         this.drawDrones()
         this.game.batch.end()
         //Updates game information and animations
         this.overlay.update()
         this.panHandler.update(delta)
+        if (this.mainGame.droneTurnChanges.isEmpty()) {
+            this.oldGameState = kryo.copy(this.mainGame)
+        } else {
+            this.animateChange()
+        }
+    }
+
+    /**
+     * Draws all sprites that are being handles by the turn handler
+     */
+    private fun drawTurnChanges() {
+        this.turnAnimationHandler.currentlyMoving.keys.forEach { it.draw(this.game.batch) }
     }
 
     /**
@@ -162,6 +179,20 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 p.y * this.game.camera.viewportHeight - this.game.camera.position.y,
                 0.5f - this.game.camera.zoom,
                 0.1f)
+    }
+
+    /**
+     * Animate the difference between two game states
+     */
+    fun animateChange() {
+        for (change in this.mainGame.droneTurnChanges) {
+            for (drone in change.changedDrones) {
+                if (drone.locationId != this.oldGameState!!.drones.first { it.ownerId == drone.ownerId && it.creationTime == drone.creationTime }.locationId) {
+                    this.turnAnimationHandler.move(drone, this.oldGameState!!.galaxy.getPlanetWithId(this.oldGameState!!.drones.first { it.ownerId == drone.ownerId && it.creationTime == drone.creationTime }.locationId)!!, this.mainGame.galaxy.getPlanetWithId(drone.locationId)!!)
+                }
+            }
+        }
+        mainGame.droneTurnChanges.clear()
     }
 
     /**

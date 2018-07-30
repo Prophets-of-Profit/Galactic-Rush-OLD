@@ -38,8 +38,13 @@ class Drone(val ownerId: Int, var locationId: Int) {
     var queueFinished = false
     //Whether the drone is destroyed or not
     var isDestroyed = false
-    //What the drone displays as
+    //What the drone displays as in lists
     var name = "Drone"
+    //What the drone looks like on the map
+    val image: Texture
+        get() {
+            return baseDroneImage
+        }
 
     /**
      * Empty constructor for serialization
