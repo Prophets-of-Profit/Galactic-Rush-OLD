@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.drone
 
 import com.badlogic.gdx.graphics.Texture
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
@@ -46,6 +47,43 @@ class Drone(val ownerId: Int, var locationId: Int) {
     constructor() : this(-1, -1)
 
     /**
+     * Adds the given instruction this drone at the specified location
+     */
+    fun addInstruction(instruction: Instruction, galaxy: Galaxy, locationIndex: Int = this.instructions.size) {
+        when (locationIndex) {
+            this.instructions.size -> this.instructions.add(InstructionInstance(instruction))
+            0 -> {
+                val copy = this.instructions.toMutableList()
+                this.instructions.clear()
+                this.instructions.add(InstructionInstance(instruction))
+                this.instructions.addAll(copy)
+            }
+            else -> {
+                this.instructions.add(InstructionInstance(Instruction.NONE))
+                (locationIndex until this.instructions.size).reversed().forEach { this.instructions[it] = this.instructions[it - 1] }
+                this.instructions[locationIndex] = InstructionInstance(instruction)
+            }
+        }
+        instruction.addAction(this, galaxy)
+    }
+
+    /**
+     * Removes the first instance of the given instruction
+     */
+    fun removeInstruction(instruction: InstructionInstance, galaxy: Galaxy) {
+        instruction.baseInstruction.removeAction(this, galaxy)
+        this.instructions.remove(instruction)
+    }
+
+    /**
+     * Removes the instruction at the given index
+     */
+    fun removeInstruction(locationIndex: Int, galaxy: Galaxy) {
+        this.instructions[locationIndex].baseInstruction.removeAction(this, galaxy)
+        this.instructions.removeAt(locationIndex)
+    }
+
+    /**
      * Calls startCycle for all instructions in the queue
      */
     fun startCycle(galaxy: Galaxy) {
@@ -88,6 +126,9 @@ class Drone(val ownerId: Int, var locationId: Int) {
     fun resetQueue() {
         this.pointer = 0
         this.queueFinished = false
+        this.selectedPlanet = null
+        this.selectedDroneCreation = null
+        this.selectedDroneOwner = null
     }
 
     /**
@@ -98,7 +139,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
         val numToReceieveExtra = damage % this.instructions.size
         this.instructions.forEach { it.health -= damageToAll }
         this.instructions.subList(0, numToReceieveExtra).forEach { it.health-- }
-        this.instructions.filter { it.health <= 0 }.forEach { it.baseInstruction.removeAction(this, galaxy); this.instructions.remove(it) }
+        this.instructions.filter { it.health <= 0 }.forEach { this.removeInstruction(it, galaxy) }
         this.isDestroyed = this.instructions.isEmpty()
     }
 
