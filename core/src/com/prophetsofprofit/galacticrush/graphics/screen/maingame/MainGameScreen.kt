@@ -10,8 +10,6 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.Overlay
-import com.prophetsofprofit.galacticrush.kryo
-import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Planet
@@ -24,10 +22,11 @@ import kotlin.math.*
  */
 class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, Array(Gdx.files.internal("music/").list().size) { "${Gdx.files.internal("music/").list()[it]}" }) {
 
-    //A variable that stores an older game state if one exists; TODO: animate difference between mainGame and oldGameState
-    var oldGameState: Game? = null
+    //A convenience getter that gets the old game state of the player
+    val oldGameState
+        get() = this.player.oldGameState
     //A convenience getter for the game because the player's game will continuously change
-    val mainGame: Game
+    val mainGame
         get() = this.player.game
     //The smallest (closest) zoom factor allowed
     val minZoom = 0.1f
@@ -104,9 +103,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         //Updates game information and animations
         this.overlay.update()
         this.panHandler.update(delta)
-        if (this.mainGame.droneTurnChanges.isEmpty()) {
-            this.oldGameState = kryo.copy(this.mainGame)
-        } else {
+        if (this.mainGame.droneTurnChanges.isNotEmpty()) {
             this.animateChange()
         }
     }
@@ -187,8 +184,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     fun animateChange() {
         for (change in this.mainGame.droneTurnChanges) {
             for (drone in change.changedDrones) {
-                if (drone.locationId != this.oldGameState!!.drones.first { it.ownerId == drone.ownerId && it.creationTime == drone.creationTime }.locationId) {
-                    this.turnAnimationHandler.move(drone, this.oldGameState!!.galaxy.getPlanetWithId(this.oldGameState!!.drones.first { it.ownerId == drone.ownerId && it.creationTime == drone.creationTime }.locationId)!!, this.mainGame.galaxy.getPlanetWithId(drone.locationId)!!)
+                if (drone.locationId != this.oldGameState.drones.first { it.ownerId == drone.ownerId && it.creationTime == drone.creationTime }.locationId) {
+                    this.turnAnimationHandler.move(drone, this.oldGameState.galaxy.getPlanetWithId(this.oldGameState.drones.first { it.ownerId == drone.ownerId && it.creationTime == drone.creationTime }.locationId)!!, this.mainGame.galaxy.getPlanetWithId(drone.locationId)!!)
                 }
             }
         }
