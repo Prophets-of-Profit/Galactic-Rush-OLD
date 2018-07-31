@@ -3,8 +3,8 @@ package com.prophetsofprofit.galacticrush.logic
 import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.base.Base
-import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.base.Facility
+import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 
@@ -62,8 +62,8 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         //TODO: verify change integrity
         //Add all the changes into the game
         for (changedDrone in change.changedDrones) {
-            this.drones.filter { it.ownerId == changedDrone.ownerId && it.creationTime == changedDrone.creationTime }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.remove(it) }
-            changedDrone.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.add(changedDrone)
+            this.drones.filter { it.ownerId == changedDrone.ownerId && it.creationTime == changedDrone.creationTime }.forEach { it.getLocationAmong(this.galaxy)!!.drones.remove(it) }
+            changedDrone.getLocationAmong(this.galaxy)!!.drones.add(changedDrone)
         }
         //TODO apply changes to instructions
         this.waitingOn.remove(change.ownerId)
@@ -92,9 +92,9 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         //Complete the actions of all the drones who can do actions in the queue
         this.drones.filterNot { it.queueFinished }.forEach { it.mainAction(this.galaxy); changedDrones.add(kryo.copy(it)) }
         //Removes all of the destroyed drones
-        this.drones.filter { it.isDestroyed }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.drones.remove(it) }
+        this.drones.filter { it.isDestroyed }.forEach { it.getLocationAmong(this.galaxy)!!.drones.remove(it) }
         //Remove all of the destroyed facilities and bases
-        this.bases.filter { it.health <= 0 || it.facilityHealths.isEmpty() }.forEach { it.getLocationAmong(this.galaxy.planets.toTypedArray())!!.base = null }
+        this.bases.filter { it.health <= 0 || it.facilityHealths.isEmpty() }.forEach { it.getLocationAmong(this.galaxy)!!.base = null }
         //If all the drones are now finished, wait for players and reset drones
         if (this.drones.all { it.queueFinished }) {
             this.drones.forEach { it.endCycle(this.galaxy) }

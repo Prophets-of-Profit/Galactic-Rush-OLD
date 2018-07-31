@@ -152,16 +152,16 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Moves the drone to the given planet
      */
     fun moveToPlanet(id: Int, galaxy: Galaxy) {
-        this.getLocationAmong(galaxy.planets.toTypedArray())!!.drones.remove(this)
+        this.getLocationAmong(galaxy)!!.drones.remove(this)
         this.locationId = id
-        this.getLocationAmong(galaxy.planets.toTypedArray())!!.drones.add(this)
+        this.getLocationAmong(galaxy)!!.drones.add(this)
     }
 
     /**
      * Gets the locationId of the drone among a list of planets, or null if it does not exist
      */
-    fun getLocationAmong(planets: Array<Planet>): Planet? {
-        return planets.firstOrNull { it.id == this.locationId }
+    fun getLocationAmong(galaxy: Galaxy): Planet? {
+        return galaxy.planets.firstOrNull { it.id == this.locationId }
     }
 
     /**

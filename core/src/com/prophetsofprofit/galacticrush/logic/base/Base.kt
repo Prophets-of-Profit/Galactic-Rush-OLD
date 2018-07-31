@@ -1,5 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic.base
 
+import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 
 /**
@@ -31,8 +32,8 @@ class Base(val ownerId: Int, val locationId: Int, facilities: Array<Facility>) {
     /**
      * Gets the locationId of the base among a list of planets, or null if it does not exist
      */
-    fun getLocationAmong(planets: Array<Planet>): Planet? {
-        return planets.firstOrNull { it.id == this.locationId }
+    fun getLocationAmong(galaxy: Galaxy): Planet? {
+        return galaxy.planets.firstOrNull { it.id == this.locationId }
     }
 
     /**
