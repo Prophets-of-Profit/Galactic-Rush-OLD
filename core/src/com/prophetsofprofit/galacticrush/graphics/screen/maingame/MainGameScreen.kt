@@ -32,8 +32,11 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val minZoom = 0.1f
     //The highest (furthest) zoom factor allowed
     val maxZoom = 1f
+    //The id of the planet currently selected by the player
+    var selectedPlanetId: Int? = null
     //The planet currently selected by the player
-    var selectedPlanet: Planet? = null
+    val selectedPlanet: Planet?
+        get() = this.mainGame.galaxy.getPlanetWithId(this.selectedPlanetId ?: -1)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
     //The permanent overlay of the game screen; see Overlay
@@ -62,7 +65,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(this.submitConfirmation)
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
         this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id &&  it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
-        this.overlay.planetOverlay.update()
+        this.overlay.update()
     }
 
     /**
@@ -171,7 +174,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Selects a planet and moves the camera to it and zooms in a little
      */
     fun selectPlanet(p: Planet) {
-        this.selectedPlanet = p
+        this.selectedPlanetId = p.id
         this.panHandler.add(p.x * this.game.camera.viewportWidth - this.game.camera.position.x,
                 p.y * this.game.camera.viewportHeight - this.game.camera.position.y,
                 0.5f - this.game.camera.zoom,
@@ -239,10 +242,10 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             return false
         }
         //Leaving this here for convenience, in case we want to disable centering on planet when selecting it
-        this.selectedPlanet = this.mainGame.galaxy.planets.firstOrNull {
+        this.selectedPlanetId = this.mainGame.galaxy.planets.firstOrNull {
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
-        }
+        }?.id
         if (this.selectedPlanet != null) this.selectPlanet(this.selectedPlanet!!)
         return this.selectedPlanet != null
     }

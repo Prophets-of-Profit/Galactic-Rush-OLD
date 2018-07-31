@@ -1,15 +1,10 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.maingame
 
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Group
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Planet
-import ktx.scene2d.Scene2DSkin
-import kotlin.math.atan2
 import kotlin.math.PI
+import kotlin.math.atan2
 
 /**
  * Handles animating transitions between turns
@@ -45,7 +40,6 @@ class TurnAnimationHandler(val mainGameScreen: MainGameScreen) {
         val dy = (p1.y - p0.y) * this.mainGameScreen.game.camera.viewportHeight
         val droneImage = Sprite(drone.image)
         droneImage.setCenter(p0.x * this.mainGameScreen.game.camera.viewportWidth, p0.y * this.mainGameScreen.game.camera.viewportHeight)
-        println("dx: $dx , dy: $dy, rotation = ${(atan2(dx, dy) * 180 / PI).toFloat()}")
         droneImage.rotation = (atan2(dy, dx) * 180 / PI).toFloat()
         //Ensure the drone image is not already moving
         this.currentlyMoving.remove(droneImage)
