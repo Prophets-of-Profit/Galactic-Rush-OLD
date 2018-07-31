@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
-import com.prophetsofprofit.galacticrush.logic.map.Planet
 import java.util.*
 
 //How the drone looks by default
@@ -55,28 +54,29 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Adds the given instruction this drone at the specified location
      */
     fun addInstruction(instruction: Instruction, galaxy: Galaxy, locationIndex: Int = this.instructions.size) {
+        val instance = InstructionInstance(instruction)
         when (locationIndex) {
             this.instructions.size -> this.instructions.add(InstructionInstance(instruction))
             0 -> {
                 val copy = this.instructions.toMutableList()
                 this.instructions.clear()
-                this.instructions.add(InstructionInstance(instruction))
+                this.instructions.add(instance)
                 this.instructions.addAll(copy)
             }
             else -> {
                 this.instructions.add(InstructionInstance(Instruction.NONE))
                 (locationIndex until this.instructions.size).reversed().forEach { this.instructions[it] = this.instructions[it - 1] }
-                this.instructions[locationIndex] = InstructionInstance(instruction)
+                this.instructions[locationIndex] = instance
             }
         }
-        instruction.addAction(this, galaxy)
+        instruction.addAction(this, galaxy, instance)
     }
 
     /**
      * Removes the first instance of the given instruction
      */
     fun removeInstruction(instruction: InstructionInstance, galaxy: Galaxy) {
-        instruction.baseInstruction.removeAction(this, galaxy)
+        instruction.baseInstruction.removeAction(this, galaxy, instruction)
         this.instructions.remove(instruction)
     }
 
@@ -84,7 +84,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Removes the instruction at the given index
      */
     fun removeInstruction(locationIndex: Int, galaxy: Galaxy) {
-        this.instructions[locationIndex].baseInstruction.removeAction(this, galaxy)
+        this.instructions[locationIndex].baseInstruction.removeAction(this, galaxy, this.instructions[locationIndex])
         this.instructions.removeAt(locationIndex)
     }
 
@@ -92,7 +92,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Calls startCycle for all instructions in the queue
      */
     fun startCycle(galaxy: Galaxy) {
-        this.instructions.forEach { it.baseInstruction.startCycleAction(this, galaxy) }
+        this.instructions.forEach { it.baseInstruction.startCycleAction(this, galaxy, it) }
     }
 
     /**
@@ -103,7 +103,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
             this.queueFinished = true
             return
         }
-        this.instructions[this.pointer].baseInstruction.mainAction(this, galaxy)
+        this.instructions[this.pointer].baseInstruction.mainAction(this, galaxy, this.instructions[this.pointer])
         this.advancePointer(1)
     }
 
@@ -111,7 +111,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Calls endCycle for all instructions in the queue
      */
     fun endCycle(galaxy: Galaxy) {
-        this.instructions.forEach { it.baseInstruction.endCycleAction(this, galaxy) }
+        this.instructions.forEach { it.baseInstruction.endCycleAction(this, galaxy, it) }
     }
 
     /**

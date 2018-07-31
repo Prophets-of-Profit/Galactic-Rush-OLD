@@ -5,7 +5,7 @@ import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 
 //Utility alias for calling (Drone, Galaxy) -> Unit a DroneAction
-typealias DroneAction = (Drone, Galaxy) -> Unit
+typealias DroneAction = (Drone, Galaxy, InstructionInstance) -> Unit
 
 /**
  * A class that represents an instruction which is something a drone can do
@@ -21,11 +21,11 @@ enum class Instruction(
         val memorySize: Int,
         val health: Int,
         val types: Array<InstructionType>,
-        val addAction: DroneAction = { _, _ -> },
-        val removeAction: DroneAction = { _, _ -> },
-        val startCycleAction: DroneAction = { _, _ -> },
-        val mainAction: DroneAction = { _, _ -> },
-        val endCycleAction: DroneAction = { _, _ -> }
+        val addAction: DroneAction = { _, _, _ -> },
+        val removeAction: DroneAction = { _, _, _ -> },
+        val startCycleAction: DroneAction = { _, _, _ -> },
+        val mainAction: DroneAction = { _, _, _ -> },
+        val endCycleAction: DroneAction = { _, _, _ -> }
 ) {
     NONE("None", 0, 100000, 100000, arrayOf()),
     SELECT_HOTTEST(
@@ -33,8 +33,8 @@ enum class Instruction(
             30,
             1,
             3,
-            arrayOf(), //TODO: ?
-            mainAction = { drone, galaxy ->
+            arrayOf(InstructionType.MODIFICATION),
+            mainAction = { drone, galaxy, _ ->
                 drone.selectedPlanet = galaxy.planetsAdjacentTo(drone.locationId)
                         .map { galaxy.getPlanetWithId(it)!! }
                         .reduce { hottestPlanet, currentPlanet -> if (hottestPlanet.attributes[Attribute.TEMPERATURE]!! > currentPlanet.attributes[Attribute.TEMPERATURE]!!) hottestPlanet else currentPlanet }.id
@@ -46,11 +46,28 @@ enum class Instruction(
         2,
         5,
         arrayOf(InstructionType.MOVEMENT),
-        mainAction = { drone, galaxy ->
+            mainAction = { drone, galaxy, _ ->
             if (drone.selectedPlanet != null) {
                 drone.moveToPlanet(drone.selectedPlanet!!, galaxy)
             }
         }
+    ),
+    LOOP_3(
+            "Loop All Previous Instructions 3 times",
+            3,
+            3,
+            8,
+            arrayOf(InstructionType.ORDER),
+            startCycleAction = { _, _, instance ->
+                instance.data["counter"] = "3"
+            },
+            mainAction = { drone, _, instance ->
+                val counter = instance.data["counter"]!!.toInt()
+                if (counter > 0) {
+                    drone.pointer = 0
+                    instance.data["counter"] = "${counter - 1}"
+                }
+            }
     )
 }
 
@@ -58,7 +75,11 @@ enum class Instruction(
  * A class that is an instruction but with mutable properties
  */
 class InstructionInstance(val baseInstruction: Instruction) {
+
+    //The health of the instruction
     var health = this.baseInstruction.health
+    //A hashmap of all of the mutable data that the instruction is using/uses
+    internal val data = mutableMapOf<String, String>()
 
     /**
      * Empty constructor for serialization
