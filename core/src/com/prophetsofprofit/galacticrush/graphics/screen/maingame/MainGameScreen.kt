@@ -189,6 +189,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 }
             }
         }
+        this.overlay.update()
         mainGame.droneTurnChanges.clear()
     }
 
