@@ -1,5 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic.drone.instruction
 
+import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
@@ -66,6 +67,19 @@ enum class Instruction(
                 if (counter > 0) {
                     drone.pointer = 0
                     instance.data["counter"] = "${counter - 1}"
+                }
+            }
+    ),
+    CONSTRUCT_BASE(
+            "Construct a Base on Current Planet",
+            3,
+            5,
+            5,
+            arrayOf(InstructionType.CONSTRUCTION),
+            mainAction = { drone, galaxy, _ ->
+                val dronePlanet = galaxy.getPlanetWithId(drone.locationId)!!
+                if (dronePlanet.base == null) {
+                    dronePlanet.base = Base(drone.ownerId, drone.locationId, arrayOf())
                 }
             }
     )
