@@ -25,7 +25,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
     val totalMemory = 10
     //A convenience getter to get how much free memory the drone has
     val memoryAvailable
-        get() = this.totalMemory - instructions.fold(0) { consumedMemory, instruction -> consumedMemory + instruction.baseInstruction.memorySize }
+        get() = this.totalMemory - instructions.sumBy { it.baseInstruction.memorySize }
     //Which instruction the drone is currently reading
     var pointer = 0
     //The id of the planet that the drone has selected
