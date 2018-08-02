@@ -28,11 +28,10 @@ class Drone(val ownerId: Int, var locationId: Int) {
         get() = this.totalMemory - instructions.fold(0) { consumedMemory, instruction -> consumedMemory + instruction.baseInstruction.memorySize }
     //Which instruction the drone is currently reading
     var pointer = 0
-    //The planet that the drone has selected
-    var selectedPlanet: Int? = null
-    //The drone that this drone has selected
-    var selectedDroneCreation: Date? = null
-    var selectedDroneOwner: Int? = null
+    //The id of the planet that the drone has selected
+    var selectedPlanetId: Int? = null
+    //The id of the drone that this drone has selected
+    var selectedDroneId: Pair<Int, Date>? = null
     //Whether the drone is done completing its command queue
     var queueFinished = false
     //Whether the drone is destroyed or not
@@ -134,9 +133,8 @@ class Drone(val ownerId: Int, var locationId: Int) {
     fun resetQueue() {
         this.pointer = 0
         this.queueFinished = false
-        this.selectedPlanet = null
-        this.selectedDroneCreation = null
-        this.selectedDroneOwner = null
+        this.selectedPlanetId = null
+        this.selectedDroneId = null
     }
 
     /**

@@ -36,7 +36,7 @@ enum class Instruction(
             3,
             arrayOf(InstructionType.MODIFICATION),
             mainAction = { drone, galaxy, _ ->
-                drone.selectedPlanet = galaxy.planetsAdjacentTo(drone.locationId)
+                drone.selectedPlanetId = galaxy.planetsAdjacentTo(drone.locationId)
                         .map { galaxy.getPlanetWithId(it)!! }
                         .reduce { hottestPlanet, currentPlanet -> if (hottestPlanet.attributes[Attribute.TEMPERATURE]!! > currentPlanet.attributes[Attribute.TEMPERATURE]!!) hottestPlanet else currentPlanet }.id
             }
@@ -48,8 +48,8 @@ enum class Instruction(
             5,
             arrayOf(InstructionType.MOVEMENT),
             mainAction = { drone, galaxy, _ ->
-                if (drone.selectedPlanet != null) {
-                    drone.moveToPlanet(drone.selectedPlanet!!, galaxy)
+                if (drone.selectedPlanetId != null) {
+                    drone.moveToPlanet(drone.selectedPlanetId!!, galaxy)
                 }
             }
     ),
@@ -90,9 +90,7 @@ enum class Instruction(
             20,
             arrayOf(InstructionType.MODIFICATION),
             mainAction = { drone, galaxy, instance ->
-                val selectedDrone = galaxy.getDroneWithId(Pair(drone.selectedDroneOwner
-                        ?: -1, drone.selectedDroneCreation
-                        ?: java.util.Date(-1)))
+                val selectedDrone = galaxy.getDroneWithId(drone.selectedDroneId)
                 if (selectedDrone != null && selectedDrone.memoryAvailable >= instance.baseInstruction.memorySize) {
                     selectedDrone.addInstruction(instance.baseInstruction, galaxy)
                 }
