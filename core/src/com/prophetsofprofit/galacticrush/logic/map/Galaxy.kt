@@ -51,7 +51,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         var planetChoice: Planet
         for (i in 0 until playerIDs.size) {
             planetChoice = pickablePlanets.shuffled()[0]
-            planetChoice.base = Base(playerIDs[i], planetChoice.id, arrayOf(Facility.HOME_BASE, Facility.CONSTUCTION, Facility.PROGRAMMING))
+            planetChoice.base = Base(playerIDs[i], planetChoice.id, arrayOf(Facility.HOME_BASE, Facility.CONSTRUCTION, Facility.PROGRAMMING))
             pickablePlanets.remove(planetChoice)
         }
     }

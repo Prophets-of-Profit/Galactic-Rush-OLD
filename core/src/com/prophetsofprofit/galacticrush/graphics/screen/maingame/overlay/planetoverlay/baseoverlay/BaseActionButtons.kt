@@ -63,7 +63,7 @@ class BaseActionButtons(val gameScreen: MainGameScreen, val bottomLeftX: Float, 
      */
     fun update() {
         this.isVisible = this.gameScreen.selectedPlanet!!.base!!.ownerId == this.gameScreen.player.id
-        this.createDroneButton.isVisible = Facility.CONSTUCTION in this.gameScreen.selectedPlanet!!.base!!.facilityHealths
+        this.createDroneButton.isVisible = Facility.CONSTRUCTION in this.gameScreen.selectedPlanet!!.base!!.facilityHealths
         this.modifyDroneButton.isVisible = Facility.PROGRAMMING in this.gameScreen.selectedPlanet!!.base!!.facilityHealths
     }
 
