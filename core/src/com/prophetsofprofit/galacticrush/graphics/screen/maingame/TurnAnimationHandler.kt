@@ -41,8 +41,6 @@ class TurnAnimationHandler(val mainGameScreen: MainGameScreen) {
         val droneImage = Sprite(drone.image)
         droneImage.setCenter(p0.x * this.mainGameScreen.game.camera.viewportWidth, p0.y * this.mainGameScreen.game.camera.viewportHeight)
         droneImage.rotation = (atan2(dy, dx) * 180 / PI).toFloat()
-        //Ensure the drone image is not already moving
-        this.currentlyMoving.remove(droneImage)
         //Queue the drone image for an animation
         this.currentlyMoving[droneImage] = arrayOf(dx, dy, this.transitionTime, this.transitionTime)
     }

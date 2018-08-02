@@ -35,7 +35,7 @@ class BaseActionButtons(val gameScreen: MainGameScreen, val bottomLeftX: Float, 
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 val newDrone = Drone(gameScreen.player.id, gameScreen.selectedPlanet!!.id)
                 //TODO: below line is temporary
-                arrayOf(Instruction.SELECT_HOTTEST, Instruction.MOVE_SELECTED).forEach { newDrone.addInstruction(it, gameScreen.mainGame.galaxy) }
+                arrayOf(Instruction.SELECT_HOTTEST, Instruction.MOVE_SELECTED, Instruction.SELECT_HOTTEST, Instruction.MOVE_SELECTED).forEach { newDrone.addInstruction(it, gameScreen.mainGame.galaxy) }
                 gameScreen.selectedPlanet!!.drones.add(newDrone)
                 gameScreen.player.currentChanges.changedDrones.add(newDrone)
             }

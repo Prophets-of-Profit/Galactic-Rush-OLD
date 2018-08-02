@@ -45,6 +45,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val panHandler = PanHandler(this.game.camera)
     //The mechanism that handles animating turn transitions
     val turnAnimationHandler = TurnAnimationHandler(this)
+    //The change that is currently being animated
+    var turnAnimationPointer = 0
     //The game menu for handling options and quitting, etc
     val gameMenu = PauseMenu(this)
     //The confirmation menu for quitting
@@ -106,8 +108,13 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         //Updates game information and animations
         this.overlay.update()
         this.panHandler.update(delta)
-        if (this.mainGame.droneTurnChanges.isNotEmpty()) {
-            this.animateChange()
+        if (this.mainGame.droneTurnChanges.isNotEmpty() && this.turnAnimationPointer < this.mainGame.droneTurnChanges.size) {
+            if (this.turnAnimationHandler.currentlyMoving.isEmpty())
+                this.animateChange()
+        }
+        else {
+            this.mainGame.droneTurnChanges.clear()
+            this.turnAnimationPointer = 0
         }
     }
 
@@ -185,15 +192,21 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Animate the difference between two game states
      */
     fun animateChange() {
-        for (change in this.mainGame.droneTurnChanges) {
-            for (drone in change.changedDrones) {
-                if (drone.locationId != this.oldGameState.drones.first { it.ownerId == drone.ownerId && it.creationTime == drone.creationTime }.locationId) {
-                    this.turnAnimationHandler.move(drone, this.oldGameState.galaxy.getPlanetWithId(this.oldGameState.drones.first { it.ownerId == drone.ownerId && it.creationTime == drone.creationTime }.locationId)!!, this.mainGame.galaxy.getPlanetWithId(drone.locationId)!!)
-                }
+        for (drone in this.mainGame.droneTurnChanges[this.turnAnimationPointer].changedDrones) {
+            //Get the most recent version of the drone
+            var recentTime = this.mainGame.droneTurnChanges.slice(0 until this.turnAnimationPointer)
+                                .filter { it.changedDrones.any { it.id == drone.id } }
+                                .lastOrNull()
+            var location = this.oldGameState.drones.first { it.id == drone.id }.locationId
+            if (recentTime != null) {
+                location = recentTime.changedDrones.first { it.id == drone.id }.locationId
+            }
+            //Update the drone's position with an animation if it moved
+            if (drone.locationId != location) {
+                this.turnAnimationHandler.move(drone, this.oldGameState.galaxy.getPlanetWithId(location)!!, this.mainGame.galaxy.getPlanetWithId(drone.locationId)!!)
             }
         }
-        this.overlay.update()
-        mainGame.droneTurnChanges.clear()
+        this.turnAnimationPointer++
     }
 
     /**
