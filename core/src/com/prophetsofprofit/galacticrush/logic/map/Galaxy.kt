@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Intersector
 import com.badlogic.gdx.math.Vector2
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
+import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import java.util.*
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -20,6 +22,14 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     val planets = mutableListOf<Planet>()
     //The cosmic highways that are in the galaxy: serve as the 'paths' or 'connections' of the game
     val highways = mutableListOf<CosmicHighway>()
+    //The drones that currently exist in the game; should be ordered in order of creation
+    val drones: Array<Drone>
+        get() {
+            return this.planets.fold(mutableListOf<Drone>()) { list, currentPlanet -> list.addAll(currentPlanet.drones); list }.sortedBy { it.creationTime }.toTypedArray()
+        }
+    //The bases that currently exist in the game; ordered arbitrarily
+    val bases: Array<Base>
+        get() = this.planets.mapNotNull { it.base }.toTypedArray()
 
     /**
      * Empty constructor for serialization
@@ -176,6 +186,13 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
      */
     fun getPlanetWithId(id: Int): Planet? {
         return this.planets.firstOrNull { it.id == id }
+    }
+
+    /**
+     * Gets the drone with the specified drone information
+     */
+    fun getDroneWithInformation(creation: Date, ownerId: Int): Drone? {
+        return this.drones.firstOrNull { it.creationTime == creation && it.ownerId == ownerId }
     }
 
 }

@@ -4,6 +4,7 @@ import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
+import java.util.*
 
 //Utility alias for calling (Drone, Galaxy) -> Unit a DroneAction
 typealias DroneAction = (Drone, Galaxy, InstructionInstance) -> Unit
@@ -43,15 +44,15 @@ enum class Instruction(
     ),
     MOVE_SELECTED(
             "Move to Selected Planet",
-        10,
-        2,
-        5,
-        arrayOf(InstructionType.MOVEMENT),
+            10,
+            2,
+            5,
+            arrayOf(InstructionType.MOVEMENT),
             mainAction = { drone, galaxy, _ ->
-            if (drone.selectedPlanet != null) {
-                drone.moveToPlanet(drone.selectedPlanet!!, galaxy)
+                if (drone.selectedPlanet != null) {
+                    drone.moveToPlanet(drone.selectedPlanet!!, galaxy)
+                }
             }
-        }
     ),
     LOOP_3(
             "Loop All Previous Instructions 3 times",
@@ -82,6 +83,20 @@ enum class Instruction(
                     dronePlanet.base = Base(drone.ownerId, drone.locationId, arrayOf())
                 }
             }
+    ),
+    VIRUS(
+            "Spread a Virus Instruction to the Selected Drone",
+            2,
+            8,
+            20,
+            arrayOf(InstructionType.MODIFICATION),
+            mainAction = { drone, galaxy, instance ->
+                val selectedDrone = galaxy.getDroneWithInformation(drone.selectedDroneCreation
+                        ?: Date(-1), drone.selectedDroneOwner ?: -1)
+                if (selectedDrone != null && selectedDrone.memoryAvailable >= instance.baseInstruction.memorySize) {
+                    selectedDrone.addInstruction(instance.baseInstruction, galaxy)
+                }
+            }
     )
 }
 
@@ -98,6 +113,6 @@ class InstructionInstance(val baseInstruction: Instruction) {
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(Instruction.NONE)
+    constructor() : this(Instruction.NONE)
 
 }

@@ -23,12 +23,10 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     var turnsPlayed = 0
     //The drones that currently exist in the game; should be ordered in order of creation
     val drones: Array<Drone>
-        get() {
-            return this.galaxy.planets.fold(mutableListOf<Drone>()) { list, currentPlanet -> list.addAll(currentPlanet.drones); list }.sortedBy { it.creationTime }.toTypedArray()
-        }
+        get() = this.galaxy.drones
     //The bases that currently exist in the game; ordered arbitrarily
     val bases: Array<Base>
-        get() = this.galaxy.planets.mapNotNull { it.base }.toTypedArray()
+        get() = this.galaxy.bases
     //The players that are still in the game
     val players: Array<Int>
         get() = this.bases.filter { it.facilityHealths.containsKey(Facility.HOME_BASE) }.map { it.ownerId }.toTypedArray()
