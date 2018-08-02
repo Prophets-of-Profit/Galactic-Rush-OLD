@@ -45,6 +45,7 @@ object GalacticRushClient : Client(bufferSize, bufferSize) {
         val timeout = 10_000
         this.connect(timeout, ipAddress, tcpPort, tcpPort + 1)
         if (!this.initialListenerAdded) {
+            this.player = null
             this.addListener(this.initialListener)
             this.initialListenerAdded = true
         }
