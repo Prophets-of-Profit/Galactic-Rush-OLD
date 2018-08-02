@@ -11,9 +11,10 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.ClientLoadingScreen
+import com.prophetsofprofit.galacticrush.jsonObject
 import com.prophetsofprofit.galacticrush.localHostIp
 import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
-import com.prophetsofprofit.galacticrush.networking.SavedHostAddresses
+import com.prophetsofprofit.galacticrush.userAddressesFile
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -21,6 +22,8 @@ import ktx.scene2d.Scene2DSkin
  */
 class FindHostScreen(game: Main) : GalacticRushScreen(game) {
 
+    //The host addresses that the user has saved; keys are name of host and values are address
+    var savedAddresses = mutableMapOf("Localhost" to localHostIp)
     //The text field where the client enters in the hosting port
     val portTextField = PortTextField()
     //The button that starts searching for the specified host
@@ -31,7 +34,10 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
      */
     init {
         GalacticRushClient.start()
-        SavedHostAddresses.updateSavedAddresses()
+        try {
+            this.savedAddresses = jsonObject.fromJson(HashMap::class.java, userAddressesFile.readString()) as MutableMap<String, String>
+        } catch (ignored: Exception) {
+        }
         val fieldAndLabelWidth = this.uiContainer.width * 0.15f
 
         //Sets up the direct connect to address field
@@ -80,8 +86,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
                     return
                 }
                 try {
-                    directConnectField.text = if (SavedHostAddresses.savedAddresses.containsKey(selectableAddressesList.selected)) {
-                        SavedHostAddresses.savedAddresses[selectableAddressesList.selected]
+                    directConnectField.text = if (savedAddresses.containsKey(selectableAddressesList.selected)) {
+                        savedAddresses[selectableAddressesList.selected]
                     } else {
                         localAddresses[selectableAddressesList.selected.removePrefix(localAddressString).toInt()].removePrefix("/")
                     }
@@ -97,7 +103,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
 
         //Sets up the thread to look for local connections and update the list
         fun updateSelectableAddressesList() {
-            val allNames: MutableList<String> = SavedHostAddresses.savedAddresses.keys.toMutableList()
+            val allNames: MutableList<String> = savedAddresses.keys.toMutableList()
             allNames.addAll(localAddresses.mapIndexed { index: Int, _ -> "$localAddressString$index" })
             acceptChange = false
             val prevSelected = selectableAddressesList.selectedIndex
@@ -131,8 +137,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         addButton.align(Align.center)
         addButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                SavedHostAddresses.savedAddresses[nameField.text] = directConnectField.text
-                SavedHostAddresses.saveAddresses()
+                savedAddresses[nameField.text] = directConnectField.text
                 updateSelectableAddressesList()
             }
         })
@@ -144,8 +149,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         removeButton.align(Align.center)
         removeButton.addListener(object: ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                SavedHostAddresses.savedAddresses.remove(selectableAddressesList.selected)
-                SavedHostAddresses.saveAddresses()
+                savedAddresses.remove(selectableAddressesList.selected)
                 updateSelectableAddressesList()
             }
         })
@@ -189,7 +193,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
      * When the screen is left, the addresses that the user has saved are written to file
      */
     override fun leave() {
-        SavedHostAddresses.saveAddresses()
+        userAddressesFile.writeString(jsonObject.prettyPrint(this.savedAddresses), false)
     }
 
 }
