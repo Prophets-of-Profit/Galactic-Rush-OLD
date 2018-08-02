@@ -191,8 +191,8 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     /**
      * Gets the drone with the specified drone information
      */
-    fun getDroneWithInformation(creation: Date, ownerId: Int): Drone? {
-        return this.drones.firstOrNull { it.creationTime == creation && it.ownerId == ownerId }
+    fun getDroneWithId(id: Pair<Int, Date>): Drone? {
+        return this.drones.firstOrNull { it.id == id }
     }
 
 }

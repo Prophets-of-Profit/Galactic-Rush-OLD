@@ -46,9 +46,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
         }
     //What uniquely identifies the drone
     val id: Pair<Int, Date>
-        get() {
-            return Pair(this.ownerId, this.creationTime)
-        }
+        get() = Pair(this.ownerId, this.creationTime)
 
     /**
      * Empty constructor for serialization

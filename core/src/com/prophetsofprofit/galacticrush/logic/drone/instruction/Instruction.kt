@@ -4,7 +4,6 @@ import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
-import java.util.*
 
 //Utility alias for calling (Drone, Galaxy) -> Unit a DroneAction
 typealias DroneAction = (Drone, Galaxy, InstructionInstance) -> Unit
@@ -91,8 +90,9 @@ enum class Instruction(
             20,
             arrayOf(InstructionType.MODIFICATION),
             mainAction = { drone, galaxy, instance ->
-                val selectedDrone = galaxy.getDroneWithInformation(drone.selectedDroneCreation
-                        ?: Date(-1), drone.selectedDroneOwner ?: -1)
+                val selectedDrone = galaxy.getDroneWithId(Pair(drone.selectedDroneOwner
+                        ?: -1, drone.selectedDroneCreation
+                        ?: java.util.Date(-1)))
                 if (selectedDrone != null && selectedDrone.memoryAvailable >= instance.baseInstruction.memorySize) {
                     selectedDrone.addInstruction(instance.baseInstruction, galaxy)
                 }
