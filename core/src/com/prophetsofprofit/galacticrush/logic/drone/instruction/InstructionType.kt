@@ -11,6 +11,7 @@ enum class InstructionType {
     CONSTRUCTION, //The instruction handles building bases
     MINING, //The instruction handles mining money
     MODIFICATION, //The instruction modifies the effect of a different instruction in the queue
+    VIRUS, //The instruction harmfully modifies either itself or other drones
     UPGRADE, //The instruction modifies the drone's stats
     ORDER //The instruction modifies the order of instruction executions in the queue
 }

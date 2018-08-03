@@ -83,17 +83,27 @@ enum class Instruction(
                 }
             }
     ),
-    VIRUS(
+    REPRODUCTIVE_VIRUS(
             "Spread a Virus Instruction to the Selected Drone",
             2,
             8,
             20,
-            arrayOf(InstructionType.MODIFICATION),
+            arrayOf(InstructionType.VIRUS),
             mainAction = { drone, galaxy, instance ->
                 val selectedDrone = galaxy.getDroneWithId(drone.selectedDroneId)
                 if (selectedDrone != null && selectedDrone.memoryAvailable >= instance.baseInstruction.memorySize) {
                     selectedDrone.addInstruction(instance.baseInstruction, galaxy)
                 }
+            }
+    ),
+    ATTACK_SELECTED(
+            "Attack the Selected Drone",
+            5,
+            5,
+            5,
+            arrayOf(InstructionType.COMBAT),
+            mainAction = { drone, galaxy, _ ->
+                galaxy.getDroneWithId(drone.selectedDroneId)?.takeDamage(5, galaxy) //TODO: arbitrary damage value of 5
             }
     )
 }
