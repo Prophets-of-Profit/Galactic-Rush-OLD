@@ -1,8 +1,5 @@
 package com.prophetsofprofit.galacticrush.logic.base
 
-import com.prophetsofprofit.galacticrush.logic.map.Galaxy
-import com.prophetsofprofit.galacticrush.logic.map.Planet
-
 /**
  * A class that represents a player's base
  * Each planet can only contain one player's base
@@ -28,13 +25,6 @@ class Base(val ownerId: Int, val locationId: Int, facilities: Array<Facility>) {
     //A convenience getter for how much total health the base has
     val health: Int
         get() = this.facilityHealths.values.sum()
-
-    /**
-     * Gets the locationId of the base among a list of planets, or null if it does not exist
-     */
-    fun getLocationAmong(galaxy: Galaxy): Planet? {
-        return galaxy.planets.firstOrNull { it.id == this.locationId }
-    }
 
     /**
      * Adds a facility to the base

@@ -92,7 +92,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         //Removes all of the destroyed drones
         this.drones.filter { it.isDestroyed }.forEach { this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it) }
         //Remove all of the destroyed facilities and bases
-        this.bases.filter { it.health <= 0 || it.facilityHealths.isEmpty() }.forEach { it.getLocationAmong(this.galaxy)!!.base = null }
+        this.bases.filter { it.health <= 0 || it.facilityHealths.isEmpty() }.forEach { galaxy.getPlanetWithId(it.locationId)!!.base = null }
         //If all the drones are now finished, wait for players and reset drones
         if (this.drones.all { it.queueFinished }) {
             this.drones.forEach { it.endCycle(this.galaxy) }
