@@ -38,7 +38,7 @@ enum class Instruction(
             mainAction = { drone, galaxy, _ ->
                 drone.selectedPlanetId = galaxy.planetsAdjacentTo(drone.locationId)
                         .map { galaxy.getPlanetWithId(it)!! }
-                        .reduce { hottestPlanet, currentPlanet -> if (hottestPlanet.attributes[Attribute.TEMPERATURE]!! > currentPlanet.attributes[Attribute.TEMPERATURE]!!) hottestPlanet else currentPlanet }.id
+                        .greatestBy { it.attributes[Attribute.TEMPERATURE]!! }.id
             }
     ),
     SELECT_WEAKEST(
@@ -48,8 +48,7 @@ enum class Instruction(
             3,
             arrayOf(InstructionType.MODIFICATION),
             mainAction = { drone, galaxy, _ ->
-                drone.selectedDroneId = galaxy.getPlanetWithId(drone.locationId)!!.drones
-                        .reduce { weakestDrone, currentDrone -> if (weakestDrone.attack < currentDrone.attack) weakestDrone else currentDrone }.id
+                drone.selectedDroneId = galaxy.getPlanetWithId(drone.locationId)!!.drones.leastBy { it.attack.toDouble() }.id
             }
     ),
     MOVE_SELECTED(
@@ -117,6 +116,20 @@ enum class Instruction(
                 galaxy.getDroneWithId(drone.selectedDroneId)?.takeDamage(drone.attack, galaxy)
             }
     )
+}
+
+/**
+ * Returns the greatest element of the given collection using the given lambda as an evaluator for value
+ */
+fun <T> Collection<T>.greatestBy(valueGen: (T) -> Double): T {
+    return this.reduce { greatest, current -> if (valueGen(greatest) > valueGen(current)) greatest else current }
+}
+
+/**
+ * Returns the smallest element of the given collection using the given lambda as an evaluator for value
+ */
+fun <T> Collection<T>.leastBy(valueGen: (T) -> Double): T {
+    return this.reduce { least, current -> if (valueGen(least) < valueGen(current)) least else current }
 }
 
 /**
