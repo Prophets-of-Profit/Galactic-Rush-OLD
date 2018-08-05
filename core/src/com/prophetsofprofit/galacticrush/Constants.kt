@@ -33,9 +33,7 @@ val optionsFile = Gdx.files.local("UserOptions.json")!!
 val userAddressesFile = Gdx.files.local("SavedAddresses.json")!!
 
 //The default tcp port
-val defaultTcpPort = 6669
-//The local hosting IP
-val localHostIp = "127.0.0.1"
+const val defaultTcpPort = 6669
 
 //The size of the buffers for clients and servers
 const val bufferSize = Int.MAX_VALUE / 1024
@@ -154,5 +152,6 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(LinkedHashMap::class.java)
     kryo.register(LocalPlayer::class.java)
     kryo.register(NetworkPlayer::class.java)
+    kryo.register(Pair::class.java)
     kryo.register(Planet::class.java)
 }

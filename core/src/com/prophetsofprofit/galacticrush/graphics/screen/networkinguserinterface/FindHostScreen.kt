@@ -12,10 +12,10 @@ import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.ClientLoadingScreen
 import com.prophetsofprofit.galacticrush.jsonObject
-import com.prophetsofprofit.galacticrush.localHostIp
 import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
 import com.prophetsofprofit.galacticrush.userAddressesFile
 import ktx.scene2d.Scene2DSkin
+import java.net.InetAddress
 
 /**
  * The screen where you can find a host as a client
@@ -23,7 +23,7 @@ import ktx.scene2d.Scene2DSkin
 class FindHostScreen(game: Main) : GalacticRushScreen(game) {
 
     //The host addresses that the user has saved; keys are name of host and values are address
-    var savedAddresses = mutableMapOf("Localhost" to localHostIp)
+    var savedAddresses = mutableMapOf("Localhost" to "127.0.0.1")
     //The text field where the client enters in the hosting port
     val portTextField = PortTextField()
     //The button that starts searching for the specified host
@@ -45,7 +45,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         directConnectLabel.width = fieldAndLabelWidth
         directConnectLabel.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.9f, Align.center)
         directConnectLabel.setAlignment(Align.center)
-        val directConnectField = TextField(localHostIp, Scene2DSkin.defaultSkin)
+        val directConnectField = TextField(InetAddress.getLocalHost().hostAddress, Scene2DSkin.defaultSkin)
         directConnectField.width = fieldAndLabelWidth
         directConnectField.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.85f, Align.center)
         directConnectField.setAlignment(Align.center)
