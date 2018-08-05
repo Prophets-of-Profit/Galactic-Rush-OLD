@@ -115,6 +115,16 @@ enum class Instruction(
             mainAction = { drone, galaxy, _ ->
                 galaxy.getDroneWithId(drone.selectedDroneId)?.takeDamage(drone.attack, galaxy)
             }
+    ),
+    ATTACK_BASE(
+            "Attack a Base on This Planet",
+            5,
+            5,
+            5,
+            arrayOf(InstructionType.COMBAT),
+            mainAction = { drone, galaxy, _ ->
+                galaxy.getPlanetWithId(drone.locationId)?.base?.takeDamage(drone.attack)
+            }
     )
 }
 
