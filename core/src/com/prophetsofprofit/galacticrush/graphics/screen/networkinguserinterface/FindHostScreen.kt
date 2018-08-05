@@ -16,6 +16,7 @@ import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
 import com.prophetsofprofit.galacticrush.userAddressesFile
 import ktx.scene2d.Scene2DSkin
 import java.net.InetAddress
+import kotlin.math.roundToInt
 
 /**
  * The screen where you can find a host as a client
@@ -28,6 +29,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
     val portTextField = PortTextField()
     //The button that starts searching for the specified host
     val confirmButton = TextButton("Connect", Scene2DSkin.defaultSkin)
+    //The ui list of selectable addresses; contains saved and local addresses
+    val selectableAddressesList = List<String>(Scene2DSkin.defaultSkin)
 
     /**
      * Initializes the networker as a client
@@ -76,11 +79,10 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         var localAddresses = listOf<String>()
         val localAddressString = "LOCAL: "
 
-        //Sets up the list to display saved and local addresses TODO: undo selection if click happens outside scrollpane
+        //Sets up the list to display saved and local addresses
         var acceptChange = true
-        val selectableAddressesList = List<String>(Scene2DSkin.defaultSkin)
-        selectableAddressesList.setAlignment(Align.center)
-        selectableAddressesList.addListener(object: ChangeListener() {
+        this.selectableAddressesList.setAlignment(Align.center)
+        this.selectableAddressesList.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 if (!acceptChange) {
                     return
@@ -95,10 +97,10 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
                 }
             }
         })
-        val selectableAddressesPane = ScrollPane(selectableAddressesList)
+        val selectableAddressesPane = ScrollPane(this.selectableAddressesList)
         selectableAddressesPane.width = this.uiContainer.width / 2
         selectableAddressesPane.height = this.uiContainer.height / 2
-        selectableAddressesList.width = this.uiContainer.width / 2
+        this.selectableAddressesList.width = this.uiContainer.width / 2
         selectableAddressesPane.setPosition(this.uiContainer.width / 2, this.uiContainer.height / 2, Align.center)
 
         //Sets up the thread to look for local connections and update the list
@@ -106,10 +108,10 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
             val allNames: MutableList<String> = savedAddresses.keys.toMutableList()
             allNames.addAll(localAddresses.mapIndexed { index: Int, _ -> "$localAddressString$index" })
             acceptChange = false
-            val prevSelected = selectableAddressesList.selectedIndex
-            selectableAddressesList.setItems(com.badlogic.gdx.utils.Array<String>(allNames.toTypedArray()))
+            val prevSelected = this.selectableAddressesList.selectedIndex
+            this.selectableAddressesList.setItems(com.badlogic.gdx.utils.Array<String>(allNames.toTypedArray()))
             try {
-                selectableAddressesList.selectedIndex = prevSelected
+                this.selectableAddressesList.selectedIndex = prevSelected
             } catch (ignored: Exception){
             }
             acceptChange = true
@@ -187,6 +189,15 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         }
         this.game.screen = ClientLoadingScreen(this.game)
         this.dispose()
+    }
+
+    override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
+        val mouseLocation = this.game.windowToCamera(x.roundToInt(), y.roundToInt(), this.uiCamera)
+        if (this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false) != null) {
+            return false
+        }
+        this.selectableAddressesList.selection.clear()
+        return true
     }
 
     /**
