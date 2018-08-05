@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.drone
 
 import com.badlogic.gdx.graphics.Texture
+import com.prophetsofprofit.galacticrush.defaultDroneNames
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
@@ -39,7 +40,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
     //Whether the drone is destroyed or not
     var isDestroyed = false
     //What the drone displays as in lists
-    var name = "Drone"
+    var name = defaultDroneNames.toMutableList().shuffled().first()
     //What the drone looks like on the map
     val image: Texture
         get() {
