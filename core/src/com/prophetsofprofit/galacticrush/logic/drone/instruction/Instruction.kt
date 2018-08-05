@@ -41,6 +41,17 @@ enum class Instruction(
                         .reduce { hottestPlanet, currentPlanet -> if (hottestPlanet.attributes[Attribute.TEMPERATURE]!! > currentPlanet.attributes[Attribute.TEMPERATURE]!!) hottestPlanet else currentPlanet }.id
             }
     ),
+    SELECT_WEAKEST(
+            "Select Weakest Drone on this Planet",
+            20,
+            1,
+            3,
+            arrayOf(InstructionType.MODIFICATION),
+            mainAction = { drone, galaxy, _ ->
+                drone.selectedDroneId = galaxy.getPlanetWithId(drone.locationId)!!.drones
+                        .reduce { weakestDrone, currentDrone -> if (weakestDrone.attack < currentDrone.attack) weakestDrone else currentDrone }.id
+            }
+    ),
     MOVE_SELECTED(
             "Move to Selected Planet",
             10,
@@ -103,7 +114,7 @@ enum class Instruction(
             5,
             arrayOf(InstructionType.COMBAT),
             mainAction = { drone, galaxy, _ ->
-                galaxy.getDroneWithId(drone.selectedDroneId)?.takeDamage(5, galaxy) //TODO: arbitrary damage value of 5
+                galaxy.getDroneWithId(drone.selectedDroneId)?.takeDamage(drone.attack, galaxy)
             }
     )
 }

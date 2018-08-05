@@ -17,6 +17,8 @@ val baseDroneImage = Texture("image/drone/base.png")
  */
 class Drone(val ownerId: Int, var locationId: Int) {
 
+    //How much damage the drone deals
+    var attack = 3
     //When the drone was initialized: the game assumes that this along with ownerId are unique
     val creationTime = Date()
     //The instructions the drone currently has
