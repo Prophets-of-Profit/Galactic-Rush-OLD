@@ -47,4 +47,12 @@ class Base(val ownerId: Int, val locationId: Int, facilities: Array<Facility>) {
         this.facilityHealths.filter { it.value <= 0 }.forEach { facility, _ -> this.facilityHealths.remove(facility) }
     }
 
+    /**
+     * Gets the string representation of the base
+     * TODO: make names for bases
+     */
+    override fun toString(): String {
+        return "Base (${this.ownerId})"
+    }
+
 }

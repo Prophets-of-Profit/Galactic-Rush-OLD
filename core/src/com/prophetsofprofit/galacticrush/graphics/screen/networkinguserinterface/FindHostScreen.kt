@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Array
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
@@ -109,7 +110,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
             allNames.addAll(localAddresses.mapIndexed { index: Int, _ -> "$localAddressString$index" })
             acceptChange = false
             val prevSelected = this.selectableAddressesList.selectedIndex
-            this.selectableAddressesList.setItems(com.badlogic.gdx.utils.Array<String>(allNames.toTypedArray()))
+            this.selectableAddressesList.setItems(Array<String>(allNames.toTypedArray()))
             try {
                 this.selectableAddressesList.selectedIndex = prevSelected
             } catch (ignored: Exception){

@@ -123,7 +123,7 @@ enum class Instruction(
             5,
             arrayOf(InstructionType.COMBAT),
             mainAction = { drone, galaxy, _ ->
-                galaxy.getPlanetWithId(drone.locationId)?.base?.takeDamage(drone.attack)
+                galaxy.getPlanetWithId(drone.locationId)!!.base?.takeDamage(drone.attack)
             }
     )
 }
