@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
-import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.overlay.Overlay
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Planet
@@ -39,20 +37,12 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         get() = this.mainGame.galaxy.getPlanetWithId(this.selectedPlanetId ?: -1)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
-    //The permanent overlay of the game screen; see Overlay
-    val overlay = Overlay(this)
     //The mechanism to handle panning the screen over a time
     val panHandler = PanHandler(this.game.camera)
     //The mechanism that handles animating turn transitions
     val turnAnimationHandler = TurnAnimationHandler(this)
     //The change that is currently being animated
     var turnAnimationPointer = 0
-    //The game menu for handling options and quitting, etc
-    val gameMenu = PauseMenu(this)
-    //The confirmation menu for quitting
-    val quitConfirmation = ConfirmationMenu(this, "Quit game?", this.gameMenu) { game.screen = MainMenuScreen(game); dispose() }
-    //The confirmation menu for submitting
-    val submitConfirmation = ConfirmationMenu(this, "Submit?", this.overlay) { player.submitChanges() }
     //The font that is displayed when there is no label
     val font = BitmapFont()
 
@@ -60,14 +50,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Initializes the main game screen by adding UI components and moving the camera to the player's home base
      */
     init {
-        this.gameMenu.isVisible = false
-        this.uiContainer.addActor(this.overlay)
-        this.uiContainer.addActor(this.gameMenu)
-        this.uiContainer.addActor(this.quitConfirmation)
-        this.uiContainer.addActor(this.submitConfirmation)
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
         this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id &&  it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
-        this.overlay.update()
     }
 
     /**
@@ -105,8 +89,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.drawSelectionArrows()
         this.drawDrones()
         this.game.batch.end()
-        //Updates game information and animations
-        this.overlay.update()
         this.panHandler.update(delta)
         if (this.mainGame.droneTurnChanges.isNotEmpty() && this.turnAnimationPointer < this.mainGame.droneTurnChanges.size) {
             if (this.turnAnimationHandler.currentlyMoving.isEmpty())
@@ -265,7 +247,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
 
     override fun keyDown(keycode: Int): Boolean {
         if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
-            this.gameMenu.isVisible = !this.gameMenu.isVisible
         }
         return false
     }
