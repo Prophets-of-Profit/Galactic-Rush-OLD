@@ -128,6 +128,37 @@ val defaultDroneNames = arrayOf(
         "Zeno"
 )
 
+//A list of default base names; current default names are names of places in anime
+val defaultBaseNames = arrayOf(
+        "Fire Nation",
+        "Earth Kingdom",
+        "Water Tribe",
+        "Ba Sing Se",
+        "Shiganshina",
+        "Amestris",
+        "Xing",
+        "Orth",
+        "Dark Continent",
+        "Republic of East Gorteau",
+        "NGL",
+        "Sidonia",
+        "Namek",
+        "Kingdom of Fiore",
+        "Alvarez Empire",
+        "Village Hidden by the Leaf",
+        "Village Hidden by the Sand",
+        "Village Hidden by the Mist",
+        "Village Hidden by the Cloud",
+        "Village Hidden by the Rock",
+        "Village Hidden by the Sound",
+        "Death Academy",
+        "Celadon City",
+        "Pallet Town",
+        "Aincrad",
+        "Alfheim",
+        "Grand Line"
+)
+
 /**
  * Registers all of the classes that KryoNet will need to serialize and send over the network
  * Registered classes must have a constructor that takes in no arguments or an empty constructor

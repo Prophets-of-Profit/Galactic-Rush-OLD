@@ -1,5 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.base
 
+import com.prophetsofprofit.galacticrush.defaultBaseNames
+
 /**
  * A class that represents a player's base
  * Each planet can only contain one player's base
@@ -9,6 +11,8 @@ class Base(val ownerId: Int, val locationId: Int, facilities: Array<Facility>) {
 
     //A map of each contained facility to its remaining health
     val facilityHealths = mutableMapOf<Facility, Int>()
+    //The name of the base
+    var name = defaultBaseNames.toMutableList().shuffled().first()
 
     /**
      * Adds each of the given facilities
@@ -49,10 +53,9 @@ class Base(val ownerId: Int, val locationId: Int, facilities: Array<Facility>) {
 
     /**
      * Gets the string representation of the base
-     * TODO: make names for bases
      */
     override fun toString(): String {
-        return "Base (${this.ownerId})"
+        return "${this.name} (${this.ownerId})"
     }
 
 }
