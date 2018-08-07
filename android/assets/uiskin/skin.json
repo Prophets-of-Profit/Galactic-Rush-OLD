@@ -68,6 +68,11 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		down: canelButtonDown
 		over: canelButtonOver
 	}
+	wide: {
+		up: widePanel
+		down: widePanelDown
+		over: widePanelOver
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
@@ -137,8 +142,18 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
 		font: SansSerif
 		fontColorSelected: GreenSpace
-		fontColorUnselected: GreenSpace
-		selection: sidePanel
+		fontColorUnselected: LightGrey
+		selection: widePanel
+		down: widePanelOver
+		background: window
+	}
+	selectbox: {
+		font: SansSerif
+		fontColorSelected: OrangeDarkPlanetary
+		fontColorUnselected: LightGrey
+		selection: widePanel
+		down: widePanelOver
+		background: window
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
@@ -150,7 +165,17 @@ com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 	default: {
 		background: sidePanel
-		vScrollKnob: textFieldCursor
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+	default: {
+		font: SansSerif
+		fontColor: GreenSpace
+		background: widePanel
+		scrollStyle: default
+		listStyle: selectbox
+		backgroundOver: widePanelOver
+		backgroundOpen: widePanelDown
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
@@ -168,12 +193,21 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		over: titleButtonOver
 		disabled: titleButtonDisable
 	}
+	wide: {
+		font: SansSerif
+		fontColor: OrangeDarkPlanetary
+		up: widePanel
+		down: widePanelDown
+		over: widePanelOver
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: SansSerif
 		fontColor: PurpleSpace
+		disabledFontColor: PurpleSpace
 		background: textField
+		disabledBackground: textFieldDisabled
 		cursor: textFieldCursor
 	}
 }

@@ -19,42 +19,42 @@ filter: Linear,Linear
 repeat: none
 Atmosphere
   rotate: false
-  xy: 515, 690
+  xy: 515, 638
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 Humidity
   rotate: false
-  xy: 203, 51
+  xy: 744, 690
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 Mass
   rotate: false
-  xy: 230, 78
+  xy: 817, 815
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 Modify
   rotate: false
-  xy: 817, 867
+  xy: 844, 842
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 ModifyHighlight
   rotate: false
-  xy: 614, 742
+  xy: 330, 103
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 ModifyPressed
   rotate: false
-  xy: 505, 155
+  xy: 382, 130
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -68,84 +68,84 @@ SansSerif
   index: -1
 Solidity
   rotate: false
-  xy: 844, 894
+  xy: 916, 894
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 Temperature
   rotate: false
-  xy: 927, 946
+  xy: 303, 76
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 arrowButton
   rotate: false
-  xy: 515, 638
+  xy: 515, 586
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 arrowButtonDown
   rotate: false
-  xy: 542, 665
+  xy: 542, 613
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 arrowButtonOver
   rotate: false
-  xy: 515, 586
+  xy: 515, 534
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 canelButton
   rotate: false
-  xy: 542, 613
+  xy: 569, 613
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 canelButtonDown
   rotate: false
-  xy: 515, 534
+  xy: 542, 561
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 canelButtonOver
   rotate: false
-  xy: 542, 561
+  xy: 596, 613
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 checkBox
   rotate: false
-  xy: 203, 78
+  xy: 717, 690
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisable
   rotate: false
-  xy: 587, 742
+  xy: 303, 103
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisableChecked
   rotate: false
-  xy: 769, 794
+  xy: 355, 130
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDown
   rotate: false
-  xy: 817, 894
+  xy: 817, 842
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -159,14 +159,14 @@ checkBoxDownChecked
   index: -1
 checkBoxOver
   rotate: false
-  xy: 900, 946
+  xy: 889, 894
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 label
   rotate: false
-  xy: 1, 1
+  xy: 303, 459
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
@@ -180,7 +180,7 @@ labelBlack
   index: -1
 labelSmall
   rotate: false
-  xy: 717, 794
+  xy: 303, 130
   size: 50, 25
   orig: 50, 25
   offset: 0, 0
@@ -194,14 +194,14 @@ loadingBar
   index: -1
 loadingKnob
   rotate: false
-  xy: 817, 921
+  xy: 717, 717
   size: 81, 50
   orig: 81, 50
   offset: 0, 0
   index: -1
 sidePanel
   rotate: false
-  xy: 303, 105
+  xy: 303, 157
   size: 200, 300
   orig: 200, 300
   offset: 0, 0
@@ -215,7 +215,7 @@ slider
   index: -1
 sliderKnob
   rotate: false
-  xy: 515, 717
+  xy: 817, 869
   size: 70, 50
   orig: 70, 50
   offset: 0, 0
@@ -229,42 +229,49 @@ sliderVertical
   index: -1
 textField
   rotate: false
-  xy: 303, 407
+  xy: 817, 921
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 textFieldCursor
   rotate: false
-  xy: 532, 157
-  size: 10, 50
-  orig: 10, 50
+  xy: 800, 717
+  size: 5, 50
+  orig: 5, 50
+  offset: 0, 0
+  index: -1
+textFieldDisabled
+  rotate: false
+  xy: 515, 665
+  size: 200, 50
+  orig: 200, 50
   offset: 0, 0
   index: -1
 titleButton
   rotate: false
-  xy: 303, 459
+  xy: 1, 1
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 titleButtonDisable
   rotate: false
-  xy: 1, 53
+  xy: 515, 717
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 titleButtonDown
   rotate: false
-  xy: 817, 973
+  xy: 203, 1
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
   index: -1
 titleButtonOver
   rotate: false
-  xy: 515, 769
+  xy: 817, 973
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
@@ -272,6 +279,20 @@ titleButtonOver
 widePanel
   rotate: false
   xy: 1, 407
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
+widePanelDown
+  rotate: false
+  xy: 515, 769
+  size: 300, 50
+  orig: 300, 50
+  offset: 0, 0
+  index: -1
+widePanelOver
+  rotate: false
+  xy: 1, 53
   size: 300, 50
   orig: 300, 50
   offset: 0, 0
