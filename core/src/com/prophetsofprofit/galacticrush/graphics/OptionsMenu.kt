@@ -36,13 +36,13 @@ class OptionsMenu(val game: Main, screen: GalacticRushScreen) : ModalWindow(scre
         val soundVolumeLabel = Label("Sound Volume", Scene2DSkin.defaultSkin)
         musicVolumeSlider.value = game.userOptions.musicVolume
         soundVolumeSlider.value = game.userOptions.soundVolume
-        this.add(musicVolumeLabel).pad(10f)
+        this.add(musicVolumeLabel).pad(20f).fillX()
         this.add(this.musicVolumeSlider)
         this.row()
-        this.add(soundVolumeLabel).pad(10f)
+        this.add(soundVolumeLabel).pad(20f).fillX()
         this.add(this.soundVolumeSlider)
         this.row()
-        this.add(backButton).colspan(2).center().padTop(10f)
+        this.add(backButton).colspan(2).center().padTop(20f)
         this.isVisible = false
     }
 
