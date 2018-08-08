@@ -31,6 +31,10 @@ class Drone(val ownerId: Int, var locationId: Int) {
         get() = this.totalMemory - instructions.sumBy { it.baseInstruction.memorySize }
     //Which instruction the drone is currently reading
     var pointer = 0
+    //The potential ids of planets that the drone could select
+    var selectablePlanetIds: MutableList<Int>? = null
+    //The potential ids of drones that the drone could select
+    var selectableDroneIds: MutableList<Pair<Int, Date>>? = null
     //The id of the planet that the drone has selected
     var selectedPlanetId: Int? = null
     //The id of the drone that this drone has selected
@@ -133,11 +137,12 @@ class Drone(val ownerId: Int, var locationId: Int) {
     /**
      * Resets the drone's pointer for the next turn
      */
-    fun resetQueue() {
+    fun resetQueue(galaxy: Galaxy) {
         this.pointer = 0
         this.queueFinished = false
         this.selectedPlanetId = null
         this.selectedDroneId = null
+        this.resetSelectables(galaxy)
     }
 
     /**
@@ -159,6 +164,14 @@ class Drone(val ownerId: Int, var locationId: Int) {
         galaxy.getPlanetWithId(this.locationId)!!.drones.remove(this)
         this.locationId = id
         galaxy.getPlanetWithId(this.locationId)!!.drones.add(this)
+    }
+
+    /**
+     * Resets the possible selectable planets and drones
+     */
+    fun resetSelectables(galaxy: Galaxy) {
+        this.selectableDroneIds = galaxy.getPlanetWithId(this.locationId)!!.drones.map { it.id }.toMutableList()
+        this.selectablePlanetIds = galaxy.planetsAdjacentTo(this.locationId).toMutableList()
     }
 
     /**
