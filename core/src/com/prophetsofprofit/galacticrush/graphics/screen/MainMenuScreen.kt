@@ -22,7 +22,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
 
     val backgroundTexture = Texture("meta/Background.png")
     val titleTexture = Texture("meta/Title.png")
-    var timeSpent = 0f
+    var elapsedTime = 0f
 
     init {
         val hostGameButton = TextButton("Host a Game", Scene2DSkin.defaultSkin)
@@ -50,9 +50,10 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
             }
         })
         optionsButton.addListener(object : ClickListener() {
-            //TODO: make options screen able to switch back to the existing screen
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                options.appear(Direction.POP, 1f)
+                if (!options.isVisible) {
+                    options.appear(Direction.POP, 1f)
+                }
             }
         })
         exitGameButton.addListener(object: ClickListener() {
@@ -69,10 +70,10 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
      * Passes in the amount of time since last render
      */
     override fun draw(delta: Float) {
-        timeSpent += delta
+        elapsedTime += delta
         this.game.batch.use {
-            it.draw(backgroundTexture, -200f * (this.timeSpent % 8f), 0f, 1600f, 900f)
-            it.draw(backgroundTexture, -200f * (this.timeSpent % 8f) + 1600, 0f, 1600f, 900f)
+            it.draw(backgroundTexture, -200f * (this.elapsedTime % 8f), 0f, 1600f, 900f)
+            it.draw(backgroundTexture, -200f * (this.elapsedTime % 8f) + 1600, 0f, 1600f, 900f)
             it.draw(titleTexture, 0f, 400f, 1600f, 500f)
         }
     }

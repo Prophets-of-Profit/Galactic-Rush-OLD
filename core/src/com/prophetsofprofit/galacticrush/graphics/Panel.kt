@@ -79,7 +79,6 @@ open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Flo
                 setPosition(startingPosition.x + elapsedTime / time * necessaryMovement.x, startingPosition.y + elapsedTime / time * necessaryMovement.y)
                 if (scaleX < 1) {
                     setScale(elapsedTime / time)
-                    setPosition(appearanceCenter.x, appearanceCenter.y, Align.center)
                 }
                 if (elapsedTime == time) {
                     removeAction(this)
@@ -114,19 +113,17 @@ open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Flo
             }
             Direction.POP -> {
                 this.setScale(1f)
-                Vector2(0f, 0f)
+                Vector2(this.location.x, this.location.y)
             }
         }
-        val currentCenter = Vector2().also { this.location.getCenter(it) }
         val startingPosition = Vector2(this.x, this.y)
         var elapsedTime = 0f
         this.addAction(object : Action() {
             override fun act(delta: Float): Boolean {
                 elapsedTime = minOf(time, elapsedTime + delta)
                 setPosition(startingPosition.x + elapsedTime / time * necessaryMovement.x, startingPosition.y + elapsedTime / time * necessaryMovement.y)
-                if (necessaryMovement == Vector2(0f, 0f)) {
+                if (direction == Direction.POP) {
                     setScale(1f - elapsedTime / time)
-                    setPosition(currentCenter.x, currentCenter.y, Align.center)
                 }
                 if (elapsedTime == time) {
                     removeAction(this)
