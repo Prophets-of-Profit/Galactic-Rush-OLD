@@ -13,8 +13,8 @@ open class ModalWindow(screen: GalacticRushScreen, title: String, w: Float, h: F
      * Sets up the modal window by setting position
      */
     init {
-        this.isModal = true
         this.isMovable = true
+        this.isVisible = false
     }
 
 }

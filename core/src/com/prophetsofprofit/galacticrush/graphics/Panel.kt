@@ -47,7 +47,7 @@ open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Flo
      * The procedure for the panel to appear from the given direction
      */
     fun appear(direction: Direction, time: Float) {
-        if (!this.canBeUsed) {
+        if (!this.canBeUsed || this.isVisible) {
             return
         }
         this.canBeUsed = false
@@ -93,7 +93,7 @@ open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Flo
      * The procedure for the panel to disappear from the given direction
      */
     fun disappear(direction: Direction, time: Float) {
-        if (!this.canBeUsed) {
+        if (!this.canBeUsed || !this.isVisible) {
             return
         }
         this.canBeUsed = false

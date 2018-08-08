@@ -43,7 +43,6 @@ class OptionsMenu(val game: Main, screen: GalacticRushScreen) : ModalWindow(scre
         this.add(this.soundVolumeSlider)
         this.row()
         this.add(backButton).colspan(2).center().padTop(20f)
-        this.isVisible = false
     }
 
     /**

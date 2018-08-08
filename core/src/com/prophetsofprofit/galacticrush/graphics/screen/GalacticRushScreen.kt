@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Scaling
 import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.AudioManager
-import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import ktx.app.KtxScreen
 
 /**
@@ -27,8 +26,6 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
         get() = this.uiContainer.camera
     //The AudioManager that is the music for the screen
     protected val audioManager = AudioManager(musicPaths)
-    //The options menu that can be activated and deactivated for each screen
-    val options = OptionsMenu(this.game, this)
 
     /**
      * Sets the screen as the main input method
@@ -37,7 +34,6 @@ abstract class GalacticRushScreen(val game: Main, musicPaths: Array<String> = ar
         Gdx.input.inputProcessor = InputMultiplexer(this, GestureDetector(this), this.uiContainer)
         this.applyOptions()
         this.audioManager.start()
-        this.uiContainer.addActor(this.options)
     }
 
     /**

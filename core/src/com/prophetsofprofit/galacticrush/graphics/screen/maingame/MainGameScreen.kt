@@ -7,7 +7,10 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.graphics.Direction
+import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.GeneralInformationPanel
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
@@ -42,6 +45,10 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val panHandler = PanHandler(this.game.camera)
     //The mechanism that handles animating turn transitions
     val turnAnimationHandler = TurnAnimationHandler(this)
+    //The menu that is opened when the user wants to change their options
+    val optionsMenu = OptionsMenu(game, this)
+    //The menu that is opened when the game is paused
+    val pauseMenu = PauseMenu(this)
     //The change that is currently being animated
     var turnAnimationPointer = 0
     //The font that is displayed when there is no label
@@ -52,6 +59,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      */
     init {
         this.uiContainer.addActor(GeneralInformationPanel(this))
+        this.uiContainer.addActor(this.pauseMenu)
+        this.uiContainer.addActor(this.optionsMenu)
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
         this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id &&  it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
     }
@@ -249,6 +258,12 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
 
     override fun keyDown(keycode: Int): Boolean {
         if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
+            if (this.pauseMenu.isVisible) {
+                this.pauseMenu.disappear(Direction.POP, 1f)
+            } else {
+                this.pauseMenu.appear(Direction.POP, 1f)
+            }
+            return true
         }
         return false
     }

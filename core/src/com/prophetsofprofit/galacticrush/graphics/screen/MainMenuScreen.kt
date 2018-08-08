@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.Direction
+import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.FindHostScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.WaitForClientScreen
 import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
@@ -29,6 +30,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         val joinGameButton = TextButton("Join a Game", Scene2DSkin.defaultSkin)
         val optionsButton = TextButton("Options", Scene2DSkin.defaultSkin)
         val exitGameButton = TextButton("Exit", Scene2DSkin.defaultSkin)
+        val optionsMenu = OptionsMenu(game, this)
         hostGameButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.4f, Align.center)
         joinGameButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.3f, Align.center)
         optionsButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.2f, Align.center)
@@ -37,6 +39,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         this.uiContainer.addActor(joinGameButton)
         this.uiContainer.addActor(optionsButton)
         this.uiContainer.addActor(exitGameButton)
+        this.uiContainer.addActor(optionsMenu)
         hostGameButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 game.screen = WaitForClientScreen(game)
@@ -51,9 +54,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         })
         optionsButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                if (!options.isVisible) {
-                    options.appear(Direction.POP, 1f)
-                }
+                optionsMenu.appear(Direction.POP, 1f)
             }
         })
         exitGameButton.addListener(object: ClickListener() {
