@@ -2,7 +2,6 @@ package com.prophetsofprofit.galacticrush.graphics
 
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
-import com.prophetsofprofit.galacticrush.graphics.screen.Panel
 
 /**
  * A class that represents a modal window that can be dragged and moved

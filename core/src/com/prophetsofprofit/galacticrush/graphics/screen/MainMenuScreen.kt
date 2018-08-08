@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.FindHostScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface.WaitForClientScreen
 import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
@@ -51,7 +52,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
         optionsButton.addListener(object : ClickListener() {
             //TODO: make options screen able to switch back to the existing screen
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                options.isVisible = true
+                options.appear(Direction.POP, 1f)
             }
         })
         exitGameButton.addListener(object: ClickListener() {

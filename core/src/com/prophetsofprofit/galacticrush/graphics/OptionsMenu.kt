@@ -28,7 +28,7 @@ class OptionsMenu(val game: Main, screen: GalacticRushScreen) : ModalWindow(scre
         backButton.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 applyOptions()
-                isVisible = false
+                disappear(Direction.POP, 1f)
             }
         })
         //TODO: make reset to default options button
