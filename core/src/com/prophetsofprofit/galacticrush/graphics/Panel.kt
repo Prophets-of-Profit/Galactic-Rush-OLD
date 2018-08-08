@@ -69,7 +69,6 @@ open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Flo
                 this.setScale(0f)
             }
         }
-        val appearanceCenter = Vector2().also { this.location.getCenter(it) }
         val startingPosition = Vector2(this.x, this.y)
         val necessaryMovement = Vector2(this.location.x, this.location.y) - startingPosition
         var elapsedTime = 0f

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.GeneralInformationPanel
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Planet
@@ -50,6 +51,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Initializes the main game screen by adding UI components and moving the camera to the player's home base
      */
     init {
+        this.uiContainer.addActor(GeneralInformationPanel(this))
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
         this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id &&  it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
     }
