@@ -15,6 +15,7 @@ import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.BaseInformationPanel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.GeneralInformationPanel
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
@@ -72,6 +73,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             }
         })
         this.uiContainer.addActor(GeneralInformationPanel(this))
+        this.uiContainer.addActor(BaseInformationPanel(this))
         this.uiContainer.addActor(this.pauseMenu)
         this.uiContainer.addActor(this.optionsMenu)
         this.uiContainer.addActor(this.submitButton)

@@ -41,6 +41,7 @@ open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Flo
         this.isModal = false
         this.isMovable = false
         this.isResizable = false
+        this.setKeepWithinStage(false)
     }
 
     /**

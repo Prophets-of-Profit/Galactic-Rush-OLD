@@ -15,6 +15,7 @@ open class ModalWindow(screen: GalacticRushScreen, title: String, w: Float, h: F
     init {
         this.isMovable = true
         this.isVisible = false
+        this.setKeepWithinStage(true)
     }
 
 }
