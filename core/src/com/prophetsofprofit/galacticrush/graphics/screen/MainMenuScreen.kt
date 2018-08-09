@@ -57,7 +57,7 @@ class MainMenuScreen(game: Main) : GalacticRushScreen(game, arrayOf("meta/TheInt
                 optionsMenu.appear(Direction.POP, 1f)
             }
         })
-        exitGameButton.addListener(object: ChangeListener() {
+        exitGameButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 Gdx.app.exit()
             }

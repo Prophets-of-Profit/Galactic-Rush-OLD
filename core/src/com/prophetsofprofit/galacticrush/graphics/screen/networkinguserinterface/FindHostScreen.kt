@@ -111,7 +111,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
             this.selectableAddressesList.setItems(Array<String>(allNames.toTypedArray()))
             try {
                 this.selectableAddressesList.selectedIndex = prevSelected
-            } catch (ignored: Exception){
+            } catch (ignored: Exception) {
             }
             acceptChange = true
         }
@@ -136,7 +136,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         addButton.width = fieldAndLabelWidth
         addButton.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.52f, Align.center)
         addButton.align(Align.center)
-        addButton.addListener(object: ChangeListener() {
+        addButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 savedAddresses[nameField.text] = directConnectField.text
                 updateSelectableAddressesList()
@@ -148,7 +148,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         removeButton.width = fieldAndLabelWidth
         removeButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.56f, Align.center)
         removeButton.align(Align.center)
-        removeButton.addListener(object: ChangeListener() {
+        removeButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 savedAddresses.remove(selectableAddressesList.selected)
                 updateSelectableAddressesList()

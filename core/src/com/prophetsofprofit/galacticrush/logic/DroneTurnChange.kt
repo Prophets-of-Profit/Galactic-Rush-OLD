@@ -11,6 +11,6 @@ class DroneTurnChange(val changedDrones: MutableList<Drone>, val changedPlanets:
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(mutableListOf(), mutableListOf())
+    constructor() : this(mutableListOf(), mutableListOf())
 
 }

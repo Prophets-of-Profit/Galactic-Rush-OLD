@@ -76,7 +76,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(this.optionsMenu)
         this.uiContainer.addActor(this.submitButton)
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
-        this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id &&  it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
+        this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id && it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
     }
 
     /**
@@ -118,8 +118,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         if (this.mainGame.droneTurnChanges.isNotEmpty() && this.turnAnimationPointer < this.mainGame.droneTurnChanges.size) {
             if (this.turnAnimationHandler.currentlyMoving.isEmpty())
                 this.animateChange()
-        }
-        else {
+        } else {
             this.mainGame.droneTurnChanges.clear()
             this.turnAnimationPointer = 0
         }
@@ -202,8 +201,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         for (drone in this.mainGame.droneTurnChanges[this.turnAnimationPointer].changedDrones) {
             //Get the most recent version of the drone
             var recentTime = this.mainGame.droneTurnChanges.slice(0 until this.turnAnimationPointer)
-                                .filter { it.changedDrones.any { it.id == drone.id } }
-                                .lastOrNull()
+                    .filter { it.changedDrones.any { it.id == drone.id } }
+                    .lastOrNull()
             var location = this.oldGameState.drones.first { it.id == drone.id }.locationId
             if (recentTime != null) {
                 location = recentTime.changedDrones.first { it.id == drone.id }.locationId
