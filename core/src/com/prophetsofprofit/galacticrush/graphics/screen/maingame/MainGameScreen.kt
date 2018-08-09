@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
@@ -16,6 +20,7 @@ import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
+import ktx.scene2d.Scene2DSkin
 import kotlin.math.*
 
 
@@ -53,14 +58,23 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     var turnAnimationPointer = 0
     //The font that is displayed when there is no label
     val font = BitmapFont()
+    //The button that controls submitting turn changes
+    val submitButton = TextButton("Submit", Scene2DSkin.defaultSkin)
 
     /**
      * Initializes the main game screen by adding UI components and moving the camera to the player's home base
      */
     init {
+        this.submitButton.setPosition(this.game.camera.viewportWidth, 0f, Align.bottomRight)
+        this.submitButton.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                player.submitChanges()
+            }
+        })
         this.uiContainer.addActor(GeneralInformationPanel(this))
         this.uiContainer.addActor(this.pauseMenu)
         this.uiContainer.addActor(this.optionsMenu)
+        this.uiContainer.addActor(this.submitButton)
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
         this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id &&  it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
     }
