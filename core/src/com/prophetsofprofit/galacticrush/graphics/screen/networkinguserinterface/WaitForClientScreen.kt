@@ -1,8 +1,8 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
@@ -34,8 +34,8 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
         //Sets up the lockButton
         val confirmPort = "Confirm Port"
         val cancelSelection = "Cancel Selection"
-        this.lockButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        this.lockButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
                 //lockButton does nothing when disabled
                 if (lockButton.isDisabled) {
                     return
@@ -57,8 +57,8 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
 
         //Sets up cancelButton
         val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
-        cancelButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        cancelButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
                 game.screen = MainMenuScreen(game)
                 dispose()
             }
