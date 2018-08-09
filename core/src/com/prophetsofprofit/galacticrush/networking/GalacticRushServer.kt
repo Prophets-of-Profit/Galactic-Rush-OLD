@@ -62,12 +62,8 @@ object GalacticRushServer : Server(bufferSize, bufferSize) {
             }
             this.hostedGame!!.gameChanged = false
             players.forEach { it.receiveNewGameState(this.hostedGame!!) }
-            //TODO below: have separate flags in game that aren't drone queues
-            while (this.hostedGame!!.drones.any { !it.queueFinished }) {
-                this.hostedGame!!.doDroneTurn()
+            while (!this.hostedGame!!.doDroneTurn()) {
             }
-            this.hostedGame!!.drones.forEach { it.resetQueue(this.hostedGame!!.galaxy) }
-            //TODO above: have separate flags in game that aren't drone queues
             players.forEach { it.receiveNewGameState(this.hostedGame!!) }
         }
     }

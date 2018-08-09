@@ -74,13 +74,14 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
 
     /**
      * Performs one action per drone for all drones that can perform an action; won't be callable until game is ready
+     * Returns whether the drone turns are done
      */
-    fun doDroneTurn() {
+    fun doDroneTurn(): Boolean {
         val changedDrones = mutableListOf<Drone>()
         val changedPlanets = mutableListOf<Planet>()
         //If waiting on players don't do anything
         if (this.players.size <= 1) {
-            return
+            return true
         }
         //If this is the first doDroneTurn call for this turn, start the cycle for each drone
         if (this.prevDroneTurn != this.turnsPlayed) {
@@ -94,11 +95,14 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         //Remove all of the destroyed facilities and bases
         this.bases.filter { it.health <= 0 || it.facilityHealths.isEmpty() }.forEach { galaxy.getPlanetWithId(it.locationId)!!.base = null }
         //If all the drones are now finished, wait for players and reset drones
-        if (this.drones.all { it.queueFinished }) {
+        val isDone = this.drones.all { it.queueFinished }
+        if (isDone) {
             this.drones.forEach { it.endCycle(this.galaxy) }
             this.players.mapTo(this.waitingOn) { it }
+            this.drones.forEach { it.resetQueue(this.galaxy) }
         }
         this.droneTurnChanges.add(DroneTurnChange(changedDrones, changedPlanets))
+        return isDone
     }
 
 }
