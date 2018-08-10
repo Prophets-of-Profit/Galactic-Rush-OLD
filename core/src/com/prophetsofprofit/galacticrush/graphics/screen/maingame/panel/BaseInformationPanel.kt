@@ -58,6 +58,15 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
         //The button to modify the base
         val modifyBaseButton = TextButton("Modify Base", Scene2DSkin.defaultSkin).also {
             it.align(Align.center)
+            it.addAction(object : Action() {
+                override fun act(delta: Float): Boolean {
+                    if (!canBeUsed) {
+                        return false
+                    }
+                    it.isVisible = gameScreen.selectedPlanet?.base?.ownerId == gameScreen.player.id
+                    return false
+                }
+            })
             it.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     //TODO: open base modification panel
@@ -75,6 +84,7 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                     if (!canBeUsed) {
                         return false
                     }
+                    it.isVisible = gameScreen.selectedPlanet?.base?.ownerId == gameScreen.player.id
                     containsProgrammingFacility = gameScreen.selectedPlanet?.base?.facilityHealths?.containsKey(Facility.PROGRAMMING) == true
                     it.setText(if (containsProgrammingFacility) "Modify a Drone" else "Buy a Programming Facility")
                     it.isDisabled = !containsProgrammingFacility && gameScreen.mainGame.money[gameScreen.player.id]!! < 0 //TODO: instead of check for less than 0, check for less than cost of a programming facility
@@ -104,6 +114,7 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                     if (!canBeUsed) {
                         return false
                     }
+                    it.isVisible = gameScreen.selectedPlanet?.base?.ownerId == gameScreen.player.id
                     containsConstructionFacility = gameScreen.selectedPlanet?.base?.facilityHealths?.containsKey(Facility.CONSTRUCTION) == true
                     it.setText(if (containsConstructionFacility) "Create Drone" else "Buy a Construction Facility")
                     val currentMoney = gameScreen.mainGame.money[gameScreen.player.id]!!
