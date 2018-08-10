@@ -1,13 +1,14 @@
 package com.prophetsofprofit.galacticrush.graphics
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Action
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import ktx.math.minus
-import ktx.scene2d.Scene2DSkin
 
 /**
  * An enumeration of the directions that a panel can appear and disappear
@@ -19,7 +20,7 @@ enum class Direction {
 /**
  * A class that represents a fixed-place or static panel that doesn't move outside of animations
  */
-open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Float, w: Float, h: Float, align: Int = Align.bottomLeft) : Window(title, Scene2DSkin.defaultSkin) {
+open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Float, w: Float, h: Float, align: Int = Align.bottomLeft) : Window(title, Skin(Gdx.files.internal("TEMPORARY/uiskin.json"))) {
 
     //Where the panel should be
     val location: Rectangle
@@ -33,7 +34,6 @@ open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Flo
      * Initializes the Window as an immovable panel
      */
     init {
-        this.style.stageBackground = null
         this.setSize(w, h)
         this.setPosition(x, y, align)
         this.location = Rectangle(this.x, this.y, w, h)
