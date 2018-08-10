@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import java.util.*
+import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -191,7 +191,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     /**
      * Gets the drone with the specified drone information
      */
-    fun getDroneWithId(id: Pair<Int, Date>?): Drone? {
+    fun getDroneWithId(id: DroneId?): Drone? {
         return this.drones.firstOrNull { it.id == id }
     }
 

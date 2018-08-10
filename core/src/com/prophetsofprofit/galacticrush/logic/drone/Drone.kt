@@ -11,6 +11,18 @@ import java.util.*
 val baseDroneImage = Texture("image/drone/base.png")
 
 /**
+ * Small data class that represents what can uniquely identify a drone
+ * Drones can't be assigned integer IDs as usual because their creation is concurrent, and guaranteeing a unique int under those conditions is difficult
+ */
+data class DroneId(val ownerId: Int, val creationTime: Date) {
+
+    /**
+     * Empty constructor for serialization
+     */
+    constructor() : this(-1, Date(-1))
+}
+
+/**
  * A class that represent's a player's drone
  * Is the main unit of the game that carries out instructions
  * Is what is used to achieve victory
@@ -34,11 +46,11 @@ class Drone(val ownerId: Int, var locationId: Int) {
     //The potential ids of planets that the drone could select
     var selectablePlanetIds: MutableList<Int>? = null
     //The potential ids of drones that the drone could select
-    var selectableDroneIds: MutableList<Pair<Int, Date>>? = null
+    var selectableDroneIds: MutableList<DroneId>? = null
     //The id of the planet that the drone has selected
     var selectedPlanetId: Int? = null
     //The id of the drone that this drone has selected
-    var selectedDroneId: Pair<Int, Date>? = null
+    var selectedDroneId: DroneId? = null
     //Whether the drone is done completing its command queue
     var queueFinished = false
     //Whether the drone is destroyed or not
@@ -51,8 +63,8 @@ class Drone(val ownerId: Int, var locationId: Int) {
             return baseDroneImage
         }
     //What uniquely identifies the drone
-    val id: Pair<Int, Date>
-        get() = Pair(this.ownerId, this.creationTime)
+    val id: DroneId
+        get() = DroneId(this.ownerId, this.creationTime)
 
     /**
      * Empty constructor for serialization
