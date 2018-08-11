@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
+import com.prophetsofprofit.galacticrush.logic.change.DroneChange
+import com.prophetsofprofit.galacticrush.logic.change.DroneTurnChange
+import com.prophetsofprofit.galacticrush.logic.change.InstructionChange
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionType
@@ -64,7 +67,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     }
 
     /**
-     * A method that collects changes, verifies their integrity, and then applies them to the game
+     * A method that collects drone changes, verifies their integrity, and then applies them to the game
      */
     fun collectDroneChange(droneChange: DroneChange) {
         if (!this.waitingOn.contains(droneChange.ownerId)) {
@@ -83,6 +86,16 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
             this.droneTurnChanges.clear()
             this.gameChanged = true
         }
+    }
+
+    /**
+     * A method that collects instruction changes, verifies their integrity, and then applies them to the game
+     */
+    fun collectInstructionChange(instructionChange: InstructionChange) {
+        if (draftOptions?.contains(instructionChange.gainedInstruction) != true) {
+            return
+        }
+        unlockedInstructions[instructionChange.ownerId]?.add(instructionChange.gainedInstruction)
     }
 
     /**

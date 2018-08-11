@@ -125,7 +125,9 @@ enum class Instruction(
             mainAction = { drone, galaxy, _ ->
                 galaxy.getPlanetWithId(drone.locationId)!!.base?.takeDamage(drone.attack)
             }
-    )
+    );
+
+    override fun toString(): String = this.displayName
 }
 
 /**

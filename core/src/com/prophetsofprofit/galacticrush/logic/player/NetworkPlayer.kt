@@ -1,7 +1,10 @@
 package com.prophetsofprofit.galacticrush.logic.player
 
-import com.prophetsofprofit.galacticrush.logic.DroneChange
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.change.Change
+import com.prophetsofprofit.galacticrush.logic.change.DroneChange
+import com.prophetsofprofit.galacticrush.logic.change.InstructionChange
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 
@@ -20,9 +23,13 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
      * A method that gets called form the clientside that sends a change object to the game
      * After sending change, listens for an updated game to set as this player's game
      */
-    override fun submitChanges() {
-        GalacticRushClient.sendTCP(this.currentChanges)
-        this.currentChanges = DroneChange(this.id)
+    override fun submitChanges(change: Change) {
+        GalacticRushClient.sendTCP(change)
+        if (change is InstructionChange) {
+            this.draftOptions = null
+        } else if (change is DroneChange) {
+            this.currentDroneChanges = DroneChange(this.id)
+        }
     }
 
     /**
@@ -31,6 +38,13 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
     override fun receiveNewGameState(newGame: Game) {
         this.game = newGame
         GalacticRushServer.sendToTCP(this.connectionId, newGame)
+    }
+
+    /**
+     * A method that gets called from the serverside that sends a list of draft options to this player
+     */
+    override fun receiveNewInstructions(instructions: List<Instruction>) {
+        GalacticRushServer.sendToTCP(this.connectionId, instructions)
     }
 
 }

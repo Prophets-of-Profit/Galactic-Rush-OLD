@@ -77,7 +77,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.submitButton.setPosition(this.game.camera.viewportWidth, 0f, Align.bottomRight)
         this.submitButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                player.submitChanges()
+                player.submitChanges(player.currentDroneChanges)
             }
         })
         this.uiContainer.addActor(GeneralInformationPanel(this))

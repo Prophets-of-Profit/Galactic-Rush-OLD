@@ -5,11 +5,13 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonWriter
 import com.esotericsoftware.kryo.Kryo
-import com.prophetsofprofit.galacticrush.logic.DroneChange
-import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
+import com.prophetsofprofit.galacticrush.logic.change.Change
+import com.prophetsofprofit.galacticrush.logic.change.DroneChange
+import com.prophetsofprofit.galacticrush.logic.change.DroneTurnChange
+import com.prophetsofprofit.galacticrush.logic.change.InstructionChange
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
@@ -171,6 +173,7 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(Attribute::class.java)
     kryo.register(Base::class.java)
     kryo.register(DroneChange::class.java)
+    kryo.register(Change::class.java)
     kryo.register(Color::class.java)
     kryo.register(CosmicHighway::class.java)
     kryo.register(Date::class.java)
@@ -181,6 +184,7 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(Galaxy::class.java)
     kryo.register(Game::class.java)
     kryo.register(Instruction::class.java)
+    kryo.register(InstructionChange::class.java)
     kryo.register(InstructionInstance::class.java)
     kryo.register(LinkedHashMap::class.java)
     kryo.register(LocalPlayer::class.java)
