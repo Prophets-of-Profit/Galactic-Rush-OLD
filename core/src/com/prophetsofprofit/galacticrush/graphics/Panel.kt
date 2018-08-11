@@ -100,16 +100,16 @@ open class Panel(val screen: GalacticRushScreen, title: String, x: Float, y: Flo
         this.canBeUsed = false
         val necessaryMovement = when (direction) {
             Direction.TOP -> {
-                Vector2(0f, this.y - this.screen.uiCamera.viewportHeight)
+                Vector2(0f, this.screen.uiCamera.viewportHeight - this.y)
             }
             Direction.RIGHT -> {
-                Vector2(this.x - this.screen.uiCamera.viewportWidth, 0f)
+                Vector2(this.screen.uiCamera.viewportWidth - this.x, 0f)
             }
             Direction.BOTTOM -> {
-                Vector2(0f, this.y + this.height - this.screen.uiCamera.viewportHeight)
+                Vector2(0f, -this.y - this.height)
             }
             Direction.LEFT -> {
-                Vector2(this.x + this.width - this.screen.uiCamera.viewportWidth, 0f)
+                Vector2(-this.x - this.width, 0f)
             }
             Direction.POP -> {
                 this.setScale(1f)
