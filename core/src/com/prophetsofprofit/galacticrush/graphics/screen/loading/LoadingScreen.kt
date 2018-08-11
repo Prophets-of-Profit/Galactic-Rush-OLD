@@ -2,9 +2,9 @@ package com.prophetsofprofit.galacticrush.graphics.screen.loading
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Animation
-import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.prophetsofprofit.galacticrush.Main
@@ -36,8 +36,8 @@ abstract class LoadingScreen(game: Main) : GalacticRushScreen(game) {
         val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
         cancelButton.setPosition(0.1f * this.uiContainer.width, 0.1f * this.uiContainer.height, Align.center)
         cancelButton.align(Align.center)
-        cancelButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        cancelButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
                 game.screen = MainMenuScreen(game)
             }
         })

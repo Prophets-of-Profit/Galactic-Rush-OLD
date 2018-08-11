@@ -11,6 +11,7 @@ import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.map.Attribute
@@ -174,6 +175,7 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(CosmicHighway::class.java)
     kryo.register(Date::class.java)
     kryo.register(Drone::class.java)
+    kryo.register(DroneId::class.java)
     kryo.register(DroneTurnChange::class.java)
     kryo.register(Facility::class.java)
     kryo.register(Galaxy::class.java)
@@ -183,6 +185,5 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(LinkedHashMap::class.java)
     kryo.register(LocalPlayer::class.java)
     kryo.register(NetworkPlayer::class.java)
-    kryo.register(Pair::class.java)
     kryo.register(Planet::class.java)
 }

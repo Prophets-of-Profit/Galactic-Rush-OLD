@@ -1,10 +1,10 @@
 package com.prophetsofprofit.galacticrush.graphics
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.Options
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
@@ -25,8 +25,8 @@ class OptionsMenu(val game: Main, screen: GalacticRushScreen) : ModalWindow(scre
      */
     init {
         val backButton = TextButton("Back", Scene2DSkin.defaultSkin) //TODO: change for ImageButton with back icon
-        backButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        backButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
                 applyOptions()
                 disappear(Direction.POP, 1f)
             }

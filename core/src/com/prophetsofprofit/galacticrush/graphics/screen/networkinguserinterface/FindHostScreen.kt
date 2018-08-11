@@ -1,11 +1,9 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface
 
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.prophetsofprofit.galacticrush.Main
@@ -65,8 +63,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
 
         //Sets up confirmButton
         this.confirmButton.width = fieldAndLabelWidth
-        this.confirmButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        this.confirmButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
                 try {
                     GalacticRushClient.connect(directConnectField.text, portTextField.text.toInt())
                 } catch (e: Exception) {
@@ -113,7 +111,7 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
             this.selectableAddressesList.setItems(Array<String>(allNames.toTypedArray()))
             try {
                 this.selectableAddressesList.selectedIndex = prevSelected
-            } catch (ignored: Exception){
+            } catch (ignored: Exception) {
             }
             acceptChange = true
         }
@@ -138,8 +136,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         addButton.width = fieldAndLabelWidth
         addButton.setPosition(this.uiContainer.width * 0.9f, this.uiContainer.height * 0.52f, Align.center)
         addButton.align(Align.center)
-        addButton.addListener(object: ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        addButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
                 savedAddresses[nameField.text] = directConnectField.text
                 updateSelectableAddressesList()
             }
@@ -150,8 +148,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
         removeButton.width = fieldAndLabelWidth
         removeButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.56f, Align.center)
         removeButton.align(Align.center)
-        removeButton.addListener(object: ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        removeButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
                 savedAddresses.remove(selectableAddressesList.selected)
                 updateSelectableAddressesList()
             }
@@ -159,8 +157,8 @@ class FindHostScreen(game: Main) : GalacticRushScreen(game) {
 
         //Sets up cancelButton
         val cancelButton = TextButton("Cancel", Scene2DSkin.defaultSkin)
-        cancelButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        cancelButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
                 game.screen = MainMenuScreen(game)
                 dispose()
             }

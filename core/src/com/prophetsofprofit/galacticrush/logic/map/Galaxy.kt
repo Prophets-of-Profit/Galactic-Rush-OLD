@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import java.util.*
+import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -86,8 +86,8 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
                 }
                 //If the current planets can have a path that doesn't intersect an existing highway, or already is an existing highway, or intersect a planet, make a highway
                 if (!highways.any { it ->
-                    val planet0 = this.getPlanetWithId(it.p0)!!
-                    val planet1 = this.getPlanetWithId(it.p1)!!
+                            val planet0 = this.getPlanetWithId(it.p0)!!
+                            val planet1 = this.getPlanetWithId(it.p1)!!
                             doSegmentsIntersect(p0.x, p0.y, p1.x, p1.y, planet0.x, planet0.y, planet1.x, planet1.y) || //Highways crosses existing highway
                                     (planet0 == p0 && planet1 == p1) || (planet0 == p1 && planet1 == p0) //Highway already exists but with p0 and p1 switched around
                         } && !planets.filter { it != p0 && it != p1 }.any {
@@ -191,7 +191,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     /**
      * Gets the drone with the specified drone information
      */
-    fun getDroneWithId(id: Pair<Int, Date>?): Drone? {
+    fun getDroneWithId(id: DroneId?): Drone? {
         return this.drones.firstOrNull { it.id == id }
     }
 

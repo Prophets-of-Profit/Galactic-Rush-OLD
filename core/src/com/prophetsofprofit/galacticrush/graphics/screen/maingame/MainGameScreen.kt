@@ -6,15 +6,16 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.BaseInformationPanel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.GeneralInformationPanel
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
@@ -66,17 +67,18 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      */
     init {
         this.submitButton.setPosition(this.game.camera.viewportWidth, 0f, Align.bottomRight)
-        this.submitButton.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        this.submitButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
                 player.submitChanges()
             }
         })
         this.uiContainer.addActor(GeneralInformationPanel(this))
+        this.uiContainer.addActor(BaseInformationPanel(this))
         this.uiContainer.addActor(this.pauseMenu)
         this.uiContainer.addActor(this.optionsMenu)
         this.uiContainer.addActor(this.submitButton)
         //Finds the player's home base, moves the camera to be centered on the home base planet, and then zooms the camera in
-        this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id &&  it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
+        this.selectPlanet(this.mainGame.galaxy.planets.first { it.base != null && it.base!!.ownerId == this.player.id && it.base!!.facilityHealths.containsKey(Facility.HOME_BASE) })
     }
 
     /**
@@ -118,8 +120,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         if (this.mainGame.droneTurnChanges.isNotEmpty() && this.turnAnimationPointer < this.mainGame.droneTurnChanges.size) {
             if (this.turnAnimationHandler.currentlyMoving.isEmpty())
                 this.animateChange()
-        }
-        else {
+        } else {
             this.mainGame.droneTurnChanges.clear()
             this.turnAnimationPointer = 0
         }
@@ -202,8 +203,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         for (drone in this.mainGame.droneTurnChanges[this.turnAnimationPointer].changedDrones) {
             //Get the most recent version of the drone
             var recentTime = this.mainGame.droneTurnChanges.slice(0 until this.turnAnimationPointer)
-                                .filter { it.changedDrones.any { it.id == drone.id } }
-                                .lastOrNull()
+                    .filter { it.changedDrones.any { it.id == drone.id } }
+                    .lastOrNull()
             var location = this.oldGameState.drones.first { it.id == drone.id }.locationId
             if (recentTime != null) {
                 location = recentTime.changedDrones.first { it.id == drone.id }.locationId

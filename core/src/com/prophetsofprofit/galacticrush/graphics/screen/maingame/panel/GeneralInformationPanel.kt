@@ -68,13 +68,13 @@ class GeneralInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "G
             it.addAction(object : Action() {
                 override fun act(delta: Float): Boolean {
                     shouldHandle = false
-                    it.items = Array(gameScreen.mainGame.bases.map { "$it" }.toTypedArray())
+                    it.items = Array(arrayOf("Select a Base") + gameScreen.mainGame.bases.map { "$it" }.toTypedArray())
                     if (gameScreen.selectedPlanet?.base != null) {
                         it.selected = "${gameScreen.selectedPlanet?.base!!}"
                         shouldHandle = true
                         return false
                     }
-                    it.selected = "${gameScreen.mainGame.bases.first { it.facilityHealths.containsKey(Facility.HOME_BASE) && it.ownerId == gameScreen.player.id }}"
+                    it.selectedIndex = 0
                     shouldHandle = true
                     return false
                 }
@@ -82,10 +82,10 @@ class GeneralInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "G
             //Upon selecting a certain base, the user is moved to viewing the planet that contains the selected base
             it.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
-                    if (!shouldHandle) {
+                    val selectedIndex = it.selectedIndex - 1
+                    if (!shouldHandle || it.selectedIndex == -1) {
                         return
                     }
-                    val selectedIndex = it.selectedIndex
                     gameScreen.selectPlanet(gameScreen.mainGame.galaxy.planets.first { gameScreen.mainGame.bases.indexOf(it.base) == selectedIndex })
                 }
             })

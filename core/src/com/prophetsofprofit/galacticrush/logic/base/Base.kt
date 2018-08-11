@@ -24,7 +24,7 @@ class Base(val ownerId: Int, val locationId: Int, facilities: Array<Facility>) {
     /**
      * Empty constructor for serialization
      */
-    constructor(): this(-1, -1, arrayOf())
+    constructor() : this(-1, -1, arrayOf())
 
     //A convenience getter for how much total health the base has
     val health: Int

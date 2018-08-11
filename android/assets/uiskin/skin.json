@@ -218,10 +218,9 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
-		background: labelSmall
+		background: labelBlack
 		titleFont: SansSerif
 		titleFontColor: OrangeDarkPlanetary
-		stageBackground: labelBlack
 	}
 }
 }
