@@ -16,8 +16,11 @@ import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.BaseInformationPanel
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.DroneSelectionPanel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.GeneralInformationPanel
 import com.prophetsofprofit.galacticrush.logic.base.Facility
+import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.logic.player.Player
@@ -42,9 +45,14 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val maxZoom = 1f
     //The id of the planet currently selected by the player
     var selectedPlanetId: Int? = null
+    //The id of the drone currently selected by the player
+    var selectedDroneId: DroneId? = null
     //The planet currently selected by the player
     val selectedPlanet: Planet?
         get() = this.mainGame.galaxy.getPlanetWithId(this.selectedPlanetId ?: -1)
+    //The drone currently selected by the player
+    val selectedDrone: Drone?
+        get() = this.mainGame.galaxy.getDroneWithId(this.selectedDroneId)
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
     //The mechanism to handle panning the screen over a time
@@ -74,6 +82,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         })
         this.uiContainer.addActor(GeneralInformationPanel(this))
         this.uiContainer.addActor(BaseInformationPanel(this))
+        this.uiContainer.addActor(DroneSelectionPanel(this))
         this.uiContainer.addActor(this.pauseMenu)
         this.uiContainer.addActor(this.optionsMenu)
         this.uiContainer.addActor(this.submitButton)
@@ -89,7 +98,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         //Begins rendering the objects on the screen
         this.game.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         //Render highways as white lines
-        this.game.shapeRenderer.color = Color.WHITE
+        this.game.shapeRenderer.color = Color.LIGHT_GRAY
         for (highway in this.mainGame.galaxy.highways) {
             val planet0 = this.mainGame.galaxy.getPlanetWithId(highway.p0)!!
             val planet1 = this.mainGame.galaxy.getPlanetWithId(highway.p1)!!
@@ -117,6 +126,9 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.drawDrones()
         this.game.batch.end()
         this.panHandler.update(delta)
+        if (this.selectedPlanet == null) {
+            this.selectedDroneId = null
+        }
         if (this.mainGame.droneTurnChanges.isNotEmpty() && this.turnAnimationPointer < this.mainGame.droneTurnChanges.size) {
             if (this.turnAnimationHandler.currentlyMoving.isEmpty())
                 this.animateChange()
@@ -271,6 +283,9 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         return this.selectedPlanet != null
     }
 
+    /**
+     * When the escape or back keys are pressed, a pause menu appears
+     */
     override fun keyDown(keycode: Int): Boolean {
         if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
             if (this.pauseMenu.isVisible) {

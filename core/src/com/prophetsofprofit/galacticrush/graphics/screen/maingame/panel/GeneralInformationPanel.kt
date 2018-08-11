@@ -103,11 +103,7 @@ class GeneralInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "G
                 override fun act(delta: Float): Boolean {
                     shouldHandle = false
                     it.items = Array(arrayOf("Select a Drone") + gameScreen.mainGame.drones.map { "$it" })
-                    if (it.selectedIndex != 0 && gameScreen.mainGame.drones[it.selectedIndex - 1].locationId == gameScreen.selectedPlanetId) {
-                        shouldHandle = true
-                        return false
-                    }
-                    it.selectedIndex = 0
+                    it.selectedIndex = if (gameScreen.selectedDrone == null) 0 else gameScreen.mainGame.drones.indexOf(gameScreen.selectedDrone) + 1
                     shouldHandle = true
                     return false
                 }
@@ -115,10 +111,16 @@ class GeneralInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "G
             //Upon selecting a certain drone, the user is moved to viewing the planet that contains the selected drone
             it.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
-                    if (!shouldHandle || it.selectedIndex == 0) {
+                    if (!shouldHandle) {
                         return
                     }
-                    gameScreen.selectPlanet(gameScreen.mainGame.galaxy.getPlanetWithId(gameScreen.mainGame.drones[it.selectedIndex - 1].locationId)!!)
+                    if (it.selectedIndex == 0) {
+                        gameScreen.selectedDroneId = null
+                        return
+                    }
+                    val selectedDrone = gameScreen.mainGame.drones[it.selectedIndex - 1]
+                    gameScreen.selectPlanet(gameScreen.mainGame.galaxy.getPlanetWithId(selectedDrone.locationId)!!)
+                    gameScreen.selectedDroneId = selectedDrone.id
                 }
             })
         }
