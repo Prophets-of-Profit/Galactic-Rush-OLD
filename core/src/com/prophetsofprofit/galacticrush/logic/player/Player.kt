@@ -1,6 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic.player
 
-import com.prophetsofprofit.galacticrush.logic.Change
+import com.prophetsofprofit.galacticrush.logic.DroneChange
 import com.prophetsofprofit.galacticrush.logic.Game
 
 /**
@@ -10,7 +10,7 @@ import com.prophetsofprofit.galacticrush.logic.Game
 abstract class Player(val id: Int) {
 
     //What the player has done and will submit to the game once their turn is over
-    var currentChanges: Change = Change(this.id)
+    var currentChanges: DroneChange = DroneChange(this.id)
     //The game that the player is in
     var currentGameState: Game? = null
     //The game state that is the state of the game before drone turns

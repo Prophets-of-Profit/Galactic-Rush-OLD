@@ -125,10 +125,7 @@ enum class Instruction(
             mainAction = { drone, galaxy, _ ->
                 galaxy.getPlanetWithId(drone.locationId)!!.base?.takeDamage(drone.attack)
             }
-    );
-
-
-    var players = mutableListOf<Int>()
+    )
 }
 
 /**

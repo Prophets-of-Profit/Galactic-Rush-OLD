@@ -6,7 +6,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
  * A class that represents a change that a player wants to make to the game
  * Every player directly modifies changes and then sends the changes to the master copy of the game
  */
-class Change(val ownerId: Int) {
+class DroneChange(val ownerId: Int) {
 
     /**
      * Empty constructor for serialization

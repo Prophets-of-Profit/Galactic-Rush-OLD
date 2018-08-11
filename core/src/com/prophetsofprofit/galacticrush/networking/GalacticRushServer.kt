@@ -4,7 +4,7 @@ import com.esotericsoftware.kryonet.Connection
 import com.esotericsoftware.kryonet.Listener
 import com.esotericsoftware.kryonet.Server
 import com.prophetsofprofit.galacticrush.bufferSize
-import com.prophetsofprofit.galacticrush.logic.Change
+import com.prophetsofprofit.galacticrush.logic.DroneChange
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
@@ -49,8 +49,8 @@ object GalacticRushServer : Server(bufferSize, bufferSize) {
         //Listens for incoming change objects
         this.addListener(object : Listener() {
             override fun received(connection: Connection?, obj: Any?) {
-                if (obj is Change) {
-                    hostedGame!!.collectChange(obj)
+                if (obj is DroneChange) {
+                    hostedGame!!.collectDroneChange(obj)
                 }
             }
         })

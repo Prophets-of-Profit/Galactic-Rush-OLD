@@ -1,7 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.player
 
 import com.prophetsofprofit.galacticrush.kryo
-import com.prophetsofprofit.galacticrush.logic.Change
+import com.prophetsofprofit.galacticrush.logic.DroneChange
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 
@@ -20,8 +20,8 @@ class LocalPlayer(id: Int) : Player(id) {
      * The local player directly gives the local game the changes to submit
      */
     override fun submitChanges() {
-        GalacticRushServer.hostedGame!!.collectChange(this.currentChanges)
-        this.currentChanges = Change(this.id)
+        GalacticRushServer.hostedGame!!.collectDroneChange(this.currentChanges)
+        this.currentChanges = DroneChange(this.id)
     }
 
     /**

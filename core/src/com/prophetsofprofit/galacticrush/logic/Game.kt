@@ -5,6 +5,8 @@ import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionType
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 
@@ -39,32 +41,43 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     //How much money each player has; maps id to money
     val money = this.players.map { it to 0 }.toMap().toMutableMap()
     //The map of player id to their color
-    val playerColors = mutableMapOf<Int, Color>()
+    val playerColors = this.players.map { it to Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f) }.toMap()
     //The list of things that happen after each drone turn
     var droneTurnChanges = mutableListOf<DroneTurnChange>()
+    //Which instruction each player has; maps id to instructions
+    val unlockedInstructions = this.players.map { it to mutableListOf<Instruction>() }.toMap()
+    //The instructions that can still be drafted
+    val instructionPool = Instruction.values().map { instruction -> Array(instruction.value) { instruction } }.toTypedArray().flatten().toMutableList()
+    //The player that is currently drafting
+    var currentDrafter: Int? = null
+    //The draft options the current drafter is receiving
+    var draftOptions: List<Instruction>? = null
 
     /**
-     * Assigns each player a random colors
+     * Takes a random draw of (player number + 2) instructions from the instruction pool
+     * TODO: don't assume that the pool is larger than the number of instructions queried
      */
-    init {
-        this.players.forEach { playerColors[it] = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f) }
+    fun drawInstructions(types: Array<InstructionType> = InstructionType.values()): List<Instruction> {
+        val draftOptions = this.instructionPool.filter { it.types.intersect(types.asIterable()).isNotEmpty() }.shuffled().slice(0 until this.players.size + 2)
+        draftOptions.forEach { this.instructionPool.remove(it) }
+        return draftOptions
     }
 
     /**
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
-    fun collectChange(change: Change) {
-        if (!this.waitingOn.contains(change.ownerId)) {
+    fun collectDroneChange(droneChange: DroneChange) {
+        if (!this.waitingOn.contains(droneChange.ownerId)) {
             return
         }
-        //TODO: verify change integrity
+        //TODO: verify droneChange integrity
         //Add all the changes into the game
-        for (changedDrone in change.changedDrones) {
+        for (changedDrone in droneChange.changedDrones) {
             this.drones.filter { it.ownerId == changedDrone.ownerId && it.creationTime == changedDrone.creationTime }.forEach { this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it) }
             this.galaxy.getPlanetWithId(changedDrone.locationId)!!.drones.add(changedDrone)
         }
         //TODO apply changes to instructions
-        this.waitingOn.remove(change.ownerId)
+        this.waitingOn.remove(droneChange.ownerId)
         if (this.waitingOn.isEmpty()) {
             this.turnsPlayed++
             this.droneTurnChanges.clear()

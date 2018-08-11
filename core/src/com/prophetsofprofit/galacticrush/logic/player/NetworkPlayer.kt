@@ -1,6 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic.player
 
-import com.prophetsofprofit.galacticrush.logic.Change
+import com.prophetsofprofit.galacticrush.logic.DroneChange
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
@@ -22,7 +22,7 @@ class NetworkPlayer(id: Int, val connectionId: Int) : Player(id) {
      */
     override fun submitChanges() {
         GalacticRushClient.sendTCP(this.currentChanges)
-        this.currentChanges = Change(this.id)
+        this.currentChanges = DroneChange(this.id)
     }
 
     /**

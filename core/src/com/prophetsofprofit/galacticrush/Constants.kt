@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonWriter
 import com.esotericsoftware.kryo.Kryo
-import com.prophetsofprofit.galacticrush.logic.Change
+import com.prophetsofprofit.galacticrush.logic.DroneChange
 import com.prophetsofprofit.galacticrush.logic.DroneTurnChange
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.base.Base
@@ -170,7 +170,7 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(ArrayList::class.java)
     kryo.register(Attribute::class.java)
     kryo.register(Base::class.java)
-    kryo.register(Change::class.java)
+    kryo.register(DroneChange::class.java)
     kryo.register(Color::class.java)
     kryo.register(CosmicHighway::class.java)
     kryo.register(Date::class.java)
