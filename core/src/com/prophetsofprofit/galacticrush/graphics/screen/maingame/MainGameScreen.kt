@@ -18,6 +18,7 @@ import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.BaseInformationPanel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.DroneSelectionPanel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.GeneralInformationPanel
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.PlanetInformationPanel
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
@@ -83,6 +84,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(GeneralInformationPanel(this))
         this.uiContainer.addActor(BaseInformationPanel(this))
         this.uiContainer.addActor(DroneSelectionPanel(this))
+        this.uiContainer.addActor(PlanetInformationPanel(this))
         this.uiContainer.addActor(this.pauseMenu)
         this.uiContainer.addActor(this.optionsMenu)
         this.uiContainer.addActor(this.submitButton)
@@ -126,7 +128,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.drawDrones()
         this.game.batch.end()
         this.panHandler.update(delta)
-        if (this.selectedPlanet == null) {
+        if (this.selectedPlanet?.drones?.contains(this.selectedDrone) != true) {
             this.selectedDroneId = null
         }
         if (this.mainGame.droneTurnChanges.isNotEmpty() && this.turnAnimationPointer < this.mainGame.droneTurnChanges.size) {

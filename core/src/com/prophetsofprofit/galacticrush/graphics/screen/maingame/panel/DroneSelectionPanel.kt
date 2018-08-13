@@ -15,7 +15,7 @@ import ktx.scene2d.Scene2DSkin
 /**
  * The panel that will allow the user to select a drone on the current planet
  */
-class DroneSelectionPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Drone Selection Panel", gameScreen.uiCamera.viewportWidth, 0.9f * gameScreen.uiCamera.viewportHeight, 0.25f * gameScreen.uiCamera.viewportWidth, 0.5f * gameScreen.uiCamera.viewportHeight, Align.topRight) {
+class DroneSelectionPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Drone Selection Panel", gameScreen.uiCamera.viewportWidth, 0.45f * gameScreen.uiCamera.viewportHeight, 0.25f * gameScreen.uiCamera.viewportWidth, 0.45f * gameScreen.uiCamera.viewportHeight, Align.topRight) {
 
     /**
      * Initializes panel components and alignments
@@ -61,8 +61,7 @@ class DroneSelectionPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Drone
                 if (!canBeUsed) {
                     return false
                 }
-                if (gameScreen.selectedPlanet?.drones != null) {
-                    //children.forEach { it.act(delta) }
+                if (gameScreen.selectedPlanet?.drones?.isNotEmpty() == true) {
                     appear(Direction.RIGHT, 1f)
                 } else {
                     disappear(Direction.RIGHT, 1f)
