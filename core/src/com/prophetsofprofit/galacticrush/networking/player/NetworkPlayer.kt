@@ -1,4 +1,4 @@
-package com.prophetsofprofit.galacticrush.logic.player
+package com.prophetsofprofit.galacticrush.networking.player
 
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.change.Change

@@ -8,9 +8,9 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
-import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
-import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
+import com.prophetsofprofit.galacticrush.networking.player.LocalPlayer
+import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
 import ktx.scene2d.Scene2DSkin
 
 /**

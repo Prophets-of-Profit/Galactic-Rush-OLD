@@ -20,9 +20,9 @@ import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.CosmicHighway
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
-import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
-import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
-import com.prophetsofprofit.galacticrush.logic.player.Player
+import com.prophetsofprofit.galacticrush.networking.player.LocalPlayer
+import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
+import com.prophetsofprofit.galacticrush.networking.player.Player
 import java.util.*
 
 //The object that handles reading/writing JSON

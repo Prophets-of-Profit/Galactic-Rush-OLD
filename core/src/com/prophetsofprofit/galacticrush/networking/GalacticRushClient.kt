@@ -6,7 +6,7 @@ import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.bufferSize
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
-import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
+import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.registerAllClasses
 
 /**

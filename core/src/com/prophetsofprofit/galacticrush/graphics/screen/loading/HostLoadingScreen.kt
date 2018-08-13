@@ -2,9 +2,9 @@ package com.prophetsofprofit.galacticrush.graphics.screen.loading
 
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
-import com.prophetsofprofit.galacticrush.logic.player.LocalPlayer
-import com.prophetsofprofit.galacticrush.logic.player.Player
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
+import com.prophetsofprofit.galacticrush.networking.player.LocalPlayer
+import com.prophetsofprofit.galacticrush.networking.player.Player
 
 /**
  * The screen that handles loading and initializing the game

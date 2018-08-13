@@ -24,7 +24,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Planet
-import com.prophetsofprofit.galacticrush.logic.player.Player
+import com.prophetsofprofit.galacticrush.networking.player.Player
 import ktx.scene2d.Scene2DSkin
 import kotlin.math.*
 

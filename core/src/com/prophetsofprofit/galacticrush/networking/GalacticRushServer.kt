@@ -8,8 +8,8 @@ import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.change.DroneChange
 import com.prophetsofprofit.galacticrush.logic.change.InstructionChange
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
-import com.prophetsofprofit.galacticrush.logic.player.NetworkPlayer
-import com.prophetsofprofit.galacticrush.logic.player.Player
+import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
+import com.prophetsofprofit.galacticrush.networking.player.Player
 import com.prophetsofprofit.galacticrush.registerAllClasses
 
 /**
