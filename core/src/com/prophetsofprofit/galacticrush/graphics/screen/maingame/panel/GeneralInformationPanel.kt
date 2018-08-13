@@ -98,7 +98,7 @@ class GeneralInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "G
         val droneDropdown = SelectBox<String>(Scene2DSkin.defaultSkin).also {
             it.setAlignment(Align.center)
             var shouldHandle = true
-            //The drone dropdown will always show one of the drones on the user's selected planet
+            //The drone dropdown will always show the selected drone
             it.addAction(object : Action() {
                 override fun act(delta: Float): Boolean {
                     shouldHandle = false
@@ -118,9 +118,7 @@ class GeneralInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "G
                         gameScreen.selectedDroneId = null
                         return
                     }
-                    val selectedDrone = gameScreen.mainGame.drones[it.selectedIndex - 1]
-                    gameScreen.selectPlanet(gameScreen.mainGame.galaxy.getPlanetWithId(selectedDrone.locationId)!!)
-                    gameScreen.selectedDroneId = selectedDrone.id
+                    gameScreen.selectDrone(gameScreen.mainGame.drones[it.selectedIndex - 1])
                 }
             })
         }

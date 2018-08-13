@@ -209,6 +209,14 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     }
 
     /**
+     * Selects a drone and then selects the planet it is on
+     */
+    fun selectDrone(d: Drone) {
+        this.selectedDroneId = d.id
+        this.selectPlanet(this.mainGame.galaxy.getPlanetWithId(d.locationId)!!)
+    }
+
+    /**
      * Animate the difference between two game states
      */
     fun animateChange() {
@@ -279,6 +287,9 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             sqrt((this.game.windowToCamera(x.toInt(), y.toInt()).x / this.game.camera.viewportWidth - it.x).pow(2)
                     + (this.game.windowToCamera(x.toInt(), y.toInt()).y / this.game.camera.viewportHeight - it.y).pow(2)) < it.radius * 10
         }?.id
+        if (this.selectedPlanetId == null) {
+            this.selectedDroneId = null
+        }
         if (this.selectedPlanet != null) this.selectPlanet(this.selectedPlanet!!)
         return this.selectedPlanet != null
     }

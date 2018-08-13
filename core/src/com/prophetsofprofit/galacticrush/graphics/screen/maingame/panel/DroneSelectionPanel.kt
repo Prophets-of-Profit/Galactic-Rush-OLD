@@ -24,31 +24,34 @@ class DroneSelectionPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Drone
         //Adds the scroll pane with the list that will allow the user to select a drone
         this.add(ScrollPane(List<String>(Scene2DSkin.defaultSkin).also {
             it.setAlignment(Align.center)
+            var shouldHandle = true
             //Sets selection to the selected drone or no selection; updates all the drones on the selected planet
             it.addAction(object : Action() {
                 override fun act(delta: Float): Boolean {
-                    if (!canBeUsed) {
-                        return false
-                    }
+                    shouldHandle = false
                     it.setItems(Array(gameScreen.selectedPlanet?.drones?.map { "$it" }?.toTypedArray()
                             ?: arrayOf("")))
                     if (gameScreen.selectedDroneId != null) {
-                        it.selectedIndex = gameScreen.mainGame.drones.indexOf(gameScreen.selectedDrone)
+                        it.selectedIndex = gameScreen.selectedPlanet!!.drones.indexOf(gameScreen.selectedDrone)
                     } else {
                         it.selection.clear()
                     }
+                    shouldHandle = true
                     return false
                 }
             })
             //Allows user to select a drone from this pane
             it.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
+                    if (!shouldHandle) {
+                        return
+                    }
                     if (it.selectedIndex < 0 || it.items.size == 0 || gameScreen.mainGame.drones.isEmpty()) {
                         gameScreen.selectedDroneId = null
                         it.selection.clear()
                         return
                     }
-                    gameScreen.selectedDroneId = gameScreen.mainGame.drones[it.selectedIndex].id
+                    gameScreen.selectDrone(gameScreen.selectedPlanet!!.drones[it.selectedIndex])
                 }
             })
         }, Scene2DSkin.defaultSkin)).expand().fill()
