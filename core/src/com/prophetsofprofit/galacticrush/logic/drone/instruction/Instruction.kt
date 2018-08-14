@@ -125,6 +125,18 @@ enum class Instruction(
             mainAction = { drone, galaxy, _ ->
                 galaxy.getPlanetWithId(drone.locationId)!!.base?.takeDamage(drone.attack)
             }
+    ),
+    RELEASE_CFCS(
+            "Release Chlorofluorocarbons on This Planet",
+            3,
+            8,
+            5,
+            arrayOf(), //TODO: ?
+            mainAction = { drone, galaxy, _ ->
+                val currentPlanet = galaxy.getPlanetWithId(drone.locationId)!!
+                currentPlanet.attributes[Attribute.TEMPERATURE] = maxOf(0.0, currentPlanet.attributes[Attribute.TEMPERATURE]!! - 0.05)
+                currentPlanet.attributes[Attribute.ATMOSPHERE] = maxOf(0.0, currentPlanet.attributes[Attribute.ATMOSPHERE]!! - 0.05)
+            }
     );
 
     override fun toString(): String = this.displayName
