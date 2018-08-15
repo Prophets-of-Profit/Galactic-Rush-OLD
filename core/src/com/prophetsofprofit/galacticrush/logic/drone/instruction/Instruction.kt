@@ -34,7 +34,7 @@ enum class Instruction(
             30,
             1,
             3,
-            arrayOf(InstructionType.MODIFICATION),
+            arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
                 drone.selectedPlanetId = drone.selectablePlanetIds
                         ?.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[Attribute.TEMPERATURE]!! }
@@ -45,7 +45,7 @@ enum class Instruction(
             20,
             1,
             3,
-            arrayOf(InstructionType.MODIFICATION),
+            arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
                 drone.selectedDroneId = drone.selectableDroneIds
                         ?.leastBy { galaxy.getDroneWithId(it)!!.attack.toDouble() }
@@ -85,7 +85,7 @@ enum class Instruction(
             3,
             5,
             5,
-            arrayOf(InstructionType.CONSTRUCTION),
+            arrayOf(InstructionType.PLANET_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
                 val dronePlanet = galaxy.getPlanetWithId(drone.locationId)!!
                 if (dronePlanet.base == null) {
@@ -131,7 +131,7 @@ enum class Instruction(
             3,
             8,
             5,
-            arrayOf(), //TODO: ?
+            arrayOf(InstructionType.PLANET_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
                 val currentPlanet = galaxy.getPlanetWithId(drone.locationId)!!
                 currentPlanet.attributes[Attribute.TEMPERATURE] = maxOf(0.0, currentPlanet.attributes[Attribute.TEMPERATURE]!! - 0.05)
