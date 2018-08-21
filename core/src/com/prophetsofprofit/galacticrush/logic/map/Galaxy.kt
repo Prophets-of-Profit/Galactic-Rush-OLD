@@ -44,13 +44,16 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
      * the side length of the bounding boxes used to generate the planets
      */
     init {
+        val minDistanceBetweenHomes = 0.5
         generatePlanets(numPlanets)
         generateEdges(numPlanets)
         connectAllPlanets()
         val pickablePlanets = this.planets.toMutableList()
         var planetChoice: Planet
         for (i in 0 until playerIDs.size) {
-            planetChoice = pickablePlanets.shuffled()[0]
+            do {
+                planetChoice = pickablePlanets.shuffled()[0]
+            } while (this.planets.any { it.base?.facilityHealths?.containsKey(Facility.HOME_BASE) == true && sqrt((it.x - planetChoice.x).pow(2) + (it.y - planetChoice.y).pow(2)) < minDistanceBetweenHomes })
             planetChoice.base = Base(playerIDs[i], planetChoice.id, arrayOf(Facility.HOME_BASE, Facility.CONSTRUCTION, Facility.PROGRAMMING))
             pickablePlanets.remove(planetChoice)
         }
