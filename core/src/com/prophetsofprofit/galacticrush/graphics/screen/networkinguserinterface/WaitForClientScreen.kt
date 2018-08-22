@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterfac
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
@@ -22,6 +23,8 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
     val portTextField = PortTextField()
     //The button that either locks in the selected port or undoes the selection of the port
     val lockButton = TextButton("________________", Scene2DSkin.defaultSkin)
+    //The field for inputting the size of the galaxy
+    val galaxySizeField = TextField("100", Scene2DSkin.defaultSkin)
 
     /**
      * Initializes the networker as a host and also initializes GUI components
@@ -31,8 +34,22 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
         this.portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f, Align.center)
         this.portTextField.setAlignment(Align.center)
 
+        //Sets up the galaxy size text field
+        this.galaxySizeField.maxLength = 5
+        this.galaxySizeField.setAlignment(Align.center)
+        this.galaxySizeField.setTextFieldFilter { _, newChar -> newChar.isDigit() }
+        this.galaxySizeField.setTextFieldListener { _, _ ->
+            //TODO: isn't working
+            lockButton.isDisabled = try {
+                this.galaxySizeField.text.toInt() < 1 || this.galaxySizeField.text.toInt() > 500
+            } catch (ignored: Exception) {
+                true
+            }
+        }
+        this.galaxySizeField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.85f - portTextField.height * 1.5f, Align.center)
+
         //Sets up the lockButton
-        val confirmPort = "Confirm Port"
+        val confirmPort = "Confirm Selection"
         val cancelSelection = "Cancel Selection"
         this.lockButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
@@ -52,7 +69,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
             }
         })
         this.lockButton.setText(confirmPort)
-        this.lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f - portTextField.height * 1.5f, Align.center)
+        this.lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.75f - portTextField.height * 1.5f, Align.center)
         this.lockButton.align(Align.center)
 
         //Sets up cancelButton
@@ -67,6 +84,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
 
         //Adds all widgets
         this.uiContainer.addActor(this.portTextField)
+        this.uiContainer.addActor(this.galaxySizeField)
         this.uiContainer.addActor(this.lockButton)
         this.uiContainer.addActor(cancelButton)
     }
@@ -79,7 +97,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
         if (GalacticRushServer.connections.isEmpty()) {
             return
         }
-        this.game.screen = HostLoadingScreen(this.game, arrayOf(LocalPlayer(0), NetworkPlayer(1, GalacticRushServer.connections.first().id)))
+        this.game.screen = HostLoadingScreen(this.game, arrayOf(LocalPlayer(0), NetworkPlayer(1, GalacticRushServer.connections.first().id)), this.galaxySizeField.text.toInt())
         this.dispose()
     }
 

@@ -38,8 +38,8 @@ object GalacticRushServer : Server(bufferSize, bufferSize) {
     /**
      * The location of the actual game engine where all game logic is handled
      */
-    fun runGame(players: Array<Player>) {
-        this.hostedGame = Game(players.map { it.id }.toTypedArray(), Galaxy(100, players.map { it.id }))
+    fun runGame(players: Array<Player>, galaxySize: Int) {
+        this.hostedGame = Game(players.map { it.id }.toTypedArray(), Galaxy(galaxySize, players.map { it.id }))
         //Gives the game to all of the players and gives the network players their player objects that contains the game
         players.forEach {
             it.game = this.hostedGame!!

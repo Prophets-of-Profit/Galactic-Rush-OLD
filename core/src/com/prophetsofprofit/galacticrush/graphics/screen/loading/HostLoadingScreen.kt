@@ -10,7 +10,7 @@ import com.prophetsofprofit.galacticrush.networking.player.Player
  * The screen that handles loading and initializing the game
  * Should be called from host, as only host should actually be constructing the game
  */
-class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(game) {
+class HostLoadingScreen(game: Main, val players: Array<Player>, var galaxySize: Int) : LoadingScreen(game) {
 
     /**
      * Constructs the galaxy
@@ -18,7 +18,7 @@ class HostLoadingScreen(game: Main, val players: Array<Player>) : LoadingScreen(
     override fun load() {
         Thread.sleep(50) //Necessary to ensure that this.players isn't null
         Thread {
-            GalacticRushServer.runGame(this.players)
+            GalacticRushServer.runGame(this.players, galaxySize)
         }.start()
         while (GalacticRushServer.hostedGame == null) {
             Thread.sleep(50)
