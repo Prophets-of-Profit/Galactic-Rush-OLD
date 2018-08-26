@@ -75,7 +75,6 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     fun collectChange(change: Change) {
         if (this.phase == GamePhase.DRAFT_PHASE) {
             change as PlayerChange
-            println("Received from ${change.ownerId}: $change \nwaiting on ${this.waitingOn}")
             if (!this.waitingOn.contains(change.ownerId) || change.gainedInstructions.size != 1 || !this.currentDraft[change.ownerId]!!.containsAll(change.gainedInstructions)) {
                 return
             }
@@ -85,15 +84,14 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
             if (this.waitingOn.isEmpty()) {
                 if (this.draftCounter < this.players.size - 1) {
                     draftCounter++
-                    println(this.currentDraft)
-                    val firstPlayerOptions = this.currentDraft[this.players[0]]!!.toMutableList()
-                    val secondPlayerOptions = this.currentDraft[this.players[1]]!!.toMutableList()
-                    this.currentDraft[this.players[0]]!!.clear()
-                    this.currentDraft[this.players[0]]!!.addAll(secondPlayerOptions)
-                    this.currentDraft[this.players[1]]!!.clear()
-                    this.currentDraft[this.players[1]]!!.addAll(firstPlayerOptions)
+                    val temporaryOptionsToRotate = this.currentDraft[this.currentDraft.keys.last()]!!.toMutableList()
+                    for (player in this.currentDraft.size - 1 downTo 1) {
+                        this.currentDraft[this.currentDraft.keys.elementAt(player)]!!.clear()
+                        this.currentDraft[this.currentDraft.keys.elementAt(player)]!!.addAll(this.currentDraft[this.currentDraft.keys.elementAt(player - 1)]!!)
+                    }
+                    this.currentDraft[this.currentDraft.keys.first()]!!.clear()
+                    this.currentDraft[this.currentDraft.keys.first()]!!.addAll(temporaryOptionsToRotate)
                     this.hasBeenUpdated = true
-                    println(this.currentDraft)
                 } else {
                     this.currentDraft.values.forEach { this.instructionPool.addAll(it); it.clear() }
                     this.draftCounter = 0

@@ -65,7 +65,6 @@ class DraftPopup(gameScreen: MainGameScreen) : ModalWindow(gameScreen, "Draft Op
                 if (!isVisible && gameScreen.mainGame.phase == GamePhase.DRAFT_PHASE && gameScreen.mainGame.currentDraft[gameScreen.player.id]!!.isNotEmpty() && gameScreen.mainGame.currentDraft[gameScreen.player.id]!! != optionsWhenSubmitted) {
                     children.forEach { it.act(0f) }
                     appear(Direction.POP, 1f)
-                    println("Drafting ${gameScreen.mainGame.currentDraft[gameScreen.player.id]!!}")
                 } else if (isVisible && gameScreen.mainGame.phase != GamePhase.DRAFT_PHASE) {
                     disappear(Direction.POP, 1f)
                 }
