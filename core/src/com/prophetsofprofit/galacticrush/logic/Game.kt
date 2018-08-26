@@ -55,7 +55,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     //The instructions that can still be drafted
     val instructionPool = Instruction.values().map { instruction -> Array(instruction.value) { instruction } }.toTypedArray().flatten().toMutableList()
     //The instructions that each player is being offered right now; initial value is draft for all players
-    val currentDraft = players.map { it to InstructionType.values().fold(mutableListOf<Instruction>()) { initialDraft, instructionType -> (initialDraft + this.drawInstructions(arrayOf(instructionType))).toMutableList() } }.toMap()
+    val currentDraft = players.map { it to this.drawInstructions().toMutableList() }.toMap()
     //The number of times the draft has been called in the current draft cycle
     var draftCounter = 0
 
@@ -75,23 +75,25 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     fun collectChange(change: Change) {
         if (this.phase == GamePhase.DRAFT_PHASE) {
             change as PlayerChange
+            println("Received from ${change.ownerId}: $change \nwaiting on ${this.waitingOn}")
             if (!this.waitingOn.contains(change.ownerId) || change.gainedInstructions.size != 1 || !this.currentDraft[change.ownerId]!!.containsAll(change.gainedInstructions)) {
                 return
             }
             this.waitingOn.remove(change.ownerId)
-            this.currentDraft[change.ownerId]!!.removeAll(change.gainedInstructions)
+            this.currentDraft[change.ownerId]!!.remove(change.gainedInstructions.first())
             this.unlockedInstructions[change.ownerId]!!.addAll(change.gainedInstructions)
             if (this.waitingOn.isEmpty()) {
-                if (this.draftCounter < this.players.size) {
+                if (this.draftCounter < this.players.size - 1) {
                     draftCounter++
-                    val temporaryOptionsToRotate = this.currentDraft[this.currentDraft.keys.last()]!!
-                    for (player in this.currentDraft.size until 1 step -1) {
-                        this.currentDraft[this.currentDraft.keys.elementAt(player)]!!.clear()
-                        this.currentDraft[this.currentDraft.keys.elementAt(player)]!!.addAll(this.currentDraft[this.currentDraft.keys.elementAt(player - 1)]!!)
-                    }
-                    this.currentDraft[this.currentDraft.keys.first()]!!.clear()
-                    this.currentDraft[this.currentDraft.keys.first()]!!.addAll(temporaryOptionsToRotate)
+                    println(this.currentDraft)
+                    val firstPlayerOptions = this.currentDraft[this.players[0]]!!.toMutableList()
+                    val secondPlayerOptions = this.currentDraft[this.players[1]]!!.toMutableList()
+                    this.currentDraft[this.players[0]]!!.clear()
+                    this.currentDraft[this.players[0]]!!.addAll(secondPlayerOptions)
+                    this.currentDraft[this.players[1]]!!.clear()
+                    this.currentDraft[this.players[1]]!!.addAll(firstPlayerOptions)
                     this.hasBeenUpdated = true
+                    println(this.currentDraft)
                 } else {
                     this.currentDraft.values.forEach { this.instructionPool.addAll(it); it.clear() }
                     this.draftCounter = 0

@@ -43,7 +43,7 @@ object GalacticRushServer : Server(bufferSize, bufferSize) {
         this.hostedGame = Game(players.map { it.id }.toTypedArray(), Galaxy(options.galaxySize, players.map { it.id }))
         //Gives the game to all of the players and gives the network players their player objects that contains the game
         players.forEach {
-            it.game = this.hostedGame!!
+            it.game = kryo.copy(this.hostedGame!!)
             if (it is NetworkPlayer) {
                 this.sendToTCP(it.connectionId, it)
             }

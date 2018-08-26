@@ -16,4 +16,11 @@ open class Change {
     //A list of changed bases
     val changedBases = mutableListOf<Base>()
 
+    /**
+     * Gives the change a pretty output string
+     */
+    override fun toString(): String {
+        return "CHANGE:\nPlanets: ${this.changedPlanets}\nDrones: ${this.changedDrones}\nBases: ${this.changedBases}"
+    }
+
 }
