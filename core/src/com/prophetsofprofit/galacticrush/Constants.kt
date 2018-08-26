@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonWriter
 import com.esotericsoftware.kryo.Kryo
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.GamePhase
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.change.Change
@@ -179,6 +180,7 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(Facility::class.java)
     kryo.register(Galaxy::class.java)
     kryo.register(Game::class.java)
+    kryo.register(GamePhase::class.java)
     kryo.register(Instruction::class.java)
     kryo.register(InstructionInstance::class.java)
     kryo.register(LinkedHashMap::class.java)

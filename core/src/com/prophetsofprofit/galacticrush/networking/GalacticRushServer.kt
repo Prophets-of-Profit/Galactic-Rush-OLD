@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Server
 import com.prophetsofprofit.galacticrush.bufferSize
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.GameCreationOptions
+import com.prophetsofprofit.galacticrush.logic.GamePhase
 import com.prophetsofprofit.galacticrush.logic.change.Change
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
@@ -57,15 +58,23 @@ object GalacticRushServer : Server(bufferSize, bufferSize) {
         })
         //Actual engine for the game that is constantly running
         while (this.connections.isNotEmpty()) {
-            if (!this.hostedGame!!.gameChanged) {
+            if (!this.hostedGame!!.hasBeenUpdated) {
                 Thread.sleep(50)
                 continue
             }
-            this.hostedGame!!.gameChanged = false
+            this.hostedGame!!.hasBeenUpdated = false
             players.forEach { it.receiveNewGameState(this.hostedGame!!) }
-            while (!this.hostedGame!!.doDroneTurn()) {
+            if (this.hostedGame!!.phase == GamePhase.DRONE_PHASE) {
+                while (!this.hostedGame!!.doDroneTurn()) {
+                }
+                //After above loop is done, game will be in draft phase
             }
-            players.forEach { it.receiveNewGameState(this.hostedGame!!) }
+            /* TODO: else */if (this.hostedGame!!.phase == GamePhase.DRAFT_PHASE) {
+                this.hostedGame!!.droneTurnChanges.clear()
+                //TODO: below is temporary until we have a working draft
+                this.hostedGame!!.phase = GamePhase.PLAYER_FREE_PHASE
+                //TODO: above is temporary until we have a working draft
+            }
         }
     }
 
