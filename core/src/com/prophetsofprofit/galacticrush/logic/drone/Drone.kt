@@ -47,10 +47,6 @@ class Drone(val ownerId: Int, var locationId: Int) {
     var selectablePlanetIds: MutableList<Int>? = null
     //The potential ids of drones that the drone could select
     var selectableDroneIds: MutableList<DroneId>? = null
-    //The id of the planet that the drone has selected
-    var selectedPlanetId: Int? = null
-    //The id of the drone that this drone has selected
-    var selectedDroneId: DroneId? = null
     //Whether the drone is done completing its command queue
     var queueFinished = false
     //Whether the drone is destroyed or not
@@ -152,8 +148,6 @@ class Drone(val ownerId: Int, var locationId: Int) {
     fun resetQueue(galaxy: Galaxy) {
         this.pointer = 0
         this.queueFinished = false
-        this.selectedPlanetId = null
-        this.selectedDroneId = null
         this.resetSelectables(galaxy)
     }
 

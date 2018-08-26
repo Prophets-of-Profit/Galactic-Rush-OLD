@@ -36,8 +36,8 @@ enum class Instruction(
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
-                drone.selectedPlanetId = drone.selectablePlanetIds
-                        ?.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[Attribute.TEMPERATURE]!! }
+                drone.selectablePlanetIds = kotlin.collections.mutableListOf(drone.selectablePlanetIds
+                        !!.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[Attribute.TEMPERATURE]!! })
             }
     ),
     SELECT_WEAKEST(
@@ -47,8 +47,18 @@ enum class Instruction(
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
-                drone.selectedDroneId = drone.selectableDroneIds
-                        ?.leastBy { galaxy.getDroneWithId(it)!!.attack.toDouble() }
+                drone.selectableDroneIds = kotlin.collections.mutableListOf(drone.selectableDroneIds
+                        !!.leastBy { galaxy.getDroneWithId(it)!!.attack.toDouble() })
+            }
+    ),
+    RESET_SELECTABLE(
+            "Reset the options for selectable drones and planets",
+            15,
+            2,
+            3,
+            arrayOf(InstructionType.DRONE_MODIFICATION),
+            mainAction = {drone, galaxy, _ ->
+                drone.resetSelectables(galaxy)
             }
     ),
     MOVE_SELECTED(
@@ -58,8 +68,8 @@ enum class Instruction(
             5,
             arrayOf(InstructionType.MOVEMENT),
             mainAction = { drone, galaxy, _ ->
-                if (drone.selectedPlanetId != null) {
-                    drone.moveToPlanet(drone.selectedPlanetId!!, galaxy)
+                if (drone.selectablePlanetIds!!.isNotEmpty()) {
+                    drone.moveToPlanet(drone.selectablePlanetIds!!.first(), galaxy)
                 }
             }
     ),
@@ -100,7 +110,7 @@ enum class Instruction(
             20,
             arrayOf(InstructionType.VIRUS),
             mainAction = { drone, galaxy, instance ->
-                val selectedDrone = galaxy.getDroneWithId(drone.selectedDroneId)
+                val selectedDrone = if (drone.selectableDroneIds!!.isNotEmpty()) galaxy.getDroneWithId(drone.selectableDroneIds!!.first()) else null
                 if (selectedDrone != null && selectedDrone.memoryAvailable >= instance.baseInstruction.memorySize) {
                     selectedDrone.addInstruction(instance.baseInstruction, galaxy)
                 }
@@ -113,7 +123,7 @@ enum class Instruction(
             5,
             arrayOf(InstructionType.COMBAT),
             mainAction = { drone, galaxy, _ ->
-                galaxy.getDroneWithId(drone.selectedDroneId)?.takeDamage(drone.attack, galaxy)
+                galaxy.getDroneWithId(if (drone.selectableDroneIds!!.isNotEmpty()) drone.selectableDroneIds!!.first() else null)?.takeDamage(drone.attack, galaxy)
             }
     ),
     ATTACK_BASE(
