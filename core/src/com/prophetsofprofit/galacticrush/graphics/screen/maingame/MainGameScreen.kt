@@ -14,6 +14,7 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.DraftPopup
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.BaseInformationPanel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.DroneSelectionPanel
@@ -64,8 +65,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     val optionsMenu = OptionsMenu(game, this)
     //The menu that is opened when the game is paused
     val pauseMenu = PauseMenu(this)
-    //The change that is currently being animated
-    var turnAnimationPointer = 0
+    //The index of the change that is currently being animated
+    var droneTurnAnimationIndex = 0
     //The font that is displayed when there is no label
     val font = BitmapFont()
     //The button that controls submitting turn changes
@@ -85,6 +86,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(BaseInformationPanel(this))
         this.uiContainer.addActor(DroneSelectionPanel(this))
         this.uiContainer.addActor(PlanetInformationPanel(this))
+        this.uiContainer.addActor(DraftPopup(this))
         this.uiContainer.addActor(this.pauseMenu)
         this.uiContainer.addActor(this.optionsMenu)
         this.uiContainer.addActor(this.submitButton)
@@ -131,12 +133,12 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         if (this.selectedPlanet?.drones?.contains(this.selectedDrone) != true) {
             this.selectedDroneId = null
         }
-        if (this.mainGame.droneTurnChanges.isNotEmpty() && this.turnAnimationPointer < this.mainGame.droneTurnChanges.size) {
+        if (this.mainGame.droneTurnChanges.isNotEmpty() && this.droneTurnAnimationIndex < this.mainGame.droneTurnChanges.size) {
             if (this.turnAnimationHandler.currentlyMoving.isEmpty())
                 this.animateChange()
         } else {
             this.mainGame.droneTurnChanges.clear()
-            this.turnAnimationPointer = 0
+            this.droneTurnAnimationIndex = 0
         }
     }
 
@@ -222,11 +224,9 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Animate the difference between two game states
      */
     fun animateChange() {
-        for (drone in this.mainGame.droneTurnChanges[this.turnAnimationPointer].changedDrones) {
+        for (drone in this.mainGame.droneTurnChanges[this.droneTurnAnimationIndex].changedDrones) {
             //Get the most recent version of the drone
-            var recentTime = this.mainGame.droneTurnChanges.slice(0 until this.turnAnimationPointer)
-                    .filter { it.changedDrones.any { it.id == drone.id } }
-                    .lastOrNull()
+            val recentTime = this.mainGame.droneTurnChanges.slice(0 until this.droneTurnAnimationIndex).lastOrNull { it.changedDrones.any { it.id == drone.id } }
             var location = this.oldGameState.drones.first { it.id == drone.id }.locationId
             if (recentTime != null) {
                 location = recentTime.changedDrones.first { it.id == drone.id }.locationId
@@ -236,7 +236,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 this.turnAnimationHandler.move(drone, this.oldGameState.galaxy.getPlanetWithId(location)!!, this.mainGame.galaxy.getPlanetWithId(drone.locationId)!!)
             }
         }
-        this.turnAnimationPointer++
+        this.droneTurnAnimationIndex++
     }
 
     /**
