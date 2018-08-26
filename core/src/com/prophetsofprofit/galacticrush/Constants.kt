@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonWriter
 import com.esotericsoftware.kryo.Kryo
@@ -39,6 +40,20 @@ const val defaultTcpPort = 6669
 
 //The size of the buffers for clients and servers
 const val bufferSize = Int.MAX_VALUE / 1024
+
+//A map of instructions to sprites
+val instructionSprites = mapOf(
+        Instruction.SELECT_HOTTEST to Texture("instruction/SELECT_HOTTEST.png"),
+        Instruction.SELECT_WEAKEST to Texture("instruction/SELECT_WEAKEST.png"),
+        Instruction.RESET_SELECTABLE to Texture("instruction/RESET_SELECTABLE.png"),
+        Instruction.MOVE_SELECTED to Texture("instruction/MOVE_SELECTED.png"),
+        Instruction.LOOP_3 to Texture("instruction/LOOP_3.png"),
+        Instruction.CONSTRUCT_BASE to Texture("instruction/CONSTRUCT_BASE.png"),
+        Instruction.REPRODUCTIVE_VIRUS to Texture("instruction/REPRODUCTIVE_VIRUS.png"),
+        Instruction.ATTACK_SELECTED to Texture("instruction/ATTACK_SELECTED.png"),
+        Instruction.ATTACK_BASE to Texture("instruction/ATTACK_BASE.png"),
+        Instruction.RELEASE_CFCS to Texture("instruction/RELEASE_CFCS.png")
+)
 
 //A list of default drone names; current default names are names of Roman Emperors (super edgy)
 val defaultDroneNames = arrayOf(
@@ -158,7 +173,8 @@ val defaultBaseNames = arrayOf(
         "Pallet Town",
         "Aincrad",
         "Alfheim",
-        "Grand Line"
+        "Grand Line",
+        "Kamina City"
 )
 
 /**
