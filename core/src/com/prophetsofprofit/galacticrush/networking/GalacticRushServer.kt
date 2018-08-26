@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Listener
 import com.esotericsoftware.kryonet.Server
 import com.prophetsofprofit.galacticrush.bufferSize
 import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.GameCreationOptions
 import com.prophetsofprofit.galacticrush.logic.change.DroneChange
 import com.prophetsofprofit.galacticrush.logic.change.InstructionChange
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
@@ -38,8 +39,8 @@ object GalacticRushServer : Server(bufferSize, bufferSize) {
     /**
      * The location of the actual game engine where all game logic is handled
      */
-    fun runGame(players: Array<Player>, galaxySize: Int) {
-        this.hostedGame = Game(players.map { it.id }.toTypedArray(), Galaxy(galaxySize, players.map { it.id }))
+    fun runGame(players: Array<Player>, options: GameCreationOptions) {
+        this.hostedGame = Game(players.map { it.id }.toTypedArray(), Galaxy(options.galaxySize, players.map { it.id }))
         //Gives the game to all of the players and gives the network players their player objects that contains the game
         players.forEach {
             it.game = this.hostedGame!!

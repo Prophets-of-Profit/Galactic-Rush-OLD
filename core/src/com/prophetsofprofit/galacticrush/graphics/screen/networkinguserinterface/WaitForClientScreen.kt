@@ -9,6 +9,7 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.MainMenuScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.loading.HostLoadingScreen
+import com.prophetsofprofit.galacticrush.logic.GameCreationOptions
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 import com.prophetsofprofit.galacticrush.networking.player.LocalPlayer
 import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
@@ -97,7 +98,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
         if (GalacticRushServer.connections.isEmpty()) {
             return
         }
-        this.game.screen = HostLoadingScreen(this.game, arrayOf(LocalPlayer(0), NetworkPlayer(1, GalacticRushServer.connections.first().id)), this.galaxySizeField.text.toInt())
+        this.game.screen = HostLoadingScreen(this.game, arrayOf(LocalPlayer(0), NetworkPlayer(1, GalacticRushServer.connections.first().id)), GameCreationOptions(this.galaxySizeField.text.toInt()))
         this.dispose()
     }
 
