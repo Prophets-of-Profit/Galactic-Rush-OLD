@@ -52,7 +52,7 @@ enum class Instruction(
             }
     ),
     RESET_SELECTABLE(
-            "Reset the options for selectable drones and planets",
+            "Reset the Options for Selectable Drones and Planets",
             15,
             2,
             3,
