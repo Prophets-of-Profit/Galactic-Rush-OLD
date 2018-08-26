@@ -65,15 +65,10 @@ object GalacticRushServer : Server(bufferSize, bufferSize) {
             this.hostedGame!!.hasBeenUpdated = false
             players.forEach { it.receiveNewGameState(this.hostedGame!!) }
             if (this.hostedGame!!.phase == GamePhase.DRONE_PHASE) {
-                while (!this.hostedGame!!.doDroneTurn()) {
-                }
+                while (!this.hostedGame!!.doDroneTurn()) Unit
                 //After above loop is done, game will be in draft phase
-            }
-            /* TODO: else */if (this.hostedGame!!.phase == GamePhase.DRAFT_PHASE) {
+            } else if (this.hostedGame!!.phase == GamePhase.DRAFT_PHASE) {
                 this.hostedGame!!.droneTurnChanges.clear()
-                //TODO: below is temporary until we have a working draft
-                this.hostedGame!!.phase = GamePhase.PLAYER_FREE_PHASE
-                //TODO: above is temporary until we have a working draft
             }
         }
     }

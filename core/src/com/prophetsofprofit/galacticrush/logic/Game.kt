@@ -35,7 +35,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     val players: Array<Int>
         get() = this.bases.filter { it.facilityHealths.containsKey(Facility.HOME_BASE) }.map { it.ownerId }.toTypedArray()
     //The game's current phase
-    var phase: GamePhase = GamePhase.PLAYER_FREE_PHASE //TODO: GamePhase.DRAFT_PHASE
+    var phase: GamePhase = GamePhase.DRAFT_PHASE
         set(value) {
             field = value
             this.hasBeenUpdated = true
@@ -56,10 +56,11 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     val instructionPool = Instruction.values().map { instruction -> Array(instruction.value) { instruction } }.toTypedArray().flatten().toMutableList()
     //The instructions that each player is being offered right now; initial value is draft for all players
     val currentDraft = players.map { it to InstructionType.values().fold(mutableListOf<Instruction>()) { initialDraft, instructionType -> (initialDraft + this.drawInstructions(arrayOf(instructionType))).toMutableList() } }.toMap()
+    //The number of times the draft has been called in the current draft cycle
+    var draftCounter = 0
 
     /**
      * Takes a random draw of (player number + 2) instructions from the instruction pool
-     * TODO: don't assume that the pool is larger than the number of instructions queried
      */
     fun drawInstructions(types: Array<InstructionType> = InstructionType.values()): List<Instruction> {
         val randomOptions = this.instructionPool.filter { it.types.intersect(types.asIterable()).isNotEmpty() }.shuffled()
@@ -74,13 +75,29 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     fun collectChange(change: Change) {
         if (this.phase == GamePhase.DRAFT_PHASE) {
             change as PlayerChange
-            if (this.currentDraft[change.ownerId]!!.isEmpty() || change.gainedInstructions.any { !this.currentDraft[change.ownerId]!!.contains(it) }) {
+            if (!this.waitingOn.contains(change.ownerId) || change.gainedInstructions.size != 1 || !this.currentDraft[change.ownerId]!!.containsAll(change.gainedInstructions)) {
                 return
             }
+            this.waitingOn.remove(change.ownerId)
+            this.currentDraft[change.ownerId]!!.removeAll(change.gainedInstructions)
             this.unlockedInstructions[change.ownerId]!!.addAll(change.gainedInstructions)
-            this.currentDraft[change.ownerId]!!.clear() //TODO: isn't accounting for draft options rotation; we could dual-purpose waitingOn for that
-            if (this.currentDraft.values.all { it.isEmpty() }) {
-                this.phase = GamePhase.PLAYER_FREE_PHASE
+            if (this.waitingOn.isEmpty()) {
+                if (this.draftCounter < this.players.size) {
+                    draftCounter++
+                    val temporaryOptionsToRotate = this.currentDraft[this.currentDraft.keys.last()]!!
+                    for (player in this.currentDraft.size until 1 step -1) {
+                        this.currentDraft[this.currentDraft.keys.elementAt(player)]!!.clear()
+                        this.currentDraft[this.currentDraft.keys.elementAt(player)]!!.addAll(this.currentDraft[this.currentDraft.keys.elementAt(player - 1)]!!)
+                    }
+                    this.currentDraft[this.currentDraft.keys.first()]!!.clear()
+                    this.currentDraft[this.currentDraft.keys.first()]!!.addAll(temporaryOptionsToRotate)
+                    this.hasBeenUpdated = true
+                } else {
+                    this.currentDraft.values.forEach { this.instructionPool.addAll(it); it.clear() }
+                    this.draftCounter = 0
+                    this.phase = GamePhase.PLAYER_FREE_PHASE
+                }
+                this.waitingOn.addAll(this.players)
             }
         } else if (this.phase == GamePhase.PLAYER_FREE_PHASE) {
             change as PlayerChange
@@ -129,8 +146,8 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
             this.drones.forEach { it.endCycle(this.galaxy) }
             this.drones.forEach { it.resetQueue(this.galaxy) }
             this.turnsPlayed++
-            this.currentDraft.values.forEach { it.addAll(this.drawInstructions()) } //TODO: don't just randomly populate draft and instead handle draft options rotations
-            this.players.mapTo(this.waitingOn) { it }
+            this.currentDraft.values.forEach { it.addAll(this.drawInstructions()) }
+            this.waitingOn.addAll(this.players)
             this.phase = GamePhase.DRAFT_PHASE
         }
         this.droneTurnChanges.add(Change().also { it.changedDrones.addAll(changedDrones); it.changedPlanets.addAll(changedPlanets) })
