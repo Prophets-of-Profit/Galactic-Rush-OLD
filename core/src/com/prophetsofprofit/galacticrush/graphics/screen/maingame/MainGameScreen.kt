@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
@@ -20,6 +21,7 @@ import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.BaseInfo
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.DroneSelectionPanel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.GeneralInformationPanel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.PlanetInformationPanel
+import com.prophetsofprofit.galacticrush.logic.GamePhase
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
@@ -70,7 +72,14 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     //The font that is displayed when there is no label
     val font = BitmapFont()
     //The button that controls submitting turn changes
-    val submitButton = TextButton("Submit", Scene2DSkin.defaultSkin)
+    val submitButton = TextButton("Submit", Scene2DSkin.defaultSkin).also {
+        it.addAction(object : Action() {
+            override fun act(delta: Float): Boolean {
+                it.isDisabled = mainGame.phase != GamePhase.PLAYER_FREE_PHASE
+                return false
+            }
+        })
+    }
 
     /**
      * Initializes the main game screen by adding UI components and moving the camera to the player's home base
