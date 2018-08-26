@@ -3,9 +3,6 @@ package com.prophetsofprofit.galacticrush.networking.player
 import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.change.Change
-import com.prophetsofprofit.galacticrush.logic.change.DroneChange
-import com.prophetsofprofit.galacticrush.logic.change.InstructionChange
-import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 
 /**
@@ -22,14 +19,8 @@ class LocalPlayer(id: Int) : Player(id) {
     /**
      * The local player directly gives the local game the changes to submit
      */
-    override fun submitChanges(change: Change) {
-        if (change is InstructionChange) {
-            GalacticRushServer.hostedGame!!.collectInstructionChange(change)
-            this.draftOptions = null
-        } else if (change is DroneChange) {
-            GalacticRushServer.hostedGame!!.collectDroneChange(change)
-            this.currentDroneChanges = DroneChange(this.id)
-        }
+    override fun submit(change: Change) {
+        GalacticRushServer.hostedGame!!.collectChange(change)
     }
 
     /**
@@ -38,13 +29,6 @@ class LocalPlayer(id: Int) : Player(id) {
      */
     override fun receiveNewGameState(newGame: Game) {
         this.game = kryo.copy(newGame)
-    }
-
-    /**
-     * Handles receiving a list of draft options
-     */
-    override fun receiveNewInstructions(instructions: List<Instruction>) {
-        this.draftOptions = instructions
     }
 
 }

@@ -9,9 +9,7 @@ import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.change.Change
-import com.prophetsofprofit.galacticrush.logic.change.DroneChange
-import com.prophetsofprofit.galacticrush.logic.change.DroneTurnChange
-import com.prophetsofprofit.galacticrush.logic.change.InstructionChange
+import com.prophetsofprofit.galacticrush.logic.change.PlayerChange
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
@@ -148,12 +146,12 @@ val defaultBaseNames = arrayOf(
         "Namek",
         "Kingdom of Fiore",
         "Alvarez Empire",
-        "Village Hidden by the Leaf",
-        "Village Hidden by the Sand",
-        "Village Hidden by the Mist",
-        "Village Hidden by the Cloud",
-        "Village Hidden by the Rock",
-        "Village Hidden by the Sound",
+        "Village Hidden in the Leaf",
+        "Village Hidden in the Sand",
+        "Village Hidden in the Mist",
+        "Village Hidden in the Cloud",
+        "Village Hidden in the Rock",
+        "Village Hidden in the Sound",
         "Death Academy",
         "Celadon City",
         "Pallet Town",
@@ -172,22 +170,20 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(ArrayList::class.java)
     kryo.register(Attribute::class.java)
     kryo.register(Base::class.java)
-    kryo.register(DroneChange::class.java)
     kryo.register(Change::class.java)
     kryo.register(Color::class.java)
     kryo.register(CosmicHighway::class.java)
     kryo.register(Date::class.java)
     kryo.register(Drone::class.java)
     kryo.register(DroneId::class.java)
-    kryo.register(DroneTurnChange::class.java)
     kryo.register(Facility::class.java)
     kryo.register(Galaxy::class.java)
     kryo.register(Game::class.java)
     kryo.register(Instruction::class.java)
-    kryo.register(InstructionChange::class.java)
     kryo.register(InstructionInstance::class.java)
     kryo.register(LinkedHashMap::class.java)
     kryo.register(LocalPlayer::class.java)
     kryo.register(NetworkPlayer::class.java)
     kryo.register(Planet::class.java)
+    kryo.register(PlayerChange::class.java)
 }

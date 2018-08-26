@@ -6,8 +6,7 @@ import com.esotericsoftware.kryonet.Server
 import com.prophetsofprofit.galacticrush.bufferSize
 import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.GameCreationOptions
-import com.prophetsofprofit.galacticrush.logic.change.DroneChange
-import com.prophetsofprofit.galacticrush.logic.change.InstructionChange
+import com.prophetsofprofit.galacticrush.logic.change.Change
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.networking.player.Player
@@ -51,10 +50,8 @@ object GalacticRushServer : Server(bufferSize, bufferSize) {
         //Listens for incoming change objects
         this.addListener(object : Listener() {
             override fun received(connection: Connection?, obj: Any?) {
-                if (obj is DroneChange) {
-                    hostedGame!!.collectDroneChange(obj)
-                } else if (obj is InstructionChange) {
-                    hostedGame!!.collectInstructionChange(obj)
+                if (obj is Change) {
+                    hostedGame!!.collectChange(obj)
                 }
             }
         })
@@ -65,9 +62,6 @@ object GalacticRushServer : Server(bufferSize, bufferSize) {
                 continue
             }
             this.hostedGame!!.gameChanged = false
-            this.hostedGame!!.currentDrafter = 1 //TODO: fix
-            this.hostedGame!!.draftOptions = this.hostedGame!!.drawInstructions()
-            players.first { it.id == this.hostedGame!!.currentDrafter }.receiveNewInstructions(this.hostedGame!!.draftOptions!!)
             players.forEach { it.receiveNewGameState(this.hostedGame!!) }
             while (!this.hostedGame!!.doDroneTurn()) {
             }

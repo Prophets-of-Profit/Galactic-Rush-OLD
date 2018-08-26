@@ -5,7 +5,6 @@ import com.esotericsoftware.kryonet.Connection
 import com.esotericsoftware.kryonet.Listener
 import com.prophetsofprofit.galacticrush.bufferSize
 import com.prophetsofprofit.galacticrush.logic.Game
-import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.registerAllClasses
 
@@ -61,8 +60,6 @@ object GalacticRushClient : Client(bufferSize, bufferSize) {
             override fun received(connection: Connection?, obj: Any?) {
                 if (obj is Game) {
                     player!!.game = obj
-                } else if (obj is List<*>) {
-                    player!!.draftOptions = obj as List<Instruction>
                 }
             }
         })

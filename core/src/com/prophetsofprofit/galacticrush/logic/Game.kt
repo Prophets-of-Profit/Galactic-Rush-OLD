@@ -4,9 +4,8 @@ import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
-import com.prophetsofprofit.galacticrush.logic.change.DroneChange
-import com.prophetsofprofit.galacticrush.logic.change.DroneTurnChange
-import com.prophetsofprofit.galacticrush.logic.change.InstructionChange
+import com.prophetsofprofit.galacticrush.logic.change.Change
+import com.prophetsofprofit.galacticrush.logic.change.PlayerChange
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionType
@@ -46,7 +45,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     //The map of player id to their color
     val playerColors = this.players.map { it to Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f) }.toMap()
     //The list of things that happen after each drone turn
-    var droneTurnChanges = mutableListOf<DroneTurnChange>()
+    var droneTurnChanges = mutableListOf<Change>()
     //Which instruction each player has; maps id to instructions
     val unlockedInstructions = this.players.map { it to mutableListOf<Instruction>() }.toMap()
     //The instructions that can still be drafted
@@ -67,35 +66,29 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     }
 
     /**
-     * A method that collects drone changes, verifies their integrity, and then applies them to the game
+     * A method that collects changes, verifies their integrity, and then applies them to the game
      */
-    fun collectDroneChange(droneChange: DroneChange) {
-        if (!this.waitingOn.contains(droneChange.ownerId)) {
-            return
+    fun collectChange(change: Change) {
+        if (change is PlayerChange) {
+            if (!this.waitingOn.contains(change.ownerId)) {
+                return
+            }
+            //TODO: verify droneChange integrity
+            //Add all the changes into the game
+            for (changedDrone in change.changedDrones) {
+                this.drones.filter { it.ownerId == changedDrone.ownerId && it.creationTime == changedDrone.creationTime }.forEach { this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it) }
+                this.galaxy.getPlanetWithId(changedDrone.locationId)!!.drones.add(changedDrone)
+            }
+            //TODO apply changes to instructions
+            this.waitingOn.remove(change.ownerId)
+            if (this.waitingOn.isEmpty()) {
+                this.turnsPlayed++
+                this.droneTurnChanges.clear()
+                this.gameChanged = true
+            }
+        } else {
+            //TODO:
         }
-        //TODO: verify droneChange integrity
-        //Add all the changes into the game
-        for (changedDrone in droneChange.changedDrones) {
-            this.drones.filter { it.ownerId == changedDrone.ownerId && it.creationTime == changedDrone.creationTime }.forEach { this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it) }
-            this.galaxy.getPlanetWithId(changedDrone.locationId)!!.drones.add(changedDrone)
-        }
-        //TODO apply changes to instructions
-        this.waitingOn.remove(droneChange.ownerId)
-        if (this.waitingOn.isEmpty()) {
-            this.turnsPlayed++
-            this.droneTurnChanges.clear()
-            this.gameChanged = true
-        }
-    }
-
-    /**
-     * A method that collects instruction changes, verifies their integrity, and then applies them to the game
-     */
-    fun collectInstructionChange(instructionChange: InstructionChange) {
-        if (draftOptions?.contains(instructionChange.gainedInstruction) != true) {
-            return
-        }
-        unlockedInstructions[instructionChange.ownerId]?.add(instructionChange.gainedInstruction)
     }
 
     /**
@@ -127,7 +120,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
             this.players.mapTo(this.waitingOn) { it }
             this.drones.forEach { it.resetQueue(this.galaxy) }
         }
-        this.droneTurnChanges.add(DroneTurnChange(changedDrones, changedPlanets))
+        this.droneTurnChanges.add(Change().also { it.changedDrones.addAll(changedDrones); it.changedPlanets.addAll(changedPlanets) })
         return isDone
     }
 
