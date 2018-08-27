@@ -109,6 +109,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Calls startCycle for all instructions in the queue
      */
     fun startCycle(galaxy: Galaxy) {
+        this.resetSelectables(galaxy)
         this.instructions.forEach { it.baseInstruction.startCycleAction(this, galaxy, it) }
     }
 

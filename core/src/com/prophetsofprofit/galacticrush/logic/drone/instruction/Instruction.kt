@@ -36,7 +36,7 @@ enum class Instruction(
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
-                drone.selectablePlanetIds = kotlin.collections.mutableListOf(drone.selectablePlanetIds
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
                         !!.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[Attribute.TEMPERATURE]!! })
             }
     ),
