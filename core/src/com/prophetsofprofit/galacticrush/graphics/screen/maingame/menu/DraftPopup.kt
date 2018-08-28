@@ -62,7 +62,13 @@ class DraftPopup(gameScreen: MainGameScreen) : ModalWindow(gameScreen, "Draft Op
                 if (!canBeUsed) {
                     return false
                 }
-                if (!isVisible && gameScreen.mainGame.phase == GamePhase.DRAFT_PHASE && gameScreen.mainGame.currentDraft[gameScreen.player.id]!!.isNotEmpty() && gameScreen.mainGame.currentDraft[gameScreen.player.id]!! != optionsWhenSubmitted) {
+                if (!isVisible &&
+                        gameScreen.mainGame.phase == GamePhase.DRAFT_PHASE &&
+                        gameScreen.mainGame.currentDraft[gameScreen.player.id]!!.isNotEmpty() &&
+                        gameScreen.mainGame.currentDraft[gameScreen.player.id]!! != optionsWhenSubmitted &&
+                        gameScreen.mainGame.droneTurnChanges.isEmpty() &&
+                        gameScreen.turnAnimationHandler.currentlyMoving.isEmpty()
+                        ) {
                     children.forEach { it.act(0f) }
                     appear(Direction.POP, 1f)
                 } else if (isVisible && gameScreen.mainGame.phase != GamePhase.DRAFT_PHASE) {
