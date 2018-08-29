@@ -16,6 +16,7 @@ import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.DraftPopup
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.DroneModificationMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.BaseInformationPanel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.DroneSelectionPanel
@@ -57,6 +58,9 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     //The drone currently selected by the player
     val selectedDrone: Drone?
         get() = this.mainGame.galaxy.getDroneWithId(this.selectedDroneId)
+    //A bool that dictates whether or not the player is programming a drone
+    //when programming, the modification menu is open
+    var programming = false
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
     //The mechanism to handle panning the screen over a time
@@ -94,6 +98,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.uiContainer.addActor(GeneralInformationPanel(this))
         this.uiContainer.addActor(BaseInformationPanel(this))
         this.uiContainer.addActor(DroneSelectionPanel(this))
+        this.uiContainer.addActor(DroneModificationMenu(this))
         this.uiContainer.addActor(PlanetInformationPanel(this))
         this.uiContainer.addActor(DraftPopup(this))
         this.uiContainer.addActor(this.pauseMenu)

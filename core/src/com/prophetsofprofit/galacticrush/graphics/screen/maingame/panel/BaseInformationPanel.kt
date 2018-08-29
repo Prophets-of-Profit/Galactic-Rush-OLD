@@ -85,9 +85,13 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                     if (!canBeUsed) {
                         return false
                     }
+                    //Makes the button visible if the player owns a base on the selected planet
                     it.isVisible = gameScreen.selectedPlanet?.base?.ownerId == gameScreen.player.id
+                    //See if a programming facility exists
                     containsProgrammingFacility = gameScreen.selectedPlanet?.base?.facilityHealths?.containsKey(Facility.PROGRAMMING) == true
-                    it.setText(if (containsProgrammingFacility) "Modify a Drone" else "Buy a Programming Facility")
+                    //Set the text of the button
+                    it.setText(if (containsProgrammingFacility) (if (gameScreen.programming) "Submit Changes" else "Modify a Drone") else "Buy a Programming Facility")
+                    //Disables the button if there is not enough money
                     it.isDisabled = !containsProgrammingFacility && gameScreen.mainGame.money[gameScreen.player.id]!! < 0 //TODO: instead of check for less than 0, check for less than cost of a programming facility
                     return false
                 }
@@ -96,7 +100,7 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
             it.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     if (containsProgrammingFacility) {
-                        //TODO: open drone modification panel
+                        gameScreen.programming = (gameScreen.selectedDroneId != null && !gameScreen.programming)
                         return
                     }
                     gameScreen.selectedPlanet?.base?.addFacility(Facility.PROGRAMMING)
@@ -132,6 +136,8 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                         newDrone.addInstruction(Instruction.MOVE_SELECTED, gameScreen.mainGame.galaxy)
                         gameScreen.mainGame.galaxy.getPlanetWithId(newDrone.locationId)!!.drones.add(newDrone)
                         gameScreen.player.currentChages.changedDrones.add(newDrone)
+                        gameScreen.programming = gameScreen.selectedDroneId != null
+                        gameScreen.selectedDroneId = newDrone.id
                         //TODO: subtract cost of new drone from player money
                     } else {
                         gameScreen.selectedPlanet?.base?.addFacility(Facility.CONSTRUCTION)
