@@ -38,7 +38,7 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                     return false
                 }
                 if (editingId != gameScreen.selectedDroneId) {
-                    nameField.text = gameScreen.selectedDrone!!.name
+                    nameField.text = gameScreen.selectedDrone?.name ?: ""
                     editingId = gameScreen.selectedDroneId
                 }
                 if (!isVisible && gameScreen.programming) {
