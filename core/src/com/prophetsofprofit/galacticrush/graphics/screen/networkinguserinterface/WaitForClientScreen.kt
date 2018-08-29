@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.networkinguserinterface
 
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
@@ -32,8 +33,14 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
      */
     init {
         //Sets up portTextField
-        this.portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f, Align.center)
+        this.portTextField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.85f, Align.center)
         this.portTextField.setAlignment(Align.center)
+
+        //Sets up port field label
+        val portLabel = Label("Port", Scene2DSkin.defaultSkin)
+        portLabel.width = this.portTextField.width
+        portLabel.setAlignment(Align.center)
+        portLabel.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.9f, Align.center)
 
         //Sets up the galaxy size text field
         this.galaxySizeField.maxLength = 5
@@ -47,7 +54,13 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                 true
             }
         }
-        this.galaxySizeField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.85f - portTextField.height * 1.5f, Align.center)
+        this.galaxySizeField.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.75f - portTextField.height * 1.5f, Align.center)
+
+        //Sets up the galaxy size label
+        val galaxySizeLabel = Label("Galaxy Size", Scene2DSkin.defaultSkin)
+        galaxySizeLabel.width = galaxySizeField.width
+        galaxySizeLabel.setAlignment(Align.center)
+        galaxySizeLabel.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.8f - portTextField.height * 1.5f, Align.center)
 
         //Sets up the lockButton
         val confirmPort = "Confirm Selection"
@@ -70,7 +83,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
             }
         })
         this.lockButton.setText(confirmPort)
-        this.lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.75f - portTextField.height * 1.5f, Align.center)
+        this.lockButton.setPosition(this.uiContainer.width / 2, this.uiContainer.height * 0.5f - portTextField.height * 1.5f, Align.center)
         this.lockButton.align(Align.center)
 
         //Sets up cancelButton
@@ -84,7 +97,9 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
         cancelButton.setPosition(this.uiContainer.width * 0.1f, this.uiContainer.height * 0.1f, Align.center)
 
         //Adds all widgets
+        this.uiContainer.addActor(portLabel)
         this.uiContainer.addActor(this.portTextField)
+        this.uiContainer.addActor(galaxySizeLabel)
         this.uiContainer.addActor(this.galaxySizeField)
         this.uiContainer.addActor(this.lockButton)
         this.uiContainer.addActor(cancelButton)

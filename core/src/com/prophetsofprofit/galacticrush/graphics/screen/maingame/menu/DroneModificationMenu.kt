@@ -49,8 +49,6 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                     if (gameScreen.selectedDrone != null) {
                         editingId = null
                         gameScreen.selectedDrone!!.name = nameField.text
-                        //gameScreen.selectedDrone!!.instructions.clear()
-                        //gameScreen.selectedDrone!!.instructions.addAll(TODO)
                     }
                     disappear(Direction.POP, 1f)
                 }
