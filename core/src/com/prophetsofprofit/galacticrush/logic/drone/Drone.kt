@@ -61,6 +61,8 @@ class Drone(val ownerId: Int, var locationId: Int) {
     //What uniquely identifies the drone
     val id: DroneId
         get() = DroneId(this.ownerId, this.creationTime)
+    //Data that the drone has that may persist between turns
+    val persistentData = mutableMapOf<String, String>()
 
     /**
      * Empty constructor for serialization

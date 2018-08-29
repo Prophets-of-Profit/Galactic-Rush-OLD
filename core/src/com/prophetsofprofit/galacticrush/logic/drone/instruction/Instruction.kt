@@ -37,7 +37,7 @@ enum class Instruction(
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
-                        !!.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[Attribute.TEMPERATURE]!! })
+                !!.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[Attribute.TEMPERATURE]!! })
             }
     ),
     SELECT_WEAKEST(
@@ -48,7 +48,7 @@ enum class Instruction(
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
                 drone.selectableDroneIds = kotlin.collections.mutableListOf(drone.selectableDroneIds
-                        !!.leastBy { galaxy.getDroneWithId(it)!!.attack.toDouble() })
+                !!.leastBy { galaxy.getDroneWithId(it)!!.attack.toDouble() })
             }
     ),
     RESET_SELECTABLE(
@@ -57,7 +57,7 @@ enum class Instruction(
             2,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = {drone, galaxy, _ ->
+            mainAction = { drone, galaxy, _ ->
                 drone.resetSelectables(galaxy)
             }
     ),
@@ -146,6 +146,35 @@ enum class Instruction(
                 val currentPlanet = galaxy.getPlanetWithId(drone.locationId)!!
                 currentPlanet.attributes[Attribute.TEMPERATURE] = maxOf(0.0, currentPlanet.attributes[Attribute.TEMPERATURE]!! - 0.05)
                 currentPlanet.attributes[Attribute.ATMOSPHERE] = maxOf(0.0, currentPlanet.attributes[Attribute.ATMOSPHERE]!! - 0.05)
+            }
+    ),
+    CHARGE(
+            "Build up Charge; Charge Can Be Used By Other Instructions",
+            20,
+            5,
+            5,
+            arrayOf(InstructionType.DRONE_MODIFICATION),
+            mainAction = { drone, _, _ ->
+                if (drone.persistentData["charge"] != null) {
+                    drone.persistentData["charge"] = "0"
+                }
+                drone.persistentData["charge"] = "${drone.persistentData["charge"]!!.toInt() + 1}"
+            }
+    ),
+    HEAT_DISCHARGE(
+            "Discharge All Stored Charge on Drone To Heat Up Current Planet and Damage All Other Drones on Planet",
+            10,
+            8,
+            10,
+            arrayOf(InstructionType.COMBAT, InstructionType.PLANET_MODIFICATION),
+            mainAction = { drone, galaxy, _ ->
+                if (drone.persistentData["charge"] != null) {
+                    drone.persistentData["charge"] = "0"
+                }
+                val charge = drone.persistentData["charge"]!!.toInt()
+                galaxy.getPlanetWithId(drone.locationId)!!.drones.forEach { it.takeDamage(charge * 3, galaxy) }
+                galaxy.getPlanetWithId(drone.locationId)!!.attributes[Attribute.TEMPERATURE] = galaxy.getPlanetWithId(drone.locationId)!!.attributes[Attribute.TEMPERATURE]!! - charge * 0.05
+                drone.persistentData["charge"] = "0"
             }
     );
 
