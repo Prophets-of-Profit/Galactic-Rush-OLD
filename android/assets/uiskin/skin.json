@@ -26,7 +26,7 @@ com.badlogic.gdx.graphics.Color: {
 		b: 0.61615556
 		a: 1
 	}
-	OrangeDarkPlanetary: {
+	OrangePlanetaryDark: {
 		r: 0.67509806
 		g: 0.32983783
 		b: 0.06537789
@@ -149,7 +149,7 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	}
 	selectbox: {
 		font: SansSerif
-		fontColorSelected: OrangeDarkPlanetary
+		fontColorSelected: OrangePlanetaryDark
 		fontColorUnselected: LightGrey
 		selection: widePanel
 		down: widePanelOver
@@ -195,7 +195,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	}
 	wide: {
 		font: SansSerif
-		fontColor: OrangeDarkPlanetary
+		fontColor: OrangePlanetaryDark
 		up: widePanel
 		down: widePanelDown
 		over: widePanelOver
@@ -204,8 +204,8 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
 		font: SansSerif
-		fontColor: PurpleSpace
-		disabledFontColor: PurpleSpace
+		fontColor: LightGrey
+		disabledFontColor: LightGrey
 		background: textField
 		disabledBackground: textFieldDisabled
 		cursor: textFieldCursor
@@ -220,7 +220,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: labelBlack
 		titleFont: SansSerif
-		titleFontColor: OrangeDarkPlanetary
+		titleFontColor: OrangePlanetaryDark
 	}
 }
 }

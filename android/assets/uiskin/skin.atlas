@@ -33,28 +33,28 @@ Humidity
   index: -1
 Mass
   rotate: false
-  xy: 817, 815
+  xy: 330, 78
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 Modify
   rotate: false
-  xy: 844, 842
+  xy: 402, 130
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 ModifyHighlight
   rotate: false
-  xy: 330, 103
+  xy: 896, 894
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 ModifyPressed
   rotate: false
-  xy: 382, 130
+  xy: 515, 611
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -68,56 +68,56 @@ SansSerif
   index: -1
 Solidity
   rotate: false
-  xy: 916, 894
+  xy: 817, 840
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 Temperature
   rotate: false
-  xy: 303, 76
+  xy: 844, 867
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 arrowButton
   rotate: false
-  xy: 515, 586
+  xy: 542, 613
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 arrowButtonDown
   rotate: false
-  xy: 542, 613
+  xy: 817, 788
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 arrowButtonOver
   rotate: false
-  xy: 515, 534
+  xy: 844, 815
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 canelButton
   rotate: false
-  xy: 569, 613
+  xy: 871, 842
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 canelButtonDown
   rotate: false
-  xy: 542, 561
+  xy: 515, 559
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
   index: -1
 canelButtonOver
   rotate: false
-  xy: 596, 613
+  xy: 569, 613
   size: 25, 50
   orig: 25, 50
   offset: 0, 0
@@ -131,21 +131,21 @@ checkBox
   index: -1
 checkBoxDisable
   rotate: false
-  xy: 303, 103
+  xy: 817, 867
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDisableChecked
   rotate: false
-  xy: 355, 130
+  xy: 869, 894
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 checkBoxDown
   rotate: false
-  xy: 817, 842
+  xy: 303, 78
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -159,7 +159,7 @@ checkBoxDownChecked
   index: -1
 checkBoxOver
   rotate: false
-  xy: 889, 894
+  xy: 375, 130
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
@@ -180,7 +180,7 @@ labelBlack
   index: -1
 labelSmall
   rotate: false
-  xy: 303, 130
+  xy: 817, 894
   size: 50, 25
   orig: 50, 25
   offset: 0, 0
@@ -215,7 +215,7 @@ slider
   index: -1
 sliderKnob
   rotate: false
-  xy: 817, 869
+  xy: 303, 105
   size: 70, 50
   orig: 70, 50
   offset: 0, 0
@@ -229,7 +229,7 @@ sliderVertical
   index: -1
 textField
   rotate: false
-  xy: 817, 921
+  xy: 515, 665
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
@@ -243,7 +243,7 @@ textFieldCursor
   index: -1
 textFieldDisabled
   rotate: false
-  xy: 515, 665
+  xy: 817, 921
   size: 200, 50
   orig: 200, 50
   offset: 0, 0
