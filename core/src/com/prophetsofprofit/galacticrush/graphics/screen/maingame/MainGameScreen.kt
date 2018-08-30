@@ -126,7 +126,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             this.game.shapeRenderer.line(planet0.x * this.game.camera.viewportWidth, planet0.y * this.game.camera.viewportHeight, planet1.x * this.game.camera.viewportWidth, planet1.y * this.game.camera.viewportHeight)
         }
         this.game.shapeRenderer.end()
-        //Render planets as colored circles
+        //Render home bases as filled circles
         //TODO: add textures for planets, make planet size
         game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in this.mainGame.galaxy.planets) {
@@ -137,7 +137,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         }
         this.game.shapeRenderer.end()
         for (planet in this.mainGame.galaxy.planets) {
-            //In order to have the circle drawn before the planets, we need to begin and end shape renderer individually
             //TODO: Have a different way to display bases
             this.game.batch.begin()
             this.game.batch.draw(
@@ -150,7 +149,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                     50 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)),
                     50 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2))
             )
-            //this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 10 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
             this.game.batch.end()
         }
         //Draw arrows pointing at the selected planet
