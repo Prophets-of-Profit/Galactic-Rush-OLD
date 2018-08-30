@@ -2,8 +2,8 @@ package com.prophetsofprofit.galacticrush.logic.drone.instruction
 
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import com.prophetsofprofit.galacticrush.logic.map.Attribute
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
+import com.prophetsofprofit.galacticrush.logic.map.PlanetAttribute
 
 //Utility alias for calling (Drone, Galaxy) -> Unit a DroneAction
 typealias DroneAction = (Drone, Galaxy, InstructionInstance) -> Unit
@@ -37,7 +37,7 @@ enum class Instruction(
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
-                !!.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[Attribute.TEMPERATURE]!! })
+                !!.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! })
             }
     ),
     SELECT_WEAKEST(
@@ -144,8 +144,8 @@ enum class Instruction(
             arrayOf(InstructionType.PLANET_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
                 val currentPlanet = galaxy.getPlanetWithId(drone.locationId)!!
-                currentPlanet.attributes[Attribute.TEMPERATURE] = maxOf(0.0, currentPlanet.attributes[Attribute.TEMPERATURE]!! - 0.05)
-                currentPlanet.attributes[Attribute.ATMOSPHERE] = maxOf(0.0, currentPlanet.attributes[Attribute.ATMOSPHERE]!! - 0.05)
+                currentPlanet.attributes[PlanetAttribute.TEMPERATURE] = maxOf(0.0, currentPlanet.attributes[PlanetAttribute.TEMPERATURE]!! - 0.05)
+                currentPlanet.attributes[PlanetAttribute.ATMOSPHERE] = maxOf(0.0, currentPlanet.attributes[PlanetAttribute.ATMOSPHERE]!! - 0.05)
             }
     ),
     CHARGE(
@@ -173,7 +173,7 @@ enum class Instruction(
                 }
                 val charge = drone.persistentData["charge"]!!.toInt()
                 galaxy.getPlanetWithId(drone.locationId)!!.drones.forEach { it.takeDamage(charge * 3, galaxy) }
-                galaxy.getPlanetWithId(drone.locationId)!!.attributes[Attribute.TEMPERATURE] = galaxy.getPlanetWithId(drone.locationId)!!.attributes[Attribute.TEMPERATURE]!! - charge * 0.05
+                galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE] = galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! - charge * 0.05
                 drone.persistentData["charge"] = "0"
             }
     );

@@ -4,27 +4,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import kotlin.math.pow
-
-/**
- * Names for arbitrary attributes
- * stringValue converts a value from 0 to 1 into suitable units
- */
-enum class Attribute(private val displayString: String, val stringValue: (Double) -> String) {
-
-    MASS("Mass", { val string = "%e".format((10.0.pow(22) * Math.E.pow(9.21 * it))); string.slice(0 until 4) + string.slice(string.length - 5 until string.length) + " kg" }),
-    TEMPERATURE("Surface Temperature", { "%.4f".format(50 + it * 700) + " K" }),
-    ATMOSPHERE("Atmospheric Density", { "%.4f".format(10.0.pow(2 * it)) + " atm" }),
-    WATER("Humidity", { "%.4f".format(it * 100) + "%" }),
-    SOLIDITY("Solidity", { "%.4f".format(it * 100) + "%" });
-
-    /**
-     * Each attribute displays as it's displayString
-     */
-    override fun toString(): String {
-        return displayString
-    }
-}
 
 /**
  * All the possible images for planets
@@ -56,7 +35,7 @@ class Planet(var x: Float,
     constructor() : this(-1f, -1f, -1f, -1)
 
     //Arbitrary attributes that determine drone behaviour: can be changed, but each start out as a random number between 0 and 1
-    val attributes = Attribute.values().map { it to Math.random() }.toMap().toMutableMap()
+    val attributes = PlanetAttribute.values().map { it to Math.random() }.toMap().toMutableMap()
     //All the drones on the planet
     val drones = mutableListOf<Drone>()
     //The base that is on the planet
