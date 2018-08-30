@@ -28,6 +28,7 @@ class DraftPopup(gameScreen: MainGameScreen) : ModalWindow(gameScreen, "Draft Op
         val optionsWhenSubmitted = mutableListOf<Instruction>()
 
         //The top part of the panel that displays all of the draft options TODO: change
+        //TODO: Use the table that the window forms rather than creating a new table
         val instructionImageContainer = Table().also {
             it.addAction(object : Action() {
                 override fun act(delta: Float): Boolean {
@@ -47,11 +48,13 @@ class DraftPopup(gameScreen: MainGameScreen) : ModalWindow(gameScreen, "Draft Op
                                     disappear(Direction.POP, 1f)
                                 }
                             })
-                        }).expand().pad(5f)
+                            //TODO: Maintain aspect ratio
+                        }).expand().fill().pad(5f)
                     }
                     return false
                 }
             })
+            it.debugAll()
         }
 
         this.add(instructionImageContainer).expand().fill()

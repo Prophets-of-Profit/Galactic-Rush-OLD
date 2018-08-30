@@ -27,9 +27,10 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
 
         //Formats all of the actions
         val actionsTable = Table().also {
+            this.add(it).expandY().fillY().top()
             it.add(nameField)
+            it.debugAll()
         }
-        this.add(actionsTable)
 
         //The action that controls the modal's visibility
         this.addAction(object : Action() {
@@ -45,10 +46,13 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                     children.forEach { it.act(0f) }
                     editingId = gameScreen.selectedDroneId
                     appear(Direction.POP, 1f)
-                } else if (isVisible && !gameScreen.programming) {
+                } else if (isVisible && !gameScreen.programming || gameScreen.selectedDrone == null) {
                     if (gameScreen.selectedDrone != null) {
                         editingId = null
                         gameScreen.selectedDrone!!.name = nameField.text
+                    } else {
+                        editingId = null
+                        gameScreen.programming = false
                     }
                     disappear(Direction.POP, 1f)
                 }
