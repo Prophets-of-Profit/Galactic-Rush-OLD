@@ -79,6 +79,7 @@ class WaitForClientScreen(game: Main) : GalacticRushScreen(game) {
                     GalacticRushServer.usePort(portTextField.text.toInt())
                     cancelSelection
                 })
+                galaxySizeField.isDisabled = !galaxySizeField.isDisabled
                 portTextField.isDisabled = !portTextField.isDisabled
             }
         })
