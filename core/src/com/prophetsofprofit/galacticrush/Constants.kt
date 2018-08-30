@@ -16,7 +16,10 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
-import com.prophetsofprofit.galacticrush.logic.map.*
+import com.prophetsofprofit.galacticrush.logic.map.CosmicHighway
+import com.prophetsofprofit.galacticrush.logic.map.Galaxy
+import com.prophetsofprofit.galacticrush.logic.map.Planet
+import com.prophetsofprofit.galacticrush.logic.map.PlanetAttribute
 import com.prophetsofprofit.galacticrush.networking.player.LocalPlayer
 import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.networking.player.Player
@@ -184,7 +187,7 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(Array<Int>::class.java)
     kryo.register(Array<Player>::class.java)
     kryo.register(ArrayList::class.java)
-    kryo.register(Attribute::class.java)
+    kryo.register(PlanetAttribute::class.java)
     kryo.register(Base::class.java)
     kryo.register(Change::class.java)
     kryo.register(Color::class.java)
