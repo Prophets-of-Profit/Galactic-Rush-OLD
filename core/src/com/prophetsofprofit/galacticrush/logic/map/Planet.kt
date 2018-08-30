@@ -1,6 +1,6 @@
 package com.prophetsofprofit.galacticrush.logic.map
 
-import com.badlogic.gdx.graphics.Texture
+import com.prophetsofprofit.galacticrush.NUMBER_OF_PLANET_TEXTURES
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 
@@ -28,9 +28,6 @@ class Planet(var x: Float,
     //The base that is on the planet
     var base: Base? = null
     //The planet's image path
-    val imagePath = "image/planets/planet${(Math.random() * 5).toInt()}.png"
-    //The texture used for the planet TODO: figure out better way to get texture rather than creating a new one each time it is requested
-    val image: Texture
-        get() = Texture(this.imagePath)
+    val imageNumber = (Math.random() * NUMBER_OF_PLANET_TEXTURES).toInt()
 
 }
