@@ -16,10 +16,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
-import com.prophetsofprofit.galacticrush.logic.map.Attribute
-import com.prophetsofprofit.galacticrush.logic.map.CosmicHighway
-import com.prophetsofprofit.galacticrush.logic.map.Galaxy
-import com.prophetsofprofit.galacticrush.logic.map.Planet
+import com.prophetsofprofit.galacticrush.logic.map.*
 import com.prophetsofprofit.galacticrush.networking.player.LocalPlayer
 import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.networking.player.Player
@@ -52,7 +49,9 @@ val instructionSprites = mapOf(
         Instruction.REPRODUCTIVE_VIRUS to Texture("instruction/REPRODUCTIVE_VIRUS.png"),
         Instruction.ATTACK_SELECTED to Texture("instruction/ATTACK_SELECTED.png"),
         Instruction.ATTACK_BASE to Texture("instruction/ATTACK_BASE.png"),
-        Instruction.RELEASE_CFCS to Texture("instruction/RELEASE_CFCS.png")
+        Instruction.RELEASE_CFCS to Texture("instruction/RELEASE_CFCS.png"),
+        Instruction.CHARGE to Texture("instruction/PLACEHOLDER.png"),
+        Instruction.HEAT_DISCHARGE to Texture("instruction/PLACEHOLDER.png")
 )
 
 //A list of default drone names; current default names are names of Roman Emperors (super edgy)

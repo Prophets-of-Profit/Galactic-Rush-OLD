@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.map
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import kotlin.math.pow
@@ -23,6 +24,17 @@ enum class Attribute(private val displayString: String, val stringValue: (Double
     override fun toString(): String {
         return displayString
     }
+}
+
+/**
+ * All the possible images for planets
+ */
+enum class PlanetImage(val path: String) {
+    NEPTUNE("image/planets/planet1.png"),
+    MARS("image/planets/planet2.png"),
+    URANUS("image/planets/planet3.png"),
+    JUPITER("image/planets/planet4.png"),
+    EARTH("image/planets/planet5.png")
 }
 
 /**
@@ -49,5 +61,10 @@ class Planet(var x: Float,
     val drones = mutableListOf<Drone>()
     //The base that is on the planet
     var base: Base? = null
+    //The planet's image path
+    val imagePath = PlanetImage.values().toList().shuffled()[0].path
+    //The texture used for the planet
+    val image: Texture
+        get() = Texture(this.imagePath)
 
 }
