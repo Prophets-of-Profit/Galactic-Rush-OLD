@@ -48,7 +48,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     //The list of things that happen after each drone turn
     var droneTurnChanges = mutableListOf<Change>()
     //Which instruction each player has; maps id to instructions
-    val unlockedInstructions = this.players.map { it to mutableListOf<Instruction>() }.toMap()
+    val unlockedInstructions = this.players.map { it to mutableSetOf<Instruction>() }.toMap()
     //The instructions that can still be drafted
     val instructionPool = Instruction.values().map { instruction -> Array(instruction.value) { instruction } }.toTypedArray().flatten().toMutableList()
     //The instructions that each player is being offered right now; initial value is draft for all players

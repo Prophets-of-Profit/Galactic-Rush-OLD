@@ -26,11 +26,7 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
         val nameField = TextField("", Scene2DSkin.defaultSkin)
 
         //Formats all of the actions
-        val actionsTable = Table().also {
-            this.add(it).expandY().fillY().top()
-            it.add(nameField)
-            it.debugAll()
-        }
+        this.add(nameField).expandY().top()
 
         //The action that controls the modal's visibility
         this.addAction(object : Action() {

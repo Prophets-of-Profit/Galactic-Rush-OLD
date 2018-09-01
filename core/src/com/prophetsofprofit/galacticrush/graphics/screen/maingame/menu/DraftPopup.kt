@@ -54,9 +54,7 @@ class DraftPopup(gameScreen: MainGameScreen) : ModalWindow(gameScreen, "Draft Op
                     return false
                 }
             })
-            it.debugAll()
         }
-
         this.add(instructionImageContainer).expand().fill()
 
         //The action that control's the modal's visibility

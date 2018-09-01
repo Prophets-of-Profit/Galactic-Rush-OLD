@@ -24,6 +24,7 @@ import com.prophetsofprofit.galacticrush.networking.player.LocalPlayer
 import com.prophetsofprofit.galacticrush.networking.player.NetworkPlayer
 import com.prophetsofprofit.galacticrush.networking.player.Player
 import java.util.*
+import kotlin.collections.LinkedHashSet
 
 //The object that handles reading/writing JSON
 val jsonObject = Json(JsonWriter.OutputType.json).also { it.setUsePrototypes(false) }
@@ -206,6 +207,7 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(Instruction::class.java)
     kryo.register(InstructionInstance::class.java)
     kryo.register(LinkedHashMap::class.java)
+    kryo.register(LinkedHashSet::class.java)
     kryo.register(LocalPlayer::class.java)
     kryo.register(NetworkPlayer::class.java)
     kryo.register(Planet::class.java)
