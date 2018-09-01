@@ -47,7 +47,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     //The smallest (closest) zoom factor allowed
     val minZoom = 0.1f
     //The highest (furthest) zoom factor allowed
-    val maxZoom = 1f
+    val maxZoom = 10f
     //The id of the planet currently selected by the player
     var selectedPlanetId: Int? = null
     //The id of the drone currently selected by the player

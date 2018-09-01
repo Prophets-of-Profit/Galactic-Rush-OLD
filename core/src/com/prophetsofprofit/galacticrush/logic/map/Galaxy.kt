@@ -10,6 +10,7 @@ import kotlin.math.PI
 import kotlin.math.atan2
 import kotlin.math.pow
 import kotlin.math.sqrt
+import kotlin.math.abs
 
 /**
  * A class that is basically the map that the game is played on
@@ -48,6 +49,9 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         generatePlanets(numPlanets)
         generateEdges(numPlanets)
         connectAllPlanets()
+        //TODO: remove unnecessary code for planet positioning in generatePlanets
+        //TODO: checking if half of them are moving might be unnecessary
+        while (this.iterateForces(0.005f, 1f, 0.00005f, 0.05f).values.count { abs(it[0]) > 0.0001 || abs(it[1]) > 0.0001 } > this.planets.size / 2) {}
         val pickablePlanets = this.planets.toMutableList()
         var planetChoice: Planet
         for (i in 0 until playerIDs.size) {
@@ -142,6 +146,76 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
             val highwayToAdd = CosmicHighway(p0.id, closestPlanet.id)
             highways.add(highwayToAdd)
         }
+    }
+
+    /**
+     * Pushes planets away from non-connected planets and toward connected planets
+     * Adapted from McGuffin, Michael J. Simple Algorithms for Network Visualization: A Tutorial. Tsinghua Science and Technology
+     * @param awayStrength the strength of forces away from planets not connected to a given planet
+     * @param towardStrength the strength of forces toward planets connected to a given planet
+     */
+    fun iterateForces(restingLength: Float, delta: Float, awayStrength: Float = 1f, towardStrength: Float = 1f): MutableMap<Planet, Array<Float>> {
+        //TODO: Change
+        var movementQueue = this.planets.map { planetToMove ->
+            planetToMove to arrayOf(0f, 0f)
+        }.toMap().toMutableMap()
+        //Apply repulsive force between planets
+        for (planetIndex1 in 0 until this.planets.size - 1) {
+            val planet1 = this.planets[planetIndex1]
+            for (planetIndex2 in planetIndex1 + 1 until this.planets.size) {
+                val planet2 = this.planets[planetIndex2]
+                val dx = planet1.x - planet2.x
+                val dy = planet1.y - planet2.y
+                if (!dx.equals(0) || !dy.equals(0)) {
+                    val distanceSquared = dx * dx + dy * dy
+                    val distance = sqrt(distanceSquared)
+                    val force = awayStrength / distanceSquared
+                    val fx = force * dx / distance
+                    val fy = force * dy / distance
+                    movementQueue[planet1]!![0] += fx
+                    movementQueue[planet1]!![1] += fy
+                    movementQueue[planet2]!![0] -= fx
+                    movementQueue[planet2]!![1] -= fy
+                } else {
+                    movementQueue[planet1]!![0] += 0.0001f
+                    movementQueue[planet1]!![1] += 0.0001f
+                    movementQueue[planet2]!![0] -= 0.0001f
+                    movementQueue[planet2]!![1] -= 0.0001f
+                }
+            }
+        }
+        //Apply spring force between connected planets
+        for (planet1 in this.planets) {
+            for (planet2 in this.planetsAdjacentTo(planet1.id).map { this.getPlanetWithId(it) }) {
+                val dx = planet1.x - planet2!!.x
+                val dy = planet1.y - planet2.y
+                if (dx != 0f || dy != 0f) {
+                    val distance = sqrt(dx * dx + dy * dy)
+                    val force = towardStrength * (distance - restingLength)
+                    val fx = force * dx / distance
+                    val fy = force * dy / distance
+                    movementQueue[planet1]!![0] -= fx
+                    movementQueue[planet1]!![1] -= fy
+                }
+            }
+        }
+        //Apply spring force to center
+        for (planet in this.planets) {
+            val distance = sqrt((planet.x - 0.5f) * (planet.x - 0.5f) + (planet.y - 0.5f) * (planet.y - 0.5f))
+            if (distance >= 0.1f) {
+                val force = towardStrength * (distance - 0.1f)
+                val fx = force * (planet.x - 0.5f) / distance
+                val fy = force * (planet.y - 0.5f) / distance
+                movementQueue[planet]!![0] -= fx
+                movementQueue[planet]!![1] -= fy
+            }
+        }
+        //Apply movement
+        for (planet in this.planets) {
+            planet.x += movementQueue[planet]!![0] * delta
+            planet.y += movementQueue[planet]!![1] * delta
+        }
+        return movementQueue
     }
 
     /**
