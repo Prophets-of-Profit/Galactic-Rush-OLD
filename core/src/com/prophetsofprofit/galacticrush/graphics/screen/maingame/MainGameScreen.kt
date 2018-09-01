@@ -85,8 +85,10 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 return false
             }
         })
+    }
+
     //Store the images instead of reallicating memory every draw call
-    val planetImages = (0 until NUMBER_OF_PLANET_TEXTURES).map { it to Texture("image/planets/planet$it.png") }
+    val planetImages = this.mainGame.galaxy.planets.map { it.id to it.image }.toMap()
 
     /**
      * Initializes the main game screen by adding UI components and moving the camera to the player's home base
@@ -128,19 +130,18 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.shapeRenderer.end()
         //Render home bases as filled circles
         //TODO: add textures for planets, make planet size
-        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in this.mainGame.galaxy.planets) {
-            if (planet.base != null && planet.base!!.facilityHealths.containsKey(Facility.HOME_BASE)) {
-                this.game.shapeRenderer.color = if (planet.base!!.ownerId == this.mainGame.players.first()) PLAYER_ONE_COLOR else PLAYER_TWO_COLOR
-                this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 51 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
-            }
-        }
-        this.game.shapeRenderer.end()
-        for (planet in this.mainGame.galaxy.planets) {
+            //In order to have the circle drawn before the planets, we need to begin and end shape renderer individually
             //TODO: Have a different way to display bases
+            if (planet.base != null && planet.base!!.facilityHealths.containsKey(Facility.HOME_BASE)) {
+                game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+                this.game.shapeRenderer.color = if (planet.base!!.ownerId == this.mainGame.players.first()) PLAYER_ONE_COLOR else PLAYER_TWO_COLOR
+                this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 15 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
+                this.game.shapeRenderer.end()
+            }
             this.game.batch.begin()
             this.game.batch.draw(
-                    this.planetImages[planet.imageNumber],
+                    this.planetImages[planet.id],
                     planet.x * this.game.camera.viewportWidth
                             - 25 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)),
                     planet.y * this.game.camera.viewportHeight
@@ -156,6 +157,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.batch.begin()
         this.drawTurnChanges()
         this.drawSelectionArrows()
+        this.drawDrones()
         this.game.batch.end()
         this.panHandler.update(delta)
         if (this.selectedPlanet?.drones?.contains(this.selectedDrone) != true) {
