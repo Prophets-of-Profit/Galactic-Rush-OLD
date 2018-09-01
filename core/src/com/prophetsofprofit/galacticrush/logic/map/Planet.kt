@@ -29,8 +29,5 @@ class Planet(var x: Float,
     var base: Base? = null
     //The planet's image path
     val imagePath = "image/planets/planet${(Math.random() * 5).toInt()}.png"
-    //The texture used for the planet TODO: figure out better way to get texture rather than creating a new one each time it is requested
-    val image: Texture
-        get() = Texture(this.imagePath)
 
 }

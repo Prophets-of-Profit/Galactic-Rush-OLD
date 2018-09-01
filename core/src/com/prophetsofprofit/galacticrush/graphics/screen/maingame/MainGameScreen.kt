@@ -87,8 +87,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         })
     }
 
-    //Store the images instead of reallicating memory every draw call
-    val planetImages = this.mainGame.galaxy.planets.map { it.id to it.image }.toMap()
+    //Store the images instead of reallocating memory every draw call
+    val planetImages = this.mainGame.galaxy.planets.map { it.id to this.createPlanetTexture(it) }.toMap()
 
     /**
      * Initializes the main game screen by adding UI components and moving the camera to the player's home base
@@ -248,6 +248,13 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     fun selectDrone(d: Drone) {
         this.selectedDroneId = d.id
         this.selectPlanet(this.mainGame.galaxy.getPlanetWithId(d.locationId)!!)
+    }
+
+    /**
+     * Creates a texture for the specified planet
+     */
+    fun createPlanetTexture(p: Planet): Texture {
+        return Texture(p.imagePath)
     }
 
     /**
