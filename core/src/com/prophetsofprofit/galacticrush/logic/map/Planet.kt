@@ -1,6 +1,5 @@
 package com.prophetsofprofit.galacticrush.logic.map
 
-import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 

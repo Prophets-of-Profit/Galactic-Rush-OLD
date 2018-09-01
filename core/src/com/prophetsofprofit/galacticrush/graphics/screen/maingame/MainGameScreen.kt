@@ -12,8 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
-import com.prophetsofprofit.galacticrush.PLAYER_ONE_COLOR
-import com.prophetsofprofit.galacticrush.PLAYER_TWO_COLOR
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
@@ -86,7 +84,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             }
         })
     }
-
     //Store the images instead of reallocating memory every draw call
     val planetImages = this.mainGame.galaxy.planets.map { it.id to this.createPlanetTexture(it) }.toMap()
 
@@ -131,14 +128,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         //Render home bases as filled circles
         //TODO: add textures for planets, make planet size
         for (planet in this.mainGame.galaxy.planets) {
-            //In order to have the circle drawn before the planets, we need to begin and end shape renderer individually
-            //TODO: Have a different way to display bases
-            if (planet.base != null && planet.base!!.facilityHealths.containsKey(Facility.HOME_BASE)) {
-                game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-                this.game.shapeRenderer.color = if (planet.base!!.ownerId == this.mainGame.players.first()) PLAYER_ONE_COLOR else PLAYER_TWO_COLOR
-                this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 15 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
-                this.game.shapeRenderer.end()
-            }
             this.game.batch.begin()
             this.game.batch.draw(
                     this.planetImages[planet.id],
@@ -287,6 +276,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.camera.translate(-deltaX * this.game.camera.zoom, deltaY * this.game.camera.zoom)
         return false
     }
+
     /**
      * Sets the zoom of the camera and ensures that the new zoom is clamped between acceptable values
      */
