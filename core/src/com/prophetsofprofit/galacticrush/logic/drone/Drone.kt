@@ -73,22 +73,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
      * Adds the given instruction this drone at the specified location
      */
     fun addInstruction(instruction: Instruction, galaxy: Galaxy, locationIndex: Int = this.instructions.size) {
-        val instance = InstructionInstance(instruction)
-        when (locationIndex) {
-            this.instructions.size -> this.instructions.add(InstructionInstance(instruction))
-            0 -> {
-                val copy = this.instructions.toMutableList()
-                this.instructions.clear()
-                this.instructions.add(instance)
-                this.instructions.addAll(copy)
-            }
-            else -> {
-                this.instructions.add(InstructionInstance(Instruction.NONE))
-                (locationIndex until this.instructions.size).reversed().forEach { this.instructions[it] = this.instructions[it - 1] }
-                this.instructions[locationIndex] = instance
-            }
-        }
-        instruction.addAction(this, galaxy, instance)
+        this.instructions.add(locationIndex, InstructionInstance(instruction))
     }
 
     /**
