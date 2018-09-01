@@ -1,6 +1,5 @@
 package com.prophetsofprofit.galacticrush.logic
 
-import com.badlogic.gdx.graphics.Color
 import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
@@ -46,8 +45,6 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     val waitingOn = this.players.toMutableList()
     //How much money each player has; maps id to money
     val money = this.players.map { it to 0 }.toMap().toMutableMap()
-    //The map of player id to their color
-    val playerColors = this.players.map { it to Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f) }.toMap()
     //The list of things that happen after each drone turn
     var droneTurnChanges = mutableListOf<Change>()
     //Which instruction each player has; maps id to instructions

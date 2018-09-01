@@ -57,6 +57,13 @@ val instructionSprites = mapOf(
         Instruction.HEAT_DISCHARGE to Texture("instruction/PLACEHOLDER.png")
 )
 
+//Default colors for the game players
+val PLAYER_ONE_COLOR = Color.RED
+val PLAYER_TWO_COLOR = Color.BLUE
+
+//Number of planet textures
+const val NUMBER_OF_PLANET_TEXTURES = 5
+
 //A list of default drone names; current default names are names of Roman Emperors (super edgy)
 val defaultDroneNames = arrayOf(
         "Tiberius",

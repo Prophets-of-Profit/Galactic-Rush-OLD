@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.PLAYER_ONE_COLOR
+import com.prophetsofprofit.galacticrush.PLAYER_TWO_COLOR
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
@@ -83,10 +85,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 return false
             }
         })
-    }
-
     //Store the images instead of reallicating memory every draw call
-    val planetImages = this.mainGame.galaxy.planets.map { it.id to it.image }.toMap()
+    val planetImages = (0 until NUMBER_OF_PLANET_TEXTURES).map { it to Texture("image/planets/planet$it.png") }
 
     /**
      * Initializes the main game screen by adding UI components and moving the camera to the player's home base
@@ -126,20 +126,21 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
             this.game.shapeRenderer.line(planet0.x * this.game.camera.viewportWidth, planet0.y * this.game.camera.viewportHeight, planet1.x * this.game.camera.viewportWidth, planet1.y * this.game.camera.viewportHeight)
         }
         this.game.shapeRenderer.end()
-        //Render planets as colored circles
+        //Render home bases as filled circles
         //TODO: add textures for planets, make planet size
+        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (planet in this.mainGame.galaxy.planets) {
-            //In order to have the circle drawn before the planets, we need to begin and end shape renderer individually
-            //TODO: Have a different way to display bases
             if (planet.base != null && planet.base!!.facilityHealths.containsKey(Facility.HOME_BASE)) {
-                game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-                this.game.shapeRenderer.color = this.mainGame.playerColors[planet.base!!.ownerId]
-                this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 15 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
-                this.game.shapeRenderer.end()
+                this.game.shapeRenderer.color = if (planet.base!!.ownerId == this.mainGame.players.first()) PLAYER_ONE_COLOR else PLAYER_TWO_COLOR
+                this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 51 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
             }
+        }
+        this.game.shapeRenderer.end()
+        for (planet in this.mainGame.galaxy.planets) {
+            //TODO: Have a different way to display bases
             this.game.batch.begin()
             this.game.batch.draw(
-                    this.planetImages[planet.id],
+                    this.planetImages[planet.imageNumber],
                     planet.x * this.game.camera.viewportWidth
                             - 25 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)),
                     planet.y * this.game.camera.viewportHeight
@@ -148,7 +149,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                     50 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)),
                     50 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2))
             )
-            //this.game.shapeRenderer.circle(planet.x * this.game.camera.viewportWidth, planet.y * this.game.camera.viewportHeight, 10 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)))
             this.game.batch.end()
         }
         //Draw arrows pointing at the selected planet
@@ -156,7 +156,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.batch.begin()
         this.drawTurnChanges()
         this.drawSelectionArrows()
-        this.drawDrones()
         this.game.batch.end()
         this.panHandler.update(delta)
         if (this.selectedPlanet?.drones?.contains(this.selectedDrone) != true) {
@@ -279,7 +278,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         this.game.camera.translate(-deltaX * this.game.camera.zoom, deltaY * this.game.camera.zoom)
         return false
     }
-
     /**
      * Sets the zoom of the camera and ensures that the new zoom is clamped between acceptable values
      */

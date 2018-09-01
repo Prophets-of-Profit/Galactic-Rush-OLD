@@ -1,20 +1,8 @@
 package com.prophetsofprofit.galacticrush.logic.map
 
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Texture
+import com.prophetsofprofit.galacticrush.NUMBER_OF_PLANET_TEXTURES
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-
-/**
- * All the possible images for planets
- */
-enum class PlanetImage(val path: String) {
-    NEPTUNE("image/planets/planet1.png"),
-    MARS("image/planets/planet2.png"),
-    URANUS("image/planets/planet3.png"),
-    JUPITER("image/planets/planet4.png"),
-    EARTH("image/planets/planet5.png")
-}
 
 /**
  * A class that represents a node in the graph that is the galaxy
@@ -26,8 +14,7 @@ enum class PlanetImage(val path: String) {
 class Planet(var x: Float,
              var y: Float,
              val radius: Float,
-             val id: Int,
-             val color: Color = Color(Math.random().toFloat(), Math.random().toFloat(), Math.random().toFloat(), 1f)) {
+             val id: Int) {
 
     /**
      * Empty constructor for serialization
@@ -41,9 +28,6 @@ class Planet(var x: Float,
     //The base that is on the planet
     var base: Base? = null
     //The planet's image path
-    val imagePath = PlanetImage.values().toList().shuffled()[0].path
-    //The texture used for the planet
-    val image: Texture
-        get() = Texture(this.imagePath)
+    val imageNumber = (Math.random() * NUMBER_OF_PLANET_TEXTURES).toInt()
 
 }
