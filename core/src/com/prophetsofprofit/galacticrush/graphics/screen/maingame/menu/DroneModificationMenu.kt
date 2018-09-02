@@ -1,17 +1,15 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.ModalWindow
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.InstructionCardDisplay
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
-import com.prophetsofprofit.galacticrush.instructionTextures
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import ktx.scene2d.Scene2DSkin
@@ -30,8 +28,8 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
         var editingId: DroneId? = null
 
         //The instructions that the drone will have if the submit button is pressed
-        var instructionsCopy = mutableListOf<InstructionInstance>()
-        var displayedInstructions = mutableListOf<InstructionInstance>()
+        val instructionsCopy = mutableListOf<InstructionInstance>()
+        val displayedInstructions = mutableListOf<InstructionInstance>()
 
         //The field that controls the drone's name
         val nameField = TextField("", Scene2DSkin.defaultSkin)
@@ -39,7 +37,7 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
         fun resetDroneButtons(table: Table): Boolean {
             table.clearChildren()
             instructionsCopy.forEach { instructionInstance ->
-                table.add(Button(TextureRegionDrawable(TextureRegion(instructionTextures[instructionInstance.baseInstruction]))).also {
+                table.add(Button(InstructionCardDisplay(instructionInstance.baseInstruction), Scene2DSkin.defaultSkin).also {
                     it.addListener(object : ChangeListener() {
                         override fun changed(event: ChangeEvent, actor: Actor) {
                             instructionsCopy.remove(instructionInstance)
@@ -58,7 +56,6 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
         val droneInstructionTable = Table().also {
             //TODO: not this
             it.addAction(object : Action() {
-
                 override fun act(delta: Float): Boolean {
                     if (isVisible) {
                         return false
@@ -77,7 +74,7 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                     }
                     it.clearChildren()
                     gameScreen.mainGame.unlockedInstructions[gameScreen.player.id]!!.forEach { instruction ->
-                        it.add(Button(TextureRegionDrawable(TextureRegion(instructionTextures[instruction]))).also {
+                        it.add(Button(InstructionCardDisplay(instruction), Scene2DSkin.defaultSkin).also {
                             it.addListener(object : ChangeListener() {
                                 override fun changed(event: ChangeEvent, actor: Actor) {
                                     instructionsCopy.add(InstructionInstance(instruction))
