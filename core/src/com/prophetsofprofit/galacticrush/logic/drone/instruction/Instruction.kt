@@ -112,7 +112,7 @@ enum class Instruction(
             mainAction = { drone, galaxy, instance ->
                 val selectedDrone = if (drone.selectableDroneIds!!.isNotEmpty()) galaxy.getDroneWithId(drone.selectableDroneIds!!.first()) else null
                 if (selectedDrone != null && selectedDrone.memoryAvailable >= instance.baseInstruction.memorySize) {
-                    selectedDrone.addInstruction(instance.baseInstruction, galaxy)
+                    selectedDrone.addInstruction(instance.baseInstruction)
                 }
             }
     ),

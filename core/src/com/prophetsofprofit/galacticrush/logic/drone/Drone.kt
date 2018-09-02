@@ -72,7 +72,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
     /**
      * Adds the given instruction this drone at the specified location
      */
-    fun addInstruction(instruction: Instruction, galaxy: Galaxy, locationIndex: Int = this.instructions.size) {
+    fun addInstruction(instruction: Instruction, locationIndex: Int = this.instructions.size) {
         this.instructions.add(locationIndex, InstructionInstance(instruction))
     }
 

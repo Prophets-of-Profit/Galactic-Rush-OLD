@@ -14,7 +14,6 @@ import com.prophetsofprofit.galacticrush.graphics.Panel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -132,8 +131,6 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
                     if (containsConstructionFacility) {
                         val newDrone = Drone(gameScreen.player.id, gameScreen.selectedPlanetId!!)
-                        newDrone.addInstruction(Instruction.SELECT_HOTTEST, gameScreen.mainGame.galaxy)
-                        newDrone.addInstruction(Instruction.MOVE_SELECTED, gameScreen.mainGame.galaxy)
                         gameScreen.mainGame.galaxy.getPlanetWithId(newDrone.locationId)!!.drones.add(newDrone)
                         gameScreen.player.currentChanges.changedDrones.add(newDrone)
                         gameScreen.programming = gameScreen.selectedDroneId != null
