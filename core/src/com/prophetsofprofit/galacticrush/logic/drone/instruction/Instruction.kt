@@ -176,6 +176,29 @@ enum class Instruction(
                 galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE] = galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! - charge * 0.05
                 drone.persistentData["charge"] = "0"
             }
+    ),
+    LOOP_CHARGE(
+            "Discharge All Stored Charge Once to Loop as Many Times as Charge Discharged",
+            5,
+            5,
+            10,
+            arrayOf(InstructionType.ORDER),
+            startCycleAction = { _, _, instance ->
+                instance.data["hasDischarged"] = "false"
+                instance.data["counter"] = "0"
+            },
+            mainAction = { drone, _, instance ->
+                if (!instance.data["hasDischarged"]!!.toBoolean() && drone.persistentData["charge"] != null) {
+                    instance.data["hasDischarged"] = "true"
+                    instance.data["counter"] = drone.persistentData["charge"]!!
+                    drone.persistentData["charge"] = "0"
+                }
+                val counter = instance.data["counter"]!!.toInt()
+                if (counter > 0) {
+                    drone.pointer = -1
+                    instance.data["counter"] = "${counter - 1}"
+                }
+            }
     );
 
     override fun toString(): String = this.displayName

@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.ModalWindow
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
-import com.prophetsofprofit.galacticrush.instructionSprites
+import com.prophetsofprofit.galacticrush.instructionTextures
 import com.prophetsofprofit.galacticrush.logic.GamePhase
 import com.prophetsofprofit.galacticrush.logic.change.PlayerChange
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
@@ -37,7 +37,7 @@ class DraftPopup(gameScreen: MainGameScreen) : ModalWindow(gameScreen, "Draft Op
                     }
                     it.clearChildren()
                     gameScreen.mainGame.currentDraft[gameScreen.player.id]!!.forEach { instruction ->
-                        it.add(Button(TextureRegionDrawable(TextureRegion(instructionSprites[instruction]))).also {
+                        it.add(Button(TextureRegionDrawable(TextureRegion(instructionTextures[instruction]))).also {
                             it.addListener(object : ChangeListener() {
                                 override fun changed(event: ChangeEvent, actor: Actor) {
                                     optionsWhenSubmitted.clear()

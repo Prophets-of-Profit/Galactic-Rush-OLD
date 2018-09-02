@@ -43,7 +43,7 @@ const val defaultTcpPort = 6669
 const val bufferSize = Int.MAX_VALUE / 1024
 
 //A map of instructions to sprites
-val instructionSprites = mapOf(
+val instructionTextures = mapOf(
         Instruction.SELECT_HOTTEST to Texture("instruction/SELECT_HOTTEST.png"),
         Instruction.SELECT_WEAKEST to Texture("instruction/SELECT_WEAKEST.png"),
         Instruction.RESET_SELECTABLE to Texture("instruction/RESET_SELECTABLE.png"),
@@ -55,7 +55,8 @@ val instructionSprites = mapOf(
         Instruction.ATTACK_BASE to Texture("instruction/ATTACK_BASE.png"),
         Instruction.RELEASE_CFCS to Texture("instruction/RELEASE_CFCS.png"),
         Instruction.CHARGE to Texture("instruction/PLACEHOLDER.png"),
-        Instruction.HEAT_DISCHARGE to Texture("instruction/PLACEHOLDER.png")
+        Instruction.HEAT_DISCHARGE to Texture("instruction/PLACEHOLDER.png"),
+        Instruction.LOOP_CHARGE to Texture("instruction/PLACEHOLDER.png")
 )
 
 //Default colors for the game players
