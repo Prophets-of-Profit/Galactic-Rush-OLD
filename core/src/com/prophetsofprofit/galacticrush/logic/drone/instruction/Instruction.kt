@@ -85,7 +85,7 @@ enum class Instruction(
             mainAction = { drone, _, instance ->
                 val counter = instance.data["counter"]!!.toInt()
                 if (counter > 0) {
-                    drone.pointer = 0
+                    drone.pointer = -1
                     instance.data["counter"] = "${counter - 1}"
                 }
             }

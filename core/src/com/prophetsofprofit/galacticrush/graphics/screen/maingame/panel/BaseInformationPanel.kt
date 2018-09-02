@@ -135,7 +135,7 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                         newDrone.addInstruction(Instruction.SELECT_HOTTEST, gameScreen.mainGame.galaxy)
                         newDrone.addInstruction(Instruction.MOVE_SELECTED, gameScreen.mainGame.galaxy)
                         gameScreen.mainGame.galaxy.getPlanetWithId(newDrone.locationId)!!.drones.add(newDrone)
-                        gameScreen.player.currentChages.changedDrones.add(newDrone)
+                        gameScreen.player.currentChanges.changedDrones.add(newDrone)
                         gameScreen.programming = gameScreen.selectedDroneId != null
                         gameScreen.selectedDroneId = newDrone.id
                         //TODO: subtract cost of new drone from player money

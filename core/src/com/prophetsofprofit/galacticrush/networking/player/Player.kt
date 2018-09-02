@@ -11,7 +11,7 @@ import com.prophetsofprofit.galacticrush.logic.change.PlayerChange
 abstract class Player(val id: Int) {
 
     //What the player has done and will submit to the game once their turn is over
-    var currentChages = PlayerChange(this.id)
+    var currentChanges = PlayerChange(this.id)
     //The game that the player is in
     var currentGameState: Game? = null
     //The game state that is the state of the game before drone turns
@@ -32,8 +32,8 @@ abstract class Player(val id: Int) {
      * The method that handles submitting this player's current changes and resetting them
      */
     fun submitCurrentChanges() {
-        this.submit(this.currentChages)
-        this.currentChages = PlayerChange(this.id)
+        this.submit(this.currentChanges)
+        this.currentChanges = PlayerChange(this.id)
     }
 
     /**
