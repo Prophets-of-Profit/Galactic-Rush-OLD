@@ -6,11 +6,7 @@ import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
-import kotlin.math.PI
-import kotlin.math.atan2
-import kotlin.math.pow
-import kotlin.math.sqrt
-import kotlin.math.abs
+import kotlin.math.*
 
 /**
  * A class that is basically the map that the game is played on
@@ -49,9 +45,9 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         generatePlanets(numPlanets)
         generateEdges(numPlanets)
         connectAllPlanets()
-        //TODO: remove unnecessary code for planet positioning in generatePlanets
-        //TODO: checking if half of them are moving might be unnecessary
-        while (this.iterateForces(0.005f, 1f, 0.00005f, 0.05f).values.count { abs(it[0]) > 0.0001 || abs(it[1]) > 0.0001 } > this.planets.size / 2) {}
+        var counter = 0
+        while (this.iterateForces(0.005f, 1f, 0.00005f, 0.05f).values.count { abs(it[0]) > 0.0001 || abs(it[1]) > 0.0001 } > 0 && counter++ > 0) {
+        }
         val pickablePlanets = this.planets.toMutableList()
         var planetChoice: Planet
         for (i in 0 until playerIDs.size) {
@@ -156,7 +152,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
      */
     fun iterateForces(restingLength: Float, delta: Float, awayStrength: Float = 1f, towardStrength: Float = 1f): MutableMap<Planet, Array<Float>> {
         //TODO: Change
-        var movementQueue = this.planets.map { planetToMove ->
+        val movementQueue = this.planets.map { planetToMove ->
             planetToMove to arrayOf(0f, 0f)
         }.toMap().toMutableMap()
         //Apply repulsive force between planets
@@ -166,7 +162,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
                 val planet2 = this.planets[planetIndex2]
                 val dx = planet1.x - planet2.x
                 val dy = planet1.y - planet2.y
-                if (!dx.equals(0) || !dy.equals(0)) {
+                if (dx != 0f || dy != 0f) {
                     val distanceSquared = dx * dx + dy * dy
                     val distance = sqrt(distanceSquared)
                     val force = awayStrength / distanceSquared
