@@ -46,7 +46,7 @@ const val bufferSize = Int.MAX_VALUE / 1024
 val instructionTextures = mapOf(
         Instruction.SELECT_HOTTEST to Texture("instruction/SELECT_HOTTEST.png"),
         Instruction.SELECT_WEAKEST to Texture("instruction/SELECT_WEAKEST.png"),
-        Instruction.RESET_SELECTABLE to Texture("instruction/RESET_SELECTABLE.png"),
+        Instruction.RESET_SELECTABLES to Texture("instruction/RESET_SELECTABLES.png"),
         Instruction.MOVE_SELECTED to Texture("instruction/MOVE_SELECTED.png"),
         Instruction.LOOP_3 to Texture("instruction/LOOP_3.png"),
         Instruction.CONSTRUCT_BASE to Texture("instruction/CONSTRUCT_BASE.png"),

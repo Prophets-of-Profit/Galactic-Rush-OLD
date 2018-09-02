@@ -18,6 +18,7 @@ typealias DroneAction = (Drone, Galaxy, InstructionInstance) -> Unit
  */
 enum class Instruction(
         val displayName: String,
+        val displayDescription: String,
         val value: Int,
         val memorySize: Int,
         val health: Int,
@@ -28,9 +29,10 @@ enum class Instruction(
         val mainAction: DroneAction = { _, _, _ -> },
         val endCycleAction: DroneAction = { _, _, _ -> }
 ) {
-    NONE("None", 0, 100000, 100000, arrayOf()),
+    NONE("None", "THIS IS INVALID", 0, 100000, 100000, arrayOf()),
     SELECT_HOTTEST(
-            "Select Hottest Adjacent Planet",
+            "Select Hottest",
+            "Orders the drone's planet selection queue by the hottest available planets.",
             30,
             1,
             3,
@@ -41,18 +43,20 @@ enum class Instruction(
             }
     ),
     SELECT_WEAKEST(
-            "Select Weakest Drone on this Planet",
+            "Select Weakest",
+            "Selects the weakest drone by attack on the planet",
             20,
             1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
-                drone.selectableDroneIds = kotlin.collections.mutableListOf(drone.selectableDroneIds
+                drone.selectableDroneIds = mutableListOf(drone.selectableDroneIds
                 !!.leastBy { galaxy.getDroneWithId(it)!!.attack.toDouble() })
             }
     ),
-    RESET_SELECTABLE(
-            "Reset the Options for Selectable Drones and Planets",
+    RESET_SELECTABLES(
+            "Reset Selectables",
+            "Resets all of the drone's selectable planets and drones to be back to their defaults.",
             15,
             2,
             3,
@@ -62,7 +66,8 @@ enum class Instruction(
             }
     ),
     MOVE_SELECTED(
-            "Move to Selected Planet",
+            "Move Selected",
+            "Moves the drone to its currently selected planet.",
             10,
             2,
             5,
@@ -74,7 +79,8 @@ enum class Instruction(
             }
     ),
     LOOP_3(
-            "Loop All Previous Instructions 3 times",
+            "Loop 3",
+            "Repeats all previous instructions 3 times.",
             3,
             3,
             8,
@@ -91,7 +97,8 @@ enum class Instruction(
             }
     ),
     CONSTRUCT_BASE(
-            "Construct a Base on Current Planet",
+            "Construct Base",
+            "Constructs a base on the current planet",
             3,
             5,
             5,
@@ -104,7 +111,8 @@ enum class Instruction(
             }
     ),
     REPRODUCTIVE_VIRUS(
-            "Spread a Virus Instruction to the Selected Drone",
+            "Reproductive Virus",
+            "A virus that adds itself to the currently selected drone.",
             2,
             8,
             20,
@@ -117,7 +125,8 @@ enum class Instruction(
             }
     ),
     ATTACK_SELECTED(
-            "Attack the Selected Drone",
+            "Attack Selected",
+            "Attacks the currently selected drone.",
             5,
             5,
             5,
@@ -127,7 +136,8 @@ enum class Instruction(
             }
     ),
     ATTACK_BASE(
-            "Attack a Base on This Planet",
+            "Attack Base",
+            "Attacks a base on the current planet.",
             5,
             5,
             5,
@@ -137,7 +147,8 @@ enum class Instruction(
             }
     ),
     RELEASE_CFCS(
-            "Release Chlorofluorocarbons on This Planet",
+            "Release Chlorofluorocarbons",
+            "Damages current planet's atmosphere and temperature.",
             3,
             8,
             5,
@@ -149,7 +160,8 @@ enum class Instruction(
             }
     ),
     CHARGE(
-            "Build up Charge; Charge Can Be Used By Other Instructions",
+            "Charge",
+            "Builds up a charge within the drone. Charge in and of itself is useless, but other instructions consume charge.",
             20,
             5,
             5,
@@ -162,7 +174,8 @@ enum class Instruction(
             }
     ),
     HEAT_DISCHARGE(
-            "Discharge All Stored Charge on Drone To Heat Up Current Planet and Damage All Other Drones on Planet",
+            "Discharge",
+            "Discharges all stored drone charge to damage all drones on the current planet and also heat up the planet.",
             10,
             8,
             10,
@@ -173,12 +186,13 @@ enum class Instruction(
                 }
                 val charge = drone.persistentData["charge"]!!.toInt()
                 galaxy.getPlanetWithId(drone.locationId)!!.drones.forEach { it.takeDamage(charge * 3, galaxy) }
-                galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE] = galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! - charge * 0.05
+                galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE] = minOf(galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! + charge * 0.05, 1.0)
                 drone.persistentData["charge"] = "0"
             }
     ),
     LOOP_CHARGE(
-            "Discharge All Stored Charge Once to Loop as Many Times as Charge Discharged",
+            "Loop Charge",
+            "Discharges all stored charge once to loop as many times as charge was discharged.",
             5,
             5,
             10,
