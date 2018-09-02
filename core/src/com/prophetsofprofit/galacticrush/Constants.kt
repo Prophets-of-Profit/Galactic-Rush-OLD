@@ -191,7 +191,6 @@ val defaultBaseNames = arrayOf(
  */
 fun registerAllClasses(kryo: Kryo) {
     kryo.register(Array<Int>::class.java)
-    kryo.register(Array<Planet>::class.java)
     kryo.register(Array<Player>::class.java)
     kryo.register(ArrayList::class.java)
     kryo.register(PlanetAttribute::class.java)

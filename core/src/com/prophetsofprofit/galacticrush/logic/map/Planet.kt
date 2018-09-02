@@ -10,19 +10,16 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
  * Planets have arbitrary attributes that are used by other entities in the game
  * Takes in its locationId in 2d space between 0 and 1
  */
-class Planet(val id: Int) {
+class Planet(var x: Float,
+             var y: Float,
+             val radius: Float,
+             val id: Int) {
 
     /**
      * Empty constructor for serialization
      */
-    constructor() : this(-1)
+    constructor() : this(-1f, -1f, -1f, -1)
 
-    //Planet x position from 0 to 1
-    var x = Math.random().toFloat()
-    //Planet y position from 0 to 1
-    var y = Math.random().toFloat()
-    //The radius of this circular planet
-    val radius = 0.0003f + Math.random().toFloat() * 0.0003f
     //Arbitrary attributes that determine drone behaviour: can be changed, but each start out as a random number between 0 and 1
     val attributes = PlanetAttribute.values().map { it to Math.random() }.toMap().toMutableMap()
     //All the drones on the planet
