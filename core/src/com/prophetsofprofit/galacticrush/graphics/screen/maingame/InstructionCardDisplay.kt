@@ -18,7 +18,10 @@ class InstructionCardDisplay(val instruction: Instruction) : Table() {
     init {
         this.add(Image(TextureRegionDrawable(TextureRegion(instructionTextures[this.instruction]!!)))).expand().fill().row()
         this.add(Label(this.instruction.displayName, Scene2DSkin.defaultSkin)).expandX().fillX().pad(5f).row()
-        this.add(Label(this.instruction.displayDescription, Scene2DSkin.defaultSkin)).expandX().fillX()
+        this.add(Label(this.instruction.displayDescription, Scene2DSkin.defaultSkin).also {
+            it.setWrap(true)
+            it.setFontScale(0.75f)
+        }).expandX().fill()
     }
 
 }

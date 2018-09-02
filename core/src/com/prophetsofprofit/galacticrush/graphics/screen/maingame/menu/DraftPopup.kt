@@ -1,19 +1,18 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.ModalWindow
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.InstructionCardDisplay
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
-import com.prophetsofprofit.galacticrush.instructionTextures
 import com.prophetsofprofit.galacticrush.logic.GamePhase
 import com.prophetsofprofit.galacticrush.logic.change.PlayerChange
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
+import ktx.scene2d.Scene2DSkin
 
 /**
  * The popup that will appear when a draft is happening for the current player
@@ -28,7 +27,6 @@ class DraftPopup(gameScreen: MainGameScreen) : ModalWindow(gameScreen, "Draft Op
         val optionsWhenSubmitted = mutableListOf<Instruction>()
 
         //The top part of the panel that displays all of the draft options TODO: change
-        //TODO: Use the table that the window forms rather than creating a new table
         val instructionImageContainer = Table().also {
             it.addAction(object : Action() {
                 override fun act(delta: Float): Boolean {
@@ -37,7 +35,7 @@ class DraftPopup(gameScreen: MainGameScreen) : ModalWindow(gameScreen, "Draft Op
                     }
                     it.clearChildren()
                     gameScreen.mainGame.currentDraft[gameScreen.player.id]!!.forEach { instruction ->
-                        it.add(Button(TextureRegionDrawable(TextureRegion(instructionTextures[instruction]))).also {
+                        it.add(Button(InstructionCardDisplay(instruction), Scene2DSkin.defaultSkin).also {
                             it.addListener(object : ChangeListener() {
                                 override fun changed(event: ChangeEvent, actor: Actor) {
                                     optionsWhenSubmitted.clear()
