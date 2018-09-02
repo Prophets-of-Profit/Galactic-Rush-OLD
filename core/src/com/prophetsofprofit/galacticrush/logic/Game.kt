@@ -20,7 +20,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     /**
      * Empty constructor for serialization
      */
-    constructor() : this(arrayOf(), Galaxy(0, listOf()))
+    constructor() : this(arrayOf(), Galaxy())
 
     //The amount of turns that have passed since the game was created
     var turnsPlayed = 0
