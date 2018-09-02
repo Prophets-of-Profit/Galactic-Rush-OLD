@@ -1,4 +1,4 @@
-package com.prophetsofprofit.galacticrush.graphics.screen.maingame
+package com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.Image

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.ModalWindow
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.InstructionCardDisplay
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardDisplay
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
@@ -29,7 +29,6 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
 
         //The instructions that the drone will have if the submit button is pressed
         val instructionsCopy = mutableListOf<InstructionInstance>()
-        val displayedInstructions = mutableListOf<InstructionInstance>()
 
         //The field that controls the drone's name
         val nameField = TextField("", Scene2DSkin.defaultSkin)
@@ -41,8 +40,6 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                     it.addListener(object : ChangeListener() {
                         override fun changed(event: ChangeEvent, actor: Actor) {
                             instructionsCopy.remove(instructionInstance)
-                            displayedInstructions.clear()
-                            displayedInstructions.addAll(instructionsCopy)
                             resetDroneButtons(table)
                         }
                     })
