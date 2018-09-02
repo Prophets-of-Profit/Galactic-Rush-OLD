@@ -181,7 +181,7 @@ enum class Instruction(
             10,
             arrayOf(InstructionType.COMBAT, InstructionType.PLANET_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
-                if (drone.persistentData["charge"] != null) {
+                if (drone.persistentData["charge"] == null) {
                     drone.persistentData["charge"] = "0"
                 }
                 val charge = drone.persistentData["charge"]!!.toInt()
