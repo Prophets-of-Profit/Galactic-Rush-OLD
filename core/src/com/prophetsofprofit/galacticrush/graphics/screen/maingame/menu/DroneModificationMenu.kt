@@ -35,35 +35,8 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
         //The field that controls the drone's name
         val nameField = TextField("", Scene2DSkin.defaultSkin)
 
-        /*fun resetDroneButtons(table: Table): Boolean {
-            table.clearChildren()
-            instructionsCopy.forEach { instructionInstance ->
-                table.add(Button(InstructionCardDisplay(instructionInstance.baseInstruction), Scene2DSkin.defaultSkin).also {
-                    it.addListener(object : ChangeListener() {
-                        override fun changed(event: ChangeEvent, actor: Actor) {
-                            instructionsCopy.remove(instructionInstance)
-                            resetDroneButtons(table)
-                        }
-                    })
-                    //TODO: Maintain aspect ratio
-                }).expand().fill().pad(5f)
-            }
-            return false
-        }
-
-        //The table that contains the drone's instructions
-        val droneInstructionTable = Table().also {
-            //TODO: not this
-            it.addAction(object : Action() {
-                override fun act(delta: Float): Boolean {
-                    if (isVisible) {
-                        return false
-                    }
-                    return resetDroneButtons(it)
-                }
-            })
-        }*/
-
+        //The table that displays the drone's instructions
+        //TODO: take another look at scrolling
         val droneInstructionsQueue = ScrollPane(DroneQueueDisplay(50, instructionsCopy))
 
 
@@ -81,7 +54,7 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                                 override fun changed(event: ChangeEvent, actor: Actor) {
                                     instructionsCopy.add(InstructionInstance(instruction))
                                     (droneInstructionsQueue.actor as DroneQueueDisplay).update()
-                                    //resetDroneButtons(droneInstructionTable)
+                                    droneInstructionsQueue.scrollTo(droneInstructionsQueue.actor.width - droneInstructionsQueue.width, 0f, droneInstructionsQueue.width, droneInstructionsQueue.height)
                                 }
                             })
                             //TODO: Maintain aspect ratio
@@ -94,9 +67,8 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
 
         //Formats all of the actions
         this.add(nameField).expand().height(50f).top().row()
-        this.add(ownedInstructionsTable).expand().height(25f).fill().row()
-        this.add(droneInstructionsQueue)
-        //this.add(droneInstructionTable).expand().fill().row()
+        this.add(ownedInstructionsTable).expand().fill().row()
+        this.add(droneInstructionsQueue).expand().height(50f).fill().prefHeight(this.height)
 
         //The action that controls the modal's visibility
         this.addAction(object : Action() {

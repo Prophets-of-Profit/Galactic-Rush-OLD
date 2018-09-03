@@ -47,6 +47,7 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
         connectAllPlanets()
         var counter = 0
         while (this.iterateForces(0.005f, 1f, 0.00005f, 0.05f).values.count { abs(it[0]) > 0.0001 || abs(it[1]) > 0.0001 } > 0 && counter++ > 0) {
+            println("Iterated forces")
         }
         val pickablePlanets = this.planets.toMutableList()
         var planetChoice: Planet

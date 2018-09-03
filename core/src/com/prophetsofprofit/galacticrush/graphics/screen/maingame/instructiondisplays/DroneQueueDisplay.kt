@@ -16,7 +16,7 @@ class DroneQueueDisplay(var length: Int, var instructions: MutableList<Instructi
 
     init {
         this.update()
-        this.debugAll()
+        //this.debugAll()
     }
 
     /**
@@ -34,7 +34,7 @@ class DroneQueueDisplay(var length: Int, var instructions: MutableList<Instructi
                         update()
                     }
                 })
-            }).size(this.height * instructionInstance.baseInstruction.memorySize, this.height).pad(5f)
+            }).size(this.height * instructionInstance.baseInstruction.memorySize, this.height)
         }
     }
 
