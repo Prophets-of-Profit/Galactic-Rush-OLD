@@ -14,6 +14,7 @@ import com.prophetsofprofit.galacticrush.graphics.Panel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import ktx.scene2d.Scene2DSkin
 
 /**
