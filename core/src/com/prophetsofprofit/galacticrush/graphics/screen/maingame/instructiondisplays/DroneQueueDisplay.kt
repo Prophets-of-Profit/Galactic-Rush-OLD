@@ -12,7 +12,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInst
 /**
  * Displays the instructions in a line where each instruction has a width corresponding to its memory
  */
-class DroneQueueDisplay(var length: Int, var instructions: MutableList<InstructionInstance>): Table() {
+class DroneQueueDisplay(var length: Int, var instructions: MutableList<InstructionInstance>) : Table() {
 
     init {
         this.update()
@@ -20,8 +20,8 @@ class DroneQueueDisplay(var length: Int, var instructions: MutableList<Instructi
     }
 
     /**
-    * Updates the elements of the inventory
-    */
+     * Updates the elements of the inventory
+     */
     fun update() {
         this.width = this.height * length
         this.clearChildren()

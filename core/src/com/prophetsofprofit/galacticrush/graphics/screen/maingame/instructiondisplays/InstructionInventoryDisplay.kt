@@ -1,13 +1,12 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays
 
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 
 /**
  * Displays the instructions in a scrollable pane where each instruction has the same width
  */
-class InstructionInventoryDisplay(w: Float, h: Float, var rowLength: Int, var length: Int, var instructions: MutableList<InstructionInstance>): Table() {
+class InstructionInventoryDisplay(w: Float, h: Float, var rowLength: Int, var length: Int, var instructions: MutableList<InstructionInstance>) : Table() {
 
     //The number of rows the queue will display
     val rowNum: Int
@@ -27,7 +26,7 @@ class InstructionInventoryDisplay(w: Float, h: Float, var rowLength: Int, var le
      */
     fun update() {
         this.clearChildren()
-        this.instructions.forEach { instructionInstance -> Unit }
+        this.instructions.forEach { _ -> Unit }
     }
 
 }

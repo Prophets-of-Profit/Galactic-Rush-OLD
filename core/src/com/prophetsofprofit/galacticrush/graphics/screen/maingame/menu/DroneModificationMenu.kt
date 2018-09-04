@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.ModalWindow
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardDisplay
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.DroneQueueDisplay
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardDisplay
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import ktx.scene2d.Scene2DSkin
@@ -79,7 +79,8 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                 if (editingId != gameScreen.selectedDroneId) {
                     nameField.text = gameScreen.selectedDrone?.name ?: ""
                     instructionsCopy.clear()
-                    instructionsCopy.addAll(gameScreen.selectedDrone?.instructions ?:mutableListOf<InstructionInstance>())
+                    instructionsCopy.addAll(gameScreen.selectedDrone?.instructions
+                            ?: mutableListOf<InstructionInstance>())
                     editingId = gameScreen.selectedDroneId
                 }
                 if (!isVisible && gameScreen.programming) {
