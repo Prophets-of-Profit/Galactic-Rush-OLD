@@ -1,7 +1,7 @@
 # GALACTIC RUSH
 ### Made by Prophets of Profit
 
-\*Game details will be put on a website: this README.md is detailling the code structure.
+\*Game details will be put on a website: this README.md is detailing the code structure.
 
 ## Assets
 All assets belong in the android/assets directory. This is because of some weirdness in Android. Art and music both go there. Currently, assets doesn't have a strong structure, but this will probably be changed soon. Just use your intuition for where to place assets within android/assets for right now.
@@ -15,7 +15,7 @@ While there are separate folders for every platform (desktop, android, ios), eve
 Within the core folder, all of the game logic is separated further into 3 main packages: graphics, logic, and networking.  Outside of those folders currently exist 3 files: Main, Constants, and Options. Constants contains all of the game literals such as default port, default drone/base names, default colors, etc. Options contains all of the user preferences (eg. music and sfx volumes). Main can be considered the entry point of the application (the entry points are actually platform specific: Main doesn't have a `public static void main(String[] args)`, but all the real entry points use Main) and is a class that represents the application. Main handles the general start and exit procedure for the game.
 
 ### Graphics
-The majority of the game's UI is handled in graphics. The classes in grahpics handle how each screen looks/behaves and also the general flow of what the user can do on each screen and what screens they can go to from there. All screens in graphics must inherit from GalacticRushScreen, because GalacticRushScreen contains a few niceties that is relied upon. Graphics also contains custom implementations of commonly used UI components like Panels or ModalWindows. The majority of the general clientside application code is in graphics as graphics hooks into classes from other packages in order to display them/send user input to them.
+The majority of the game's UI is handled in graphics. The classes in graphics handle how each screen looks/behaves and also the general flow of what the user can do on each screen and what screens they can go to from there. All screens in graphics must inherit from GalacticRushScreen, because GalacticRushScreen contains a few niceties that is relied upon. Graphics also contains custom implementations of commonly used UI components like Panels or ModalWindows. The majority of the general clientside application code is in graphics as graphics hooks into classes from other packages in order to display them/send user input to them.
 
 ### Logic
 All of the game rules are kept in logic. All classes for objects in the game are kept in logic and all game rules and game mechanics are programmed in the logic folder.
