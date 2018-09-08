@@ -26,7 +26,5 @@ class Planet(var x: Float,
     val drones = mutableListOf<Drone>()
     //The base that is on the planet
     var base: Base? = null
-    //The planet's image path
-    val imagePath = "image/planets/planet${(Math.random() * 5).toInt()}.png"
 
 }

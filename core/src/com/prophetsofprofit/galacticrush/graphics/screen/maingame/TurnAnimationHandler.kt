@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.maingame
 
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.prophetsofprofit.galacticrush.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import kotlin.math.PI
@@ -38,7 +39,7 @@ class TurnAnimationHandler(val mainGameScreen: MainGameScreen) {
     fun move(drone: Drone, p0: Planet, p1: Planet) {
         val dx = (p1.x - p0.x) * this.mainGameScreen.game.camera.viewportWidth
         val dy = (p1.y - p0.y) * this.mainGameScreen.game.camera.viewportHeight
-        val droneImage = Sprite(drone.image)
+        val droneImage = Sprite(baseDroneImage)
         droneImage.setCenter(p0.x * this.mainGameScreen.game.camera.viewportWidth, p0.y * this.mainGameScreen.game.camera.viewportHeight)
         droneImage.rotation = (atan2(dy, dx) * 180 / PI).toFloat()
         //Queue the drone image for an animation

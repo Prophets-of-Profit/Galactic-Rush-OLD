@@ -1,14 +1,10 @@
 package com.prophetsofprofit.galacticrush.logic.drone
 
-import com.badlogic.gdx.graphics.Texture
 import com.prophetsofprofit.galacticrush.defaultDroneNames
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import java.util.*
-
-//How the drone looks by default
-val baseDroneImage = Texture("image/drone/base.png")
 
 /**
  * Small data class that represents what can uniquely identify a drone
@@ -53,11 +49,6 @@ class Drone(val ownerId: Int, var locationId: Int) {
     var isDestroyed = false
     //What the drone displays as in lists
     var name = defaultDroneNames.toMutableList().shuffled().first()
-    //What the drone looks like on the map
-    val image: Texture
-        get() {
-            return baseDroneImage
-        }
     //What uniquely identifies the drone
     val id: DroneId
         get() = DroneId(this.ownerId, this.creationTime)

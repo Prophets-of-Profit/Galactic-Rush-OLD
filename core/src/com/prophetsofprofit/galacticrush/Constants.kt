@@ -59,6 +59,9 @@ val instructionTextures = mapOf(
         Instruction.LOOP_CHARGE to Texture("instruction/PLACEHOLDER.png")
 )
 
+//How the drone looks by default
+val baseDroneImage = Texture("image/drone/base.png")
+
 //Default colors for the game players
 val PLAYER_ONE_COLOR = Color.RED
 val PLAYER_TWO_COLOR = Color.BLUE

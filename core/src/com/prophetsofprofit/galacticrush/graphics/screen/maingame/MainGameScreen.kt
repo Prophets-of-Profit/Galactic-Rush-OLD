@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.baseDroneImage
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
@@ -27,7 +28,6 @@ import com.prophetsofprofit.galacticrush.logic.GamePhase
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
-import com.prophetsofprofit.galacticrush.logic.drone.baseDroneImage
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.networking.player.Player
 import ktx.scene2d.Scene2DSkin
@@ -244,7 +244,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      * Creates a texture for the specified planet
      */
     fun createPlanetTexture(p: Planet): Texture {
-        return Texture(p.imagePath)
+        return Texture("image/planets/planet${(Math.random() * 5).toInt()}.png")
     }
 
     /**
