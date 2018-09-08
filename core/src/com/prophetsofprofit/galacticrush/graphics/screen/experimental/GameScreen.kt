@@ -8,8 +8,8 @@ import com.prophetsofprofit.galacticrush.graphics.ModalWindow
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.logic.GamePhase
 import com.prophetsofprofit.galacticrush.networking.player.Player
-import kotlin.math.pow
-import kotlin.math.sqrt
+import com.prophetsofprofit.galacticrush.planetRadiusScale
+import kotlin.math.*
 
 /**
  * The main screen where the game is actually played
@@ -54,9 +54,8 @@ class GameScreen(game: Main, val player: Player) : GalacticRushScreen(game, Arra
                     this.planetImages[planet.id],
                     planet.x * this.game.camera.viewportWidth,
                     planet.y * this.game.camera.viewportHeight,
-                    //TODO: Avoid hardcoding size with magic constants, trim planet textures
-                    50 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)),
-                    50 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2))
+                    planetRadiusScale * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)),
+                    planetRadiusScale * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2))
             )
         }
         this.game.batch.end()
@@ -71,5 +70,43 @@ class GameScreen(game: Main, val player: Player) : GalacticRushScreen(game, Arra
     override fun leave() {
         this.game.resetCamera()
     }
+
+    /**
+     * Panning moves the camera laterally to adjust what is being seen
+     */
+    override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
+        val mouseLocation = this.game.windowToCamera(x.roundToInt(), y.roundToInt(), this.uiCamera)
+        if (this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false) != null) {
+            return false
+        }
+        this.game.camera.translate(-deltaX * this.game.camera.zoom, deltaY * this.game.camera.zoom)
+        return false
+    }
+
+    /**
+     * Sets the zoom of the camera and ensures that the new zoom is clamped between acceptable values
+     */
+    private fun setZoomClamped(newZoom: Float) {
+        this.game.camera.zoom = max(this.minZoom, min(this.maxZoom, newZoom))
+    }
+
+    /**
+     * Zooming moves the camera closer in or further out
+     */
+    override fun zoom(initialDistance: Float, distance: Float): Boolean {
+        val zoomWeight = 0.15f
+        this.setZoomClamped(zoomWeight * initialDistance / distance + this.game.camera.zoom * (1 - zoomWeight))
+        return true
+    }
+
+    /**
+     * Zooms with mouse scroll
+     */
+    override fun scrolled(amount: Int): Boolean {
+        //TODO: zoom with mouse as focal point of zoom
+        this.setZoomClamped(this.game.camera.zoom + amount * 0.1f)
+        return true
+    }
+
 
 }
