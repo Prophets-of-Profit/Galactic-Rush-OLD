@@ -30,6 +30,8 @@ class GameScreen(game: Main, val player: Player) : GalacticRushScreen(game, Arra
     val activeModals get() = this.uiContainer.actors.filter { it is ModalWindow && it.isVisible }
     //The images of each planet
     val planetImages = this.mainGame.galaxy.planets.map { it.id to this.textureHandler.getTexture(it) }.toMap()
+    //The object that handles animating drone turns
+    val droneTurnAnimator = DroneTurnAnimator(this)
 
     /**
      * The procedure for drawing the current game state
@@ -58,6 +60,9 @@ class GameScreen(game: Main, val player: Player) : GalacticRushScreen(game, Arra
             )
         }
         this.game.batch.end()
+
+        //Tells the droneTurnAnimator to animate if necessary
+        this.droneTurnAnimator.act(delta)
     }
 
     /**
