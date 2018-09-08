@@ -1,17 +1,12 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu
 
 import com.badlogic.gdx.scenes.scene2d.Action
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.Button
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.ModalWindow
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.DroneQueueDisplay
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardDisplay
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardPopup
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionInventoryDisplay
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId

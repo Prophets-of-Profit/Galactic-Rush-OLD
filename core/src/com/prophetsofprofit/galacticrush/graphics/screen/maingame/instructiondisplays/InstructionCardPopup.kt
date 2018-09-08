@@ -12,7 +12,7 @@ import ktx.scene2d.Scene2DSkin
 /**
  * Displays a single instruction that does something when clicked and TODO disappears otherwise
  */
-class InstructionCardPopup(gameScreen: MainGameScreen, val instruction: Instruction, val clicked: () -> Unit): ModalWindow(gameScreen, "Draft Options", gameScreen.uiCamera.viewportWidth / 4, gameScreen.uiCamera.viewportHeight / 2) {
+class InstructionCardPopup(gameScreen: MainGameScreen, val instruction: Instruction, val clicked: () -> Unit) : ModalWindow(gameScreen, "Draft Options", gameScreen.uiCamera.viewportWidth / 4, gameScreen.uiCamera.viewportHeight / 2) {
 
     /**
      * Initializes the popup

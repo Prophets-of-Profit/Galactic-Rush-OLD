@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.instructionTextures
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
-import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 
 /**
  * Displays the instructions in a scrollable pane where each instruction has the same width

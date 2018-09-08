@@ -311,10 +311,12 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         //Check if an actor was clicked
         val hit = this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false)
         //Remove all instruction card popups that were not clicked
-        this.uiContainer.actors.forEach { if (it != hit && it is InstructionCardPopup)  {
-            //TODO: Perhaps these should also be removed from the actors list in order to make it better garbage collected
-            it.disappear(Direction.POP, 0.1f)
-        } }
+        this.uiContainer.actors.forEach {
+            if (it != hit && it is InstructionCardPopup) {
+                //TODO: Perhaps these should also be removed from the actors list in order to make it better garbage collected
+                it.disappear(Direction.POP, 0.1f)
+            }
+        }
         //If something was clicked, do not check anything else
         if (hit != null) {
             return false
