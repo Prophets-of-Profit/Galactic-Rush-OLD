@@ -15,6 +15,7 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardPopup
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.DraftPopup
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.DroneModificationMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
@@ -307,7 +308,15 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
      */
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
         val mouseLocation = this.game.windowToCamera(x.roundToInt(), y.roundToInt(), this.uiCamera)
-        if (this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false) != null) {
+        //Check if an actor was clicked
+        val hit = this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false)
+        //Remove all instruction card popups that were not clicked
+        this.uiContainer.actors.forEach { if (it != hit && it is InstructionCardPopup)  {
+            //TODO: Perhaps these should also be removed from the actors list in order to make it better garbage collected
+            it.disappear(Direction.POP, 0.1f)
+        } }
+        //If something was clicked, do not check anything else
+        if (hit != null) {
             return false
         }
         //Leaving this here for convenience, in case we want to disable centering on planet when selecting it

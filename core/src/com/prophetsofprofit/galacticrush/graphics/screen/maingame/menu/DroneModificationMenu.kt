@@ -12,6 +12,7 @@ import com.prophetsofprofit.galacticrush.graphics.ModalWindow
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.DroneQueueDisplay
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardDisplay
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardPopup
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionInventoryDisplay
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
@@ -42,9 +43,12 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
 
         //The table that displays the user's owned instructions
         val ownedInstructionsPanel = ScrollPane(InstructionInventoryDisplay(5, gameScreen) { instruction ->
-            instructionsCopy.add(InstructionInstance(instruction))
-            (droneInstructionsQueue.actor as DroneQueueDisplay).update()
-            droneInstructionsQueue.scrollTo(droneInstructionsQueue.actor.width - droneInstructionsQueue.width, 0f, droneInstructionsQueue.width, droneInstructionsQueue.height)
+            val instructionPopup = InstructionCardPopup(gameScreen, instruction) {
+                instructionsCopy.add(InstructionInstance(instruction))
+                (droneInstructionsQueue.actor as DroneQueueDisplay).update()
+                droneInstructionsQueue.scrollTo(droneInstructionsQueue.actor.width - droneInstructionsQueue.width, 0f, droneInstructionsQueue.width, droneInstructionsQueue.height)
+            }
+            gameScreen.uiContainer.addActor(instructionPopup)
         })
 
         //Formats all of the actions
