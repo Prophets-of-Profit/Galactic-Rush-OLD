@@ -9,6 +9,7 @@ import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.logic.GamePhase
 import com.prophetsofprofit.galacticrush.networking.player.Player
 import com.prophetsofprofit.galacticrush.planetRadiusScale
+import ktx.app.use
 import kotlin.math.*
 
 /**
@@ -61,7 +62,7 @@ class GameScreen(game: Main, val player: Player) : GalacticRushScreen(game, Arra
         this.game.batch.end()
 
         //Tells the droneTurnAnimator to animate if necessary
-        this.droneTurnAnimator.act(delta)
+        this.game.batch.use { this.droneTurnAnimator.act(delta) }
     }
 
     /**

@@ -50,6 +50,7 @@ class DroneTurnAnimator(val gameScreen: GameScreen) : Action() {
                                     xTotalChange * elapsedTime / travelTime,
                                     yTotalChange * elapsedTime / travelTime
                             )
+                            this.droneSprite.draw(gameScreen.game.batch)
                             return this.elapsedTime >= travelTime
                         }
 
