@@ -12,6 +12,7 @@ import com.prophetsofprofit.galacticrush.graphics.ModalWindow
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.DroneQueueDisplay
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardDisplay
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionInventoryDisplay
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import ktx.scene2d.Scene2DSkin
@@ -39,35 +40,16 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
         //TODO: take another look at scrolling
         val droneInstructionsQueue = ScrollPane(DroneQueueDisplay(50, instructionsCopy))
 
-
-        //The table that contains the player's unlocked instructions
-        val ownedInstructionsTable = Table().also {
-            it.addAction(object : Action() {
-                override fun act(delta: Float): Boolean {
-                    if (isVisible) {
-                        return false
-                    }
-                    it.clearChildren()
-                    gameScreen.mainGame.unlockedInstructions[gameScreen.player.id]!!.forEach { instruction ->
-                        it.add(Button(InstructionCardDisplay(instruction), Scene2DSkin.defaultSkin).also {
-                            it.addListener(object : ChangeListener() {
-                                override fun changed(event: ChangeEvent, actor: Actor) {
-                                    instructionsCopy.add(InstructionInstance(instruction))
-                                    (droneInstructionsQueue.actor as DroneQueueDisplay).update()
-                                    droneInstructionsQueue.scrollTo(droneInstructionsQueue.actor.width - droneInstructionsQueue.width, 0f, droneInstructionsQueue.width, droneInstructionsQueue.height)
-                                }
-                            })
-                            //TODO: Maintain aspect ratio
-                        }).expand().fill().pad(5f)
-                    }
-                    return false
-                }
-            })
-        }
+        //The table that displays the user's owned instructions
+        val ownedInstructionsPanel = ScrollPane(InstructionInventoryDisplay(5, gameScreen) { instruction ->
+            instructionsCopy.add(InstructionInstance(instruction))
+            (droneInstructionsQueue.actor as DroneQueueDisplay).update()
+            droneInstructionsQueue.scrollTo(droneInstructionsQueue.actor.width - droneInstructionsQueue.width, 0f, droneInstructionsQueue.width, droneInstructionsQueue.height)
+        })
 
         //Formats all of the actions
         this.add(nameField).expand().height(50f).top().row()
-        this.add(ownedInstructionsTable).expand().fill().row()
+        this.add(ownedInstructionsPanel).expand().fill().prefWidth(this.width).row()
         this.add(droneInstructionsQueue).expand().height(50f).fill().prefHeight(this.height)
 
         //The action that controls the modal's visibility
@@ -86,6 +68,8 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                 if (!isVisible && gameScreen.programming) {
                     children.forEach { it.act(0f) }
                     editingId = gameScreen.selectedDroneId
+                    (ownedInstructionsPanel.actor as InstructionInventoryDisplay).update()
+                    (droneInstructionsQueue.actor as DroneQueueDisplay).update()
                     appear(Direction.POP, 1f)
                 } else if (isVisible && !gameScreen.programming || gameScreen.selectedDrone == null) {
                     if (gameScreen.selectedDrone != null) {

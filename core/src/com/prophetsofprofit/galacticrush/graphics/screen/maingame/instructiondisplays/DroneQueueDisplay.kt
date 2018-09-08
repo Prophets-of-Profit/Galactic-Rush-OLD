@@ -16,7 +16,6 @@ class DroneQueueDisplay(var length: Int, var instructions: MutableList<Instructi
 
     init {
         this.update()
-        //this.debugAll()
     }
 
     /**
