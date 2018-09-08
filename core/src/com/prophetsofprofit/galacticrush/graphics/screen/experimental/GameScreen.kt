@@ -53,8 +53,8 @@ class GameScreen(game: Main, val player: Player) : GalacticRushScreen(game, Arra
         for (planet in this.mainGame.galaxy.planets) {
             this.game.batch.draw(
                     this.planetImages[planet.id],
-                    planet.x * this.game.camera.viewportWidth,
-                    planet.y * this.game.camera.viewportHeight,
+                    planet.x * this.game.camera.viewportWidth - planetRadiusScale / 2 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)),
+                    planet.y * this.game.camera.viewportHeight - planetRadiusScale / 2 * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)),
                     planetRadiusScale * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2)),
                     planetRadiusScale * planet.radius * sqrt(this.game.camera.viewportWidth.pow(2) + this.game.camera.viewportHeight.pow(2))
             )
