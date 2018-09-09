@@ -47,8 +47,11 @@ const val planetRadiusScale = 25
 
 //A map of instructions to sprites
 val instructionTextures = mapOf(
+        Instruction.ORDER_HOTTEST to Texture("instruction/PLACEHOLDER.png"),
+        Instruction.ORDER_COLDEST to Texture("instruction/PLACEHOLDER.png"),
         Instruction.SELECT_HOTTEST to Texture("instruction/SELECT_HOTTEST.png"),
         Instruction.SELECT_WEAKEST to Texture("instruction/SELECT_WEAKEST.png"),
+        Instruction.RESTRICT_3 to Texture("instruction/PLACEHOLDER.png"),
         Instruction.RESET_SELECTABLES to Texture("instruction/RESET_SELECTABLES.png"),
         Instruction.MOVE_SELECTED to Texture("instruction/MOVE_SELECTED.png"),
         Instruction.LOOP_3 to Texture("instruction/LOOP_3.png"),
