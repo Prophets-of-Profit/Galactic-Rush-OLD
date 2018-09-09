@@ -19,8 +19,9 @@ class PlanetInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Pl
      * Initializes the UI components and their positionings
      */
     init {
-        fun makeLabelForAttribute(attribute: PlanetAttribute): Label {
-            return Label("", Scene2DSkin.defaultSkin).also {
+        PlanetAttribute.values().forEach { attribute ->
+            this.add(Image(Scene2DSkin.defaultSkin, attribute.displayString)).pad(10f)
+            this.add(Label("", Scene2DSkin.defaultSkin).also {
                 it.setAlignment(Align.center)
                 it.addAction(object : Action() {
                     override fun act(delta: Float): Boolean {
@@ -28,18 +29,8 @@ class PlanetInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Pl
                         return false
                     }
                 })
-            }
+            }).expandX().fillX().padRight(10f).row()
         }
-        this.add(Image(Scene2DSkin.defaultSkin, "Atmosphere")).pad(10f)
-        this.add(makeLabelForAttribute(PlanetAttribute.ATMOSPHERE)).expandX().fillX().padRight(10f).row()
-        this.add(Image(Scene2DSkin.defaultSkin, "Humidity")).pad(10f)
-        this.add(makeLabelForAttribute(PlanetAttribute.WATER)).expandX().fillX().padRight(10f).row()
-        this.add(Image(Scene2DSkin.defaultSkin, "Mass")).pad(10f)
-        this.add(makeLabelForAttribute(PlanetAttribute.MASS)).expandX().padRight(10f).fillX().row()
-        this.add(Image(Scene2DSkin.defaultSkin, "Solidity")).pad(10f)
-        this.add(makeLabelForAttribute(PlanetAttribute.SOLIDITY)).expandX().fillX().padRight(10f).row()
-        this.add(Image(Scene2DSkin.defaultSkin, "Temperature")).pad(10f)
-        this.add(makeLabelForAttribute(PlanetAttribute.TEMPERATURE)).expandX().fillX().padRight(10f)
         this.addAction(object : Action() {
             override fun act(delta: Float): Boolean {
                 if (gameScreen.selectedPlanet != null) {

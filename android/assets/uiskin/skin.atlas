@@ -17,7 +17,7 @@ size: 1024,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Atmosphere
+Pressure
   rotate: false
   xy: 515, 638
   size: 25, 25

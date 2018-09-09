@@ -97,7 +97,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageUp: Temperature
 	}
 	atm: {
-		imageUp: Atmosphere
+		imageUp: Pressure
 	}
 	humid: {
 		imageUp: Humidity
