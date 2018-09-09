@@ -30,16 +30,52 @@ enum class Instruction(
         val endCycleAction: DroneAction = { _, _, _ -> }
 ) {
     NONE("None", "THIS IS INVALID", 0, 100000, 100000, arrayOf()),
-    SELECT_HOTTEST(
-            "Select Hottest",
+    ORDER_HOTTEST(
+            "Order Hottest",
             "Orders the drone's planet selection queue by the hottest available planets.",
-            30,
+            15,
             1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, galaxy, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
                 !!.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! })
+            }
+    ),
+    ORDER_COLDEST(
+            "Order Coldest",
+            "Orders the drone's planet selection queue by the coldest available planets.",
+            15,
+            1,
+            3,
+            arrayOf(InstructionType.DRONE_MODIFICATION),
+            mainAction = { drone, galaxy, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.leastBy { galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! })
+            }
+    ),
+    SELECT_HOTTEST(
+            "Select Hottest",
+            "Restricts the drone's planet selection queue to the hottest available planets.",
+            30,
+            1,
+            3,
+            arrayOf(InstructionType.DRONE_MODIFICATION),
+            mainAction = { drone, galaxy, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.maxBy { galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
+            }
+    ),
+    SELECT_COLDEST(
+            "Order Coldest",
+            "Restricts the drone's planet selection queue to the coldest available planets.",
+            30,
+            1,
+            3,
+            arrayOf(InstructionType.DRONE_MODIFICATION),
+            mainAction = { drone, galaxy, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.minBy { galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
             }
     ),
     SELECT_WEAKEST(
@@ -52,6 +88,22 @@ enum class Instruction(
             mainAction = { drone, galaxy, _ ->
                 drone.selectableDroneIds = mutableListOf(drone.selectableDroneIds
                 !!.leastBy { galaxy.getDroneWithId(it)!!.attack.toDouble() })
+            }
+    ),
+    RESTRICT_3(
+            "Restrict 3",
+            "Shortens the drone's selection queues to the first three elements",
+            10,
+            1,
+            3,
+            arrayOf(InstructionType.DRONE_MODIFICATION),
+            mainAction = { drone, galaxy, _ ->
+                if (drone.selectableDroneIds!!.size > 3) {
+                    drone.selectableDroneIds = drone.selectableDroneIds!!.slice(0 until 3).toMutableList()
+                }
+                if (drone.selectablePlanetIds!!.size > 3) {
+                    drone.selectablePlanetIds = drone.selectablePlanetIds!!.slice(0 until 3).toMutableList()
+                }
             }
     ),
     RESET_SELECTABLES(
