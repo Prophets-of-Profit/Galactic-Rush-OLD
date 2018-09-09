@@ -43,7 +43,7 @@ const val defaultTcpPort = 6669
 const val bufferSize = Int.MAX_VALUE / 1024
 
 //How to scale each planet's radius
-const val planetRadiusScale = 50
+const val planetRadiusScale = 25
 
 //A map of instructions to sprites
 val instructionTextures = mapOf(
