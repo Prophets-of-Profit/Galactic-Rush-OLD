@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.loading
 
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.graphics.screen.experimental.GameScreen
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.GameCreationOptions
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
@@ -31,7 +32,7 @@ class HostLoadingScreen(game: Main, val players: Array<Player>, var options: Gam
      */
     override fun onLoad() {
         //Assuming that there is only one local player
-        this.game.screen = MainGameScreen(this.game, this.players.first { it is LocalPlayer })
+        this.game.screen = GameScreen(this.game, this.players.first { it is LocalPlayer })
     }
 
 }

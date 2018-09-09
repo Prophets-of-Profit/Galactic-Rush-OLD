@@ -35,6 +35,13 @@ class GameScreen(game: Main, val player: Player) : GalacticRushScreen(game, Arra
     val droneTurnAnimator = DroneTurnAnimator(this)
 
     /**
+     * Adds all necessary actors to the screen
+     */
+    init {
+        this.uiContainer.addActor(PlanetHoverDisplay(this))
+    }
+
+    /**
      * The procedure for drawing the current game state
      */
     override fun draw(delta: Float) {
