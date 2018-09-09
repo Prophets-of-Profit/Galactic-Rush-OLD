@@ -36,7 +36,7 @@ class TurnAnimationHandler(val mainGameScreen: MainGameScreen) {
     /**
      * Moves a drone between two planets
      */
-    fun move(drone: Drone, p0: Planet, p1: Planet) {
+    fun move(p0: Planet, p1: Planet) {
         val dx = (p1.x - p0.x) * this.mainGameScreen.game.camera.viewportWidth
         val dy = (p1.y - p0.y) * this.mainGameScreen.game.camera.viewportHeight
         val droneImage = Sprite(baseDroneImage)

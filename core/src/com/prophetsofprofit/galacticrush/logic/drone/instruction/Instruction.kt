@@ -97,7 +97,7 @@ enum class Instruction(
             1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, _, _ ->
                 if (drone.selectableDroneIds!!.size > 3) {
                     drone.selectableDroneIds = drone.selectableDroneIds!!.slice(0 until 3).toMutableList()
                 }
