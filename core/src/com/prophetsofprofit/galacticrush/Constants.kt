@@ -46,12 +46,9 @@ const val bufferSize = Int.MAX_VALUE / 1024
 const val planetRadiusScale = 25
 
 //A map of instructions to sprites
-val instructionTextures = mapOf(
-        Instruction.ORDER_HOTTEST to Texture("instruction/PLACEHOLDER.png"),
-        Instruction.ORDER_COLDEST to Texture("instruction/PLACEHOLDER.png"),
+val instructionTextures = mutableMapOf(
         Instruction.SELECT_HOTTEST to Texture("instruction/SELECT_HOTTEST.png"),
         Instruction.SELECT_WEAKEST to Texture("instruction/SELECT_WEAKEST.png"),
-        Instruction.RESTRICT_3 to Texture("instruction/PLACEHOLDER.png"),
         Instruction.RESET_SELECTABLES to Texture("instruction/RESET_SELECTABLES.png"),
         Instruction.MOVE_SELECTED to Texture("instruction/MOVE_SELECTED.png"),
         Instruction.LOOP_3 to Texture("instruction/LOOP_3.png"),
@@ -59,11 +56,10 @@ val instructionTextures = mapOf(
         Instruction.REPRODUCTIVE_VIRUS to Texture("instruction/REPRODUCTIVE_VIRUS.png"),
         Instruction.ATTACK_SELECTED to Texture("instruction/ATTACK_SELECTED.png"),
         Instruction.ATTACK_BASE to Texture("instruction/ATTACK_BASE.png"),
-        Instruction.RELEASE_CFCS to Texture("instruction/RELEASE_CFCS.png"),
-        Instruction.CHARGE to Texture("instruction/PLACEHOLDER.png"),
-        Instruction.HEAT_DISCHARGE to Texture("instruction/PLACEHOLDER.png"),
-        Instruction.LOOP_CHARGE to Texture("instruction/PLACEHOLDER.png")
-)
+        Instruction.RELEASE_CFCS to Texture("instruction/RELEASE_CFCS.png")
+).also {
+    Instruction.values().filter { instruction -> !it.containsKey(instruction) }.forEach { instruction -> it[instruction] = Texture("instruction/PLACEHOLDER.png") }
+}
 
 //How the drone looks by default
 val baseDroneImage = Texture("image/drone/base.png")
