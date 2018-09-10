@@ -31,6 +31,9 @@ class PlanetHoverDisplay(gameScreen: GameScreen) : Table() {
         var elapsedStillTime = 0f
         var hoveredPlanetId: Int? = null
 
+        this.width = 200f
+        this.height = 50f
+
         PlanetAttribute.values().forEach { attribute ->
             this.add(Image(Scene2DSkin.defaultSkin, attribute.displayString)).pad(5f)
             this.add(Label("", Scene2DSkin.defaultSkin).also {
@@ -47,7 +50,7 @@ class PlanetHoverDisplay(gameScreen: GameScreen) : Table() {
         this.addAction(object : Action() {
             override fun act(delta: Float): Boolean {
                 //Updates previous x and y coordinates as well as elapsed still time; elapsed time increments if mouse is still on a planet or anywhere on top of this
-                val stageMouseCoords = localToStageCoordinates(Vector2(Gdx.input.x.toFloat(), Gdx.input.y.toFloat()))
+                val stageMouseCoords = gameScreen.game.windowToCamera(Gdx.input.x, Gdx.input.y, gameScreen.uiCamera)
                 val hovered = gameScreen.uiContainer.hit(stageMouseCoords.x, stageMouseCoords.y, false)
                 if (Gdx.input.x == prevX && Gdx.input.y == prevY || hovered == this@PlanetHoverDisplay || children.any { it == hovered }) {
                     elapsedStillTime += delta
