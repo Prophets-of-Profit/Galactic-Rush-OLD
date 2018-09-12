@@ -20,7 +20,7 @@ import kotlin.math.sqrt
 class PlanetHoverDisplay(gameScreen: GameScreen) : Table() {
 
     //How long the menu should wait for the user to hover over a planet before appearing
-    val durationUntilAppearance = 2f
+    val durationUntilAppearance = 1f
 
     /**
      * Adds all basic actors to the display
@@ -60,9 +60,6 @@ class PlanetHoverDisplay(gameScreen: GameScreen) : Table() {
                     prevY = Gdx.input.y
                 }
 
-                //Moves menu to mouse location
-                setPosition(stageMouseCoords.x, stageMouseCoords.y, Align.topLeft)
-
                 //If elapsed still time is not great enough, the menu becomes invisible
                 isVisible = elapsedStillTime >= durationUntilAppearance
                 if (!isVisible) {
@@ -76,6 +73,15 @@ class PlanetHoverDisplay(gameScreen: GameScreen) : Table() {
                     val planetRadius = planetRadiusScale * planet.radius * sqrt(gameScreen.game.camera.viewportWidth.pow(2) + gameScreen.game.camera.viewportHeight.pow(2))
                     distanceBetween < planetRadius
                 }?.id ?: hoveredPlanetId
+
+                //Moves menu to mouse location
+                if (hoveredPlanetId != null) {
+                    setPosition(
+                            gameScreen.mainGame.galaxy.getPlanetWithId(hoveredPlanetId!!)!!.x * gameScreen.uiCamera.viewportWidth,
+                            gameScreen.mainGame.galaxy.getPlanetWithId(hoveredPlanetId!!)!!.y * gameScreen.uiCamera.viewportHeight,
+                            Align.topLeft
+                    )
+                }
 
                 return false
             }
