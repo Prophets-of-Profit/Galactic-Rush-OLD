@@ -26,8 +26,8 @@ class PlanetHoverDisplay(gameScreen: GameScreen) : Table() {
      * Adds all basic actors to the display
      */
     init {
-        var prevX = Gdx.input.x
-        var prevY = Gdx.input.y
+        var prevX = Float.NaN
+        var prevY = Float.NaN
         var elapsedStillTime = 0f
         var hoveredPlanetId: Int? = null
 
@@ -49,15 +49,30 @@ class PlanetHoverDisplay(gameScreen: GameScreen) : Table() {
 
         this.addAction(object : Action() {
             override fun act(delta: Float): Boolean {
-                //Updates previous x and y coordinates as well as elapsed still time; elapsed time increments if mouse is still on a planet or anywhere on top of this
+                val prevHovered = hoveredPlanetId
+
+                //Gets the mouse coordinates for different cameras
+                val gameMouseCoords = gameScreen.game.windowToCamera(Gdx.input.x, Gdx.input.y)
                 val stageMouseCoords = gameScreen.game.windowToCamera(Gdx.input.x, Gdx.input.y, gameScreen.uiCamera)
+
+                //Checks if the mouse has moved; if it has, recalculate whether a planet is being hovered or not
+                if (Gdx.input.x.toFloat() != prevX || Gdx.input.y.toFloat() != prevY) {
+                    hoveredPlanetId = gameScreen.mainGame.galaxy.planets.firstOrNull { planet ->
+                        val distanceBetween = (gameMouseCoords - Vector2(planet.x * gameScreen.game.camera.viewportWidth, planet.y * gameScreen.game.camera.viewportHeight)).len()
+                        val planetRadius = planetRadiusScale * planet.radius * sqrt(gameScreen.game.camera.viewportWidth.pow(2) + gameScreen.game.camera.viewportHeight.pow(2))
+                        distanceBetween < planetRadius
+                    }?.id
+                    prevX = Gdx.input.x.toFloat()
+                    prevY = Gdx.input.y.toFloat()
+                }
+
+                //Updates elapsed still time if mouse is on currently hovered planet or this display; otherwise, the timer resets to 0
                 val hovered = gameScreen.uiContainer.hit(stageMouseCoords.x, stageMouseCoords.y, false)
-                if (Gdx.input.x == prevX && Gdx.input.y == prevY || hovered == this@PlanetHoverDisplay || children.any { it == hovered }) {
+                if ((prevHovered == hoveredPlanetId && prevHovered != null) || hovered == this@PlanetHoverDisplay || children.any { it == hovered }) {
+                    hoveredPlanetId = prevHovered
                     elapsedStillTime += delta
                 } else {
                     elapsedStillTime = 0f
-                    prevX = Gdx.input.x
-                    prevY = Gdx.input.y
                 }
 
                 //If elapsed still time is not great enough, the menu becomes invisible
@@ -66,15 +81,7 @@ class PlanetHoverDisplay(gameScreen: GameScreen) : Table() {
                     return false
                 }
 
-                //Sets the hovered planet id to either the currently hovered planet if any or the already selected id otherwise
-                val gameMouseCoords = gameScreen.game.windowToCamera(Gdx.input.x, Gdx.input.y)
-                hoveredPlanetId = gameScreen.mainGame.galaxy.planets.firstOrNull { planet ->
-                    val distanceBetween = (gameMouseCoords - Vector2(planet.x * gameScreen.game.camera.viewportWidth, planet.y * gameScreen.game.camera.viewportHeight)).len()
-                    val planetRadius = planetRadiusScale * planet.radius * sqrt(gameScreen.game.camera.viewportWidth.pow(2) + gameScreen.game.camera.viewportHeight.pow(2))
-                    distanceBetween < planetRadius
-                }?.id ?: hoveredPlanetId
-
-                //Moves menu to mouse location
+                //Moves menu to mouse location TODO: doesn't work correctly with pans/zooms
                 if (hoveredPlanetId != null) {
                     setPosition(
                             gameScreen.mainGame.galaxy.getPlanetWithId(hoveredPlanetId!!)!!.x * gameScreen.uiCamera.viewportWidth,
