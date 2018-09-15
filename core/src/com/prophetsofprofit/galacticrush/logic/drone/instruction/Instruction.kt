@@ -265,6 +265,34 @@ enum class Instruction(
                     instance.data["counter"] = "${counter - 1}"
                 }
             }
+    ),
+    IF_HOT(
+            "If Hot",
+            "Makes the next instruction only trigger when the current planet is hot.",
+            10,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, galaxy, _ ->
+                //If planet isn't hot enough, move the pointer to skip the next instruction if any
+                if (galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! < 0.75) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    ENERGIZE(
+            "Energize",
+            "Releases all stored charge to heal all drones on the current planet.",
+            2,
+            5,
+            10,
+            arrayOf(InstructionType.DRONE_MODIFICATION),
+            mainAction = { drone, galaxy, _ ->
+                val charge = drone.persistentData["charge"]?.toInt() ?: 0
+                //TODO: does below line work?
+                galaxy.getPlanetWithId(drone.locationId)!!.drones.forEach { it.takeDamage(-charge * 3, galaxy) }
+                drone.persistentData["charge"] = "0"
+            }
     );
 
     override fun toString(): String = this.displayName
