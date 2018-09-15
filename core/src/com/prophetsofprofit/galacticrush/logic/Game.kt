@@ -9,7 +9,6 @@ import com.prophetsofprofit.galacticrush.logic.change.Change
 import com.prophetsofprofit.galacticrush.logic.change.PlayerChange
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
-import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionType
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
@@ -73,7 +72,6 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
     fun collectChange(change: Change) {
-        println("collected a change maybe; $change")
         //Handle the draft
         if (this.phase == GamePhase.DRAFT_PHASE) {
             change as PlayerChange

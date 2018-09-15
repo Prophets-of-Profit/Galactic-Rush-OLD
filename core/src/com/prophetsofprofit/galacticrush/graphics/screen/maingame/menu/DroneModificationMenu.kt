@@ -37,14 +37,22 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
 
         //The table that displays the drone's instructions
         //TODO: take another look at scrolling
-        val droneInstructionsQueue = ScrollPane(DroneQueueDisplay(50, instructionsCopy))
+        val droneInstructionsQueue = ScrollPane(DroneQueueDisplay(50, instructionsCopy) { instructionInstance ->
+            instructionsCopy.remove(instructionInstance)
+            gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! + instructionInstance.baseInstruction.cost
+            spentMoney -= instructionInstance.baseInstruction.cost
+        })
 
         //The table that displays the user's owned instructions
         val ownedInstructionsPanel = ScrollPane(InstructionInventoryDisplay(5, gameScreen) { instruction ->
             val instructionPopup = InstructionCardPopup(gameScreen, instruction) {
-                instructionsCopy.add(InstructionInstance(instruction))
-                (droneInstructionsQueue.actor as DroneQueueDisplay).update()
-                droneInstructionsQueue.scrollTo(droneInstructionsQueue.actor.width - droneInstructionsQueue.width, 0f, droneInstructionsQueue.width, droneInstructionsQueue.height)
+                if (gameScreen.mainGame.money[gameScreen.player.id]!! >= instruction.cost) {
+                    gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - instruction.cost
+                    spentMoney += instruction.cost
+                    instructionsCopy.add(InstructionInstance(instruction))
+                    (droneInstructionsQueue.actor as DroneQueueDisplay).update()
+                    droneInstructionsQueue.scrollTo(droneInstructionsQueue.actor.width - droneInstructionsQueue.width, 0f, droneInstructionsQueue.width, droneInstructionsQueue.height)
+                }
             }
             gameScreen.uiContainer.addActor(instructionPopup)
         })
@@ -87,6 +95,7 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                     }
                     instructionsCopy.clear()
                     disappear(Direction.POP, 1f)
+                    spentMoney = 0
                 }
                 return false
             }

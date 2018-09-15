@@ -12,7 +12,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInst
 /**
  * Displays the instructions in a line where each instruction has a width corresponding to its memory
  */
-class DroneQueueDisplay(var length: Int, var instructions: MutableList<InstructionInstance>) : Table() {
+class DroneQueueDisplay(var length: Int, var instructions: MutableList<InstructionInstance>, val action: (instructionInstance: InstructionInstance) -> Unit) : Table() {
 
     init {
         this.update()
@@ -29,7 +29,7 @@ class DroneQueueDisplay(var length: Int, var instructions: MutableList<Instructi
             this.add(Button(TextureRegionDrawable(TextureRegion(instructionTextures[instructionInstance.baseInstruction]))).also {
                 it.addListener(object : ChangeListener() {
                     override fun changed(event: ChangeEvent?, actor: Actor?) {
-                        instructions.remove(instructionInstance)
+                        action(instructionInstance)
                         update()
                     }
                 })
