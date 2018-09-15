@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
+import com.prophetsofprofit.galacticrush.droneCost
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.Panel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
@@ -91,7 +92,7 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                     //Set the text of the button
                     it.setText(if (containsProgrammingFacility) (if (gameScreen.programming) "Submit Changes" else "Modify a Drone") else "Buy a Programming Facility")
                     //Disables the button if there is not enough money
-                    it.isDisabled = !containsProgrammingFacility && gameScreen.mainGame.money[gameScreen.player.id]!! < 0 //TODO: instead of check for less than 0, check for less than cost of a programming facility
+                    it.isDisabled = !containsProgrammingFacility && gameScreen.mainGame.money[gameScreen.player.id]!! < Facility.PROGRAMMING.cost
                     return false
                 }
             })
@@ -101,9 +102,10 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                     if (containsProgrammingFacility) {
                         gameScreen.programming = (gameScreen.selectedDroneId != null && !gameScreen.programming)
                         return
+                    } else {
+                        gameScreen.selectedPlanet?.base?.addFacility(Facility.PROGRAMMING)
+                        gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - Facility.PROGRAMMING.cost
                     }
-                    gameScreen.selectedPlanet?.base?.addFacility(Facility.PROGRAMMING)
-                    //TODO: subtract cost of programming facility from player money
                 }
             })
         }
@@ -122,7 +124,7 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                     containsConstructionFacility = gameScreen.selectedPlanet?.base?.facilityHealths?.containsKey(Facility.CONSTRUCTION) == true
                     it.setText(if (containsConstructionFacility) "Create Drone" else "Buy a Construction Facility")
                     val currentMoney = gameScreen.mainGame.money[gameScreen.player.id]!!
-                    it.isDisabled = (containsConstructionFacility && currentMoney < 0) || (!containsConstructionFacility && currentMoney < 0) //TODO: replace 0 with actual values
+                    it.isDisabled = (containsConstructionFacility && currentMoney < droneCost) || (!containsConstructionFacility && currentMoney < Facility.CONSTRUCTION.cost)
                     return false
                 }
             })
@@ -135,10 +137,10 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                         gameScreen.player.currentChanges.changedDrones.add(newDrone)
                         gameScreen.programming = gameScreen.selectedDroneId != null
                         gameScreen.selectedDroneId = newDrone.id
-                        //TODO: subtract cost of new drone from player money
+                        gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - droneCost
                     } else {
                         gameScreen.selectedPlanet?.base?.addFacility(Facility.CONSTRUCTION)
-                        //TODO: subtract cost of construction facility from player money
+                        gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - Facility.CONSTRUCTION.cost
                     }
                 }
             })
