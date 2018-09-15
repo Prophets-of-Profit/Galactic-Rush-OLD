@@ -39,6 +39,8 @@ class GameScreen(game: Main, val player: Player) : GalacticRushScreen(game, Arra
      */
     init {
         this.uiContainer.addActor(PlanetHoverDisplay(this))
+        this.uiContainer.addActor(GeneralInformationPanel(this))
+        this.uiContainer.addActor(SubmitButton(this))
     }
 
     /**
