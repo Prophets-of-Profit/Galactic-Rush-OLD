@@ -1,5 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic
 
+import com.prophetsofprofit.galacticrush.baseCost
+import com.prophetsofprofit.galacticrush.droneCost
 import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
@@ -44,7 +46,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     //The players who need to submit their changes for the drones to commence
     val waitingOn = this.players.toMutableList()
     //How much money each player has; maps id to money
-    val money = this.players.map { it to 0 }.toMap().toMutableMap()
+    val money = this.players.map { it to 5000 }.toMap().toMutableMap()
     //The list of things that happen after each drone turn
     var droneTurnChanges = mutableListOf<Change>()
     //Which instruction each player has; maps id to instructions
@@ -70,6 +72,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
     fun collectChange(change: Change) {
+        //Handle the draft
         if (this.phase == GamePhase.DRAFT_PHASE) {
             change as PlayerChange
             if (!this.waitingOn.contains(change.ownerId) || change.gainedInstructions.size != 1 || !this.currentDraft[change.ownerId]!!.containsAll(change.gainedInstructions)) {
@@ -96,15 +99,31 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
                 }
                 this.waitingOn.addAll(this.players)
             }
+        //Handle the game phase
         } else if (this.phase == GamePhase.PLAYER_FREE_PHASE) {
             change as PlayerChange
+            //Return if the player is not being waited on
             if (!this.waitingOn.contains(change.ownerId)) {
                 return
             }
-            //TODO: verify change integrity
+            //Calculate total change cost
+            val changeCost =
+                change.changedDrones.map { changedDrone ->
+                    //If the drone is new add it and all its instructions' costs
+                    if (!this.drones.any { it.id == changedDrone.id }) droneCost + changedDrone.instructions.sumBy { it.baseInstruction.cost }
+                    else changedDrone.instructions.minus(this.drones.first { it.id == changedDrone.id }.instructions).sumBy { it.baseInstruction.cost }}.sum()
+                 + change.changedBases.map { changedBase ->
+                    if (!this.bases.any { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }) baseCost + changedBase.facilityHealths.keys.sumBy { it.cost }
+                    else changedBase.facilityHealths.keys.minus(this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys).sumBy { it.cost }
+                }.sum()
+            //Return if the change is invalid
+            if (changeCost > this.money[change.ownerId]!!) {
+                return
+            }
+            this.money[change.ownerId] = this.money[change.ownerId]!! -  changeCost
             //Add all the changes into the game
             for (changedDrone in change.changedDrones) {
-                this.drones.filter { it.ownerId == changedDrone.ownerId && it.creationTime == changedDrone.creationTime }.forEach { this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it) }
+                this.drones.filter { it.id == changedDrone.id }.forEach { this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it) }
                 this.galaxy.getPlanetWithId(changedDrone.locationId)!!.drones.add(changedDrone)
             }
             //TODO apply changes to instructions

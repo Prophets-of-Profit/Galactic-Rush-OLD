@@ -16,7 +16,7 @@ class PlayerChange(val ownerId: Int) : Change() {
     val gainedInstructions = mutableListOf<Instruction>()
 
     override fun toString(): String {
-        return "CHANGE:\nOwner: ${this.ownerId}\nInstructions: ${this.gainedInstructions}\nPlanets: ${this.changedPlanets}\nDrones: ${this.changedDrones}\nBases: ${this.changedBases}"
+        return "CHANGE:\nOwner: ${this.ownerId}\nInstructions: ${this.gainedInstructions}\n"
     }
 
 }

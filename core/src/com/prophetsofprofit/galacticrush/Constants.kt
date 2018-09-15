@@ -68,6 +68,15 @@ val baseDroneImage = Texture("image/drone/base.png")
 val PLAYER_ONE_COLOR = Color.RED
 val PLAYER_TWO_COLOR = Color.BLUE
 
+//How much it costs to buy a drone
+val droneCost = 500
+//How much it costs to buy a base
+val baseCost = 1000
+//How much it costs to buy a programming facility
+val programmingFacilityCost = 500
+//How much it costs to buy a construction facility
+val constructionFacilityCost = 500
+
 //A list of default drone names; current default names are names of Roman Emperors (super edgy)
 val defaultDroneNames = arrayOf(
         "Tiberius",
