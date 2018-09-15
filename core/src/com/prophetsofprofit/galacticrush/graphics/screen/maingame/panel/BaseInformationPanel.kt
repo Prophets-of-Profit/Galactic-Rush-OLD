@@ -134,7 +134,7 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                     if (containsConstructionFacility) {
                         val newDrone = Drone(gameScreen.player.id, gameScreen.selectedPlanetId!!)
                         gameScreen.mainGame.galaxy.getPlanetWithId(newDrone.locationId)!!.drones.add(newDrone)
-                        gameScreen.player.currentChanges.changedDrones.add(newDrone)
+                        gameScreen.player.currentChanges.add(newDrone)
                         gameScreen.programming = gameScreen.selectedDroneId != null
                         gameScreen.selectedDroneId = newDrone.id
                         gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - droneCost

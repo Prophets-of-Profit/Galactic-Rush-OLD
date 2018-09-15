@@ -17,6 +17,36 @@ open class Change {
     val changedBases = mutableListOf<Base>()
 
     /**
+     * Adds a planet to the list of changed planets
+     */
+    fun add(planet: Planet) {
+        if (changedPlanets.contains(planet)) {
+            return
+        }
+        changedPlanets.add(planet)
+    }
+
+    /**
+     * Adds a base to the list of changed planets
+     */
+    fun add(base: Base) {
+        if (changedBases.contains(base)) {
+            return
+        }
+        changedBases.add(base)
+    }
+
+    /**
+     * Adds a planet to the list of changed planets
+     */
+    fun add(drone: Drone) {
+        if (changedDrones.contains(drone)) {
+            return
+        }
+        changedDrones.add(drone)
+    }
+
+    /**
      * Gives the change a pretty output string
      */
     override fun toString(): String {

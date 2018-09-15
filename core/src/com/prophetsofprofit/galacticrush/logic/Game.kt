@@ -9,6 +9,7 @@ import com.prophetsofprofit.galacticrush.logic.change.Change
 import com.prophetsofprofit.galacticrush.logic.change.PlayerChange
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionType
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
@@ -72,6 +73,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
      * A method that collects changes, verifies their integrity, and then applies them to the game
      */
     fun collectChange(change: Change) {
+        println("collected a change maybe; $change")
         //Handle the draft
         if (this.phase == GamePhase.DRAFT_PHASE) {
             change as PlayerChange
@@ -111,18 +113,12 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
                 change.changedDrones.map { changedDrone ->
                     //If the drone is new add it and all its instructions' costs
                     if (!this.drones.any { it.id == changedDrone.id }) droneCost + changedDrone.instructions.sumBy { it.baseInstruction.cost }
-                    else {
-                        val oldDrone = this.drones.first { it.id == changedDrone.id }
-                        changedDrone.instructions.minus(oldDrone.instructions).sumBy { it.baseInstruction.cost }
-                        - oldDrone.instructions.minus(changedDrone.instructions).sumBy { it.baseInstruction.cost }
-                    }}.sum()
+                    else changedDrone.instructions.minus(this.drones.first { it.id == changedDrone.id }.instructions).sumBy { it.baseInstruction.cost }- this.drones.first { it.id == changedDrone.id }.instructions.minus(changedDrone.instructions).sumBy { it.baseInstruction.cost }
+                    }.sum()
                  + change.changedBases.map { changedBase ->
                     if (!this.bases.any { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }) baseCost + changedBase.facilityHealths.keys.sumBy { it.cost }
-                    else {
-                        val oldBase = this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }
-                        changedBase.facilityHealths.keys.minus(oldBase.facilityHealths.keys).sumBy { it.cost }
-                        - oldBase.facilityHealths.keys.minus(changedBase.facilityHealths.keys).sumBy { it.cost }
-                    }}.sum()
+                    else changedBase.facilityHealths.keys.minus(this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys).sumBy { it.cost }- this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys.minus(changedBase.facilityHealths.keys).sumBy { it.cost }
+                    }.sum()
             //Return if the change is invalid
             if (changeCost > this.money[change.ownerId]!!) {
                 return

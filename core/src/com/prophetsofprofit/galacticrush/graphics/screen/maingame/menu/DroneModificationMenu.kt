@@ -32,6 +32,9 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
         //The field that controls the drone's name
         val nameField = TextField("", Scene2DSkin.defaultSkin)
 
+        //The amount of meney the player has spent on this screen
+        var spentMoney = 0
+
         //The table that displays the drone's instructions
         //TODO: take another look at scrolling
         val droneInstructionsQueue = ScrollPane(DroneQueueDisplay(50, instructionsCopy))
@@ -76,10 +79,11 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
                         gameScreen.selectedDrone!!.name = nameField.text
                         gameScreen.selectedDrone!!.instructions.clear()
                         gameScreen.selectedDrone!!.instructions.addAll(instructionsCopy)
-                        gameScreen.player.currentChanges.changedDrones.add(gameScreen.selectedDrone!!)
+                        gameScreen.player.currentChanges.add(gameScreen.selectedDrone!!)
                     } else {
                         editingId = null
                         gameScreen.programming = false
+                        gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! + spentMoney
                     }
                     instructionsCopy.clear()
                     disappear(Direction.POP, 1f)
