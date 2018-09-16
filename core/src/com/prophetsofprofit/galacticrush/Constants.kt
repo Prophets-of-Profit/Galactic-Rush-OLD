@@ -16,6 +16,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
+import com.prophetsofprofit.galacticrush.logic.loot.MoneyLoot
 import com.prophetsofprofit.galacticrush.logic.map.CosmicHighway
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
@@ -72,10 +73,11 @@ val PLAYER_TWO_COLOR = Color.BLUE
 val droneCost = 500
 //How much it costs to buy a base
 val baseCost = 1000
-//How much it costs to buy a programming facility
-val programmingFacilityCost = 500
-//How much it costs to buy a construction facility
-val constructionFacilityCost = 500
+
+//How much loot each planet has at minimum TODO: move to host options
+val minLoot = 5
+//How much loot each planet has at maximum TODO: move to host options
+val maxLoot = 10
 
 //A list of default drone names; current default names are names of Roman Emperors (super edgy)
 val defaultDroneNames = arrayOf(
@@ -224,6 +226,7 @@ fun registerAllClasses(kryo: Kryo) {
     kryo.register(LinkedHashMap::class.java)
     kryo.register(LinkedHashSet::class.java)
     kryo.register(LocalPlayer::class.java)
+    kryo.register(MoneyLoot::class.java)
     kryo.register(NetworkPlayer::class.java)
     kryo.register(Planet::class.java)
     kryo.register(PlayerChange::class.java)

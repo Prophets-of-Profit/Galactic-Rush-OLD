@@ -2,6 +2,7 @@ package com.prophetsofprofit.galacticrush.logic.map
 
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.loot.Loot
 
 /**
  * A class that represents a node in the graph that is the galaxy
@@ -26,5 +27,7 @@ class Planet(var x: Float,
     val drones = mutableListOf<Drone>()
     //The base that is on the planet
     var base: Base? = null
+    //The loot contained on the planet
+    val loot = mutableListOf<Loot>()
 
 }

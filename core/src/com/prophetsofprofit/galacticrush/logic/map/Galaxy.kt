@@ -6,6 +6,9 @@ import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.drone.DroneId
+import com.prophetsofprofit.galacticrush.logic.loot.selectLoot
+import com.prophetsofprofit.galacticrush.maxLoot
+import com.prophetsofprofit.galacticrush.minLoot
 import kotlin.math.*
 
 /**
@@ -56,6 +59,12 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
             } while (this.planets.any { it.base?.facilityHealths?.containsKey(Facility.HOME_BASE) == true && sqrt((it.x - planetChoice.x).pow(2) + (it.y - planetChoice.y).pow(2)) < minDistanceBetweenHomes })
             planetChoice.base = Base(playerIDs[i], planetChoice.id, arrayOf(Facility.HOME_BASE, Facility.CONSTRUCTION, Facility.PROGRAMMING))
             pickablePlanets.remove(planetChoice)
+        }
+        //Give each planet loot
+        for (planet in pickablePlanets) {
+            for (i in 0 until (minLoot + (maxLoot - minLoot) * Math.random()).toInt()) {
+                planet.loot.add(selectLoot())
+            }
         }
     }
 
