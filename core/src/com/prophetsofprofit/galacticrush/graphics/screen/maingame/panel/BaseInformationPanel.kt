@@ -23,7 +23,7 @@ import ktx.scene2d.Scene2DSkin
 class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base Information", 0f, 0.9f * gameScreen.uiCamera.viewportHeight, 0.25f * gameScreen.uiCamera.viewportWidth, 0.5f * gameScreen.uiCamera.viewportHeight, Align.topLeft) {
 
     /**
-     * Initializes the BaseInfomationPanel with all of the widgets and positionings and behaviours
+     * Initializes the BaseInformationPanel with all of the widgets and positionings and behaviours
      */
     init {
         //A label that shows the name of the selected planet's base

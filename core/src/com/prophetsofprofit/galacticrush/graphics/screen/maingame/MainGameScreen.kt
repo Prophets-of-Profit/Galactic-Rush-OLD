@@ -20,10 +20,7 @@ import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondis
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.DraftPopup
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.DroneModificationMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.BaseInformationPanel
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.DroneSelectionPanel
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.GeneralInformationPanel
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.PlanetInformationPanel
+import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.*
 import com.prophetsofprofit.galacticrush.logic.GamePhase
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
@@ -100,6 +97,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         })
         this.uiContainer.addActor(GeneralInformationPanel(this))
         this.uiContainer.addActor(BaseInformationPanel(this))
+        this.uiContainer.addActor(BasePurchasePanel(this))
         this.uiContainer.addActor(DroneSelectionPanel(this))
         this.uiContainer.addActor(DroneModificationMenu(this))
         this.uiContainer.addActor(PlanetInformationPanel(this))

@@ -127,6 +127,10 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
                 this.drones.filter { it.id == changedDrone.id }.forEach { this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it) }
                 this.galaxy.getPlanetWithId(changedDrone.locationId)!!.drones.add(changedDrone)
             }
+            for (changedPlanet in change.changedPlanets) {
+                //Only accounts for base changes right now; TODO maybe support other changes
+                this.galaxy.getPlanetWithId(changedPlanet.id)!!.base = changedPlanet.base
+            }
             //TODO apply changes to instructions
             this.waitingOn.remove(change.ownerId)
             if (this.waitingOn.isEmpty()) {
