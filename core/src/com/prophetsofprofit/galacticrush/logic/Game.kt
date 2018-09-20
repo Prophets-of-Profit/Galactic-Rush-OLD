@@ -3,7 +3,6 @@ package com.prophetsofprofit.galacticrush.logic
 import com.prophetsofprofit.galacticrush.baseCost
 import com.prophetsofprofit.galacticrush.droneCost
 import com.prophetsofprofit.galacticrush.kryo
-import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.change.Change
 import com.prophetsofprofit.galacticrush.logic.change.PlayerChange
@@ -27,16 +26,16 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     //The amount of turns that have passed since the game was created
     var turnsPlayed = 0
     //The drones that currently exist in the game; should be ordered in order of creation
-    val drones: Array<Drone>
+    val drones
         get() = this.galaxy.drones
     //The bases that currently exist in the game; ordered arbitrarily
-    val bases: Array<Base>
+    val bases
         get() = this.galaxy.bases
     //The players that are still in the game
-    val players: Array<Int>
+    val players
         get() = this.bases.filter { it.facilityHealths.containsKey(Facility.HOME_BASE) }.map { it.ownerId }.toTypedArray()
     //The game's current phase
-    var phase: GamePhase = GamePhase.DRAFT_PHASE
+    var phase = GamePhase.DRAFT_PHASE
         set(value) {
             field = value
             this.hasBeenUpdated = true
