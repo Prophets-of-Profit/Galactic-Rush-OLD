@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.drone.instruction
 
 import com.prophetsofprofit.galacticrush.logic.base.Base
+import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.PlanetAttribute
@@ -169,7 +170,7 @@ enum class Instruction(
             mainAction = { drone, galaxy, _ ->
                 val dronePlanet = galaxy.getPlanetWithId(drone.locationId)!!
                 if (dronePlanet.base == null) {
-                    dronePlanet.base = Base(drone.ownerId, drone.locationId, arrayOf())
+                    dronePlanet.base = Base(drone.ownerId, drone.locationId, arrayOf(Facility.BASE))
                 }
             }
     ),

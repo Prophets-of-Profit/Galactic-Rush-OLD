@@ -149,18 +149,28 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         if (this.phase != GamePhase.DRONE_PHASE) {
             return true
         }
-        val changedDrones = mutableListOf<Drone>()
-        val changedPlanets = mutableListOf<Planet>()
+        val changedDrones = mutableSetOf<Drone>()
+        val changedPlanets = mutableSetOf<Planet>()
         //If this is the first doDroneTurn call for this turn, start the cycle for each drone
         if (this.droneTurnChanges.isEmpty()) {
             this.drones.forEach { it.startCycle(this.galaxy) }
         }
         //Complete the actions of all the drones who can do actions in the queue
-        this.drones.filterNot { it.queueFinished }.forEach { it.mainAction(this.galaxy); changedDrones.add(kryo.copy(it)) }
+        this.drones.filterNot { it.queueFinished }.forEach {
+            it.mainAction(this.galaxy)
+            changedDrones.add(it)
+            changedPlanets.add(this.galaxy.getPlanetWithId(it.locationId)!!)
+        }
         //Removes all of the destroyed drones
-        this.drones.filter { it.isDestroyed }.forEach { this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it) }
+        this.drones.filter { it.isDestroyed }.forEach {
+            this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it)
+            changedDrones.add(it)
+        }
         //Remove all of the destroyed facilities and bases
-        this.bases.filter { it.health <= 0 || it.facilityHealths.isEmpty() }.forEach { galaxy.getPlanetWithId(it.locationId)!!.base = null }
+        this.bases.filter { it.health <= 0 || it.facilityHealths.isEmpty() }.forEach {
+            this.galaxy.getPlanetWithId(it.locationId)!!.base = null
+            changedPlanets.add(this.galaxy.getPlanetWithId(it.locationId)!!)
+        }
         //If all the drones are now finished, wait for players and reset drones
         val isDone = this.drones.all { it.queueFinished }
         if (isDone) {
@@ -171,7 +181,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
             this.waitingOn.addAll(this.players)
             this.phase = GamePhase.DRAFT_PHASE
         }
-        this.droneTurnChanges.add(Change().also { it.changedDrones.addAll(changedDrones); it.changedPlanets.addAll(changedPlanets) })
+        this.droneTurnChanges.add(Change().also { it.changedDrones.addAll(kryo.copy(changedDrones)); it.changedPlanets.addAll(kryo.copy(changedPlanets)) })
         return isDone
     }
 
