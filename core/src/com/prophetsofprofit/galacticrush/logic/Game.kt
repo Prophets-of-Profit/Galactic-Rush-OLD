@@ -99,7 +99,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
                 }
                 this.waitingOn.addAll(this.players)
             }
-        //Handle the game phase
+            //Handle the game phase
         } else if (this.phase == GamePhase.PLAYER_FREE_PHASE) {
             change as PlayerChange
             //Return if the player is not being waited on
@@ -107,29 +107,31 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
                 return
             }
             //Calculate total change cost
-            val changeCost =
-                change.changedDrones.map { changedDrone ->
-                    //If the drone is new add it and all its instructions' costs
-                    if (!this.drones.any { it.id == changedDrone.id }) droneCost + changedDrone.instructions.sumBy { it.baseInstruction.cost }
-                    else changedDrone.instructions.minus(this.drones.first { it.id == changedDrone.id }.instructions).sumBy { it.baseInstruction.cost }- this.drones.first { it.id == changedDrone.id }.instructions.minus(changedDrone.instructions).sumBy { it.baseInstruction.cost }
-                    }.sum()
-                 + change.changedBases.map { changedBase ->
-                    if (!this.bases.any { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }) baseCost + changedBase.facilityHealths.keys.sumBy { it.cost }
-                    else changedBase.facilityHealths.keys.minus(this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys).sumBy { it.cost }- this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys.minus(changedBase.facilityHealths.keys).sumBy { it.cost }
-                    }.sum()
+            val changeCost = change.changedDrones.map { changedDrone ->
+                //If the drone is new add it and all its instructions' costs
+                if (!this.drones.any { it.id == changedDrone.id }) droneCost + changedDrone.instructions.sumBy { it.baseInstruction.cost }
+                else changedDrone.instructions.minus(this.drones.first { it.id == changedDrone.id }.instructions).sumBy { it.baseInstruction.cost } - this.drones.first { it.id == changedDrone.id }.instructions.minus(changedDrone.instructions).sumBy { it.baseInstruction.cost }
+            }.sum() + change.changedBases.map { changedBase ->
+                if (!this.bases.any { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }) baseCost + changedBase.facilityHealths.keys.sumBy { it.cost }
+                else changedBase.facilityHealths.keys.minus(this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys).sumBy { it.cost } - this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys.minus(changedBase.facilityHealths.keys).sumBy { it.cost }
+            }.sum()
             //Return if the change is invalid
             if (changeCost > this.money[change.ownerId]!!) {
                 return
             }
-            this.money[change.ownerId] = this.money[change.ownerId]!! -  changeCost
+            this.money[change.ownerId] = this.money[change.ownerId]!! - changeCost
             //Add all the changes into the game
             for (changedDrone in change.changedDrones) {
                 this.drones.filter { it.id == changedDrone.id }.forEach { this.galaxy.getPlanetWithId(it.locationId)!!.drones.remove(it) }
                 this.galaxy.getPlanetWithId(changedDrone.locationId)!!.drones.add(changedDrone)
             }
             for (changedPlanet in change.changedPlanets) {
-                //Only accounts for base changes right now; TODO maybe support other changes
+                //TODO Only accounts for base changes right now; support other changes
                 this.galaxy.getPlanetWithId(changedPlanet.id)!!.base = changedPlanet.base
+            }
+            for (changedBase in change.changedBases) {
+                //TODO: costs for base changes aren't working
+                this.galaxy.getPlanetWithId(changedBase.locationId)!!.base = changedBase
             }
             //TODO apply changes to instructions
             this.waitingOn.remove(change.ownerId)

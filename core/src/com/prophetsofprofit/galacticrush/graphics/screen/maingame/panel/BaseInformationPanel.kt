@@ -15,6 +15,7 @@ import com.prophetsofprofit.galacticrush.graphics.Panel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
+import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -105,6 +106,7 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                     } else {
                         gameScreen.selectedPlanet?.base?.addFacility(Facility.PROGRAMMING)
                         gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - Facility.PROGRAMMING.cost
+                        gameScreen.player.currentChanges.changedBases.add(gameScreen.selectedPlanet!!.base!!)
                     }
                 }
             })
@@ -135,12 +137,16 @@ class BaseInformationPanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base
                         val newDrone = Drone(gameScreen.player.id, gameScreen.selectedPlanetId!!)
                         gameScreen.mainGame.galaxy.getPlanetWithId(newDrone.locationId)!!.drones.add(newDrone)
                         gameScreen.player.currentChanges.add(newDrone)
+                        newDrone.addInstruction(Instruction.SELECT_HOTTEST)
+                        newDrone.addInstruction(Instruction.MOVE_SELECTED)
+                        newDrone.addInstruction(Instruction.CONSTRUCT_BASE)
                         gameScreen.programming = gameScreen.selectedDroneId != null
                         gameScreen.selectedDroneId = newDrone.id
                         gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - droneCost
                     } else {
-                        gameScreen.selectedPlanet?.base?.addFacility(Facility.CONSTRUCTION)
+                        gameScreen.selectedPlanet!!.base!!.addFacility(Facility.CONSTRUCTION)
                         gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - Facility.CONSTRUCTION.cost
+                        gameScreen.player.currentChanges.changedBases.add(gameScreen.selectedPlanet!!.base!!)
                     }
                 }
             })
