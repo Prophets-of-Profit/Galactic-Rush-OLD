@@ -69,6 +69,8 @@ val baseDroneImage = Texture("image/drone/base.png")
 val PLAYER_ONE_COLOR = Color.RED
 val PLAYER_TWO_COLOR = Color.BLUE
 
+//How much money each player starts with
+val startingMoney = 5000
 //How much it costs to buy a drone
 val droneCost = 500
 //How much it costs to buy a base

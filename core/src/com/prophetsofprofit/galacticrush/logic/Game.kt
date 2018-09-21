@@ -11,6 +11,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionType
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.Planet
+import com.prophetsofprofit.galacticrush.startingMoney
 
 /**
  * The main game object
@@ -45,7 +46,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     //The players who need to submit their changes for the drones to commence
     val waitingOn = this.players.toMutableList()
     //How much money each player has; maps id to money
-    val money = this.players.map { it to 5000 }.toMap().toMutableMap()
+    val money = this.players.map { it to startingMoney }.toMap().toMutableMap()
     //The list of things that happen after each drone turn
     var droneTurnChanges = mutableListOf<Change>()
     //Which instruction each player has; maps id to instructions
