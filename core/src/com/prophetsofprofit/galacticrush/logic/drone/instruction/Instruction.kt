@@ -304,6 +304,43 @@ enum class Instruction(
                 !!.leastBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.SOLIDITY]!! })
             }
     ),
+    REVERSE_PLANET_QUEUE(
+            "Reverse Planet Queue",
+            "Reverses the order in which planets are prioritized for selection.",
+            3,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, _, _ ->
+                drone.selectablePlanetIds!!.reverse()
+            }
+    ),
+    REVERSE_DRONE_QUEUE(
+            "Reverse Drone Queue",
+            "Reverses the order in which drones are prioritized for selection.",
+            3,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, _, _ ->
+                drone.selectableDroneIds!!.reverse()
+            }
+    ),
+    REVERSE_SELECTION_QUEUES(
+            "Reverse Selection Queues",
+            "Reverses the orders in which drones and planets are prioritized for selection.",
+            2,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, _, _ ->
+                drone.selectableDroneIds!!.reverse()
+                drone.selectablePlanetIds!!.reverse()
+            }
+    ),
     SELECT_HOTTEST(
             "Select Hottest",
             "Restricts the drone's planet selection queue to the hottest available planets.",
