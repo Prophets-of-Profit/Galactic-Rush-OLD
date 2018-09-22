@@ -20,7 +20,7 @@ typealias DroneAction = (Drone, Galaxy, InstructionInstance) -> Unit
 enum class Instruction(
         val displayName: String,
         val displayDescription: String,
-        val value: Int,
+        val occurrenceAmount: Int,
         val cost: Int,
         val memorySize: Int,
         val health: Int,
@@ -95,6 +95,19 @@ enum class Instruction(
             mainAction = { drone, galaxy, _ ->
                 drone.selectableDroneIds = mutableListOf(drone.selectableDroneIds
                 !!.leastBy { galaxy.getDroneWithId(it)!!.attack.toDouble() })
+            }
+    ),
+    SELECT_MOST_VALUABLE(
+            "Select Most Valuable",
+            "Selects the most valuable drone on this planet",
+            20,
+            4,
+            2,
+            5,
+            arrayOf(InstructionType.DRONE_MODIFICATION),
+            mainAction = { drone, galaxy, _ ->
+                drone.selectableDroneIds = mutableListOf(drone.selectableDroneIds
+                !!.leastBy { galaxy.getDroneWithId(it)!!.instructions.sumBy { instance -> instance.baseInstruction.cost }.toDouble() })
             }
     ),
     RESTRICT_3(

@@ -52,7 +52,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
     //Which instruction each player has; maps id to instructions
     val unlockedInstructions = this.players.map { it to mutableSetOf<Instruction>() }.toMap()
     //The instructions that can still be drafted
-    val instructionPool = Instruction.values().map { instruction -> Array(instruction.value) { instruction } }.toTypedArray().flatten().toMutableList()
+    val instructionPool = Instruction.values().map { instruction -> Array(instruction.occurrenceAmount) { instruction } }.toTypedArray().flatten().toMutableList()
     //The instructions that each player is being offered right now; initial value is draft for all players
     val currentDraft = players.map { it to this.drawInstructions().toMutableList() }.toMap()
     //The number of times the draft has been called in the current draft cycle
