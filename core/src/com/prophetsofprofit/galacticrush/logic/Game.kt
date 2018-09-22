@@ -155,11 +155,11 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         val changedPlanets = mutableSetOf<Planet>()
         //If this is the first doDroneTurn call for this turn, start the cycle for each drone
         if (this.droneTurnChanges.isEmpty()) {
-            this.drones.forEach { it.startCycle(this.galaxy) }
+            this.drones.forEach { it.startCycle(this) }
         }
         //Complete the actions of all the drones who can do actions in the queue
         this.drones.filterNot { it.queueFinished }.forEach {
-            it.mainAction(this.galaxy)
+            it.mainAction(this)
             changedDrones.add(it)
             changedPlanets.add(this.galaxy.getPlanetWithId(it.locationId)!!)
         }
@@ -176,8 +176,8 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
         //If all the drones are now finished, wait for players and reset drones
         val isDone = this.drones.all { it.queueFinished }
         if (isDone) {
-            this.drones.forEach { it.endCycle(this.galaxy) }
-            this.drones.forEach { it.resetQueue(this.galaxy) }
+            this.drones.forEach { it.endCycle(this) }
+            this.drones.forEach { it.resetQueue(this) }
             this.turnsPlayed++
             this.currentDraft.values.forEach { it.addAll(this.drawInstructions()) }
             this.waitingOn.addAll(this.players)

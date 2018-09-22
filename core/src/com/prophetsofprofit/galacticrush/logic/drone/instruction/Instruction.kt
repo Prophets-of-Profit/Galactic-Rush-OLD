@@ -1,13 +1,13 @@
 package com.prophetsofprofit.galacticrush.logic.drone.instruction
 
+import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.base.Base
 import com.prophetsofprofit.galacticrush.logic.base.Facility
 import com.prophetsofprofit.galacticrush.logic.drone.Drone
-import com.prophetsofprofit.galacticrush.logic.map.Galaxy
 import com.prophetsofprofit.galacticrush.logic.map.PlanetAttribute
 
 //Utility alias for calling (Drone, Galaxy) -> Unit a DroneAction
-typealias DroneAction = (Drone, Galaxy, InstructionInstance) -> Unit
+typealias DroneAction = (Drone, Game, InstructionInstance) -> Unit
 
 /**
  * A class that represents an instruction which is something a drone can do
@@ -32,6 +32,21 @@ enum class Instruction(
         val endCycleAction: DroneAction = { _, _, _ -> }
 ) {
     NONE("None", "THIS IS INVALID", 0, 0, 100000, 100000, arrayOf()),
+    IF_HOT(
+            "If Hot",
+            "Makes the next instruction only trigger when the current planet is hot.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
+                //If planet isn't hot enough, move the pointer to skip the next instruction if any
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! < 0.75) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
     ORDER_HOTTEST(
             "Order Hottest",
             "Orders the drone's planet selection queue by the hottest available planets.",
@@ -40,9 +55,9 @@ enum class Instruction(
             1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
-                !!.greatestBy { galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! })
+                !!.greatestBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! })
             }
     ),
     ORDER_COLDEST(
@@ -53,9 +68,9 @@ enum class Instruction(
             1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
-                !!.leastBy { galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! })
+                !!.leastBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! })
             }
     ),
     SELECT_HOTTEST(
@@ -66,9 +81,9 @@ enum class Instruction(
             1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
-                !!.maxBy { galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
+                !!.maxBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
             }
     ),
     SELECT_COLDEST(
@@ -79,9 +94,9 @@ enum class Instruction(
             1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
-                !!.minBy { galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
+                !!.minBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
             }
     ),
     SELECT_WEAKEST(
@@ -92,9 +107,9 @@ enum class Instruction(
             1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, game, _ ->
                 drone.selectableDroneIds = mutableListOf(drone.selectableDroneIds
-                !!.leastBy { galaxy.getDroneWithId(it)!!.attack.toDouble() })
+                !!.leastBy { game.galaxy.getDroneWithId(it)!!.attack.toDouble() })
             }
     ),
     SELECT_MOST_VALUABLE(
@@ -105,9 +120,9 @@ enum class Instruction(
             2,
             5,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, game, _ ->
                 drone.selectableDroneIds = mutableListOf(drone.selectableDroneIds
-                !!.leastBy { galaxy.getDroneWithId(it)!!.instructions.sumBy { instance -> instance.baseInstruction.cost }.toDouble() })
+                !!.leastBy { game.galaxy.getDroneWithId(it)!!.instructions.sumBy { instance -> instance.baseInstruction.cost }.toDouble() })
             }
     ),
     RESTRICT_3(
@@ -135,8 +150,8 @@ enum class Instruction(
             2,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
-                drone.resetSelectables(galaxy)
+            mainAction = { drone, game, _ ->
+                drone.resetSelectables(game)
             }
     ),
     MOVE_SELECTED(
@@ -147,9 +162,9 @@ enum class Instruction(
             2,
             5,
             arrayOf(InstructionType.MOVEMENT),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, game, _ ->
                 if (drone.selectablePlanetIds!!.isNotEmpty()) {
-                    drone.moveToPlanet(drone.selectablePlanetIds!!.first(), galaxy)
+                    drone.moveToPlanet(drone.selectablePlanetIds!!.first(), game)
                 }
             }
     ),
@@ -180,8 +195,8 @@ enum class Instruction(
             5,
             5,
             arrayOf(InstructionType.PLANET_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
-                val dronePlanet = galaxy.getPlanetWithId(drone.locationId)!!
+            mainAction = { drone, game, _ ->
+                val dronePlanet = game.galaxy.getPlanetWithId(drone.locationId)!!
                 if (dronePlanet.base == null) {
                     dronePlanet.base = Base(drone.ownerId, drone.locationId, arrayOf(Facility.BASE))
                 }
@@ -195,8 +210,8 @@ enum class Instruction(
             8,
             20,
             arrayOf(InstructionType.VIRUS),
-            mainAction = { drone, galaxy, instance ->
-                val selectedDrone = if (drone.selectableDroneIds!!.isNotEmpty()) galaxy.getDroneWithId(drone.selectableDroneIds!!.first()) else null
+            mainAction = { drone, game, instance ->
+                val selectedDrone = if (drone.selectableDroneIds!!.isNotEmpty()) game.galaxy.getDroneWithId(drone.selectableDroneIds!!.first()) else null
                 if (selectedDrone != null && selectedDrone.memoryAvailable >= instance.baseInstruction.memorySize) {
                     selectedDrone.addInstruction(instance.baseInstruction)
                 }
@@ -210,8 +225,8 @@ enum class Instruction(
             5,
             5,
             arrayOf(InstructionType.COMBAT),
-            mainAction = { drone, galaxy, _ ->
-                galaxy.getDroneWithId(if (drone.selectableDroneIds!!.isNotEmpty()) drone.selectableDroneIds!!.first() else null)?.takeDamage(drone.attack, galaxy)
+            mainAction = { drone, game, _ ->
+                game.galaxy.getDroneWithId(if (drone.selectableDroneIds!!.isNotEmpty()) drone.selectableDroneIds!!.first() else null)?.takeDamage(drone.attack, game)
             }
     ),
     ATTACK_BASE(
@@ -222,8 +237,8 @@ enum class Instruction(
             5,
             5,
             arrayOf(InstructionType.COMBAT),
-            mainAction = { drone, galaxy, _ ->
-                galaxy.getPlanetWithId(drone.locationId)!!.base?.takeDamage(drone.attack)
+            mainAction = { drone, game, _ ->
+                game.galaxy.getPlanetWithId(drone.locationId)!!.base?.takeDamage(drone.attack)
             }
     ),
     RELEASE_CFCS(
@@ -234,8 +249,8 @@ enum class Instruction(
             8,
             5,
             arrayOf(InstructionType.PLANET_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
-                val currentPlanet = galaxy.getPlanetWithId(drone.locationId)!!
+            mainAction = { drone, game, _ ->
+                val currentPlanet = game.galaxy.getPlanetWithId(drone.locationId)!!
                 currentPlanet.attributes[PlanetAttribute.TEMPERATURE] = maxOf(0.0, currentPlanet.attributes[PlanetAttribute.TEMPERATURE]!! - 0.05)
                 currentPlanet.attributes[PlanetAttribute.ATMOSPHERE] = maxOf(0.0, currentPlanet.attributes[PlanetAttribute.ATMOSPHERE]!! - 0.05)
             }
@@ -263,13 +278,13 @@ enum class Instruction(
             8,
             10,
             arrayOf(InstructionType.COMBAT, InstructionType.PLANET_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, game, _ ->
                 if (drone.persistentData["charge"] == null) {
                     drone.persistentData["charge"] = "0"
                 }
                 val charge = drone.persistentData["charge"]!!.toInt()
-                galaxy.getPlanetWithId(drone.locationId)!!.drones.forEach { it.takeDamage(charge * 3, galaxy) }
-                galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE] = minOf(galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! + charge * 0.05, 1.0)
+                game.galaxy.getPlanetWithId(drone.locationId)!!.drones.forEach { it.takeDamage(charge * 3, game) }
+                game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE] = minOf(game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! + charge * 0.05, 1.0)
                 drone.persistentData["charge"] = "0"
             }
     ),
@@ -298,21 +313,6 @@ enum class Instruction(
                 }
             }
     ),
-    IF_HOT(
-            "If Hot",
-            "Makes the next instruction only trigger when the current planet is hot.",
-            10,
-            50,
-            3,
-            3,
-            arrayOf(InstructionType.ORDER),
-            mainAction = { drone, galaxy, _ ->
-                //If planet isn't hot enough, move the pointer to skip the next instruction if any
-                if (galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! < 0.75) {
-                    drone.advancePointer(1)
-                }
-            }
-    ),
     ENERGIZE(
             "Energize",
             "Releases all stored charge to heal all drones on the current planet.",
@@ -321,11 +321,23 @@ enum class Instruction(
             5,
             10,
             arrayOf(InstructionType.DRONE_MODIFICATION),
-            mainAction = { drone, galaxy, _ ->
+            mainAction = { drone, game, _ ->
                 val charge = drone.persistentData["charge"]?.toInt() ?: 0
                 //TODO: does below line work?
-                galaxy.getPlanetWithId(drone.locationId)!!.drones.forEach { it.takeDamage(-charge * 3, galaxy) }
+                game.galaxy.getPlanetWithId(drone.locationId)!!.drones.forEach { it.takeDamage(-charge * 3, game) }
                 drone.persistentData["charge"] = "0"
+            }
+    ),
+    COLLECT(
+            "Collect",
+            "Pops the first loot item from the planet",
+            5,
+            100,
+            5,
+            5,
+            arrayOf(InstructionType.MINING),
+            mainAction = { drone, game, _ ->
+                game.galaxy.getPlanetWithId(drone.locationId)!!.loot.firstOrNull()?.getDiscovered(drone.ownerId, drone, game)
             }
     );
 

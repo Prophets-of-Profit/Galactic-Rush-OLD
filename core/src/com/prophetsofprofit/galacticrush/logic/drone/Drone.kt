@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.logic.drone
 
 import com.prophetsofprofit.galacticrush.defaultDroneNames
+import com.prophetsofprofit.galacticrush.logic.Game
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.Instruction
 import com.prophetsofprofit.galacticrush.logic.drone.instruction.InstructionInstance
 import com.prophetsofprofit.galacticrush.logic.map.Galaxy
@@ -70,44 +71,44 @@ class Drone(val ownerId: Int, var locationId: Int) {
     /**
      * Removes the first instance of the given instruction
      */
-    fun removeInstruction(instruction: InstructionInstance, galaxy: Galaxy) {
-        instruction.baseInstruction.removeAction(this, galaxy, instruction)
+    fun removeInstruction(instruction: InstructionInstance, game: Game) {
+        instruction.baseInstruction.removeAction(this, game, instruction)
         this.instructions.remove(instruction)
     }
 
     /**
      * Removes the instruction at the given index
      */
-    fun removeInstruction(locationIndex: Int, galaxy: Galaxy) {
-        this.instructions[locationIndex].baseInstruction.removeAction(this, galaxy, this.instructions[locationIndex])
+    fun removeInstruction(locationIndex: Int, game: Game) {
+        this.instructions[locationIndex].baseInstruction.removeAction(this, game, this.instructions[locationIndex])
         this.instructions.removeAt(locationIndex)
     }
 
     /**
      * Calls startCycle for all instructions in the queue
      */
-    fun startCycle(galaxy: Galaxy) {
-        this.resetSelectables(galaxy)
-        this.instructions.forEach { it.baseInstruction.startCycleAction(this, galaxy, it) }
+    fun startCycle(game: Game) {
+        this.resetSelectables(game)
+        this.instructions.forEach { it.baseInstruction.startCycleAction(this, game, it) }
     }
 
     /**
      * Calls mainAction for the drone's current instruction and then increments its pointer
      */
-    fun mainAction(galaxy: Galaxy) {
+    fun mainAction(game: Game) {
         if (this.instructions.isEmpty()) {
             this.queueFinished = true
             return
         }
-        this.instructions[this.pointer].baseInstruction.mainAction(this, galaxy, this.instructions[this.pointer])
+        this.instructions[this.pointer].baseInstruction.mainAction(this, game, this.instructions[this.pointer])
         this.advancePointer(1)
     }
 
     /**
      * Calls endCycle for all instructions in the queue
      */
-    fun endCycle(galaxy: Galaxy) {
-        this.instructions.forEach { it.baseInstruction.endCycleAction(this, galaxy, it) }
+    fun endCycle(game: Game) {
+        this.instructions.forEach { it.baseInstruction.endCycleAction(this, game, it) }
     }
 
     /**
@@ -124,39 +125,39 @@ class Drone(val ownerId: Int, var locationId: Int) {
     /**
      * Resets the drone's pointer for the next turn
      */
-    fun resetQueue(galaxy: Galaxy) {
+    fun resetQueue(game: Game) {
         this.pointer = 0
         this.queueFinished = false
-        this.resetSelectables(galaxy)
+        this.resetSelectables(game)
     }
 
     /**
      * Attempts to distribute damage among instructions
      */
-    fun takeDamage(damage: Int, galaxy: Galaxy) {
+    fun takeDamage(damage: Int, game: Game) {
         val damageToAll = damage / this.instructions.size
         val numToReceieveExtra = damage % this.instructions.size
         this.instructions.forEach { it.health -= damageToAll }
         this.instructions.subList(0, numToReceieveExtra).forEach { it.health-- }
-        this.instructions.filter { it.health <= 0 }.forEach { this.removeInstruction(it, galaxy) }
+        this.instructions.filter { it.health <= 0 }.forEach { this.removeInstruction(it, game) }
         this.isDestroyed = this.instructions.isEmpty()
     }
 
     /**
      * Moves the drone to the given planet
      */
-    fun moveToPlanet(id: Int, galaxy: Galaxy) {
-        galaxy.getPlanetWithId(this.locationId)!!.drones.remove(this)
+    fun moveToPlanet(id: Int, game: Game) {
+        game.galaxy.getPlanetWithId(this.locationId)!!.drones.remove(this)
         this.locationId = id
-        galaxy.getPlanetWithId(this.locationId)!!.drones.add(this)
+        game.galaxy.getPlanetWithId(this.locationId)!!.drones.add(this)
     }
 
     /**
      * Resets the possible selectable planets and drones
      */
-    fun resetSelectables(galaxy: Galaxy) {
-        this.selectableDroneIds = galaxy.getPlanetWithId(this.locationId)!!.drones.map { it.id }.toMutableList()
-        this.selectablePlanetIds = galaxy.planetsAdjacentTo(this.locationId).toMutableList()
+    fun resetSelectables(game: Game) {
+        this.selectableDroneIds = game.galaxy.getPlanetWithId(this.locationId)!!.drones.map { it.id }.toMutableList()
+        this.selectablePlanetIds = game.galaxy.planetsAdjacentTo(this.locationId).toMutableList()
     }
 
     /**
