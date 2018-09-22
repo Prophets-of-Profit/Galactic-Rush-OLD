@@ -5,11 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
-import com.prophetsofprofit.galacticrush.baseCost
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.Panel
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.logic.base.Base
+import com.prophetsofprofit.galacticrush.logic.base.Facility
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -29,14 +29,14 @@ class BasePurchasePanel(gameScreen: MainGameScreen) : Panel(gameScreen, "Base In
                 override fun act(delta: Float): Boolean {
                     if (!canBeUsed)
                         return false
-                    it.isDisabled = gameScreen.mainGame.money[gameScreen.player.id]!! < baseCost
+                    it.isDisabled = gameScreen.mainGame.money[gameScreen.player.id]!! < Facility.BASE.cost
                     return false
                 }
             })
             it.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
-                    gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - baseCost
-                    gameScreen.selectedPlanet!!.base = Base(gameScreen.player.id, gameScreen.selectedPlanetId!!, arrayOf())
+                    gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - Facility.BASE.cost
+                    gameScreen.selectedPlanet!!.base = Base(gameScreen.player.id, gameScreen.selectedPlanetId!!, arrayOf(Facility.BASE))
                     gameScreen.player.currentChanges.add(gameScreen.selectedPlanet!!)
                 }
             })

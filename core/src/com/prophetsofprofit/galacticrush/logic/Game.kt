@@ -1,6 +1,5 @@
 package com.prophetsofprofit.galacticrush.logic
 
-import com.prophetsofprofit.galacticrush.baseCost
 import com.prophetsofprofit.galacticrush.droneCost
 import com.prophetsofprofit.galacticrush.kryo
 import com.prophetsofprofit.galacticrush.logic.base.Facility
@@ -112,7 +111,7 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
                 if (!this.drones.any { it.id == changedDrone.id }) droneCost + changedDrone.instructions.sumBy { it.baseInstruction.cost }
                 else changedDrone.instructions.minus(this.drones.first { it.id == changedDrone.id }.instructions).sumBy { it.baseInstruction.cost } - this.drones.first { it.id == changedDrone.id }.instructions.minus(changedDrone.instructions).sumBy { it.baseInstruction.cost }
             }.sum() + change.changedBases.map { changedBase ->
-                if (!this.bases.any { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }) baseCost + changedBase.facilityHealths.keys.sumBy { it.cost }
+                if (!this.bases.any { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }) changedBase.facilityHealths.keys.sumBy { it.cost }
                 else changedBase.facilityHealths.keys.minus(this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys).sumBy { it.cost } - this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys.minus(changedBase.facilityHealths.keys).sumBy { it.cost }
             }.sum()
             //Return if the change is invalid

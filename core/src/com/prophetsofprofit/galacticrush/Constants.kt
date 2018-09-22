@@ -73,8 +73,6 @@ val PLAYER_TWO_COLOR = Color.BLUE
 val startingMoney = 5000
 //How much it costs to buy a drone
 val droneCost = 500
-//How much it costs to buy a base
-val baseCost = 1000
 
 //How much loot each planet has at minimum TODO: move to host options
 val minLoot = 5
