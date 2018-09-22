@@ -173,30 +173,135 @@ enum class Instruction(
                 }
             }
     ),
-    ORDER_HOTTEST(
-            "Order Hottest",
-            "Orders the drone's planet selection queue by the hottest available planets.",
+    ORDER_HIGH_MASS(
+            "Order High Mass",
+            "Orders the drone's planet selection queue by decreasing mass.",
             5,
             50,
             2,
             2,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.greatestBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.MASS]!! })
+            }
+    ),
+    ORDER_LOW_MASS(
+            "Order Low Mass",
+            "Orders the drone's planet selection queue by increasing mass.",
+            5,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.leastBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.MASS]!! })
+            }
+    ),
+
+    ORDER_HIGH_TEMPERATURE(
+            "Order High Temperature",
+            "Orders the drone's planet selection queue by decreasing temperature.",
+            5,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
                 !!.greatestBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! })
             }
     ),
-    ORDER_COLDEST(
-            "Order Coldest",
-            "Orders the drone's planet selection queue by the coldest available planets.",
+    ORDER_LOW_TEMPERATURE(
+            "Order Low Temperature",
+            "Orders the drone's planet selection queue by increasing temperature.",
             5,
             50,
             2,
             2,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
                 !!.leastBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! })
+            }
+    ),
+    ORDER_HIGH_PRESSURE(
+            "Order High Pressure",
+            "Orders the drone's planet selection queue by decreasing pressure.",
+            5,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.greatestBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.ATMOSPHERE]!! })
+            }
+    ),
+    ORDER_LOW_PRESSURE(
+            "Order Low Pressure",
+            "Orders the drone's planet selection queue by increasing pressure.",
+            5,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.leastBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.ATMOSPHERE]!! })
+            }
+    ),
+    ORDER_HIGH_HUMIDITY(
+            "Order High Humidity",
+            "Orders the drone's planet selection queue by decreasing humidity.",
+            5,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.greatestBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.WATER]!! })
+            }
+    ),
+    ORDER_LOW_HUMIDITY(
+            "Order Low Humidity",
+            "Orders the drone's planet selection queue by increasing humidity.",
+            5,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.leastBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.WATER]!! })
+            }
+    ),
+    ORDER_HIGH_SOLIDITY(
+            "Order High Solidity",
+            "Orders the drone's planet selection queue by decreasing solidity.",
+            5,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.greatestBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.SOLIDITY]!! })
+            }
+    ),
+    ORDER_LOW_SOLIDITY(
+            "Order Low Solidity",
+            "Orders the drone's planet selection queue by increasing solidity.",
+            5,
+            50,
+            2,
+            2,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.leastBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.SOLIDITY]!! })
             }
     ),
     SELECT_HOTTEST(
@@ -206,7 +311,7 @@ enum class Instruction(
             20,
             1,
             5,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
                 !!.maxBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
@@ -219,7 +324,7 @@ enum class Instruction(
             20,
             1,
             5,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
                 !!.minBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
@@ -232,7 +337,7 @@ enum class Instruction(
             20,
             1,
             3,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectableDroneIds = mutableListOf(drone.selectableDroneIds
                 !!.leastBy { game.galaxy.getDroneWithId(it)!!.attack.toDouble() })
@@ -245,7 +350,7 @@ enum class Instruction(
             20,
             1,
             3,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectableDroneIds = mutableListOf(drone.selectableDroneIds
                 !!.leastBy { game.galaxy.getDroneWithId(it)!!.instructions.sumBy { instance -> instance.baseInstruction.cost }.toDouble() })
@@ -258,7 +363,7 @@ enum class Instruction(
             50,
             2,
             2,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, _, _ ->
                 if (drone.selectableDroneIds!!.size > 3) {
                     drone.selectableDroneIds = drone.selectableDroneIds!!.slice(0 until 3).toMutableList()
@@ -275,7 +380,7 @@ enum class Instruction(
             30,
             1,
             3,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.resetSelectables(game)
             }
@@ -388,7 +493,7 @@ enum class Instruction(
             40,
             1,
             2,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, _, _ ->
                 if (drone.persistentData["charge"] == null) {
                     drone.persistentData["charge"] = "0"
@@ -446,7 +551,7 @@ enum class Instruction(
             70,
             3,
             3,
-            arrayOf(InstructionType.DRONE_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, game, _ ->
                 val charge = drone.persistentData["charge"]?.toInt() ?: 0
                 //TODO: does below line work?

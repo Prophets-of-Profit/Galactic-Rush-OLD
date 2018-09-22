@@ -10,7 +10,7 @@ enum class InstructionType {
     MOVEMENT, //The instruction handles moving the drone
     PLANET_MODIFICATION, //The instruction modifies either a planet's attributes or builds a base
     MINING, //The instruction handles mining money
-    DRONE_MODIFICATION, //The instruction modifies a drone queue or instruction
+    INSTRUCTION_MODIFICATION, //The instruction modifies a drone queue or instruction
     VIRUS, //The instruction harmfully modifies either itself or other drones
     UPGRADE, //The instruction modifies the drone's stats
     ORDER //The instruction modifies the order of instruction executions in the queue
