@@ -35,9 +35,9 @@ enum class Instruction(
     IF_HIGH_MASS(
             "If High Mass",
             "Makes the next instruction only trigger when the current planet has a high mass.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -50,9 +50,9 @@ enum class Instruction(
     IF_LOW_MASS(
             "If Low Mass",
             "Makes the next instruction only trigger when the current planet has a low mass.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -64,9 +64,9 @@ enum class Instruction(
     IF_HIGH_TEMPERATURE(
             "If High Temperature",
             "Makes the next instruction only trigger when the current planet has a high temperature.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -78,9 +78,9 @@ enum class Instruction(
     IF_LOW_TEMPERATURE(
             "If Low Temperature",
             "Makes the next instruction only trigger when the current planet has a low temperature.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -92,9 +92,9 @@ enum class Instruction(
     IF_HIGH_PRESSURE(
             "If High Pressure",
             "Makes the next instruction only trigger when the current planet has a high atmospheric pressure.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -106,9 +106,9 @@ enum class Instruction(
     IF_LOW_PRESSURE(
             "If Hot",
             "Makes the next instruction only trigger when the current planet has a low pressure.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -120,9 +120,9 @@ enum class Instruction(
     IF_HIGH_HUMIDITY(
             "If High Humidity",
             "Makes the next instruction only trigger when the current planet has a high humidity.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -134,9 +134,9 @@ enum class Instruction(
     IF_LOW_HUMIDITY(
             "If Low Humidity",
             "Makes the next instruction only trigger when the current planet has a low humidity.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -148,9 +148,9 @@ enum class Instruction(
     IF_HIGH_SOLIDITY(
             "If High Solidity",
             "Makes the next instruction only trigger when the current planet has a high solidity.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -162,9 +162,9 @@ enum class Instruction(
     IF_LOW_SOLIDITY(
             "If Low Solidity",
             "Makes the next instruction only trigger when the current planet has a low solidity.",
-            10,
-            50,
             3,
+            10,
+            1,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
@@ -176,10 +176,10 @@ enum class Instruction(
     ORDER_HOTTEST(
             "Order Hottest",
             "Orders the drone's planet selection queue by the hottest available planets.",
-            15,
             5,
-            1,
-            3,
+            50,
+            2,
+            2,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
@@ -189,10 +189,10 @@ enum class Instruction(
     ORDER_COLDEST(
             "Order Coldest",
             "Orders the drone's planet selection queue by the coldest available planets.",
-            15,
             5,
-            1,
-            3,
+            50,
+            2,
+            2,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
@@ -202,10 +202,10 @@ enum class Instruction(
     SELECT_HOTTEST(
             "Select Hottest",
             "Restricts the drone's planet selection queue to the hottest available planets.",
-            30,
-            2,
+            6,
+            20,
             1,
-            3,
+            5,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
@@ -215,10 +215,10 @@ enum class Instruction(
     SELECT_COLDEST(
             "Select Coldest",
             "Restricts the drone's planet selection queue to the coldest available planets.",
-            30,
-            2,
+            6,
+            20,
             1,
-            3,
+            5,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
@@ -228,8 +228,8 @@ enum class Instruction(
     SELECT_WEAKEST(
             "Select Weakest",
             "Selects the weakest drone by attack on the planet",
+            6,
             20,
-            2,
             1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
@@ -241,10 +241,10 @@ enum class Instruction(
     SELECT_MOST_VALUABLE(
             "Select Most Valuable",
             "Selects the most valuable drone on this planet",
+            6,
             20,
-            4,
-            2,
-            5,
+            1,
+            3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, game, _ ->
                 drone.selectableDroneIds = mutableListOf(drone.selectableDroneIds
@@ -254,10 +254,10 @@ enum class Instruction(
     RESTRICT_3(
             "Restrict 3",
             "Shortens the drone's selection queues to the first three elements",
-            10,
-            5,
-            1,
             3,
+            50,
+            2,
+            2,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, _, _ ->
                 if (drone.selectableDroneIds!!.size > 3) {
@@ -271,9 +271,9 @@ enum class Instruction(
     RESET_SELECTABLES(
             "Reset Selectables",
             "Resets all of the drone's selectable planets and drones to be back to their defaults.",
-            15,
-            5,
-            2,
+            6,
+            30,
+            1,
             3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, game, _ ->
@@ -283,8 +283,8 @@ enum class Instruction(
     MOVE_SELECTED(
             "Move Selected",
             "Moves the drone to its currently selected planet.",
-            10,
-            10,
+            6,
+            100,
             2,
             5,
             arrayOf(InstructionType.MOVEMENT),
@@ -297,10 +297,10 @@ enum class Instruction(
     LOOP_3(
             "Loop 3",
             "Repeats all previous instructions 3 times.",
-            3,
-            50,
-            3,
-            8,
+            2,
+            500,
+            5,
+            2,
             arrayOf(InstructionType.ORDER),
             startCycleAction = { _, _, instance ->
                 instance.data["counter"] = "3"
@@ -319,7 +319,7 @@ enum class Instruction(
             3,
             1000,
             5,
-            5,
+            3,
             arrayOf(InstructionType.PLANET_MODIFICATION),
             mainAction = { drone, game, _ ->
                 val dronePlanet = game.galaxy.getPlanetWithId(drone.locationId)!!
@@ -332,9 +332,9 @@ enum class Instruction(
             "Reproductive Virus",
             "A virus that adds itself to the currently selected drone.",
             2,
-            10,
-            8,
-            20,
+            50,
+            4,
+            5,
             arrayOf(InstructionType.VIRUS),
             mainAction = { drone, game, instance ->
                 val selectedDrone = if (drone.selectableDroneIds!!.isNotEmpty()) game.galaxy.getDroneWithId(drone.selectableDroneIds!!.first()) else null
@@ -346,10 +346,10 @@ enum class Instruction(
     ATTACK_SELECTED(
             "Attack Selected",
             "Attacks the currently selected drone.",
-            5,
-            50,
-            5,
-            5,
+            6,
+            100,
+            3,
+            4,
             arrayOf(InstructionType.COMBAT),
             mainAction = { drone, game, _ ->
                 game.galaxy.getDroneWithId(if (drone.selectableDroneIds!!.isNotEmpty()) drone.selectableDroneIds!!.first() else null)?.takeDamage(drone.attack, game)
@@ -358,10 +358,10 @@ enum class Instruction(
     ATTACK_BASE(
             "Attack Base",
             "Attacks a base on the current planet.",
-            5,
+            6,
             100,
-            5,
-            5,
+            3,
+            4,
             arrayOf(InstructionType.COMBAT),
             mainAction = { drone, game, _ ->
                 game.galaxy.getPlanetWithId(drone.locationId)!!.base?.takeDamage(drone.attack)
@@ -371,9 +371,9 @@ enum class Instruction(
             "Release Chlorofluorocarbons",
             "Damages current planet's atmosphere and temperature.",
             3,
-            10,
-            8,
-            5,
+            50,
+            2,
+            3,
             arrayOf(InstructionType.PLANET_MODIFICATION),
             mainAction = { drone, game, _ ->
                 val currentPlanet = game.galaxy.getPlanetWithId(drone.locationId)!!
@@ -384,10 +384,10 @@ enum class Instruction(
     CHARGE(
             "Charge",
             "Builds up a charge within the drone. Charge in and of itself is useless, but other instructions consume charge.",
-            20,
-            10,
-            5,
-            5,
+            4,
+            40,
+            1,
+            2,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, _, _ ->
                 if (drone.persistentData["charge"] == null) {
@@ -399,10 +399,10 @@ enum class Instruction(
     HEAT_DISCHARGE(
             "Discharge",
             "Discharges all stored drone charge to damage all drones on the current planet and also heat up the planet.",
-            10,
-            50,
-            8,
-            10,
+            3,
+            70,
+            3,
+            3,
             arrayOf(InstructionType.COMBAT, InstructionType.PLANET_MODIFICATION),
             mainAction = { drone, game, _ ->
                 if (drone.persistentData["charge"] == null) {
@@ -417,10 +417,10 @@ enum class Instruction(
     LOOP_CHARGE(
             "Loop Charge",
             "Discharges all stored charge once to loop as many times as charge was discharged.",
-            5,
-            250,
-            5,
-            10,
+            2,
+            700,
+            6,
+            1,
             arrayOf(InstructionType.ORDER),
             startCycleAction = { _, _, instance ->
                 instance.data["hasDischarged"] = "false"
@@ -442,10 +442,10 @@ enum class Instruction(
     ENERGIZE(
             "Energize",
             "Releases all stored charge to heal all drones on the current planet.",
-            2,
-            50,
-            5,
-            10,
+            3,
+            70,
+            3,
+            3,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, game, _ ->
                 val charge = drone.persistentData["charge"]?.toInt() ?: 0
@@ -457,9 +457,9 @@ enum class Instruction(
     COLLECT(
             "Collect",
             "Pops the first loot item from the planet",
-            5,
-            100,
-            5,
+            6,
+            150,
+            2,
             5,
             arrayOf(InstructionType.MINING),
             mainAction = { drone, game, _ ->
