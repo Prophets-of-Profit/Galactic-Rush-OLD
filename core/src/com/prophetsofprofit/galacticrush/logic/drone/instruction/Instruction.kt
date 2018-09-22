@@ -87,7 +87,7 @@ enum class Instruction(
             }
     ),
     SELECT_COLDEST(
-            "Order Coldest",
+            "Select Coldest",
             "Restricts the drone's planet selection queue to the coldest available planets.",
             30,
             2,
@@ -264,7 +264,7 @@ enum class Instruction(
             5,
             arrayOf(InstructionType.DRONE_MODIFICATION),
             mainAction = { drone, _, _ ->
-                if (drone.persistentData["charge"] != null) {
+                if (drone.persistentData["charge"] == null) {
                     drone.persistentData["charge"] = "0"
                 }
                 drone.persistentData["charge"] = "${drone.persistentData["charge"]!!.toInt() + 1}"
