@@ -6,6 +6,6 @@ package com.prophetsofprofit.galacticrush.logic.base
 enum class Facility(val label: String, val maxHealth: Int, val cost: Int) {
     HOME_BASE("Home Base", 1000, Int.MAX_VALUE),
     BASE("Additional Base", 250, 750),
-    CONSTRUCTION("Construction Facility", 50, 500),
-    PROGRAMMING("Programming Facility", 50, 500)
+    CONSTRUCTION("Construction Facility", 50, 200),
+    PROGRAMMING("Programming Facility", 50, 350)
 }

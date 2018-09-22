@@ -42,13 +42,23 @@ class Base(val ownerId: Int, val locationId: Int, facilities: Array<Facility>) {
 
     /**
      * Spreads damage to all contained facilities evenly and removes dead facilities
+     * Damage prioritizes facilities that aren't BASE or HOME_BASE
+     * BASE and HOME_BASE should only get damaged after all the other facilities are destroyed
      */
     fun takeDamage(damage: Int) {
-        val damageToAll = damage / this.facilityHealths.size
-        val numToReceieveExtra = damage % this.facilityHealths.size
-        this.facilityHealths.forEach { it.value - damageToAll }
-        this.facilityHealths.keys.toMutableList().subList(0, numToReceieveExtra).forEach { this.facilityHealths[it] = this.facilityHealths[it]!! - 1 }
-        this.facilityHealths.filter { it.value <= 0 }.forEach { facility, _ -> this.facilityHealths.remove(facility) }
+        val extraFacilities = (this.facilityHealths.keys - setOf(Facility.HOME_BASE, Facility.BASE)).toList()
+        val extraFacilitiesHealth = extraFacilities.sumBy { this.facilityHealths[it]!! }
+        if (damage > extraFacilitiesHealth) {
+            extraFacilities.forEach { this.facilityHealths.remove(it) }
+            this.facilityHealths.forEach { facility, health -> this.facilityHealths[facility] = health - damage + extraFacilitiesHealth }
+        } else {
+            extraFacilities.forEach { this.facilityHealths[it] = this.facilityHealths[it]!! - damage / extraFacilities.size }
+            for (i in 0..damage % extraFacilities.size) {
+                this.facilityHealths[extraFacilities[i]] = this.facilityHealths[extraFacilities[i]]!! - 1
+            }
+        }
+        this.facilityHealths.filter { it.value <= 0 }.keys.forEach { this.facilityHealths.remove(it) }
+
     }
 
     /**
