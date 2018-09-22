@@ -115,7 +115,8 @@ class Game(val initialPlayers: Array<Int>, val galaxy: Galaxy) {
                 else changedBase.facilityHealths.keys.minus(this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys).sumBy { it.cost } - this.bases.first { it.locationId == changedBase.locationId && it.ownerId == changedBase.ownerId }.facilityHealths.keys.minus(changedBase.facilityHealths.keys).sumBy { it.cost }
             }.sum()
             //Return if the change is invalid
-            if (changeCost > this.money[change.ownerId]!!) {
+            if (changeCost > this.money[change.ownerId]!! ||
+                change.changedDrones.any { it.memoryAvailable < 0 }) {
                 return
             }
             this.money[change.ownerId] = this.money[change.ownerId]!! - changeCost

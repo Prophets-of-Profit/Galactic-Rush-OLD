@@ -46,7 +46,11 @@ class DroneModificationMenu(gameScreen: MainGameScreen) : ModalWindow(gameScreen
         //The table that displays the user's owned instructions
         val ownedInstructionsPanel = ScrollPane(InstructionInventoryDisplay(5, gameScreen) { instruction ->
             val instructionPopup = InstructionCardPopup(gameScreen, instruction) {
-                if (gameScreen.mainGame.money[gameScreen.player.id]!! >= instruction.cost) {
+                if (gameScreen.mainGame.money[gameScreen.player.id]!! >= instruction.cost &&
+                        gameScreen.selectedDrone!!.memoryAvailable
+                                - instructionsCopy.minus(gameScreen.selectedDrone!!.instructions).sumBy { it.baseInstruction.memorySize }
+                                + gameScreen.selectedDrone!!.instructions.minus(instructionsCopy).sumBy { it.baseInstruction.memorySize }
+                         >= instruction.memorySize) {
                     gameScreen.mainGame.money[gameScreen.player.id] = gameScreen.mainGame.money[gameScreen.player.id]!! - instruction.cost
                     spentMoney += instruction.cost
                     instructionsCopy.add(InstructionInstance(instruction))
