@@ -32,17 +32,143 @@ enum class Instruction(
         val endCycleAction: DroneAction = { _, _, _ -> }
 ) {
     NONE("None", "THIS IS INVALID", 0, 0, 100000, 100000, arrayOf()),
-    IF_HOT(
-            "If Hot",
-            "Makes the next instruction only trigger when the current planet is hot.",
+    IF_HIGH_MASS(
+            "If High Mass",
+            "Makes the next instruction only trigger when the current planet has a high mass.",
             10,
             50,
             3,
             3,
             arrayOf(InstructionType.ORDER),
             mainAction = { drone, game, _ ->
-                //If planet isn't hot enough, move the pointer to skip the next instruction if any
+                //If planet isn't massive enough, move the pointer to skip the next instruction if any
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.MASS]!! < 0.75) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    IF_LOW_MASS(
+            "If Low Mass",
+            "Makes the next instruction only trigger when the current planet has a low mass.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.MASS]!! > 0.25) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    IF_HIGH_TEMPERATURE(
+            "If High Temperature",
+            "Makes the next instruction only trigger when the current planet has a high temperature.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
                 if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! < 0.75) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    IF_LOW_TEMPERATURE(
+            "If Low Temperature",
+            "Makes the next instruction only trigger when the current planet has a low temperature.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.TEMPERATURE]!! > 0.25) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    IF_HIGH_PRESSURE(
+            "If High Pressure",
+            "Makes the next instruction only trigger when the current planet has a high atmospheric pressure.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.ATMOSPHERE]!! < 0.75) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    IF_LOW_PRESSURE(
+            "If Hot",
+            "Makes the next instruction only trigger when the current planet has a low pressure.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.ATMOSPHERE]!! > 0.25) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    IF_HIGH_HUMIDITY(
+            "If High Humidity",
+            "Makes the next instruction only trigger when the current planet has a high humidity.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.WATER]!! < 0.75) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    IF_LOW_HUMIDITY(
+            "If Low Humidity",
+            "Makes the next instruction only trigger when the current planet has a low humidity.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.WATER]!! > 0.25) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    IF_HIGH_SOLIDITY(
+            "If High Solidity",
+            "Makes the next instruction only trigger when the current planet has a high solidity.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.SOLIDITY]!! < 0.75) {
+                    drone.advancePointer(1)
+                }
+            }
+    ),
+    IF_LOW_SOLIDITY(
+            "If Low Solidity",
+            "Makes the next instruction only trigger when the current planet has a low solidity.",
+            10,
+            50,
+            3,
+            3,
+            arrayOf(InstructionType.ORDER),
+            mainAction = { drone, game, _ ->
+                if (game.galaxy.getPlanetWithId(drone.locationId)!!.attributes[PlanetAttribute.SOLIDITY]!! > 0.25) {
                     drone.advancePointer(1)
                 }
             }
