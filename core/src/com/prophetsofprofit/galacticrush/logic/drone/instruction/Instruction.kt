@@ -333,7 +333,7 @@ enum class Instruction(
             "Reverses the orders in which drones and planets are prioritized for selection.",
             2,
             50,
-            2,
+            3,
             2,
             arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
             mainAction = { drone, _, _ ->
@@ -341,9 +341,35 @@ enum class Instruction(
                 drone.selectablePlanetIds!!.reverse()
             }
     ),
-    SELECT_HOTTEST(
-            "Select Hottest",
-            "Restricts the drone's planet selection queue to the hottest available planets.",
+    SELECT_HIGHEST_MASS(
+            "Select Highest Mass",
+            "Restricts the drone's planet selection queue to the available planet with the highest mass.",
+            6,
+            20,
+            1,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.maxBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.MASS]!! }!!)
+            }
+    ),
+    SELECT_LOWEST_MASS(
+            "Select Lowest Mass",
+            "Restricts the drone's planet selection queue to the available planet with the lowest mass.",
+            6,
+            20,
+            1,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.minBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.MASS]!! }!!)
+            }
+    ),
+    SELECT_HIGHEST_TEMPERATURE(
+            "Select Highest Temperature",
+            "Restricts the drone's planet selection queue to the available planet with the highest temperature.",
             6,
             20,
             1,
@@ -354,9 +380,9 @@ enum class Instruction(
                 !!.maxBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
             }
     ),
-    SELECT_COLDEST(
-            "Select Coldest",
-            "Restricts the drone's planet selection queue to the coldest available planets.",
+    SELECT_LOWEST_TEMPERATURE(
+            "Select Lowest Temperature",
+            "Restricts the drone's planet selection queue to the available planet with the lowest temperature.",
             6,
             20,
             1,
@@ -365,6 +391,84 @@ enum class Instruction(
             mainAction = { drone, game, _ ->
                 drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
                 !!.minBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.TEMPERATURE]!! }!!)
+            }
+    ),
+    SELECT_HIGHEST_PRESSURE(
+            "Select Highest Pressure",
+            "Restricts the drone's planet selection queue to the available planet with the highest pressure.",
+            6,
+            20,
+            1,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.maxBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.ATMOSPHERE]!! }!!)
+            }
+    ),
+    SELECT_LOWEST_PRESSURE(
+            "Select Lowest Pressure",
+            "Restricts the drone's planet selection queue to the available planet with the lowest pressure.",
+            6,
+            20,
+            1,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.minBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.ATMOSPHERE]!! }!!)
+            }
+    ),
+    SELECT_HIGHEST_HUMIDITY(
+            "Select Highest Humidity",
+            "Restricts the drone's planet selection queue to the available planet with the highest humidity.",
+            6,
+            20,
+            1,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.maxBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.WATER]!! }!!)
+            }
+    ),
+    SELECT_LOWEST_HUMIDITY(
+            "Select Lowest Humidity",
+            "Restricts the drone's planet selection queue to the available planet with the lowest humidity.",
+            6,
+            20,
+            1,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.minBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.WATER]!! }!!)
+            }
+    ),
+    SELECT_HIGHEST_SOLIDITY(
+            "Select Highest Solidity",
+            "Restricts the drone's planet selection queue to the available planet with the highest solidity.",
+            6,
+            20,
+            1,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.maxBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.SOLIDITY]!! }!!)
+            }
+    ),
+    SELECT_LOWEST_SOLIDITY(
+            "Select Lowest Solidity",
+            "Restricts the drone's planet selection queue to the available planet with the lowest solidity.",
+            6,
+            20,
+            1,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                drone.selectablePlanetIds = mutableListOf(drone.selectablePlanetIds
+                !!.minBy { game.galaxy.getPlanetWithId(it)!!.attributes[PlanetAttribute.SOLIDITY]!! }!!)
             }
     ),
     SELECT_WEAKEST(
