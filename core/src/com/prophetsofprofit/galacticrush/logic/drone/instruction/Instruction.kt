@@ -702,7 +702,7 @@ enum class Instruction(
     ),
     COLLECT(
             "Collect",
-            "Pops the first loot item from the planet",
+            "Pops the first loot item from the planet.",
             6,
             150,
             2,
@@ -710,6 +710,43 @@ enum class Instruction(
             arrayOf(InstructionType.MINING),
             mainAction = { drone, game, _ ->
                 game.galaxy.getPlanetWithId(drone.locationId)!!.loot.firstOrNull()?.getDiscovered(drone.ownerId, drone, game)
+            }
+    ),
+    SELL_CHARGE(
+            "Sell Charge",
+            "Sells all stored charge for money.",
+            5,
+            200,
+            2,
+            4,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                game.money[drone.ownerId] = game.money[drone.ownerId]!! + (drone.persistentData["charge"]?.toInt()
+                        ?: 0) * 50
+                drone.persistentData["charge"] = "0"
+            }
+    ),
+    BUFF_CHARGE(
+            "Buff Charge",
+            "Discharges all stored charge to strengthen the drone for the rest of the turn.",
+            3,
+            100,
+            4,
+            8,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, _, instance ->
+                val buffAmount = drone.persistentData["charge"]?.toInt() ?: 0
+                drone.persistentData["charge"] = "0"
+                instance.data["buffAmount"] = "$buffAmount"
+                drone.attack += buffAmount
+            },
+            endCycleAction = { drone, _, instance ->
+                drone.attack -= instance.data["buffAmount"]!!.toInt()
+                instance.data["buffAmount"] = "0"
+            },
+            removeAction = { drone, _, instance ->
+                drone.attack -= instance.data["buffAmount"]?.toInt() ?: 0
+                instance.data["buffAmount"] = "0"
             }
     );
 

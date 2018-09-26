@@ -54,7 +54,7 @@ val instructionTextures = mutableMapOf(
         Instruction.MOVE_SELECTED to Texture("instruction/MOVE_SELECTED.png"),
         Instruction.LOOP_3 to Texture("instruction/LOOP_3.png"),
         Instruction.CONSTRUCT_BASE to Texture("instruction/CONSTRUCT_BASE.png"),
-        Instruction.REPRODUCTIVE_VIRUS to Texture("instruction/REPRODUCTIVE_VIRUS.png"),
+        Instruction.REPRODUCTIVE_VIRUS to Texture("instruction/reproductive-virus.png"),
         Instruction.ATTACK_SELECTED to Texture("instruction/ATTACK_SELECTED.png"),
         Instruction.ATTACK_BASE to Texture("instruction/ATTACK_BASE.png"),
         Instruction.RELEASE_CFCS to Texture("instruction/RELEASE_CFCS.png")
