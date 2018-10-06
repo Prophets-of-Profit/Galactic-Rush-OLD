@@ -748,6 +748,30 @@ enum class Instruction(
                 drone.attack -= instance.data["buffAmount"]?.toInt() ?: 0
                 instance.data["buffAmount"] = "0"
             }
+    ),
+    BUFF_2(
+            "Buff Attack",
+            "Strengthens the drone by 2 attack for the rest of the turn.",
+            2,
+            50,
+            3,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            startCycleAction = { drone, _, instance ->
+                instance.data["buffAmount"] = "0"
+            },
+            mainAction = { drone, _, instance ->
+                drone.attack += 2
+                instance.data["buffAmount"] = "2"
+            },
+            endCycleAction = { drone, _, instance ->
+                drone.attack -= instance.data["buffAmount"]?.toInt() ?: 0
+                instance.data["buffAmount"] = "0"
+            },
+            removeAction = { drone, _, instance ->
+                drone.attack -= instance.data["buffAmount"]?.toInt() ?: 0
+                instance.data["buffAmount"] = "0"
+            }
     );
 
     override fun toString(): String = this.displayName
