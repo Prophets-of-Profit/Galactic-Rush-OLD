@@ -55,9 +55,7 @@ enum class Instruction(
             mainAction = { drone, game, _ ->
                 val selectedDrone = game.galaxy.getDroneWithId(drone.selectableDroneIds?.first())
                 selectedDrone?.removeInstruction(0, game)
-                if (selectedDrone != null) {
-                    selectedDrone.addInstruction(if (Math.random() < 0.05) Instruction.values().toList().shuffled().first() else Instruction.DAMAGED_MEMORY, 0)
-                }
+                selectedDrone?.addInstruction(if (Math.random() < 0.05) Instruction.values().toList().shuffled().first() else Instruction.DAMAGED_MEMORY, 0)
             }
     ),
     IF_HIGH_MASS(
