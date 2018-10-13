@@ -63,7 +63,9 @@ val instructionTextures = mutableMapOf(
 }
 
 //How the drone looks by default
-val baseDroneImage = Texture("image/drone/base.png")
+val baseDroneImage = Texture("image/drone/drone.png")
+//How a base looks by default
+val baseImage = Texture("image/drone/base.png")
 
 //Default colors for the game players
 val PLAYER_ONE_COLOR = Color.RED

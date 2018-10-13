@@ -16,9 +16,6 @@ import com.prophetsofprofit.galacticrush.baseDroneImage
 import com.prophetsofprofit.galacticrush.graphics.Direction
 import com.prophetsofprofit.galacticrush.graphics.OptionsMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.instructiondisplays.InstructionCardPopup
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.DraftPopup
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.DroneModificationMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.menu.PauseMenu
 import com.prophetsofprofit.galacticrush.graphics.screen.maingame.panel.*
 import com.prophetsofprofit.galacticrush.logic.GamePhase
@@ -61,6 +58,8 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     var programming = false
     //The arrow textures used in indicating selected planets
     private val selectionArrowTextures = Array(8) { Texture("image/arrows/Arrow$it.png") }
+    //The image for bases
+    private val baseImage = Texture("image/drone/base.png")
     //The mechanism to handle panning the screen over a time
     val panHandler = PanHandler(this.game.camera)
     //The mechanism that handles animating turn transitions
@@ -95,13 +94,9 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                 player.submitCurrentChanges()
             }
         })
-        this.uiContainer.addActor(GeneralInformationPanel(this))
         this.uiContainer.addActor(BaseInformationPanel(this))
         this.uiContainer.addActor(BasePurchasePanel(this))
-        this.uiContainer.addActor(DroneSelectionPanel(this))
-        this.uiContainer.addActor(DroneModificationMenu(this))
         this.uiContainer.addActor(PlanetInformationPanel(this))
-        this.uiContainer.addActor(DraftPopup(this))
         this.uiContainer.addActor(this.pauseMenu)
         this.uiContainer.addActor(this.optionsMenu)
         this.uiContainer.addActor(this.submitButton)
@@ -201,7 +196,7 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
     }
 
     /**
-     * Indicates the drones on each planet
+     * Indicates the drones and bases on each planet
      */
     private fun drawDrones() {
         for (planet in this.mainGame.galaxy.planets) {
@@ -212,6 +207,16 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
                     baseDroneImage.width / 1.5f,
                     baseDroneImage.height / 1.5f
             )
+            //Draw base if there is a base
+            if(planet.base != null) {
+                    this.game.batch.draw(
+                    baseImage,
+                    (planet.x + planet.radius / 1.5f) * this.game.camera.viewportWidth,
+                    (planet.y + planet.radius / 1.5f) * this.game.camera.viewportHeight,
+                    baseDroneImage.width / 1.5f,
+                    baseDroneImage.height / 1.5f
+                )
+            }
             //Write how many drones it has
             this.font.draw(this.game.batch, planet.drones.size.toString(),
                     planet.x * this.game.camera.viewportWidth + this.font.spaceWidth / 2,
@@ -308,13 +313,6 @@ class MainGameScreen(game: Main, var player: Player) : GalacticRushScreen(game, 
         val mouseLocation = this.game.windowToCamera(x.roundToInt(), y.roundToInt(), this.uiCamera)
         //Check if an actor was clicked
         val hit = this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false)
-        //Remove all instruction card popups that were not clicked
-        this.uiContainer.actors.forEach {
-            if (it != hit && it is InstructionCardPopup) {
-                //TODO: Perhaps these should also be removed from the actors list in order to make it better garbage collected
-                it.disappear(Direction.POP, 0.1f)
-            }
-        }
         //If something was clicked, do not check anything else
         if (hit != null) {
             return false
