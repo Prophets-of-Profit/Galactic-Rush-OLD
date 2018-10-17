@@ -1,7 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screen.loading
 
 import com.prophetsofprofit.galacticrush.Main
-import com.prophetsofprofit.galacticrush.graphics.screen.maingame.MainGameScreen
+import com.prophetsofprofit.galacticrush.graphics.screen.experimental.GameScreen
 import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
 
 /**
@@ -23,7 +23,7 @@ class ClientLoadingScreen(game: Main) : LoadingScreen(game) {
      * Moves the game to the MainGameScreen
      */
     override fun onLoad() {
-        this.game.screen = MainGameScreen(this.game, GalacticRushClient.player!!)
+        this.game.screen = GameScreen(this.game, GalacticRushClient.player!!)
     }
 
 }

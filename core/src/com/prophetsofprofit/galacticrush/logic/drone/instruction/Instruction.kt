@@ -46,7 +46,7 @@ enum class Instruction(
     ),
     CORRUPT_FIRST(
             "Corrupt First",
-            "Corrupts the memory for the drone's first instruction",
+            "Corrupts the memory for the selected drone's first instruction",
             3,
             100,
             4,
@@ -783,7 +783,7 @@ enum class Instruction(
             3,
             5,
             arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
-            startCycleAction = { drone, _, instance ->
+            startCycleAction = { _, _, instance ->
                 instance.data["buffAmount"] = "0"
             },
             mainAction = { drone, _, instance ->
