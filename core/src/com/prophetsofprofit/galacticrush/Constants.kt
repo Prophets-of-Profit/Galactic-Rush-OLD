@@ -2,7 +2,6 @@ package com.prophetsofprofit.galacticrush
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.JsonWriter
 import com.esotericsoftware.kryo.Kryo
@@ -47,23 +46,23 @@ const val bufferSize = Int.MAX_VALUE / 1024
 const val planetRadiusScale = 25
 
 //A map of instructions to sprites
-val instructionTextures = mutableMapOf(
-        Instruction.SELECT_HIGHEST_TEMPERATURE to Texture("instruction/SELECT_HOTTEST.png"),
-        Instruction.SELECT_WEAKEST to Texture("instruction/SELECT_WEAKEST.png"),
-        Instruction.RESET_SELECTABLES to Texture("instruction/RESET_SELECTABLES.png"),
-        Instruction.MOVE_SELECTED to Texture("instruction/MOVE_SELECTED.png"),
-        Instruction.LOOP_3 to Texture("instruction/LOOP_3.png"),
-        Instruction.CONSTRUCT_BASE to Texture("instruction/CONSTRUCT_BASE.png"),
-        Instruction.REPRODUCTIVE_VIRUS to Texture("instruction/reproductive-virus.png"),
-        Instruction.ATTACK_SELECTED to Texture("instruction/ATTACK_SELECTED.png"),
-        Instruction.ATTACK_BASE to Texture("instruction/ATTACK_BASE.png"),
-        Instruction.RELEASE_CFCS to Texture("instruction/RELEASE_CFCS.png")
-).also {
-    Instruction.values().filter { instruction -> !it.containsKey(instruction) }.forEach { instruction -> it[instruction] = Texture("instruction/PLACEHOLDER.png") }
-}
+//val instructionTextures = mutableMapOf(
+//        Instruction.SELECT_HIGHEST_TEMPERATURE to Texture("instruction/SELECT_HOTTEST.png"),
+//        Instruction.SELECT_WEAKEST to Texture("instruction/SELECT_WEAKEST.png"),
+//        Instruction.RESET_SELECTABLES to Texture("instruction/RESET_SELECTABLES.png"),
+//        Instruction.MOVE_SELECTED to Texture("instruction/MOVE_SELECTED.png"),
+//        Instruction.LOOP_3 to Texture("instruction/LOOP_3.png"),
+//        Instruction.CONSTRUCT_BASE to Texture("instruction/CONSTRUCT_BASE.png"),
+//        Instruction.REPRODUCTIVE_VIRUS to Texture("instruction/reproductive-virus.png"),
+//        Instruction.ATTACK_SELECTED to Texture("instruction/ATTACK_SELECTED.png"),
+//        Instruction.ATTACK_BASE to Texture("instruction/ATTACK_BASE.png"),
+//        Instruction.RELEASE_CFCS to Texture("instruction/RELEASE_CFCS.png")
+//).also {
+//    Instruction.values().filter { instruction -> !it.containsKey(instruction) }.forEach { instruction -> it[instruction] = Texture("instruction/PLACEHOLDER.png") }
+//}
 
 //How the drone looks by default
-val baseDroneImage = Texture("image/drone/base.png")
+//val baseDroneImage = Texture("image/drone/base.png")
 
 //Default colors for the game players
 val PLAYER_ONE_COLOR = Color.RED
