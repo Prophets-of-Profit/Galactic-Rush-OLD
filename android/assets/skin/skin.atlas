@@ -1,0 +1,90 @@
+
+skin.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+DroneSettings Hover
+  rotate: false
+  xy: 1, 81
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+DroneSettings Click
+  rotate: false
+  xy: 1, 81
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+DroneSettings Normal
+  rotate: false
+  xy: 193, 193
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+MMB Click
+  rotate: false
+  xy: 1, 165
+  size: 80, 26
+  orig: 80, 26
+  offset: 0, 0
+  index: -1
+MMB Hover
+  rotate: false
+  xy: 83, 193
+  size: 80, 26
+  orig: 80, 26
+  offset: 0, 0
+  index: -1
+MainMenuButton
+  rotate: false
+  xy: 1, 193
+  size: 80, 26
+  orig: 80, 26
+  offset: 0, 0
+  index: -1
+ZeroZoom Click
+  rotate: false
+  xy: 111, 165
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+ZeroZoom Normal
+  rotate: false
+  xy: 29, 137
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+ZoomIn Click
+  rotate: false
+  xy: 83, 165
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+ZoomIn Normal
+  rotate: false
+  xy: 1, 137
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+ZoomOut Click
+  rotate: false
+  xy: 1, 109
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
+ZoomOut Normal
+  rotate: false
+  xy: 165, 193
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1

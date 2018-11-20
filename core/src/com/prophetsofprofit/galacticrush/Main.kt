@@ -46,7 +46,7 @@ class Main : Game() {
         this.shapeRenderer = ShapeRenderer()
         this.camera = OrthographicCamera()
         this.resetCamera()
-        Scene2DSkin.defaultSkin = Skin(Gdx.files.internal("uiskin/skin.json"))
+        Scene2DSkin.defaultSkin = Skin(Gdx.files.internal("skin/skin.json"))
     }
 
     /**
