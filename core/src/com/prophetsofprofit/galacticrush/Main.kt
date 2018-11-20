@@ -2,7 +2,6 @@ package com.prophetsofprofit.galacticrush
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -10,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.prophetsofprofit.galacticrush.graphics.screens.splash.SplashScreen
 import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 import ktx.scene2d.Scene2DSkin
@@ -47,6 +47,7 @@ class Main : Game() {
         this.camera = OrthographicCamera()
         this.resetCamera()
         Scene2DSkin.defaultSkin = Skin(Gdx.files.internal("skin/skin.json"))
+        this.screen = SplashScreen(this)
     }
 
     /**

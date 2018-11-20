@@ -1,23 +1,33 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.menu
 
+import com.badlogic.gdx.scenes.scene2d.ui.Button
+import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
+import ktx.scene2d.Scene2DSkin
 
 /**
- * Allows user to enter the game
+ * Allows user to enter the game or select what they want to do
  */
 class MainMenuScreen(main: Main) : GalacticRushScreen(main) {
 
+    /**
+     * Adds all the menu buttons to the stage
+     */
     init {
-
+        val hostGameButton = Button(Scene2DSkin.defaultSkin, "MainMenu")
+        hostGameButton.setPosition(100f, 100f, Align.center)
+        this.uiContainer.addActor(hostGameButton)
     }
 
-    override fun draw(delta: Float) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    /**
+     * How the main menu is drawn; main menu doesn't do anything special
+     */
+    override fun draw(delta: Float) {}
 
-    override fun leave() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    /**
+     * Main Menu doesn't dispose of any resources
+     */
+    override fun leave() {}
 
 }
