@@ -32,6 +32,32 @@ enum class Instruction(
         val endCycleAction: DroneAction = { _, _, _ -> }
 ) {
     NONE("None", "THIS IS INVALID", 0, 0, 100000, 100000, arrayOf()),
+    DAMAGED_MEMORY(
+            "Damaged Memory",
+            "A sector of bad memory that crashes the drone",
+            0,
+            -10,
+            1,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, _, _ ->
+                drone.advancePointer(drone.instructions.size)
+            }
+    ),
+    CORRUPT_FIRST(
+            "Corrupt First",
+            "Corrupts the memory for the selected drone's first instruction",
+            3,
+            100,
+            4,
+            8,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            mainAction = { drone, game, _ ->
+                val selectedDrone = game.galaxy.getDroneWithId(drone.selectableDroneIds?.first())
+                selectedDrone?.removeInstruction(0, game)
+                selectedDrone?.addInstruction(if (Math.random() < 0.05) Instruction.values().toList().shuffled().first() else Instruction.DAMAGED_MEMORY, 0)
+            }
+    ),
     IF_HIGH_MASS(
             "If High Mass",
             "Makes the next instruction only trigger when the current planet has a high mass.",
@@ -742,6 +768,30 @@ enum class Instruction(
             },
             endCycleAction = { drone, _, instance ->
                 drone.attack -= instance.data["buffAmount"]!!.toInt()
+                instance.data["buffAmount"] = "0"
+            },
+            removeAction = { drone, _, instance ->
+                drone.attack -= instance.data["buffAmount"]?.toInt() ?: 0
+                instance.data["buffAmount"] = "0"
+            }
+    ),
+    BUFF_2(
+            "Buff Attack",
+            "Strengthens the drone by 2 attack for the rest of the turn.",
+            2,
+            50,
+            3,
+            5,
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            startCycleAction = { _, _, instance ->
+                instance.data["buffAmount"] = "0"
+            },
+            mainAction = { drone, _, instance ->
+                drone.attack += 2
+                instance.data["buffAmount"] = "2"
+            },
+            endCycleAction = { drone, _, instance ->
+                drone.attack -= instance.data["buffAmount"]?.toInt() ?: 0
                 instance.data["buffAmount"] = "0"
             },
             removeAction = { drone, _, instance ->

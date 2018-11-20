@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.prophetsofprofit.galacticrush.graphics.screen.GalacticRushScreen
-import com.prophetsofprofit.galacticrush.graphics.screen.SplashScreen
 import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
 import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 import ktx.scene2d.Scene2DSkin
@@ -49,7 +47,6 @@ class Main : Game() {
         this.camera = OrthographicCamera()
         this.resetCamera()
         Scene2DSkin.defaultSkin = Skin(Gdx.files.internal("uiskin/skin.json"))
-        this.screen = SplashScreen(this)
     }
 
     /**
@@ -86,19 +83,7 @@ class Main : Game() {
      * Updates the game to reflect current options and saves options to file
      */
     private fun applyOptions() {
-        if (this.screen != null) {
-            (this.screen as GalacticRushScreen).applyOptions()
-        }
         optionsFile.writeString(jsonObject.prettyPrint(this.userOptions), false)
-    }
-
-    /**
-     * When changing screens, ensures that each screen is a GalacticRushScreen
-     */
-    override fun setScreen(screen: Screen) {
-        assert(screen is GalacticRushScreen) { "$screen is not a GalacticRushScreen!" }
-        super.setScreen(screen)
-        (screen as GalacticRushScreen).applyOptions()
     }
 
 }
