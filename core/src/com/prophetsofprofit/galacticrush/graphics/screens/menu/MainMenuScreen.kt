@@ -1,6 +1,6 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.menu
 
-import com.badlogic.gdx.scenes.scene2d.ui.Button
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
@@ -15,7 +15,7 @@ class MainMenuScreen(main: Main) : GalacticRushScreen(main) {
      * Adds all the menu buttons to the stage
      */
     init {
-        val hostGameButton = Button(Scene2DSkin.defaultSkin, "MainMenu")
+        val hostGameButton = TextButton("Host Game", Scene2DSkin.defaultSkin)
         hostGameButton.setPosition(100f, 100f, Align.center)
         this.uiContainer.addActor(hostGameButton)
     }
