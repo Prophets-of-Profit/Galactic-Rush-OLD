@@ -24,7 +24,7 @@ class MainMenuScreen(main: Main) : GalacticRushScreen(main) {
         optionsButton.setSize(this.uiContainer.width * 0.3f, this.uiContainer.height * 0.1f)
         optionsButton.setPosition(this.uiContainer.width * 0.025f, this.uiContainer.height * 0.025f, Align.bottomLeft)
         this.uiContainer.addActor(optionsButton)
-        optionsButton.onClick { this.uiContainer.addActor(OptionsWindow(this.main)) /* TODO: place in center */ }
+        optionsButton.onClick { this.uiContainer.addActor(OptionsWindow(this.main)) }
 
         /*
          * JOIN GAME BUTTON
