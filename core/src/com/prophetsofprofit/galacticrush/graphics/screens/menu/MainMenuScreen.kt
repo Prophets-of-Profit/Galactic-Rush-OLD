@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
+import com.prophetsofprofit.galacticrush.graphics.OptionsWindow
 import com.prophetsofprofit.galacticrush.graphics.onClick
 import ktx.scene2d.Scene2DSkin
 
@@ -23,7 +24,7 @@ class MainMenuScreen(main: Main) : GalacticRushScreen(main) {
         optionsButton.setSize(this.uiContainer.width * 0.3f, this.uiContainer.height * 0.1f)
         optionsButton.setPosition(this.uiContainer.width * 0.025f, this.uiContainer.height * 0.025f, Align.bottomLeft)
         this.uiContainer.addActor(optionsButton)
-        optionsButton.onClick { /* TODO: Make */ }
+        optionsButton.onClick { this.uiContainer.addActor(OptionsWindow(this.main)) /* TODO: place in center */ }
 
         /*
          * JOIN GAME BUTTON
