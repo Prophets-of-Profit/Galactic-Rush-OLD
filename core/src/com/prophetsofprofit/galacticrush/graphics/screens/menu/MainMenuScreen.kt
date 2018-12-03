@@ -7,6 +7,7 @@ import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.OptionsWindow
 import com.prophetsofprofit.galacticrush.graphics.onClick
 import com.prophetsofprofit.galacticrush.graphics.screens.network.ClientJoinScreen
+import com.prophetsofprofit.galacticrush.graphics.screens.network.HostSetupScreen
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -43,7 +44,7 @@ class MainMenuScreen(main: Main) : GalacticRushScreen(main) {
         hostGameButton.setSize(this.uiContainer.width * 0.3f, this.uiContainer.height * 0.1f)
         hostGameButton.setPosition(this.uiContainer.width * 0.025f, joinGameButton.top + this.uiContainer.height * 0.025f, Align.bottomLeft)
         this.uiContainer.addActor(hostGameButton)
-        hostGameButton.onClick { /* TODO: Make */ }
+        hostGameButton.onClick { this.main.screen = HostSetupScreen(this.main) }
     }
 
     /**
