@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Array
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.defaultTcpPort
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
@@ -36,19 +37,11 @@ class ClientJoinScreen(main: Main) : GalacticRushScreen(main) {
         this.uiContainer.addActor(titleLabel)
 
         /*
-         * ADDRESSES LIST
-         */
-        val addressesList = SelectionList()
-        addressesList.setSize(this.uiContainer.width * 0.9f, this.uiContainer.height / 2f)
-        addressesList.setPosition(this.uiContainer.width / 2f, this.uiContainer.height * 0.4f, Align.center)
-        this.uiContainer.addActor(addressesList)
-
-        /*
          * ADDRESS LABEL
          */
         val addressLabel = Label("Address", Scene2DSkin.defaultSkin)
         addressLabel.setSize(this.uiContainer.width * 0.4f, addressLabel.height * 3)
-        addressLabel.setPosition(titleLabel.x, (titleLabel.y + addressesList.top) / 2f + addressLabel.height / 2f)
+        addressLabel.setPosition(titleLabel.x, (titleLabel.y + this.uiContainer.height * 0.7f) / 2f + addressLabel.height / 2f)
         addressLabel.setAlignment(Align.center)
         this.uiContainer.addActor(addressLabel)
 
@@ -99,6 +92,27 @@ class ClientJoinScreen(main: Main) : GalacticRushScreen(main) {
         }
 
         /*
+         * ADDRESSES LIST
+         */
+        val addressesList = SelectionList()
+        addressesList.setSize(this.uiContainer.width * 0.9f, this.uiContainer.height / 2f)
+        addressesList.setPosition(this.uiContainer.width / 2f, this.uiContainer.height * 0.4f, Align.center)
+        this.uiContainer.addActor(addressesList)
+        var discoveredHosts = arrayOf<String>()
+        Thread {
+            while (true) {
+                discoveredHosts = GalacticRushClient.discoverHosts(0, 1000).map { address -> address.hostAddress }.toTypedArray()
+            }
+        }.start()
+        addressesList.act {
+            addressesList.list.setItems(Array(discoveredHosts))
+            if (!addressesList.list.selected.isNullOrBlank()) {
+                addressField.text = addressesList.list.selected //TODO: format address to split address and port
+                addressesList.list.selection.clear()
+            }
+        }
+
+        /*
          * BACK BUTTON
          */
         val backButton = TextButton("Back", Scene2DSkin.defaultSkin)
@@ -108,10 +122,13 @@ class ClientJoinScreen(main: Main) : GalacticRushScreen(main) {
         backButton.onClick { this.main.screen = MainMenuScreen(this.main) }
     }
 
+    /**
+     * The screen just checks if a connection has been attempted, and moves on to the next screen when successful
+     */
     override fun draw(delta: Float) {
+        //TODO: make
     }
 
-    override fun leave() {
-    }
+    override fun leave() {}
 
 }
