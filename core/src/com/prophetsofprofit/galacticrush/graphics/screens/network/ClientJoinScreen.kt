@@ -5,16 +5,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Align
 import com.prophetsofprofit.galacticrush.Main
+import com.prophetsofprofit.galacticrush.defaultTcpPort
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.SelectionList
+import com.prophetsofprofit.galacticrush.graphics.act
 import com.prophetsofprofit.galacticrush.graphics.onClick
 import com.prophetsofprofit.galacticrush.graphics.screens.menu.MainMenuScreen
+import com.prophetsofprofit.galacticrush.networking.GalacticRushClient
 import ktx.scene2d.Scene2DSkin
 
 /**
  * A screen where a client can join a host
  */
 class ClientJoinScreen(main: Main) : GalacticRushScreen(main) {
+
+    //A variable that represents whether the client is in the middle of attempting a connection or not
+    var isInConnectAttempt = false
 
     /**
      * Adds all the UI elements to the client join screen
@@ -50,7 +56,7 @@ class ClientJoinScreen(main: Main) : GalacticRushScreen(main) {
          * PORT LABEL
          */
         val portLabel = Label("Port", Scene2DSkin.defaultSkin)
-        portLabel.setSize(this.uiContainer.width * 0.2f, portLabel.height * 3)
+        portLabel.setSize(this.uiContainer.width * 0.25f, portLabel.height * 3)
         portLabel.setPosition(addressLabel.right + 15f, addressLabel.y)
         portLabel.setAlignment(Align.center)
         this.uiContainer.addActor(portLabel)
@@ -58,18 +64,39 @@ class ClientJoinScreen(main: Main) : GalacticRushScreen(main) {
         /*
          * ADDRESS FIELD
          */
-        val addressField = TextField("", Scene2DSkin.defaultSkin)
+        val addressField = TextField("127.0.0.1", Scene2DSkin.defaultSkin)
         addressField.setSize(this.uiContainer.width * 0.4f, addressField.height * 3)
         addressField.setPosition(titleLabel.x, addressLabel.y - addressField.height - 15f)
+        addressField.setAlignment(Align.center)
         this.uiContainer.addActor(addressField)
 
         /*
          * PORT FIELD
          */
-        val portField = TextField("", Scene2DSkin.defaultSkin)
-        portField.setSize(this.uiContainer.width * 0.2f, portField.height * 3)
+        val portField = TextField("$defaultTcpPort", Scene2DSkin.defaultSkin)
+        portField.setSize(this.uiContainer.width * 0.25f, portField.height * 3)
         portField.setPosition(portLabel.x, portLabel.y - portField.height - 15f)
+        portField.setAlignment(Align.center)
         this.uiContainer.addActor(portField)
+
+        /*
+         * CONNECT BUTTON
+         */
+        val connectButton = TextButton("Connect", Scene2DSkin.defaultSkin)
+        connectButton.setSize(this.uiContainer.width * 0.2f, portField.height)
+        connectButton.setPosition(titleLabel.right, portField.y, Align.bottomRight)
+        this.uiContainer.addActor(connectButton)
+        connectButton.act {
+            connectButton.isDisabled = this.isInConnectAttempt
+        }
+        connectButton.onClick {
+            try {
+                this.isInConnectAttempt = true
+                GalacticRushClient.connect(addressField.text, portField.text.toIntOrNull() ?: -1)
+            } catch (e: Exception) {
+                this.isInConnectAttempt = false
+            }
+        }
 
         /*
          * BACK BUTTON

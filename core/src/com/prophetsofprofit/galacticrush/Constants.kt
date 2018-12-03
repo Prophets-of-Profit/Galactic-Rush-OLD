@@ -33,8 +33,6 @@ val kryo = Kryo()
 
 //The file where the user options are stored
 val optionsFile = Gdx.files.local("UserOptions.json")!!
-//The file where the user's saved addresses are stored
-val userAddressesFile = Gdx.files.local("SavedAddresses.json")!!
 
 //The default tcp port
 const val defaultTcpPort = 6669
