@@ -100,14 +100,16 @@ class ClientJoinScreen(main: Main) : GalacticRushScreen(main) {
         this.uiContainer.addActor(addressesList)
         var discoveredHosts = arrayOf<String>()
         Thread {
-            while (true) {
-                discoveredHosts = GalacticRushClient.discoverHosts(0, 1000).map { address -> address.hostAddress }.toTypedArray()
+            Thread.sleep(50)
+            while (this.main.screen == this) {
+                discoveredHosts = GalacticRushClient.discoverHosts((portField.text.toIntOrNull()
+                        ?: -2) + 1, 1000).map { address -> address.hostAddress }.toTypedArray()
             }
         }.start()
         addressesList.act {
             addressesList.list.setItems(Array(discoveredHosts))
             if (!addressesList.list.selected.isNullOrBlank()) {
-                addressField.text = addressesList.list.selected //TODO: format address to split address and port
+                addressField.text = addressesList.list.selected
                 addressesList.list.selection.clear()
             }
         }
