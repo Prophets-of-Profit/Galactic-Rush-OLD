@@ -47,13 +47,29 @@ class ClientJoinScreen(main: Main) : GalacticRushScreen(main) {
         this.uiContainer.addActor(addressLabel)
 
         /*
+         * PORT LABEL
+         */
+        val portLabel = Label("Port", Scene2DSkin.defaultSkin)
+        portLabel.setSize(this.uiContainer.width * 0.2f, portLabel.height * 3)
+        portLabel.setPosition(addressLabel.right + 15f, addressLabel.y)
+        portLabel.setAlignment(Align.center)
+        this.uiContainer.addActor(portLabel)
+
+        /*
          * ADDRESS FIELD
          */
         val addressField = TextField("", Scene2DSkin.defaultSkin)
         addressField.setSize(this.uiContainer.width * 0.4f, addressField.height * 3)
         addressField.setPosition(titleLabel.x, addressLabel.y - addressField.height - 15f)
-
         this.uiContainer.addActor(addressField)
+
+        /*
+         * PORT FIELD
+         */
+        val portField = TextField("", Scene2DSkin.defaultSkin)
+        portField.setSize(this.uiContainer.width * 0.2f, portField.height * 3)
+        portField.setPosition(portLabel.x, portLabel.y - portField.height - 15f)
+        this.uiContainer.addActor(portField)
 
         /*
          * BACK BUTTON
