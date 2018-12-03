@@ -9,6 +9,7 @@ import com.prophetsofprofit.galacticrush.defaultTcpPort
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.onClick
 import com.prophetsofprofit.galacticrush.graphics.screens.menu.MainMenuScreen
+import com.prophetsofprofit.galacticrush.networking.GalacticRushServer
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -54,6 +55,18 @@ class HostSetupScreen(main: Main) : GalacticRushScreen(main) {
         lockButton.setSize(this.uiContainer.width * 0.25f, portLabel.height)
         lockButton.setPosition(titleLabel.right, portField.y, Align.bottomRight)
         this.uiContainer.addActor(lockButton)
+        lockButton.onClick {
+            if (lockButton.text.toString() == "Confirm") {
+                try {
+                    GalacticRushServer.usePort(portField.text.toIntOrNull() ?: -1)
+                    lockButton.setText("Cancel")
+                } catch (e: Exception) {
+                }
+            } else {
+                GalacticRushServer.close()
+                lockButton.setText("Confirm")
+            }
+        }
 
         /*
          * BACK BUTTON
