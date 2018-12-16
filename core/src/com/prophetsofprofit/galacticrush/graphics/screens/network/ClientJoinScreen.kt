@@ -1,8 +1,10 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.network
 
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.prophetsofprofit.galacticrush.Main
@@ -103,16 +105,17 @@ class ClientJoinScreen(main: Main) : GalacticRushScreen(main) {
             Thread.sleep(50)
             while (this.main.screen == this) {
                 discoveredHosts = GalacticRushClient.discoverHosts((portField.text.toIntOrNull()
-                        ?: -2) + 1, 1000).map { address -> address.hostAddress }.toTypedArray()
+                        ?: -2) + 1, 1000).map { address -> "$address" }.distinct().toTypedArray()
             }
         }.start()
-        addressesList.act {
-            addressesList.list.setItems(Array(discoveredHosts))
-            if (!addressesList.list.selected.isNullOrBlank()) {
-                addressField.text = addressesList.list.selected
-                addressesList.list.selection.clear()
+        addressesList.act { addressesList.list.setItems(Array(discoveredHosts)) }
+        addressesList.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                if (!addressesList.list.selected.isNullOrBlank()) {
+                    addressField.text = addressesList.list.selected
+                }
             }
-        }
+        })
 
         /*
          * BACK BUTTON

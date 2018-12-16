@@ -58,6 +58,7 @@ class HostSetupScreen(main: Main) : GalacticRushScreen(main) {
         lockButton.onClick {
             if (lockButton.text.toString() == "Confirm") {
                 try {
+                    GalacticRushServer.start()
                     GalacticRushServer.usePort(portField.text.toIntOrNull() ?: -1)
                     lockButton.setText("Cancel")
                 } catch (e: Exception) {
