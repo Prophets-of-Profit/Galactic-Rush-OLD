@@ -1,5 +1,6 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.maingame
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -12,6 +13,7 @@ import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.networking.player.Player
 import ktx.math.vec3
+import kotlin.math.*
 
 /**
  * Displays a game
@@ -28,9 +30,12 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
 
     //Graphics variables
     //Views the planets separately from the UI
-    var gameboardCamera = OrthographicCamera()
+    var gameboardCamera = OrthographicCamera(1600f, 900f)
     //Stores the planets, drones, and so on in a stage
-    lateinit var stage: Stage
+    val stage = Stage(ExtendViewport(this.gameboardCamera.viewportWidth, this.gameboardCamera.viewportHeight))
+    //A convenience getter that views the stage's camera as orthographic
+    val camera
+        get() = this.stage.camera as OrthographicCamera
     //The smallest (closest) zoom factor allowed
     val minZoom = 0.1f
     //The highest (furthest) zoom factor allowed
@@ -42,18 +47,13 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
      * Constructs the planets and adds them to the stage as actors
      */
     init {
-        //Set the logical size of the gameboard and position the camera
-        this.resetCamera()
-
-        this.stage = Stage(ExtendViewport(this.gameboardCamera.viewportWidth, this.gameboardCamera.viewportHeight))
-
         this.mainGame.galaxy.planets.forEach {
             val image = Image(planetImages[it.id])
             image.width *= it.radius
             image.height *= it.radius
             image.setPosition(
-                    it.x * (this.stage.camera.viewportWidth) - image.width / 2,
-                    it.y * (this.stage.camera.viewportHeight) - image.height / 2
+                    it.x * (this.camera.viewportWidth) - image.width / 2,
+                    it.y * (this.camera.viewportHeight) - image.height / 2
             )
             this.stage.addActor(image)
         }
@@ -63,10 +63,10 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
      * Resets the gameboard camera to be the default setting
      */
     fun resetCamera() {
-        this.gameboardCamera.setToOrtho(false, 1600f, 900f)
-        this.gameboardCamera.zoom = 20f
-        this.gameboardCamera.position.x = this.gameboardCamera.viewportWidth / 2
-        this.gameboardCamera.position.y = this.gameboardCamera.viewportHeight / 2
+        this.camera.setToOrtho(false, 1600f, 900f)
+        this.camera.zoom = 1f
+        this.camera.position.x = this.camera.viewportWidth / 2
+        this.camera.position.y = this.camera.viewportHeight / 2
     }
 
     /**
@@ -76,7 +76,7 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
         //Render highways as white lines
         this.main.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         this.main.shapeRenderer.color = Color.LIGHT_GRAY
-        //Storing the projection matrix for later, we tell the shape renderer to render where the stage would normally draw
+        //Storing the projection matrix for later, we tell the shape renderer to render where the stage batch would normally draw
         val projectionMatrix = this.main.shapeRenderer.projectionMatrix
         this.main.shapeRenderer.projectionMatrix = this.stage.batch.projectionMatrix
         //Draw the lines
@@ -84,10 +84,10 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
             val planet0 = this.mainGame.galaxy.getPlanetWithId(highway.p0)!!
             val planet1 = this.mainGame.galaxy.getPlanetWithId(highway.p1)!!
             val pos0 = vec3(
-                            planet0.x* this.stage.camera.viewportWidth, planet0.y * this.stage.camera.viewportHeight, 0f
+                            planet0.x* this.camera.viewportWidth, planet0.y * this.camera.viewportHeight, 0f
                         )
             val pos1 = vec3(
-                            planet1.x* this.stage.camera.viewportWidth, planet1.y * this.stage.camera.viewportHeight, 0f
+                            planet1.x* this.camera.viewportWidth, planet1.y * this.camera.viewportHeight, 0f
                         )
             this.main.shapeRenderer.line(pos0, pos1)
         }
@@ -100,9 +100,46 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
 
     override fun leave() {
         this.stage.dispose()
+        this.main.resetCamera()
     }
 
+    /**
+     * Moves the camera laterally
+     */
+    override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
+        val mouseLocation = this.main.windowToCamera(x.roundToInt(), y.roundToInt(), this.main.camera)
+        //Doesn't zoom if we're hovering over a UI element
+        if (this.uiContainer.hit(mouseLocation.x, mouseLocation.y, false) != null) {
+            return false
+        }
+        this.camera.translate(-deltaX * this.camera.zoom, deltaY * this.camera.zoom)
+        return false
+    }
+
+    /**
+     * Sets the zoom to a value between the minimum and maximum zoom specified above
+     */
+    private fun setZoomClamped(newZoom: Float) {
+        this.camera.zoom = max(min(newZoom, this.maxZoom), this.minZoom)
+    }
+
+    /**
+     * Zooming moves the camera closer in or further out
+     */
     override fun zoom(initialDistance: Float, distance: Float): Boolean {
+        val zoomWeight = 0.15f
+        //Zoom is proportional to distance moved and multiplicative
+        this.setZoomClamped(zoomWeight * initialDistance / distance + this.camera.zoom * (1 - zoomWeight))
+        return true
+    }
+
+    /**
+     * Zooms with mouse scroll
+     */
+    override fun scrolled(amount: Int): Boolean {
+        val zoomFactor = 0.1f
+        //TODO: Center at mouse location
+        this.setZoomClamped(this.camera.zoom + amount * zoomFactor)
         return true
     }
 
