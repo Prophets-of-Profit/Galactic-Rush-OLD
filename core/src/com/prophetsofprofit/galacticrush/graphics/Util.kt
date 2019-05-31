@@ -19,10 +19,10 @@ fun Button.onClick(action: () -> Unit) {
 /**
  * An extension function that adds an action to an actor that periodically happens
  */
-fun Actor.act(action: () -> Unit) {
+fun Actor.act(action: (delta: Float) -> Unit) {
     this.addAction(object : Action() {
         override fun act(delta: Float): Boolean {
-            action()
+            action(delta)
             return false
         }
     })

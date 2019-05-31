@@ -6,8 +6,13 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.OptionsWindow
 import com.prophetsofprofit.galacticrush.graphics.onClick
+import com.prophetsofprofit.galacticrush.graphics.screens.maingame.MainGameScreen
 import com.prophetsofprofit.galacticrush.graphics.screens.network.ClientJoinScreen
 import com.prophetsofprofit.galacticrush.graphics.screens.network.HostSetupScreen
+import com.prophetsofprofit.galacticrush.logic.Game
+import com.prophetsofprofit.galacticrush.logic.map.Galaxy
+import com.prophetsofprofit.galacticrush.networking.player.LocalPlayer
+import com.prophetsofprofit.galacticrush.networking.player.Player
 import ktx.scene2d.Scene2DSkin
 
 /**
@@ -45,6 +50,17 @@ class MainMenuScreen(main: Main) : GalacticRushScreen(main) {
         hostGameButton.setPosition(this.uiContainer.width * 0.025f, joinGameButton.top + this.uiContainer.height * 0.025f, Align.bottomLeft)
         this.uiContainer.addActor(hostGameButton)
         hostGameButton.onClick { this.main.screen = HostSetupScreen(this.main) }
+
+        /*
+         * DEMO BUTTON
+         */
+        val demoButton = TextButton("TEST", Scene2DSkin.defaultSkin)
+        demoButton.setSize(this.uiContainer.width * 0.3f, this.uiContainer.height * 0.1f)
+        demoButton.setPosition(this.uiContainer.width * 0.335f, joinGameButton.top + this.uiContainer.height * 0.025f, Align.bottomLeft)
+        this.uiContainer.addActor(demoButton)
+        val demoPlayer = LocalPlayer(1)
+        demoPlayer.game = Game(arrayOf(demoPlayer.id), Galaxy(100, listOf(demoPlayer.id)))
+        demoButton.onClick { this.main.screen = MainGameScreen(this.main, demoPlayer) }
     }
 
     /**

@@ -19,7 +19,7 @@ import ktx.app.KtxScreen
 abstract class GalacticRushScreen(val main: Main) : KtxScreen, GestureDetector.GestureListener, InputProcessor {
 
     //The stage that contains all of the screen's UI elements
-    val uiContainer = Stage(ScalingViewport(Scaling.stretch, this.main.camera.viewportWidth, this.main.camera.viewportHeight))
+    val uiContainer = Stage(ScalingViewport(Scaling.fit, this.main.camera.viewportWidth, this.main.camera.viewportHeight))
     //Gets the camera for the ui components
     val uiCamera
         get() = this.uiContainer.camera
@@ -56,10 +56,6 @@ abstract class GalacticRushScreen(val main: Main) : KtxScreen, GestureDetector.G
         //Clear the screen with black
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        //Updates the camera as well as objects that use it
-        this.main.camera.update()
-        this.main.batch.projectionMatrix = this.main.camera.combined
-        this.main.shapeRenderer.projectionMatrix = this.main.camera.combined
         //Calls the screen draw method
         this.draw(delta)
         //Updates and draws the UI components
