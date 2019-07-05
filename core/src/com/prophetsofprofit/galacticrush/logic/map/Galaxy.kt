@@ -9,6 +9,7 @@ import com.prophetsofprofit.galacticrush.logic.drone.DroneId
 import com.prophetsofprofit.galacticrush.logic.loot.selectLoot
 import com.prophetsofprofit.galacticrush.maxLoot
 import com.prophetsofprofit.galacticrush.minLoot
+import java.util.*
 import kotlin.math.*
 
 /**
@@ -20,6 +21,9 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
 
     //The planets that are in the galaxy: serve as 'tiles' of the game, but are connected as a graph
     val planets = mutableListOf<Planet>()
+    //The planet ids
+    val planetIds: List<Int>
+        get() = this.planets.map { it.id }
     //The cosmic highways that are in the galaxy: serve as the 'paths' or 'connections' of the game
     val highways = mutableListOf<CosmicHighway>()
     //The drones that currently exist in the game; should be ordered in order of creation
@@ -45,11 +49,9 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
      */
     init {
         val minDistanceBetweenHomes = 0.5
-        generatePlanets(numPlanets)
-        generateEdges(numPlanets)
-        connectAllPlanets()
+        generatePlanets(numPlanets, 0.2)
         var counter = 0
-        while (this.iterateForces(0.005f, 1f, 0.00005f, 0.05f).values.count { abs(it[0]) > 0.0001 || abs(it[1]) > 0.0001 } > 0 && ++counter > 0) {
+        while (this.iterateForces(0.05f, 1f, 0.0005f, 0.05f).values.count { abs(it[0]) > 0.0001 || abs(it[1]) > 0.0001 } > 0 && ++counter > 0) {
         }
         val pickablePlanets = this.planets.toMutableList()
         var planetChoice: Planet
@@ -71,85 +73,28 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     /**
      * Generates planets
      */
-    private fun generatePlanets(numPlanets: Int) {
-        //Calculates the side length of a square that fits a planet
-        val sideLength = sqrt(numPlanets.toDouble()).toInt()
-        /*
-         * Iterates through all indices of x and y for the square and randomly places a planet in each bounding box
-         */
-        for (i in 0 until sideLength) {
-            for (j in 0 until sideLength) {
-                //Shifts x by i and y by j, and adds to it in a random number within a range of 0 to 1 / sidelength, the length of each bounding square
-                this.planets.add(Planet(((Math.random() + i) / sideLength).toFloat(), ((Math.random() + j) / sideLength).toFloat(), 0.5f + Math.random().toFloat(), this.planets.size))
+    private fun generatePlanets(numPlanets: Int, edgeProbabilityFactor: Double) {
+        for (i in 0 until numPlanets) {
+            val planet = Planet(
+                    0.4995f + 0.001f * Math.random().toFloat(),
+                    0.4995f + 0.001f * Math.random().toFloat(),
+                    0.5f + Math.random().toFloat(),
+                    i
+            )
+            //Add edges
+            //The first edge is guaranteed to be created
+            var probability = 1.0
+            while(this.planetIds.toMutableSet().minus(this.planetsAdjacentTo(i)).isNotEmpty()) {
+                if (Math.random() > probability)
+                    break
+                //Adjust probability
+                probability *= edgeProbabilityFactor
+                //Add edge; consider refactoring
+                val adjacentPlanet = this.planetIds.toMutableSet().minus(this.planetsAdjacentTo(i))
+                        .toMutableList().shuffled().first()
+                this.highways.add(CosmicHighway(i, adjacentPlanet))
             }
-        }
-    }
-
-    private fun generateEdges(numPlanets: Int) {
-        //Calculates the side length of a square that fits a planet
-        val sideLength = sqrt(numPlanets.toDouble()).toInt()
-        //Iterate through all planets in a random order
-        for (p0 in planets.shuffled()) {
-            //Iterate through all other planets in a random order
-            for (p1 in planets.shuffled()) {
-                //If the distance between the two planets is greater than 1 / sidelength or the planets are the same, go to next planet
-                if (sqrt((p0.x - p1.x).pow(2) + (p0.y - p1.y).pow(2)) >= 2.0 / sideLength || p1 === p0) {
-                    continue
-                }
-                //If the current planets can have a path that doesn't intersect an existing highway, or already is an existing highway, or intersect a planet, make a highway
-                if (!highways.any { it ->
-                            val planet0 = this.getPlanetWithId(it.p0)!!
-                            val planet1 = this.getPlanetWithId(it.p1)!!
-                            doSegmentsIntersect(p0.x, p0.y, p1.x, p1.y, planet0.x, planet0.y, planet1.x, planet1.y) || //Highways crosses existing highway
-                                    (planet0 == p0 && planet1 == p1) || (planet0 == p1 && planet1 == p0) //Highway already exists but with p0 and p1 switched around
-                        } && !planets.filter { it != p0 && it != p1 }.any {
-                            Intersector.distanceSegmentPoint(p0.x, p0.y, p1.x, p1.y, it.x, it.y) <= it.radius
-                        } //Highway doesn't intersect planet
-                        && !this.highwaysConnectedTo(p1.id).any {
-                            val planet0 = this.getPlanetWithId(it.p0)!!
-                            val planet1 = this.getPlanetWithId(it.p1)!!
-                            isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, planet0.x, planet0.y, planet1.x, planet1.y)
-                        } //Highway angle between others
-                        && !this.highwaysConnectedTo(p0.id).any {
-                            val planet0 = this.getPlanetWithId(it.p0)!!
-                            val planet1 = this.getPlanetWithId(it.p1)!!
-                            isAngleTooSmall(p0.x, p0.y, p1.x, p1.y, planet0.x, planet0.y, planet1.x, planet1.y)
-                        } //is not too small
-
-                ) {
-                    //Add a highway to the galaxy and to the connecting planets
-                    val highwayToAdd = CosmicHighway(p0.id, p1.id)
-                    highways.add(highwayToAdd)
-                }
-            }
-        }
-    }
-
-    /**
-     * Ensures that all planets are connected
-     * Currently only connects planets which are not connected to any planets
-     * TODO: Check for separate clusters of planets using quick-union
-     */
-    private fun connectAllPlanets() {
-        //Iterate through all planets which have no connecting planets
-        for (p0 in planets.filter { this.highwaysConnectedTo(it.id).isEmpty() }) {
-            //Initialize distance as 0 to start; will check for distance = 0
-            var planetDistance = 0f
-            //Closest planet starts as itself; will get changed
-            var closestPlanet = p0
-            //Iterate through all planets to find the planet closest to this one
-            for (p1 in planets) {
-                //Calculate distance between planets
-                val tempDistance = sqrt((p0.x - p1.x).pow(2) + (p0.y - p1.y).pow(2))
-                //If the planets are not the same and the distance between them is less, then set it to be so
-                if (p0 !== p1 && (planetDistance == 0f || tempDistance < planetDistance)) {
-                    planetDistance = tempDistance
-                    closestPlanet = p1
-                }
-            }
-            //Make a connection with the planet closest to it
-            val highwayToAdd = CosmicHighway(p0.id, closestPlanet.id)
-            highways.add(highwayToAdd)
+            this.planets.add(planet)
         }
     }
 

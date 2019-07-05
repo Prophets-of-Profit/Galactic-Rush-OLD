@@ -39,7 +39,7 @@ enum class Instruction(
             -10,
             1,
             5,
-            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            arrayOf(InstructionType.ORDER),
             mainAction = { drone, _, _ ->
                 drone.advancePointer(drone.instructions.size)
             }
@@ -51,7 +51,7 @@ enum class Instruction(
             100,
             4,
             8,
-            arrayOf(InstructionType.INSTRUCTION_MODIFICATION),
+            arrayOf(InstructionType.INSTRUCTION_MODIFICATION, InstructionType.COMBAT),
             mainAction = { drone, game, _ ->
                 val selectedDrone = game.galaxy.getDroneWithId(drone.selectableDroneIds?.first())
                 selectedDrone?.removeInstruction(0, game)

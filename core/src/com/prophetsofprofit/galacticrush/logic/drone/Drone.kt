@@ -150,6 +150,7 @@ class Drone(val ownerId: Int, var locationId: Int) {
         game.galaxy.getPlanetWithId(this.locationId)!!.drones.remove(this)
         this.locationId = id
         game.galaxy.getPlanetWithId(this.locationId)!!.drones.add(this)
+        this.resetSelectables(game)
     }
 
     /**

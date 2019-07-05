@@ -1,6 +1,8 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.maingame
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -43,10 +45,15 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
     //Store the images instead of reallocating memory every draw call
     val planetImages = this.mainGame.galaxy.planets.map { it.id to this.createPlanetTexture(it) }.toMap()
 
+    //UI components
+
     /**
      * Constructs the planets and adds them to the stage as actors
      */
     init {
+        //Handle input
+        (Gdx.input.inputProcessor as InputMultiplexer).addProcessor(this.stage)
+        //Add planets as actors
         this.mainGame.galaxy.planets.forEach {
             val image = Image(planetImages[it.id])
             image.width *= it.radius
@@ -57,6 +64,7 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
             )
             this.stage.addActor(image)
         }
+        //Add modals
     }
 
     /**
@@ -95,6 +103,7 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
         //Reset the shape renderer projection matrix
         this.main.shapeRenderer.projectionMatrix = projectionMatrix
         this.stage.act(delta)
+        this.uiContainer.act(delta)
         this.stage.draw()
     }
 
@@ -144,9 +153,18 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
     }
 
     /**
+     * Notifies the stage of the changed window dimensions
+     */
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
+        this.stage.viewport.update(width, height)
+    }
+
+    /**
      * Creates a texture for the specified planet
      */
     fun createPlanetTexture(planet: Planet): Texture {
         return Texture("image/planets/planet${(Math.random() * 5).toInt()}.png")
     }
+
 }
