@@ -1,20 +1,24 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.maingame
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
+import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.*
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.networking.player.Player
 import ktx.math.vec3
+import ktx.scene2d.Scene2DSkin
 import kotlin.math.*
 
 /**
@@ -32,20 +36,31 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
 
     //Graphics variables
     //Views the planets separately from the UI
-    var gameboardCamera = OrthographicCamera(1600f, 900f)
+    private var gameboardCamera = OrthographicCamera(1600f, 900f)
     //Stores the planets, drones, and so on in a stage
-    val stage = Stage(ExtendViewport(this.gameboardCamera.viewportWidth, this.gameboardCamera.viewportHeight))
+    private val stage = Stage(ExtendViewport(this.gameboardCamera.viewportWidth, this.gameboardCamera.viewportHeight))
     //A convenience getter that views the stage's camera as orthographic
-    val camera
+    private val camera
         get() = this.stage.camera as OrthographicCamera
     //The smallest (closest) zoom factor allowed
-    val minZoom = 0.1f
+    private val minZoom = 0.1f
     //The highest (furthest) zoom factor allowed
-    val maxZoom = 10f
+    private val maxZoom = 10f
     //Store the images instead of reallocating memory every draw call
-    val planetImages = this.mainGame.galaxy.planets.map { it.id to this.createPlanetTexture(it) }.toMap()
+    private val planetImages = this.mainGame.galaxy.planets.map { it.id to this.createPlanetTexture(it) }.toMap()
 
     //UI components
+    //The button that controls submitting turn changes
+    private val submitButton = TextButton("Submit", Scene2DSkin.defaultSkin).also {
+        it.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                this@MainGameScreen.player.submitCurrentChanges()
+            }
+        })
+        it.setSize(this.uiCamera.viewportWidth / 8, this.uiCamera.viewportHeight / 16)
+        it.setPosition(this.uiCamera.viewportWidth, 0f, Align.bottomRight)
+        this.uiContainer.addActor(it)
+    }
 
     /**
      * Constructs the planets and adds them to the stage as actors
@@ -64,7 +79,6 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
             )
             this.stage.addActor(image)
         }
-        //Add modals
     }
 
     /**
@@ -106,6 +120,28 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
         this.uiContainer.act(delta)
         this.stage.draw()
     }
+
+    /**
+     * Execute when player free phase (actions) starts
+     * Follows draft phase
+     */
+    fun startPlayerFreePhase() {
+        this.submitButton.isDisabled = false
+    }
+
+    /**
+     * Execute when drone phase (instructions) starts
+     * Follows player free phase
+     */
+    fun startDronePhase() {
+        this.submitButton.isDisabled = true
+    }
+
+    /**
+     * Execute when draft phase starts
+     * Follows drone phase
+     */
+    fun startDraftPhase() {}
 
     override fun leave() {
         this.stage.dispose()

@@ -1,8 +1,5 @@
 package com.prophetsofprofit.galacticrush.graphics
 
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction
-import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Window
 
@@ -10,14 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window
  * The basic interface for more specific interactions
  * Acts as a modal window, but can also handle UI-specific things like animation
  */
-abstract class GalacticRushWindow(title: String, skin: Skin, draggable: Boolean, x: Float, y: Float, width: Float, height: Float) : Window(title, skin) {
+abstract class GalacticRushWindow(val screen: GalacticRushScreen, title: String, skin: Skin, draggable: Boolean, x: Float, y: Float, width: Float, height: Float, align: Int) : Window(title, skin) {
+
+    //Whether the panel can be interacted with: can't be interacted with when moving
+    val canBeUsed: Boolean
+        get() = this.actions.size == 0
 
     init {
         this.isMovable = draggable
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
+        this.isModal = false
+        this.setSize(width, height)
+        this.setPosition(x, y, align)
         this.setKeepWithinStage(false)
     }
 
@@ -32,19 +32,5 @@ abstract class GalacticRushWindow(title: String, skin: Skin, draggable: Boolean,
      * How does it disappear?
      */
     abstract fun disappear()
-
-    /**
-     * Animate the window's movement to the target location
-     * Linear for now
-     */
-    fun move(x: Float, y: Float, width: Float, height: Float, time: Float) {
-        val move = MoveToAction()
-        move.setPosition(x, y)
-        move.duration = time
-        val scale = ScaleToAction()
-        scale.duration = time
-        scale.setScale(width / this.width, height / this.height)
-        this.addAction(ParallelAction(move, scale))
-    }
 
 }
