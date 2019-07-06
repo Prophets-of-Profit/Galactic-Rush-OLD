@@ -1,6 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.maingame
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -15,6 +16,8 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.*
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
+import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.NotificationStack
+import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.notifications.StartGameNotification
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.networking.player.Player
 import ktx.math.vec3
@@ -38,7 +41,9 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
     //Views the planets separately from the UI
     private var gameboardCamera = OrthographicCamera(1600f, 900f)
     //Stores the planets, drones, and so on in a stage
-    private val stage = Stage(ExtendViewport(this.gameboardCamera.viewportWidth, this.gameboardCamera.viewportHeight))
+    private val stage = Stage(ExtendViewport(this.gameboardCamera.viewportWidth, this.gameboardCamera.viewportHeight)).also {
+        this.inputMultiplexer.addProcessor(it)
+    }
     //A convenience getter that views the stage's camera as orthographic
     private val camera
         get() = this.stage.camera as OrthographicCamera
@@ -49,6 +54,10 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
     //Store the images instead of reallocating memory every draw call
     private val planetImages = this.mainGame.galaxy.planets.map { it.id to this.createPlanetTexture(it) }.toMap()
 
+    //Input
+    private val inputMultiplexer: InputMultiplexer
+        get() = Gdx.input.inputProcessor as InputMultiplexer
+
     //UI components
     //The button that controls submitting turn changes
     private val submitButton = TextButton("Submit", Scene2DSkin.defaultSkin).also {
@@ -57,8 +66,20 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
                 this@MainGameScreen.player.submitCurrentChanges()
             }
         })
-        it.setSize(this.uiCamera.viewportWidth / 8, this.uiCamera.viewportHeight / 16)
+        it.setSize(this.uiCamera.viewportWidth / 8, this.uiCamera.viewportHeight / 8)
         it.setPosition(this.uiCamera.viewportWidth, 0f, Align.bottomRight)
+        it.isDisabled = true
+        this.uiContainer.addActor(it)
+    }
+    //The container that handles notifications
+    private val notificationStack = NotificationStack(
+            this.uiCamera.viewportWidth * 7/8,
+            this.uiCamera.viewportHeight * 1/8,
+            this.uiCamera.viewportWidth * 1/8,
+            this.uiCamera.viewportHeight * 7/8,
+            5,
+            this.uiCamera.viewportWidth / 16
+    ).also {
         this.uiContainer.addActor(it)
     }
 
@@ -66,8 +87,6 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
      * Constructs the planets and adds them to the stage as actors
      */
     init {
-        //Handle input
-        (Gdx.input.inputProcessor as InputMultiplexer).addProcessor(this.stage)
         //Add planets as actors
         this.mainGame.galaxy.planets.forEach {
             val image = Image(planetImages[it.id])
@@ -95,6 +114,9 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
      * Updates the image of the game screen
      */
     override fun draw(delta: Float) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+            this.notificationStack.addNotification(StartGameNotification(this.uiCamera.viewportWidth / 16, this.uiCamera.viewportWidth / 16))
+        }
         //Render highways as white lines
         this.main.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         this.main.shapeRenderer.color = Color.LIGHT_GRAY
