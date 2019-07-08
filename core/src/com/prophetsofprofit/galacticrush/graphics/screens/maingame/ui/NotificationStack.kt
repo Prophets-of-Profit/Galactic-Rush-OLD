@@ -1,15 +1,29 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui
 
 import com.badlogic.gdx.scenes.scene2d.Group
-import kotlin.math.min
+import com.sun.org.apache.xpath.internal.operations.Bool
 
 /**
  * Stores a number of notifications, handling their appearance and disappearance
  */
-class NotificationStack(x: Float, y: Float, width: Float, height: Float, private val maxNotifications: Int, val notificationHeight: Float): Group() {
+class NotificationStack(x: Float, y: Float, width: Float, height: Float, val maxNotifications: Int, val notificationHeight: Float): Group() {
 
-    //Notifications that are being processed are stored here
-    val notificationsQueue = mutableListOf<Notification>()
+    //Bottom notification - head of a singly linked list
+    private var bottomNotification: Notification? = null
+    //Last notification in the list and the list size--not necessarily displayed
+    val topNotification: Pair<Notification?, Int>
+        get() {
+            if (this.bottomNotification == null) {
+                return Pair(null, 0)
+            }
+            var currentNotification = this.bottomNotification
+            var size = 1
+            while (currentNotification!!.nextNotification != null) {
+                currentNotification = currentNotification.nextNotification
+                size++
+            }
+            return Pair(currentNotification, size)
+        }
 
     init {
         this.setPosition(x, y)
@@ -20,28 +34,48 @@ class NotificationStack(x: Float, y: Float, width: Float, height: Float, private
      * Adds a notification to the queue, dropping it to the first available position if there is space
      */
     fun addNotification(notification: Notification) {
+        println("add")
         notification.parent = this
-        val index = notificationsQueue.size
-        this.notificationsQueue.add(notification)
-        this.addActor(notification)
-        println("Add actor: index: $index")
-        if (index < this.maxNotifications) {
+        if (this.bottomNotification == null) {
+            this.bottomNotification = notification
             notification.appear()
-            println("Appear: index: $index")
-            notification.drop(this.maxNotifications - index)
+            return
+        }
+        val top = this.topNotification
+        top.first!!.nextNotification = notification
+        if (top.second < this.maxNotifications) {
+            notification.appear()
         }
     }
 
     /**
-     * Remove a notification that is being displayed, dropping all notifications above it
+     * Remove a notification that is being displayed
      */
     fun removeNotification(notification: Notification) {
-        val index = this.notificationsQueue.indexOf(notification)
-        notification.disappear()
-        ((index + 1) until min(this.maxNotifications, this.notificationsQueue.size)).forEach { this.notificationsQueue[it].drop(1) }
-        if (this.notificationsQueue.size > this.maxNotifications)
-            this.notificationsQueue[this.maxNotifications].appear()
-        this.notificationsQueue.remove(notification)
+        if (this.bottomNotification == null) {
+            return
+        }
+        if (this.bottomNotification == notification) {
+            this.bottomNotification!!.disappear()
+            this.bottomNotification = this.bottomNotification!!.nextNotification
+            return
+        }
+        var currentNotification = this.bottomNotification
+        while (currentNotification!!.nextNotification != notification) {
+            currentNotification = currentNotification.nextNotification
+            if (currentNotification == null) return
+        }
+        currentNotification.nextNotification!!.disappear()
+        currentNotification.nextNotification = currentNotification.nextNotification!!.nextNotification
+    }
+
+    /**
+     * Check if a given notification is being displayed
+     */
+    fun isDisplaying(notification: Notification?): Boolean {
+        if (notification == null)
+            return false
+        return this.children.contains(notification)
     }
 
 }

@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Align
 fun Actor.onClick(action: () -> Unit) {
     this.addListener(object : ChangeListener() {
         override fun changed(event: ChangeEvent?, actor: Actor?) {
-            println("onClick")
             action()
         }
     })
