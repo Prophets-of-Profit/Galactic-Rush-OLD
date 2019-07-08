@@ -49,10 +49,13 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
      */
     init {
         val minDistanceBetweenHomes = 0.5
-        generatePlanets(numPlanets, 0.2)
+        //this.generatePlanets(numPlanets, 0.2)
+        this.generatePlanets(numPlanets, numPlanets - 1) //minimum spanning graph
         var counter = 0
-        while (this.iterateForces(0.05f, 1f, 0.0005f, 0.05f).values.count { abs(it[0]) > 0.0001 || abs(it[1]) > 0.0001 } > 0 && ++counter > 0) {
-        }
+        while (this.iterateForces(0.05f, 0.1f, 0.01f, 0.05f).values.count { abs(it[0]) > 0.0001 || abs(it[1]) > 0.0001 } > 0 && ++counter > 0) {}
+        this.addHighways(numPlanets * 3/2)
+        counter = 0
+        while (this.iterateForces(0.05f, 0.1f, 0.01f, 0.5f).values.count { abs(it[0]) > 0.0001 || abs(it[1]) > 0.0001 } > 0 && ++counter > 0) {}
         val pickablePlanets = this.planets.toMutableList()
         var planetChoice: Planet
         for (i in 0 until playerIDs.size) {
@@ -71,7 +74,8 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
     }
 
     /**
-     * Generates planets
+     * Generates planets and edges probabilistically, with each planet having a random number of edges
+     * This method is biased towards younger planets having more edges
      */
     private fun generatePlanets(numPlanets: Int, edgeProbabilityFactor: Double) {
         for (i in 0 until numPlanets) {
@@ -95,6 +99,86 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
                 this.highways.add(CosmicHighway(i, adjacentPlanet))
             }
             this.planets.add(planet)
+        }
+    }
+
+    /**
+     * Generates planets and edges probabilistically, trying to balance number of edges
+     * If numHighways is less than numPlanets - 1, then numPlanets - 1 highways will be generated
+     */
+    private fun generatePlanets(numPlanets: Int, numHighways: Int) {
+        //Add planets
+        for (i in 0 until numPlanets) {
+            val planet = Planet(
+                    0.4995f + 0.001f * Math.random().toFloat(),
+                    0.4995f + 0.001f * Math.random().toFloat(),
+                    0.5f + Math.random().toFloat(),
+                    i
+            )
+            //Add edge
+            //The first edge is created to a random planet
+            if (this.planets.isNotEmpty()) {
+                //Decide which planet to connect to randomly based on how many highways it doesn't have
+                val selectionIndex = Math.random() * this.highways.size * (this.planets.size - 2)
+                var selectionCriterion = 0
+                if (this.planets.size == 1) {
+                    this.highways.add(CosmicHighway(i, 0))
+                } else if (this.planets.size == 2) {
+                    this.highways.add(CosmicHighway(i, Math.random().roundToInt()))
+                } else {
+                    for (it in this.planetIds.shuffled()) {
+                        selectionCriterion += this.highways.size - this.planetsAdjacentTo(it).size
+                        if (selectionCriterion > selectionIndex) {
+                            this.highways.add(CosmicHighway(i, it))
+                            break
+                        }
+                    }
+                }
+            }
+            this.planets.add(planet)
+        }
+        //Add edges between pairs of random planets, if possible and they don't yet exist
+        var edgesToAdd = numHighways - this.highways.size
+        var numberOfTries = 0
+        while (edgesToAdd > 0 && numberOfTries < 100) {
+            val planet1 = this.planetIds.shuffled().first()
+            val remainingPlanets = this.planetIds.minus(planet1).minus(this.planetsAdjacentTo(planet1)).shuffled()
+            if (remainingPlanets.isEmpty()) {
+                numberOfTries++
+                continue
+            }
+            val planet2 = remainingPlanets.first()
+            this.highways.add(CosmicHighway(planet1, planet2))
+            edgesToAdd = numHighways - this.highways.size
+        }
+    }
+
+    /**
+     * Adds highways until the desired number is reached
+     * Weights destination planets by distance
+     */
+    private fun addHighways(numHighways: Int) {
+        //Add edges between pairs of random planets, if possible and they don't yet exist
+        var edgesToAdd = numHighways - this.highways.size
+        var numberOfTries = 0
+        while (edgesToAdd > 0 && numberOfTries < 100) {
+            val planet1 = this.planetIds.shuffled().first()
+            val remainingPlanets = this.planetIds.minus(planet1).minus(this.planetsAdjacentTo(planet1)).shuffled()
+            if (remainingPlanets.isEmpty()) {
+                numberOfTries++
+                continue
+            }
+            //Randomly choose a close planet
+            val selectionIndex = Math.random() * remainingPlanets.map { 1 / this.squareDistanceBetween(it, planet1) }.sum()
+            var selectionCriterion = 0f
+            for (it in remainingPlanets) {
+                selectionCriterion += 1 / this.squareDistanceBetween(it, planet1)
+                if (selectionCriterion > selectionIndex) {
+                    this.highways.add(CosmicHighway(planet1, it))
+                    break
+                }
+            }
+            edgesToAdd = numHighways - this.highways.size
         }
     }
 
@@ -220,6 +304,13 @@ class Galaxy(numPlanets: Int, playerIDs: List<Int>) {
      */
     fun getDroneWithId(id: DroneId?): Drone? {
         return this.drones.firstOrNull { it.id == id }
+    }
+
+    /**
+     * Gets the distance between the two planets
+     */
+    private fun squareDistanceBetween(p0: Int, p1: Int): Float {
+        return (this.getPlanetWithId(p0)!!.x - this.getPlanetWithId(p1)!!.x).pow(2) + (this.getPlanetWithId(p0)!!.y - this.getPlanetWithId(p1)!!.y).pow(2)
     }
 
 }
