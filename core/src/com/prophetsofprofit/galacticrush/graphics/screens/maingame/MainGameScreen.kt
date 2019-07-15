@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.*
 import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.NotificationStack
+import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.gameboard.PlanetActor
 import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.notifications.StartGameNotification
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.networking.player.Player
@@ -53,6 +54,8 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
     private val maxZoom = 10f
     //Store the images instead of reallocating memory every draw call
     private val planetImages = this.mainGame.galaxy.planets.map { it.id to this.createPlanetTexture(it) }.toMap()
+    //A map of planet (index) to planet actor for drawing
+    private val planetActors = mutableMapOf<Int, PlanetActor>()
 
     //Input
     private val inputMultiplexer: InputMultiplexer
@@ -89,13 +92,14 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
     init {
         //Add planets as actors
         this.mainGame.galaxy.planets.forEach {
-            val image = Image(planetImages[it.id])
+            val image = PlanetActor(it.id, planetImages[it.id]!!)
             image.width *= it.radius
             image.height *= it.radius
             image.setPosition(
                     it.x * (this.camera.viewportWidth) - image.width / 2,
                     it.y * (this.camera.viewportHeight) - image.height / 2
             )
+            this.planetActors[it.id] = image
             this.stage.addActor(image)
         }
     }
@@ -125,14 +129,10 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
         this.main.shapeRenderer.projectionMatrix = this.stage.batch.projectionMatrix
         //Draw the lines
         for (highway in this.mainGame.galaxy.highways) {
-            val planet0 = this.mainGame.galaxy.getPlanetWithId(highway.p0)!!
-            val planet1 = this.mainGame.galaxy.getPlanetWithId(highway.p1)!!
-            val pos0 = vec3(
-                            planet0.x* this.camera.viewportWidth, planet0.y * this.camera.viewportHeight, 0f
-                        )
-            val pos1 = vec3(
-                            planet1.x* this.camera.viewportWidth, planet1.y * this.camera.viewportHeight, 0f
-                        )
+            val planetActor0 = this.planetActors[highway.p0]!!
+            val planetActor1 = this.planetActors[highway.p1]!!
+            val pos0 = vec3(planetActor0.x + planetActor0.width / 2, planetActor0.y + planetActor0.height / 2, 0f)
+            val pos1 = vec3(planetActor1.x + planetActor1.width / 2, planetActor1.y + planetActor1.height / 2, 0f)
             this.main.shapeRenderer.line(pos0, pos1)
         }
         this.main.shapeRenderer.end()
