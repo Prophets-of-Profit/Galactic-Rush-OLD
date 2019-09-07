@@ -34,7 +34,6 @@ class NotificationStack(x: Float, y: Float, width: Float, height: Float, val max
      * Adds a notification to the queue, dropping it to the first available position if there is space
      */
     fun addNotification(notification: Notification) {
-        println("add")
         notification.parent = this
         if (this.bottomNotification == null) {
             this.bottomNotification = notification

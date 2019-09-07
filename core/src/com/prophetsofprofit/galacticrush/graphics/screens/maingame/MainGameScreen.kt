@@ -18,6 +18,9 @@ import com.prophetsofprofit.galacticrush.Main
 import com.prophetsofprofit.galacticrush.graphics.GalacticRushScreen
 import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.NotificationStack
 import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.gameboard.PlanetActor
+import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.notifications.DraftNotification
+import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.notifications.DronePhaseNotification
+import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.notifications.PlayerFreePhaseNotification
 import com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui.notifications.StartGameNotification
 import com.prophetsofprofit.galacticrush.logic.map.Planet
 import com.prophetsofprofit.galacticrush.networking.player.Player
@@ -56,6 +59,9 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
     private val planetImages = this.mainGame.galaxy.planets.map { it.id to this.createPlanetTexture(it) }.toMap()
     //A map of planet (index) to planet actor for drawing
     private val planetActors = mutableMapOf<Int, PlanetActor>()
+
+    //UI size variables
+    private val notificationSize = this.uiCamera.viewportWidth / 16
 
     //Input
     private val inputMultiplexer: InputMultiplexer
@@ -102,6 +108,7 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
             this.planetActors[it.id] = image
             this.stage.addActor(image)
         }
+        this.notificationStack.addNotification(StartGameNotification(this.notificationSize, this.notificationSize))
     }
 
     /**
@@ -119,7 +126,8 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
      */
     override fun draw(delta: Float) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            this.notificationStack.addNotification(StartGameNotification(this.uiCamera.viewportWidth / 16, this.uiCamera.viewportWidth / 16))
+            this.notificationStack.addNotification(StartGameNotification(this.notificationSize, this.notificationSize))
+            println("${this.notificationStack.topNotification.first!!.x}, ${this.notificationStack.topNotification.first!!.y}")
         }
         //Render highways as white lines
         this.main.shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
@@ -149,6 +157,7 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
      */
     fun startPlayerFreePhase() {
         this.submitButton.isDisabled = false
+        this.notificationStack.addNotification(PlayerFreePhaseNotification(this.notificationSize, this.notificationSize))
     }
 
     /**
@@ -157,13 +166,16 @@ class MainGameScreen(main: Main, var player: Player) : GalacticRushScreen(main) 
      */
     fun startDronePhase() {
         this.submitButton.isDisabled = true
+        this.notificationStack.addNotification(DronePhaseNotification(this.notificationSize, this.notificationSize))
     }
 
     /**
      * Execute when draft phase starts
      * Follows drone phase
      */
-    fun startDraftPhase() {}
+    fun startDraftPhase() {
+        this.notificationStack.addNotification(DraftNotification(this.notificationSize, this.notificationSize))
+    }
 
     override fun leave() {
         this.stage.dispose()

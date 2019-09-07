@@ -3,6 +3,7 @@ package com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Button
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -19,10 +20,17 @@ abstract class Notification(width: Float, height: Float, image: Drawable, text: 
     var parent: NotificationStack? = null
     //The notification above this
     var nextNotification: Notification? = null
+    //The label associated with this notification
+    var label = Label(text, skin)
 
     init {
         this.setSize(width, height)
         this.isTransform = true
+        //Add label
+        this.label.setSize(height * 3, height)
+        this.label.setPosition(this.x, this.y, Align.bottomRight)
+        this.label.isVisible = false
+        //Listen for hovering and clicks
         this.addListener(object : ClickListener() {
 
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -45,10 +53,15 @@ abstract class Notification(width: Float, height: Float, image: Drawable, text: 
      */
     fun appear() {
         this.setPosition(this.parent!!.width, this.parent!!.height, Align.topRight)
-        this.setScale(0f)
         this.parent!!.addActor(this)
-        println(this.parent!!.topNotification.second)
-        this.move(this.parent!!.width, this.parent!!.notificationHeight * min(this.parent!!.topNotification.second, this.parent!!.maxNotifications) - 1, this.parent!!.notificationHeight, this.parent!!.notificationHeight, 0.2f, Align.bottomRight)
+        this.parent!!.addActor(this.label)
+        this.move(this.parent!!.width,
+                this.parent!!.notificationHeight * min(this.parent!!.topNotification.second,
+                this.parent!!.maxNotifications) - 1,
+                this.parent!!.notificationHeight,
+                this.parent!!.notificationHeight,
+                0.2f,
+                Align.bottomRight)
     }
 
     /**
@@ -86,12 +99,19 @@ abstract class Notification(width: Float, height: Float, image: Drawable, text: 
     /**
      * When the notification is hovered over, display the description
      */
-    fun hover() {}
+    fun hover() {
+        println("enter")
+        this.label.isVisible = true
+        this.label.move(this.x, this.y, this.height * 3, this.height, 0.5f, Align.bottomRight)
+    }
 
     /**
      * When the notification is no longer being hovered over, stop displaying the description
      */
-    fun stopHover(){}
+    fun stopHover(){
+        println("exit")
+        this.label.move(this.x, this.y, 0f, this.height, 0.5f, { this.label.isVisible = false }, Align.bottomRight)
+    }
 
     /**
      * Do this when the notification is clicked
