@@ -1,5 +1,8 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui
 
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.Button
@@ -21,15 +24,14 @@ abstract class Notification(width: Float, height: Float, image: Drawable, text: 
     //The notification above this
     var nextNotification: Notification? = null
     //The label associated with this notification
-    var label = Label(text, skin)
+    var label = Label(text, skin, "title")
 
     init {
         this.setSize(width, height)
         this.isTransform = true
         //Add label
         this.label.setSize(height * 3, height)
-        this.label.setPosition(this.x, this.y, Align.bottomRight)
-        this.label.isVisible = false
+        println("x ${this.label.x}, y ${this.label.y} this ${this.x} ${this.y}")
         //Listen for hovering and clicks
         this.addListener(object : ClickListener() {
 
@@ -42,6 +44,25 @@ abstract class Notification(width: Float, height: Float, image: Drawable, text: 
             }
 
             override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int, toActor: Actor?) {
+                val localMousePosition = this@Notification.label.stageToLocalCoordinates(
+                        this@Notification.localToStageCoordinates(Vector2(x, y))
+                )
+                if (this@Notification.label.hit(localMousePosition.x, localMousePosition.y, false) != null) return
+                this@Notification.stopHover()
+            }
+
+        })
+        this.label.addListener(object : ClickListener() {
+
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                this@Notification.action()
+            }
+
+            override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int, toActor: Actor?) {
+                val localMousePosition = this@Notification.stageToLocalCoordinates(
+                        this@Notification.label.localToStageCoordinates(Vector2(x, y))
+                )
+                if (this@Notification.hit(localMousePosition.x, localMousePosition.y, false) != null) return
                 this@Notification.stopHover()
             }
 
@@ -62,6 +83,8 @@ abstract class Notification(width: Float, height: Float, image: Drawable, text: 
                 this.parent!!.notificationHeight,
                 0.2f,
                 Align.bottomRight)
+        println("${this.x + this.width}, ${this.y}")
+        this.label.setPosition(this.x + this.width, this.y, Align.bottomLeft)
     }
 
     /**
@@ -82,9 +105,9 @@ abstract class Notification(width: Float, height: Float, image: Drawable, text: 
      * How the notification disappears--if important, don't let the user disappear it
      */
     fun disappear() {
-        if (important)
+        if (this.important)
             return
-        this.move(this.x, this.y, 0f, 0f, 0.2f, {
+        this.move(this.x + this.width / 2, this.y + this.height / 2, 1f, 1f, 0.2f, {
             if (this.nextNotification != null) {
                 if (this.parent!!.isDisplaying(this.nextNotification)) {
                     this.nextNotification!!.drop()
@@ -101,8 +124,7 @@ abstract class Notification(width: Float, height: Float, image: Drawable, text: 
      */
     fun hover() {
         println("enter")
-        this.label.isVisible = true
-        this.label.move(this.x, this.y, this.height * 3, this.height, 0.5f, Align.bottomRight)
+        this.label.move(this.x, this.y, this.height * 3, this.height, 1f, Align.bottomRight)
     }
 
     /**
@@ -110,7 +132,7 @@ abstract class Notification(width: Float, height: Float, image: Drawable, text: 
      */
     fun stopHover(){
         println("exit")
-        this.label.move(this.x, this.y, 0f, this.height, 0.5f, { this.label.isVisible = false }, Align.bottomRight)
+        this.label.move(this.x * 5, this.y, this.height * 3, this.height, 1f, {}, Align.bottomRight)
     }
 
     /**

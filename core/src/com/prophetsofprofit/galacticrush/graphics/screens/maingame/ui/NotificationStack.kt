@@ -1,5 +1,7 @@
 package com.prophetsofprofit.galacticrush.graphics.screens.maingame.ui
 
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.sun.org.apache.xpath.internal.operations.Bool
 
@@ -26,6 +28,8 @@ class NotificationStack(x: Float, y: Float, width: Float, height: Float, val max
         }
 
     init {
+        this.debug = true
+
         this.setPosition(x, y)
         this.setSize(width, height)
     }
@@ -75,6 +79,11 @@ class NotificationStack(x: Float, y: Float, width: Float, height: Float, val max
         if (notification == null)
             return false
         return this.children.contains(notification)
+    }
+
+    override fun draw(batch: Batch?, parentAlpha: Float) {
+        super.draw(batch, parentAlpha)
+        ShapeRenderer().also { it.setAutoShapeType(true); it.begin(); this.drawDebugBounds(it) }
     }
 
 }

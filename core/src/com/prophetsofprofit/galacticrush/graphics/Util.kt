@@ -45,6 +45,26 @@ fun Actor.move(x: Float, y: Float, width: Float, height: Float, time: Float, ali
     scale.duration = time
     scale.setScale(width / this.width, height / this.height)
     this.addAction(ParallelAction(move, scale))
+    /*if (time == 0f) {
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+        return
+    }
+    var elapsedTime = 0f
+    val initialX = this.x
+    val initialY = this.y
+    val initialWidth = this.width
+    val initialHeight = this.height
+    this.act{delta ->
+        if (elapsedTime >= time) return@act
+        elapsedTime += delta
+        this.x += (x - initialX) / time
+        this.y += (y - initialY) / time
+        this.width += (width - initialWidth) / time
+        this.height += (height - initialHeight) / time
+    }*/
 }
 
 /**
