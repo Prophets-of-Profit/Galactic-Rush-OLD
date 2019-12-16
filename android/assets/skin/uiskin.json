@@ -8,6 +8,9 @@
 	},
 	"font-title": {
 		"file": "font-title.fnt"
+	},
+	"ntf-grush": {
+		"file": "ntf-grush.fnt"
 	}
 },
 "com.badlogic.gdx.graphics.Color": {
@@ -183,7 +186,7 @@
 		"checked": "radio-button"
 	},
 	"main-menu": {
-		"font": "font-label",
+		"font": "ntf-grush",
 		"up": "main-menu-button",
 		"down": "main-menu-button-click",
 		"over": "main-menu-button-hover"
